@@ -31176,6 +31176,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _appear = _interopRequireDefault(require("./directives/appear.directive"));
+
 var _parallax = _interopRequireDefault(require("./directives/parallax.directive"));
 
 var _scroll = _interopRequireDefault(require("./directives/scroll.directive"));
@@ -31196,13 +31198,121 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.factory('ApiService', _api.default.factory).factory('RafService', _raf.default.factory);
-app.directive('scroll', _scroll.default.factory).directive('parallax', _parallax.default.factory).directive('sticky', _sticky.default.factory);
+app.directive('appear', _appear.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/parallax.directive":202,"./directives/scroll.directive":203,"./directives/sticky.directive":204,"./root.controller":206,"./services/api.service":207,"./services/raf.service":208}],202:[function(require,module,exports){
+},{"./directives/appear.directive":202,"./directives/parallax.directive":203,"./directives/scroll.directive":204,"./directives/sticky.directive":205,"./root.controller":207,"./services/api.service":208,"./services/raf.service":209}],202:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var AppearDirective =
+/*#__PURE__*/
+function () {
+  function AppearDirective(RafService) {
+    _classCallCheck(this, AppearDirective);
+
+    this.rafService = RafService;
+    this.restrict = 'A';
+    this.windowRect = new _rect.default({
+      top: 0,
+      left: 0,
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+    this.scroll$ = this.rafService.scroll$();
+    this.windowRect$ = this.rafService.windowRect$();
+  }
+
+  _createClass(AppearDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      var section = this.getSection(node);
+      this.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+
+      var onScroll = function onScroll(data) {
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(_this.windowRect);
+
+        if (intersection.y > 0.0) {
+          if (!_this.to) {
+            _this.to = setTimeout(function () {
+              node.classList.add('appeared');
+            }, 150 * _this.index); // (i - firstVisibleIndex));
+          }
+        } else {
+          if (_this.to) {
+            clearTimeout(_this.to);
+            _this.to = null;
+          }
+
+          if (node.classList.contains('appeared')) {
+            node.classList.remove('appeared');
+          }
+        }
+      };
+
+      var windowRectSubscription = this.windowRect$.subscribe(function (x) {
+        return _this.windowRect = x;
+      });
+      var scrollSubscription = this.scroll$.subscribe(onScroll);
+      onScroll();
+      scope.$on('destroy', function () {
+        windowRectSubscription.unsubscribe();
+        scrollSubscription.unsubscribe();
+      });
+    }
+  }, {
+    key: "getSection",
+    value: function getSection(node) {
+      var section = node.parentNode;
+      var p = node;
+
+      while (p) {
+        p = p.parentNode;
+
+        if (p && p.classList && p.classList.contains('section')) {
+          section = p;
+          p = null;
+        }
+      }
+
+      return section;
+    }
+  }], [{
+    key: "factory",
+    value: function factory(RafService) {
+      return new AppearDirective(RafService);
+    }
+  }]);
+
+  return AppearDirective;
+}();
+
+exports.default = AppearDirective;
+AppearDirective.factory.$inject = ['RafService'];
+
+},{"../shared/rect":210}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31308,7 +31418,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['RafService'];
 
-},{"../shared/rect":209,"rxjs/operators":199}],203:[function(require,module,exports){
+},{"../shared/rect":210,"rxjs/operators":199}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31379,15 +31489,13 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = [];
 
-},{"rxjs":3}],204:[function(require,module,exports){
+},{"rxjs":3}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
-var _rxjs = require("rxjs");
 
 var _rect = _interopRequireDefault(require("../shared/rect"));
 
@@ -31416,19 +31524,17 @@ function () {
 
       var node = element[0];
       var content = node.querySelector('[sticky-content]');
-      var target = document.querySelector('body');
-      var source = (0, _rxjs.fromEvent)(target, 'scroll');
+      var stickyTop = parseInt(attributes.sticky) || 0; // const target = document.querySelector('body');
+      // const source = fromEvent(target, 'scroll');
 
-      var onScroll = function onScroll(originalEvent) {
+      var onScroll = function onScroll(x) {
         // const top = target.scrollY || target.scrollTop;
         // const subscription = this.rafService.raf$().subscribe(event => {
-        var top = parseInt(attributes.sticky) || 0;
-
         var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
         // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
 
-        top = Math.max(0, top - rect.top);
+        var top = Math.max(0, stickyTop - rect.top);
         content.setAttribute('style', "transform: translateY(".concat(top, "px);"));
         var sticky = top > 0;
 
@@ -31443,7 +31549,7 @@ function () {
         }
       };
 
-      var subscription = source.subscribe(onScroll);
+      var subscription = this.rafService.scroll$().subscribe(onScroll);
       onScroll();
       scope.$on('destroy', function () {
         subscription.unsubscribe();
@@ -31462,7 +31568,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['RafService'];
 
-},{"../shared/rect":209,"rxjs":3}],205:[function(require,module,exports){
+},{"../shared/rect":210}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31558,7 +31664,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"@dogstudio/highway":1,"gsap":2}],206:[function(require,module,exports){
+},{"@dogstudio/highway":1,"gsap":2}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31691,7 +31797,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"./highway/page-transition":205,"@dogstudio/highway":1}],207:[function(require,module,exports){
+},{"./highway/page-transition":206,"@dogstudio/highway":1}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31755,7 +31861,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31768,6 +31874,10 @@ var _rxjs = require("rxjs");
 var _animationFrame = require("rxjs/internal/scheduler/animationFrame");
 
 var _operators = require("rxjs/operators");
+
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31785,7 +31895,27 @@ function () {
   _createClass(RafService, [{
     key: "raf$",
     value: function raf$() {
-      return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe((0, _operators.shareReplay)());
+      return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe();
+    }
+  }, {
+    key: "windowRect$",
+    value: function windowRect$() {
+      return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(function (x) {
+        return new _rect.default({
+          width: window.innerWidth,
+          height: window.innerHeight
+        });
+      }) // shareReplay()
+      );
+    }
+  }, {
+    key: "scroll$",
+    value: function scroll$() {
+      var target = document.querySelector('body');
+      return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.map)(function (x) {
+        return target.scrollY || target.scrollTop;
+      }) // shareReplay()
+      );
     }
   }], [{
     key: "factory",
@@ -31800,7 +31930,7 @@ function () {
 exports.default = RafService;
 RafService.factory.$inject = [];
 
-},{"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],209:[function(require,module,exports){
+},{"../shared/rect":210,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
