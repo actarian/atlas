@@ -4,20 +4,17 @@
 			"compile": [{
 				"input": "src/scss/app.scss",
 				"output": "docs/css/app.css",
-				"minify": true
+				"minify": false
 			}, {
 				"input": "src/app/app.bootstrap.js",
 				"output": "docs/js/app.js",
-				"minify": true
+				"minify": false
 			}],
 			"bundle": [{
 				"input": [
-					"node_modules/jquery/dist/jquery.js",
-					"node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js",
 					"node_modules/swiper/dist/js/swiper.js",
 					"node_modules/angular/angular.js",
 					"node_modules/angular-messages/angular-messages.js",
-					"node_modules/angular-route/angular-route.js",
 					"node_modules/angular-sanitize/angular-sanitize.js",
 					"node_modules/jsonformatter/dist/json-formatter.js",
 					"node_modules/gsap/src/uncompressed/easing/EasePack.js",
@@ -26,14 +23,13 @@
 					"node_modules/gmaps-marker-clusterer/src/markerclusterer.js"
 				],
 				"output": "docs/js/vendors.js",
-				"minify": true
+				"minify": false
 			}, {
 				"input": [
-					"node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css",
 					"node_modules/swiper/dist/css/swiper.css"
 				],
 				"output": "docs/css/vendors.css",
-				"minify": true
+				"minify": false
 			}]
 		}
 	},

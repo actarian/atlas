@@ -19,8 +19,7 @@ export default class ScrollDirective {
 		if (typeof callback === 'function') {
 			// console.log(callback);
 			const target = document.querySelector('body');
-			const source = fromEvent(target, 'scroll');
-			const subscription = source.subscribe(originalEvent => {
+			const onScroll = (originalEvent) => {
 				const event = {
 					scrollHeight: target.scrollHeight,
 					scrollLeft: target.scrollX || target.scrollLeft,
@@ -31,7 +30,10 @@ export default class ScrollDirective {
 				// scope.$broadcast('onScrollDocumentEvent', event);
 				callback(event);
 				// console.log('ScrollDirective.onScrollDocumentEvent', event);
-			});
+			}
+			const source = fromEvent(target, 'scroll');
+			const subscription = source.subscribe(onScroll);
+			onScroll();
 			scope.$on('destroy', () => {
 				subscription.unsubscribe();
 			});

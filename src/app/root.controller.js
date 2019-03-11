@@ -8,7 +8,7 @@
 // See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
 // import 'intersection-observer';
 import Highway from '@dogstudio/highway';
-import PageTransition from './transitions/transitions';
+import PageTransition from './highway/page-transition';
 
 class RootCtrl {
 
@@ -30,7 +30,6 @@ class RootCtrl {
 	}
 
 	onInit() {
-		console.log(this.$scope);
 		this.$scope.onScroll = (event) => {
 			const scrolled = event.scrollTop > 100;
 			if (this.scrolled !== scrolled) {
@@ -49,32 +48,52 @@ class RootCtrl {
 					default: PageTransition,
 				}
 			});
-			H.on('NAVIGATE_END', (event) => {
+			H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
 				H.detach(H.links);
+				// console.log('NAVIGATE_IN', location);
 				this.$timeout(() => {
-					const element = angular.element(event.to.view);
+					const element = angular.element(to.view);
 					const scope = element.scope();
 					// console.log(scope, element, element.contents());
 					this.$compile(element.contents())(scope);
 					this.$timeout(() => {
-						H.attach(document.querySelectorAll('[href]'));
+						const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
+						H.links = links;
+						H.attach(links);
+						links.forEach(x => {
+							x.classList.remove('active');
+							if (x.href === location.href) {
+								x.classList.add('active');
+							}
+						});
 						/*
 						// link prefetch
 						Quicklink({
 							el: to.view
 						});
 						*/
-						/*
-						setTimeout(() => {
-							document.querySelector('.view').scrollIntoView({
-								behavior: 'smooth',
-								block: 'start',
-								inline: 'start'
-							});
-						}, 500);
-						*/
-					}, 250);
+					}, 100);
 				});
+			});
+			H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
+				setTimeout(() => {
+					document.querySelector('.view').scrollIntoView({
+						behavior: 'smooth',
+						block: 'start',
+						inline: 'start'
+					});
+					/*
+					if (window.scroll) {
+						window.scroll({
+							top: 0,
+							left: 0,
+							behavior: 'smooth'
+						});
+					} else {
+						window.scrollTo(0, 0);
+					}
+					*/
+				}, 500);
 			});
 		});
 	}

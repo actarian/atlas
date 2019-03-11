@@ -31194,24 +31194,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var MODULE_NAME = 'app';
-var app = angular.module(MODULE_NAME, ['ngSanitize', 'artisan', 'jsonFormatter']);
+var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.factory('ApiService', _api.default.factory).factory('RafService', _raf.default.factory);
 app.directive('scroll', _scroll.default.factory).directive('parallax', _parallax.default.factory).directive('sticky', _sticky.default.factory);
-app.controller('RootCtrl', _root.default);
-app.run(['$compile', '$timeout', '$rootScope', '$modal', 'Router', 'Trust', function ($compile, $timeout, $rootScope, $modal, Router, Trust) {
-  $rootScope.modals = $modal.modals;
-  $rootScope.addModal = $modal.addModal;
-  $rootScope.router = Router;
-  $rootScope.trust = Trust;
-  /*
-  FacebookService.require();
-  GoogleService.require();
-  */
-}]);
+app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
+
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/parallax.directive":202,"./directives/scroll.directive":203,"./directives/sticky.directive":204,"./root.controller":205,"./services/api.service":206,"./services/raf.service":207}],202:[function(require,module,exports){
+},{"./directives/parallax.directive":202,"./directives/scroll.directive":203,"./directives/sticky.directive":204,"./root.controller":206,"./services/api.service":207,"./services/raf.service":208}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31317,7 +31308,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['RafService'];
 
-},{"../shared/rect":208,"rxjs/operators":199}],203:[function(require,module,exports){
+},{"../shared/rect":209,"rxjs/operators":199}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31354,8 +31345,8 @@ function () {
       if (typeof callback === 'function') {
         // console.log(callback);
         var target = document.querySelector('body');
-        var source = (0, _rxjs.fromEvent)(target, 'scroll');
-        var subscription = source.subscribe(function (originalEvent) {
+
+        var onScroll = function onScroll(originalEvent) {
           var event = {
             scrollHeight: target.scrollHeight,
             scrollLeft: target.scrollX || target.scrollLeft,
@@ -31365,7 +31356,11 @@ function () {
           }; // scope.$broadcast('onScrollDocumentEvent', event);
 
           callback(event); // console.log('ScrollDirective.onScrollDocumentEvent', event);
-        });
+        };
+
+        var source = (0, _rxjs.fromEvent)(target, 'scroll');
+        var subscription = source.subscribe(onScroll);
+        onScroll();
         scope.$on('destroy', function () {
           subscription.unsubscribe();
         });
@@ -31423,7 +31418,8 @@ function () {
       var content = node.querySelector('[sticky-content]');
       var target = document.querySelector('body');
       var source = (0, _rxjs.fromEvent)(target, 'scroll');
-      var subscription = source.subscribe(function (originalEvent) {
+
+      var onScroll = function onScroll(originalEvent) {
         // const top = target.scrollY || target.scrollTop;
         // const subscription = this.rafService.raf$().subscribe(event => {
         var top = parseInt(attributes.sticky) || 0;
@@ -31445,7 +31441,10 @@ function () {
             node.classList.remove('sticky');
           }
         }
-      });
+      };
+
+      var subscription = source.subscribe(onScroll);
+      onScroll();
       scope.$on('destroy', function () {
         subscription.unsubscribe();
       });
@@ -31463,7 +31462,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['RafService'];
 
-},{"../shared/rect":208,"rxjs":3}],205:[function(require,module,exports){
+},{"../shared/rect":209,"rxjs":3}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31473,7 +31472,103 @@ exports.default = void 0;
 
 var _highway = _interopRequireDefault(require("@dogstudio/highway"));
 
-var _transitions = _interopRequireDefault(require("./transitions/transitions"));
+var _gsap = _interopRequireDefault(require("gsap"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var PageTransition =
+/*#__PURE__*/
+function (_Highway$Transition) {
+  _inherits(PageTransition, _Highway$Transition);
+
+  function PageTransition() {
+    _classCallCheck(this, PageTransition);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(PageTransition).apply(this, arguments));
+  }
+
+  _createClass(PageTransition, [{
+    key: "in",
+    value: function _in(_ref) {
+      var from = _ref.from,
+          to = _ref.to,
+          done = _ref.done;
+
+      // TweenLite.set(to, { position: 'fixed', zIndex: 10000, top: 0, width: '100%', opacity: 0 });
+      _gsap.default.set(to, {
+        opacity: 0,
+        minHeight: from.offsetHeight
+      });
+
+      _gsap.default.set(from, {
+        position: 'absolute'
+      });
+
+      _gsap.default.to(to, 0.35, {
+        opacity: 1,
+        overwrite: 'all',
+        onComplete: function onComplete() {
+          from.remove();
+
+          _gsap.default.set(to, {
+            minHeight: 0
+          });
+
+          done();
+        }
+      });
+    }
+  }, {
+    key: "out",
+    value: function out(_ref2) {
+      var from = _ref2.from,
+          done = _ref2.done;
+
+      _gsap.default.to(from, 0.35, {
+        opacity: 0,
+        overwrite: 'all',
+        onComplete: function onComplete() {
+          done();
+        }
+      }); // done();
+
+    }
+  }]);
+
+  return PageTransition;
+}(_highway.default.Transition);
+
+exports.default = PageTransition;
+
+},{"@dogstudio/highway":1,"gsap":2}],206:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _highway = _interopRequireDefault(require("@dogstudio/highway"));
+
+var _pageTransition = _interopRequireDefault(require("./highway/page-transition"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31506,8 +31601,6 @@ function () {
     value: function onInit() {
       var _this = this;
 
-      console.log(this.$scope);
-
       this.$scope.onScroll = function (event) {
         var scrolled = event.scrollTop > 100;
 
@@ -31528,38 +31621,64 @@ function () {
       this.$timeout(function () {
         var H = new _highway.default.Core({
           transitions: {
-            default: _transitions.default
+            default: _pageTransition.default
           }
         });
-        H.on('NAVIGATE_END', function (event) {
-          H.detach(H.links);
+        H.on('NAVIGATE_IN', function (_ref) {
+          var to = _ref.to,
+              trigger = _ref.trigger,
+              location = _ref.location;
+          H.detach(H.links); // console.log('NAVIGATE_IN', location);
 
           _this2.$timeout(function () {
-            var element = angular.element(event.to.view);
+            var element = angular.element(to.view);
             var scope = element.scope(); // console.log(scope, element, element.contents());
 
             _this2.$compile(element.contents())(scope);
 
             _this2.$timeout(function () {
-              H.attach(document.querySelectorAll('[href]'));
+              var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
+              H.links = links;
+              H.attach(links);
+              links.forEach(function (x) {
+                x.classList.remove('active');
+
+                if (x.href === location.href) {
+                  x.classList.add('active');
+                }
+              });
               /*
               // link prefetch
               Quicklink({
               	el: to.view
               });
               */
-
-              /*
-              setTimeout(() => {
-              	document.querySelector('.view').scrollIntoView({
-              		behavior: 'smooth',
-              		block: 'start',
-              		inline: 'start'
-              	});
-              }, 500);
-              */
-            }, 250);
+            }, 100);
           });
+        });
+        H.on('NAVIGATE_END', function (_ref2) {
+          var from = _ref2.from,
+              to = _ref2.to,
+              trigger = _ref2.trigger,
+              location = _ref2.location;
+          setTimeout(function () {
+            document.querySelector('.view').scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'start'
+            });
+            /*
+            if (window.scroll) {
+            	window.scroll({
+            		top: 0,
+            		left: 0,
+            		behavior: 'smooth'
+            	});
+            } else {
+            	window.scrollTo(0, 0);
+            }
+            */
+          }, 500);
         });
       });
     }
@@ -31572,7 +31691,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"./transitions/transitions":209,"@dogstudio/highway":1}],206:[function(require,module,exports){
+},{"./highway/page-transition":205,"@dogstudio/highway":1}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31636,7 +31755,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31681,7 +31800,7 @@ function () {
 exports.default = RafService;
 RafService.factory.$inject = [];
 
-},{"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],208:[function(require,module,exports){
+},{"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31804,101 +31923,5 @@ function () {
 
 exports.default = Rect;
 
-},{}],209:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _highway = _interopRequireDefault(require("@dogstudio/highway"));
-
-var _gsap = _interopRequireDefault(require("gsap"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var PageTransition =
-/*#__PURE__*/
-function (_Highway$Transition) {
-  _inherits(PageTransition, _Highway$Transition);
-
-  function PageTransition() {
-    _classCallCheck(this, PageTransition);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(PageTransition).apply(this, arguments));
-  }
-
-  _createClass(PageTransition, [{
-    key: "in",
-    value: function _in(_ref) {
-      var from = _ref.from,
-          to = _ref.to,
-          done = _ref.done;
-
-      if (window.scroll) {
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        });
-      } else {
-        window.scrollTo(0, 0);
-      } // TweenLite.set(to, { position: 'fixed', zIndex: 10000, top: 0, width: '100%', opacity: 0 });
-
-
-      _gsap.default.set(to, {
-        opacity: 0
-      });
-
-      _gsap.default.from(to, 0.35, {
-        opacity: 0,
-        overwrite: 'all',
-        onComplete: function onComplete() {
-          from.remove();
-
-          _gsap.default.to(to, 0.35, {
-            opacity: 1,
-            overwrite: 'all',
-            onComplete: function onComplete() {
-              // TweenLite.set(to, { position: 'static', zIndex: 0 });
-              // from.remove();
-              done();
-            }
-          });
-        }
-      });
-    }
-  }, {
-    key: "out",
-    value: function out(_ref2) {
-      var done = _ref2.done;
-      done();
-    }
-  }]);
-
-  return PageTransition;
-}(_highway.default.Transition);
-
-var _default = PageTransition;
-exports.default = _default;
-
-},{"@dogstudio/highway":1,"gsap":2}]},{},[200]);
+},{}]},{},[200]);
+//# sourceMappingURL=app.js.map

@@ -1546,12 +1546,11 @@ button,
       text-transform: uppercase;
       background: #faf7f7;
       color: #a39296; }
-    .nav--product > li:hover > a,
-    .nav--product > li:hover > span, .nav--product > li:active > a,
-    .nav--product > li:active > span, .nav--product > li.active > a,
-    .nav--product > li.active > span {
-      background: #b92442;
-      color: #f9f5f5; }
+      .nav--product > li > a:hover, .nav--product > li > a.active,
+      .nav--product > li > span:hover,
+      .nav--product > li > span.active {
+        background: #b92442;
+        color: #f9f5f5; }
 
 .background,
 .picture {
@@ -1911,7 +1910,7 @@ button,
   min-height: 100vh;
   margin: 0;
   padding: 36px 0 0 0;
-  background: white;
+  background: black;
   /*
 	display: block;
 	position: fixed;
@@ -1928,6 +1927,8 @@ button,
 		position: relative;
 	}
 	*/ }
+  .page .view {
+    background: white; }
 
 .wrapper {
   background: white;
@@ -2555,3 +2556,4 @@ page-transition {
 .variant--02 {
   background: #faf7f7;
   color: #b92442; }
+/*# sourceMappingURL=app.css.map */

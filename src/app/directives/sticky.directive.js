@@ -18,7 +18,7 @@ export default class StickyDirective {
 		const content = node.querySelector('[sticky-content]');
 		const target = document.querySelector('body');
 		const source = fromEvent(target, 'scroll');
-		const subscription = source.subscribe(originalEvent => {
+		const onScroll = (originalEvent) => {
 			// const top = target.scrollY || target.scrollTop;
 			// const subscription = this.rafService.raf$().subscribe(event => {
 			let top = parseInt(attributes.sticky) || 0;
@@ -36,7 +36,9 @@ export default class StickyDirective {
 					node.classList.remove('sticky');
 				}
 			}
-		});
+		};
+		const subscription = source.subscribe(onScroll);
+		onScroll();
 		scope.$on('destroy', () => {
 			subscription.unsubscribe();
 		});
