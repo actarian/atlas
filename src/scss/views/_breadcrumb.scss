@@ -1,0 +1,47 @@
+.section--breadcrumb {
+	padding: 30px 0;
+}
+
+.nav--breadcrumb {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	&>li {
+
+		&>a,
+		&>span {
+			display: inline-block;
+			position: relative;
+			font-size: 12px;
+			color: $foreground-secondary;
+		}
+
+		&:first-child {
+
+			&>a,
+			&>span {
+				font-weight: 400;
+				color: $foreground;
+			}
+		}
+
+		&:hover,
+		&:active,
+		&.active {
+
+			&>a,
+			&>span {
+				color: black;
+			}
+		}
+	}
+
+	&>li+li {
+		margin-left: 20px;
+	}
+
+	@include media-breakpoint-down(lg) {}
+
+	@include media-breakpoint-down(md) {}
+}

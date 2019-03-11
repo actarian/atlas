@@ -1,0 +1,327 @@
+a,
+button,
+[ng-reflect-router-link],
+.btn {
+	display: inline-block;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: all ease-in-out 350ms;
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: inherit;
+		text-decoration: none;
+		outline: none;
+	}
+
+	/*
+	&:hover {
+		box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.15);
+	}
+	*/
+
+	&[disabled] {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+}
+
+.link {
+	text-decoration: underline;
+	margin: 0 5px;
+}
+
+.btn--gallery {
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 14px;
+	color: #b92442;
+
+	svg {
+		fill: #b92442;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: #b92442;
+	}
+
+	b {
+		margin-left: 5px;
+		position: relative;
+		text-transform: uppercase;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -4px;
+			width: 100%;
+			height: 2px;
+			background: #b92442;
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&:hover {
+		b {
+			&:after {
+				transform: scale(0, 1);
+			}
+		}
+	}
+
+	.icon--gallery {
+		width: 18px;
+		height: 14px;
+		margin-right: 10px;
+	}
+}
+
+.btn--link {
+	position: relative;
+	font-size: 15px;
+	font-weight: 300;
+	text-transform: uppercase;
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: #b92442;
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: -3px;
+		width: 100%;
+		height: 2px;
+		background: #b92442;
+		transition: all ease-out 350ms;
+	}
+
+	&:hover {
+		&:after {
+			transform: scale(0, 1);
+			background: #b92442;
+		}
+	}
+
+	.section--negative & {
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			color: #ffffff;
+		}
+
+		&:after {
+			background: #ffffff;
+		}
+
+		&:hover {
+			&:after {
+				background: #b92442;
+			}
+		}
+	}
+}
+
+.btn--category {
+	position: relative;
+	font-size: 15px;
+	font-weight: 500;
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: #b92442;
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: -1px;
+		width: 100%;
+		height: 2px;
+		background: #b92442;
+		transition: all ease-out 350ms;
+	}
+
+	&:hover {
+		&:after {
+			transform: scale(0, 1);
+			background: #b92442;
+		}
+	}
+
+	.section--negative & {
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			color: #ffffff;
+		}
+
+		&:after {
+			background: #ffffff;
+		}
+
+		&:hover {
+			&:after {
+				background: #b92442;
+			}
+		}
+	}
+}
+
+.btn--mail {
+	position: relative;
+
+	svg {
+		fill: $foreground;
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: -3px;
+		width: 100%;
+		height: 2px;
+		background: $foreground-secondary;
+		transform: scale(0, 1);
+		transition: all ease-out 350ms;
+	}
+
+	&:hover {
+		&:after {
+			transform: scale(1, 1);
+		}
+	}
+
+	.section--negative & {
+		&:after {
+			background: white;
+		}
+
+	}
+}
+
+.btn--download {
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 14px;
+	color: #b92442;
+
+	svg {
+		fill: #b92442;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: #b92442;
+	}
+
+	span {
+		position: relative;
+		text-transform: uppercase;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -4px;
+			width: 100%;
+			height: 2px;
+			background: #b92442;
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&:hover {
+		span {
+			&:after {
+				transform: scale(0, 1);
+			}
+		}
+	}
+
+	.icon {
+		width: 24px;
+		height: 28px;
+		margin-right: 10px;
+	}
+}
+
+.btn--wishlist {
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 19px;
+	color: #b92442;
+
+	svg {
+		fill: #b92442;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: #b92442;
+	}
+
+	b {
+		margin-left: 5px;
+		position: relative;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -4px;
+			width: 100%;
+			height: 2px;
+			background: #b92442;
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&:hover {
+		b {
+			&:after {
+				transform: scale(0, 1);
+			}
+		}
+	}
+
+	.icon--wishlist {
+		width: 25px;
+		height: 22px;
+		margin-right: 10px;
+	}
+}

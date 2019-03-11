@@ -1,0 +1,196 @@
+.section--product {
+	z-index: 100;
+
+	&.sticky {
+		[sticky-content] {
+			transition: box-shadow ease-in-out 350ms;
+			box-shadow: 0 20px 20px -10px rgba(0, 0, 0, 0.15);
+		}
+	}
+}
+
+.section--intro {
+	padding: 120px 0;
+	text-align: center;
+
+	.icon--logo {
+		height: 72px;
+		margin-bottom: 70px;
+	}
+
+	.title {
+		font-size: 24px;
+		line-height: 32px;
+		font-weight: 400;
+		color: $foreground;
+	}
+
+	.abstract {
+		font-size: 24px;
+		line-height: 32px;
+		font-weight: 300;
+	}
+}
+
+.section--vertical {
+
+	.col-md-7:nth-child(2) {
+		padding-top: 110px;
+	}
+
+}
+
+.section--text {
+	padding-bottom: 100px;
+
+	.title {
+		font-size: 32px;
+		font-weight: 300;
+		line-height: 50px;
+		color: $foreground;
+		margin-bottom: 80px;
+	}
+
+	.abstract {}
+}
+
+.section--text-02 {
+	padding-bottom: 100px;
+
+	.title {
+		font-size: 42px;
+		font-weight: 300;
+		line-height: 50px;
+		color: $foreground;
+		margin-bottom: 30px;
+	}
+
+	.abstract {}
+}
+
+.section--full-video {
+	text-align: center;
+	padding-bottom: 60px;
+	margin-bottom: 140px;
+
+	.background {
+		top: 100px;
+		height: calc(100% - 100px);
+	}
+
+	.picture {
+		@include aspect-clip(153, 88);
+		margin-bottom: 80px;
+	}
+
+	.title {
+		font-size: 42px;
+		font-weight: 300;
+		line-height: 1;
+		margin-bottom: 30px;
+	}
+
+	.abstract {}
+}
+
+.section--negative {
+	color: white;
+}
+
+.section--horizontal-vertical {
+	.row>div {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+}
+
+.section--distinct {
+	padding-top: 130px;
+	background: #faf7f7;
+}
+
+.section--distinct+.section--distinct {
+	padding-top: 0;
+}
+
+.section--tiles {
+	padding-top: 120px;
+	text-align: center;
+
+	.category {
+		font-size: 14px;
+		line-height: 32px;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+	}
+
+	.title {
+		font-size: 42px;
+		line-height: 50px;
+		margin-bottom: 90px;
+		color: $foreground;
+	}
+
+}
+
+.section--store {
+	border-top: 2px solid #e6e2df;
+	padding: 50px 0;
+
+	.title {
+		font-size: 42px;
+		line-height: 50px;
+		margin-bottom: 40px;
+		color: $foreground;
+	}
+
+	.abstract {
+		margin-bottom: 40px;
+	}
+
+	.category {
+		font-size: 14px;
+		line-height: 32px;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+	}
+
+	.name {
+		font-weight: 600;
+	}
+
+	.group--cta {
+		text-align: left;
+	}
+
+}
+
+.section--download {
+	text-align: center;
+	padding: 140px 0;
+
+	.title {
+		font-size: 42px;
+		line-height: 50px;
+		margin-bottom: 40px;
+		color: $foreground;
+	}
+}
+
+.section--beinspired {
+	text-align: center;
+	padding: 170px 0 90px 0;
+
+	.title {
+		font-size: 42px;
+		line-height: 50px;
+		margin-bottom: 40px;
+		color: $foreground;
+	}
+}
+
+.variant--02 {
+	background: #faf7f7;
+	color: #b92442;
+}

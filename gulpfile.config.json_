@@ -1,0 +1,55 @@
+﻿{
+	"targets": {
+		"browser": {
+			"compile": [{
+				"input": "src/scss/app.scss",
+				"output": "docs/css/app.css",
+				"minify": true
+			}],
+			"bundle": [{
+				"input": [
+					"src/app/app.module.js",
+					"src/app/app.routes.js",
+					"src/app/app.modals.js",
+					"src/app/app.api.js",
+					"src/app/app.run.js",
+					"src/app/root.controller.js",
+					"src/app/directives/swiper.directive.js",
+					"src/app/environment/environment.js",
+					"src/app/environment/environment.local.js",
+					"src/app/environment/environment.production.js",
+					"src/app/environment/environment.stage.js"
+				],
+				"output": "docs/js/app.js",
+				"minify": true
+			}, {
+				"input": [
+					"node_modules/jquery/dist/jquery.js",
+					"node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js",
+					"node_modules/swiper/dist/js/swiper.js",
+					"node_modules/angular/angular.js",
+					"node_modules/angular-messages/angular-messages.js",
+					"node_modules/angular-route/angular-route.js",
+					"node_modules/angular-sanitize/angular-sanitize.js",
+					"node_modules/jsonformatter/dist/json-formatter.js",
+					"node_modules/gsap/src/uncompressed/easing/EasePack.js",
+					"node_modules/gsap/src/uncompressed/TweenLite.js",
+					"node_modules/gsap/src/uncompressed/TweenMax.js",
+					"node_modules/gmaps-marker-clusterer/src/markerclusterer.js"
+				],
+				"output": "docs/js/vendors.js",
+				"minify": true
+			}, {
+				"input": [
+					"node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css",
+					"node_modules/swiper/dist/css/swiper.css"
+				],
+				"output": "docs/css/vendors.css",
+				"minify": true
+			}]
+		}
+	},
+	"options": {
+		"tfs": false
+	}
+}

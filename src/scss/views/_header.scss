@@ -1,0 +1,183 @@
+.menu {
+	display: flex;
+	flex: 1 0 100%;
+
+	&>.container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.menu--primary {
+	order: 2;
+	min-height: 92px;
+}
+
+.menu--secondary {
+	order: 1;
+	background: #191919;
+	min-height: 36px;
+}
+
+.nav--primary,
+.nav--secondary {
+	display: flex;
+	justify-content: flex-end;
+
+	&>li {
+
+		&>a,
+		&>span {
+			display: inline-block;
+			position: relative;
+			z-index: 1;
+		}
+	}
+}
+
+.nav--primary {
+	&>li {
+
+		&>a,
+		&>span {
+			font-size: 20px;
+			font-weight: 400;
+			text-transform: uppercase;
+			color: #b2afb0;
+			transition: all ease-in-out 350ms;
+		}
+
+		&:hover,
+		&:active,
+		&.active {
+
+			&>a,
+			&>span {
+				color: white;
+			}
+		}
+
+	}
+
+	&>li+li {
+		margin-left: 30px;
+	}
+
+	svg {
+		fill: #b2afb0;
+		transition: all ease-in-out 350ms;
+	}
+
+	@include media-breakpoint-down(lg) {}
+
+	@include media-breakpoint-down(md) {}
+}
+
+.nav--secondary {
+
+	&>li {
+
+		&>a,
+		&>span {
+			font-size: 13px;
+			font-weight: 400;
+			color: #b2afb0;
+		}
+
+		&:hover,
+		&:active,
+		&.active {
+
+			&>a,
+			&>span {
+				color: white;
+			}
+		}
+
+	}
+
+	&>li+li {
+		margin-left: 30px;
+	}
+
+	svg {
+		fill: #b2afb0;
+	}
+
+	@include media-breakpoint-down(lg) {}
+
+	@include media-breakpoint-down(md) {}
+}
+
+.section--header {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+
+	.brand {
+		display: inline-block;
+		position: relative;
+		z-index: 1;
+
+		@include media-breakpoint-down(sm) {}
+	}
+
+	.icon--brand {
+		width: 210px;
+		height: 50px;
+	}
+
+	.icon--wishlist {
+		width: 16px;
+		height: 14px;
+	}
+
+	.icon--caret-down {
+		width: 12px;
+		height: 7px;
+	}
+
+	.icon--search {
+		width: 20px;
+		height: 20px;
+	}
+
+	.fixed &,
+	.opened & {}
+
+	@include media-breakpoint-down(md) {
+		.opened & {}
+	}
+
+	@include media-breakpoint-up(lg) {}
+
+	&.scrolled {
+		background: #191919;
+		transition: transform ease-in-out 350ms;
+		transform: translateY(-36px);
+
+		.menu--primary {
+			transition: all ease-in-out 350ms;
+			min-height: 62px;
+		}
+
+		.nav--primary {
+			&>li {
+
+				&>a,
+				&>span {
+					font-size: 16px;
+				}
+			}
+
+			svg {
+				width: 15px;
+			}
+		}
+	}
+}

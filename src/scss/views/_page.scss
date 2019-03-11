@@ -1,0 +1,85 @@
+@import "../variables";
+@import "../mixins";
+
+.page {
+	display: block;
+	position: relative;
+	min-height: 100vh;
+	margin: 0;
+	padding: 36px 0 0 0;
+	background: white;
+	/*
+	display: block;
+	position: fixed;
+	width: 100vw;
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+	background: white;
+	// overflow-x: hidden;
+	user-select: none;
+	left: 0;
+
+	.fastscroll & {
+		position: relative;
+	}
+	*/
+}
+
+.wrapper {
+	background: white;
+	min-height: 100vh;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.section {
+	position: relative;
+}
+
+.container {
+	// max-width: 1320px;
+}
+
+page-transition {
+	display: flex;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	justify-content: center;
+	align-items: center;
+	z-index: 10000;
+	opacity: 0;
+	pointer-events: none;
+	background: white;
+	transition: all ease-in-out 600ms;
+
+	&.loading {
+		transition: none;
+		opacity: 1;
+	}
+}
+
+.spinner {
+	display: block;
+	width: 40px;
+	height: 40px;
+	background: red;
+	animation: rotating 750ms ease-in-out infinite;
+}
+
+@keyframes rotating {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	60% {
+		transform: rotate(-90deg);
+	}
+
+	100% {
+		transform: rotate(-90deg);
+	}
+}
