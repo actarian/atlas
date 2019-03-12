@@ -31247,7 +31247,7 @@ function () {
       dataset.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
       dataset.to = '';
       var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
-        if (intersection.y > 0.0) {
+        if (intersection.y > 0.35) {
           if (dataset.to !== '') {
             return;
           }
@@ -31256,15 +31256,16 @@ function () {
             node.classList.add('appeared');
           }, 150 * dataset.index); // (i - firstVisibleIndex));
         } else {
-          if (dataset.to !== '') {
-            clearTimeout(dataset.to);
-            dataset.to = '';
+            /*
+            if (dataset.to !== '') {
+            	clearTimeout(dataset.to);
+            	dataset.to = '';
+            }
+            if (node.classList.contains('appeared')) {
+            	node.classList.remove('appeared');
+            }
+            */
           }
-
-          if (node.classList.contains('appeared')) {
-            node.classList.remove('appeared');
-          }
-        }
       });
       scope.$on('destroy', function () {
         subscription.unsubscribe();

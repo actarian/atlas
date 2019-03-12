@@ -21,7 +21,7 @@ export default class AppearDirective {
 		dataset.to = '';
 		const subscription = this.appear$(element, attributes).subscribe(
 			intersection => {
-				if (intersection.y > 0.0) {
+				if (intersection.y > 0.35) {
 					if (dataset.to !== '') {
 						return;
 					}
@@ -29,6 +29,7 @@ export default class AppearDirective {
 						node.classList.add('appeared');
 					}, 150 * dataset.index); // (i - firstVisibleIndex));
 				} else {
+					/*
 					if (dataset.to !== '') {
 						clearTimeout(dataset.to);
 						dataset.to = '';
@@ -36,6 +37,7 @@ export default class AppearDirective {
 					if (node.classList.contains('appeared')) {
 						node.classList.remove('appeared');
 					}
+					*/
 				}
 			}
 		);
