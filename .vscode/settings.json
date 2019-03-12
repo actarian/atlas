@@ -1,1 +1,4 @@
-{}
+{
+	"glsl-canvas.useFormatter": true,
+	"glsl-canvas.useCompactFormatter": false
+}

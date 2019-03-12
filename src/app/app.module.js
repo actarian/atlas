@@ -2,6 +2,7 @@
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 import AppearDirective from './directives/appear.directive';
+import GlslCanvasDirective from './directives/glsl-canvas.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
@@ -23,7 +24,8 @@ app.directive('appear', AppearDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
-	.directive('swiperSlideItem', SwiperSlideItemDirective.factory);
+	.directive('swiperSlideItem', SwiperSlideItemDirective.factory)
+	.directive('glslCanvas', GlslCanvasDirective.factory);
 
 app.controller('RootCtrl', RootCtrl);
 

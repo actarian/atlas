@@ -31178,6 +31178,8 @@ exports.default = void 0;
 
 var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
+var _glslCanvas = _interopRequireDefault(require("./directives/glsl-canvas.directive"));
+
 var _parallax = _interopRequireDefault(require("./directives/parallax.directive"));
 
 var _scroll = _interopRequireDefault(require("./directives/scroll.directive"));
@@ -31200,13 +31202,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory);
+app.directive('appear', _appear.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('glslCanvas', _glslCanvas.default.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/appear.directive":202,"./directives/parallax.directive":203,"./directives/scroll.directive":204,"./directives/sticky.directive":205,"./directives/swiper.directive":206,"./root.controller":208,"./services/api.service":209,"./services/dom.service":210}],202:[function(require,module,exports){
+},{"./directives/appear.directive":202,"./directives/glsl-canvas.directive":203,"./directives/parallax.directive":204,"./directives/scroll.directive":205,"./directives/sticky.directive":206,"./directives/swiper.directive":207,"./root.controller":209,"./services/api.service":210,"./services/dom.service":211}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31312,7 +31314,92 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":211,"rxjs/operators":199}],203:[function(require,module,exports){
+},{"../shared/rect":212,"rxjs/operators":199}],203:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var GlslCanvasDirective =
+/*#__PURE__*/
+function () {
+  function GlslCanvasDirective() {
+    _classCallCheck(this, GlslCanvasDirective);
+
+    this.restrict = 'A';
+  }
+
+  _createClass(GlslCanvasDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var canvas = new GlslCanvas(element[0]);
+      canvas.on('render', function () {});
+      console.log(attributes.glslCanvas);
+      canvas.setTexture('u_texture', attributes.glslCanvas, {
+        repeat: true
+      });
+      canvas.on('move', function (mouse) {
+        canvas.setUniforms({
+          u_x: mouse.x + 0.001,
+          u_y: mouse.y + 0.001
+        });
+      });
+      scope.$on('destroy', function () {
+        canvas.destroy();
+      });
+      /*
+      canvas.on('over', function() {
+      	if (canvas.uniforms.get('u_texture').texture.url === 'data/mars.jpg') {
+      		canvas.setUniform('u_texture', 'data/moon.jpg');
+      	} else {
+      		// canvas.setUniform('u_texture', 'data/mars.jpg');
+      		canvas.setTexture('u_texture', 'data/mars.jpg', { repeat: true });
+      	}
+      });
+      canvas.setUniform('u_video', '#video-4');
+      canvas.setTexture('u_texture', 'data/noise.png', { repeat: true });
+      canvas.on('render', function() {
+      	canvas.setUniform('u_pos', Math.random() - 0.5, Math.random() - 0.5);
+      });
+      canvas.on('render', function() {
+      	canvas.setUniform('u_pos', Math.random() - 0.5, Math.random() - 0.5);
+      	canvas.setUniform('u_col', Math.random(), Math.random(), Math.random());
+      });
+      canvas.setUniform('u_texture', ['data/moon.jpg', 'data/mars.jpg']);
+      canvas.setUniform('u_video', '#video-4');
+      canvas.on('move', function(mouse) {
+      	canvas.setUniforms({
+      		u_x: mouse.x + 0.001,
+      		u_y: mouse.y + 0.001,
+      	});
+      });
+      */
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new GlslCanvasDirective();
+    }
+  }]);
+
+  return GlslCanvasDirective;
+}();
+
+exports.default = GlslCanvasDirective;
+GlslCanvasDirective.factory.$inject = [];
+
+},{}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31418,7 +31505,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":211,"rxjs/operators":199}],204:[function(require,module,exports){
+},{"../shared/rect":212,"rxjs/operators":199}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31489,7 +31576,7 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = [];
 
-},{"rxjs":3}],205:[function(require,module,exports){
+},{"rxjs":3}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31569,7 +31656,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":211,"rxjs/operators":199}],206:[function(require,module,exports){
+},{"../shared/rect":212,"rxjs/operators":199}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31789,7 +31876,7 @@ function () {
 exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
 SwiperSlideItemDirective.factory.$inject = ['$timeout'];
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31886,7 +31973,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"@dogstudio/highway":1,"gsap":2}],208:[function(require,module,exports){
+},{"@dogstudio/highway":1,"gsap":2}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32021,7 +32108,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"./highway/page-transition":207,"@dogstudio/highway":1}],209:[function(require,module,exports){
+},{"./highway/page-transition":208,"@dogstudio/highway":1}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32085,7 +32172,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32160,7 +32247,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":211,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],211:[function(require,module,exports){
+},{"../shared/rect":212,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
