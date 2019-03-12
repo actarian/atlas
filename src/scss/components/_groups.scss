@@ -20,3 +20,16 @@
 	}
 
 }
+
+.group--tile {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	padding: 0 0 60px 0;
+
+	&>div {
+		flex: 1 0 auto;
+		text-align: center;
+	}
+}

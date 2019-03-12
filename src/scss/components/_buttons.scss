@@ -276,7 +276,8 @@ button,
 	}
 }
 
-.btn--wishlist {
+.btn--wishlist,
+.btn--search {
 	display: inline-flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -318,10 +319,22 @@ button,
 			}
 		}
 	}
+}
 
+.btn--search {
+	.icon--search {
+		width: 20px;
+		height: 20px;
+	}
+}
+
+.btn--wishlist {
 	.icon--wishlist {
 		width: 25px;
 		height: 22px;
-		margin-right: 10px;
+	}
+
+	.icon--wishlist+span {
+		margin-left: 10px;
 	}
 }

@@ -50,13 +50,13 @@ class RootCtrl {
 			});
 			H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
 				H.detach(H.links);
-				// console.log('NAVIGATE_IN', location);
+				console.log('NAVIGATE_IN', location);
 				this.$timeout(() => {
 					const element = angular.element(to.view);
 					const scope = element.scope();
-					// console.log(scope, element, element.contents());
 					this.$compile(element.contents())(scope);
 					this.$timeout(() => {
+						// console.log(scope, element, element.contents());
 						const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
 						H.links = links;
 						H.attach(links);
@@ -72,7 +72,7 @@ class RootCtrl {
 							el: to.view
 						});
 						*/
-					}, 100);
+					}, 200);
 				});
 			});
 			H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
@@ -93,9 +93,9 @@ class RootCtrl {
 						window.scrollTo(0, 0);
 					}
 					*/
-				}, 500);
+				}, 200);
 			});
-		});
+		}, 200);
 	}
 }
 

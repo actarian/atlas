@@ -37,3 +37,20 @@
 		height: 100%;
 	}
 }
+
+@mixin aspect-bottom($w: 4, $h: 3) {
+	position: relative;
+	width: 100%;
+	padding-top: 100% / $w * $h;
+	overflow: hidden;
+
+	&>img,
+	&>video,
+	&>* {
+		position: absolute;
+		bottom: 10px;
+		left: 0;
+		width: 100%;
+		height: auto;
+	}
+}

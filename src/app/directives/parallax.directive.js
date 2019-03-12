@@ -7,9 +7,9 @@ import { Rect } from '../shared/rect';
 export default class ParallaxDirective {
 
 	constructor(
-		RafService
+		DomService
 	) {
-		this.rafService = RafService;
+		this.domService = DomService;
 		// this.require = 'ngModel';
 		this.restrict = 'A';
 	}
@@ -26,14 +26,13 @@ export default class ParallaxDirective {
 			// console.log(parallax);
 			image.setAttribute('style', `height: ${parallax.s * 100}%; top: 50%; left: 50%; transform: translateX(-50%) translateY(${parallax.p}%);`);
 		});
-
 		scope.$on('destroy', () => {
 			subscription.unsubscribe();
 		});
 	}
 
 	parallax$() {
-		return this.rafService.raf$().pipe(
+		return this.domService.raf$().pipe(
 			map(top => {
 				const windowRect = new Rect({
 					top: 0,
@@ -68,17 +67,17 @@ export default class ParallaxDirective {
 	}
 
 	scrollTop$() {
-		return this.rafService.raf$().pipe(
+		return this.domService.raf$().pipe(
 			map(x => window.pageYOffset),
 			distinctUntilChanged(),
 			tap(x => console.log(x))
 		);
 	}
 
-	static factory(RafService) {
-		return new ParallaxDirective(RafService);
+	static factory(DomService) {
+		return new ParallaxDirective(DomService);
 	}
 
 }
 
-ParallaxDirective.factory.$inject = ['RafService'];
+ParallaxDirective.factory.$inject = ['DomService'];

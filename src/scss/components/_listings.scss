@@ -30,6 +30,79 @@
 	}
 }
 
+.listing--decor-tiles {
+	&>.listing__item {
+		display: block;
+		padding-bottom: 90px;
+		text-align: center;
+		cursor: pointer;
+
+		.picture {
+			margin-bottom: 25px;
+			background: white;
+			box-shadow: none;
+			transition: all ease-in-out 400ms;
+		}
+
+		&:hover {
+			.picture {
+				transform: scale(1.05, 1.05);
+			}
+		}
+
+		.btn--category {
+			margin-bottom: 10px;
+		}
+
+		.abstract {
+			font-size: 14px;
+			line-height: 1.7;
+		}
+
+		.group--cta {
+			padding: 0;
+		}
+	}
+}
+
+.listing--trim-tiles {
+	&>.listing__item {
+		display: block;
+		padding-bottom: 90px;
+		text-align: center;
+		cursor: pointer;
+
+		.picture {
+			@include aspect-bottom(3, 2);
+			margin-bottom: 25px;
+			background: white;
+			transition: all ease-in-out 400ms;
+		}
+
+		&:not(:hover) {
+			.picture {
+				box-shadow: none;
+			}
+		}
+
+		.title {
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1.7;
+			margin-bottom: 2px;
+		}
+
+		.abstract {
+			font-size: 14px;
+			line-height: 1.7;
+		}
+
+		.group--cta {
+			padding: 0;
+		}
+	}
+}
+
 .listing--beinspired {
 	display: flex;
 	flex-wrap: wrap;
@@ -90,4 +163,62 @@
 			flex: 1 1 calc(100% / 3 - 60px);
 		}
 	}
+}
+
+.listing--sizes {
+	text-align: left;
+
+	&>.listing__item {
+		display: block;
+		margin-right: 30px;
+		margin-bottom: 55px;
+		cursor: pointer;
+
+		.picture {
+			margin-bottom: 20px;
+			background: white;
+			border: 1px solid #898c8e;
+			transition: all ease-in-out 400ms;
+		}
+
+		&:not(:hover) {
+			.picture {
+				box-shadow: none;
+			}
+		}
+
+		.group--size {
+			font-size: 14px;
+			line-height: 24px;
+		}
+	}
+
+	$widths: 278 120 240 75 150 30 60 90;
+	$heights: 120 120 120 75 75 60 60 45;
+
+	@each $w in $widths {
+		$i: index($widths, $w);
+		$h: nth($heights, $i);
+
+		.aspect--#{$w}x#{$h} {
+			width: 0.26% * $w;
+			flex: 0 0 0.26% * $w;
+
+			&>.picture {
+				width: 100%;
+				@include aspect-clip($w, $h);
+			}
+		}
+	}
+
+	.aspect--150x75 {
+		margin-right: 30%;
+	}
+
+	.aspect--90x45 {
+		&>.picture {
+			margin-top: 16.5%;
+		}
+	}
+
 }

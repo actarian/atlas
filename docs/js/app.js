@@ -31184,11 +31184,13 @@ var _scroll = _interopRequireDefault(require("./directives/scroll.directive"));
 
 var _sticky = _interopRequireDefault(require("./directives/sticky.directive"));
 
+var _swiper = require("./directives/swiper.directive");
+
 var _root = _interopRequireDefault(require("./root.controller"));
 
 var _api = _interopRequireDefault(require("./services/api.service"));
 
-var _raf = _interopRequireDefault(require("./services/raf.service"));
+var _dom = _interopRequireDefault(require("./services/dom.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31197,20 +31199,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
-app.factory('ApiService', _api.default.factory).factory('RafService', _raf.default.factory);
-app.directive('appear', _appear.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory);
+app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
+app.directive('appear', _appear.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/appear.directive":202,"./directives/parallax.directive":203,"./directives/scroll.directive":204,"./directives/sticky.directive":205,"./root.controller":207,"./services/api.service":208,"./services/raf.service":209}],202:[function(require,module,exports){
+},{"./directives/appear.directive":202,"./directives/parallax.directive":203,"./directives/scroll.directive":204,"./directives/sticky.directive":205,"./directives/swiper.directive":206,"./root.controller":208,"./services/api.service":209,"./services/dom.service":210}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _operators = require("rxjs/operators");
 
 var _rect = _interopRequireDefault(require("../shared/rect"));
 
@@ -31225,62 +31229,58 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var AppearDirective =
 /*#__PURE__*/
 function () {
-  function AppearDirective(RafService) {
+  function AppearDirective(DomService) {
     _classCallCheck(this, AppearDirective);
 
-    this.rafService = RafService;
+    this.domService = DomService;
     this.restrict = 'A';
-    this.windowRect = new _rect.default({
-      top: 0,
-      left: 0,
-      width: window.innerWidth,
-      height: window.innerHeight
-    });
-    this.scroll$ = this.rafService.scroll$();
-    this.windowRect$ = this.rafService.windowRect$();
   }
 
   _createClass(AppearDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
-      var _this = this;
-
       var node = element[0];
+      var dataset = node.dataset;
       var section = this.getSection(node);
-      this.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-
-      var onScroll = function onScroll(data) {
-        var rect = _rect.default.fromNode(node);
-
-        var intersection = rect.intersection(_this.windowRect);
-
+      dataset.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+      dataset.to = '';
+      var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
         if (intersection.y > 0.0) {
-          if (!_this.to) {
-            _this.to = setTimeout(function () {
-              node.classList.add('appeared');
-            }, 150 * _this.index); // (i - firstVisibleIndex));
+          if (dataset.to !== '') {
+            return;
           }
+
+          dataset.to = setTimeout(function () {
+            node.classList.add('appeared');
+          }, 150 * dataset.index); // (i - firstVisibleIndex));
         } else {
-          if (_this.to) {
-            clearTimeout(_this.to);
-            _this.to = null;
+          if (dataset.to !== '') {
+            clearTimeout(dataset.to);
+            dataset.to = '';
           }
 
           if (node.classList.contains('appeared')) {
             node.classList.remove('appeared');
           }
         }
-      };
-
-      var windowRectSubscription = this.windowRect$.subscribe(function (x) {
-        return _this.windowRect = x;
       });
-      var scrollSubscription = this.scroll$.subscribe(onScroll);
-      onScroll();
       scope.$on('destroy', function () {
-        windowRectSubscription.unsubscribe();
-        scrollSubscription.unsubscribe();
+        subscription.unsubscribe();
       });
+    }
+  }, {
+    key: "appear$",
+    value: function appear$(element, attributes) {
+      var node = element[0];
+      return this.domService.scrollAndRect$().pipe((0, _operators.map)(function (datas) {
+        var scrollTop = datas[0];
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+        return intersection;
+      }));
     }
   }, {
     key: "getSection",
@@ -31301,8 +31301,8 @@ function () {
     }
   }], [{
     key: "factory",
-    value: function factory(RafService) {
-      return new AppearDirective(RafService);
+    value: function factory(DomService) {
+      return new AppearDirective(DomService);
     }
   }]);
 
@@ -31310,9 +31310,9 @@ function () {
 }();
 
 exports.default = AppearDirective;
-AppearDirective.factory.$inject = ['RafService'];
+AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":210}],203:[function(require,module,exports){
+},{"../shared/rect":211,"rxjs/operators":199}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31333,10 +31333,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var ParallaxDirective =
 /*#__PURE__*/
 function () {
-  function ParallaxDirective(RafService) {
+  function ParallaxDirective(DomService) {
     _classCallCheck(this, ParallaxDirective);
 
-    this.rafService = RafService; // this.require = 'ngModel';
+    this.domService = DomService; // this.require = 'ngModel';
 
     this.restrict = 'A';
   }
@@ -31358,7 +31358,7 @@ function () {
     value: function parallax$() {
       var _this = this;
 
-      return this.rafService.raf$().pipe((0, _operators.map)(function (top) {
+      return this.domService.raf$().pipe((0, _operators.map)(function (top) {
         var windowRect = new _rect.Rect({
           top: 0,
           left: 0,
@@ -31399,7 +31399,7 @@ function () {
   }, {
     key: "scrollTop$",
     value: function scrollTop$() {
-      return this.rafService.raf$().pipe((0, _operators.map)(function (x) {
+      return this.domService.raf$().pipe((0, _operators.map)(function (x) {
         return window.pageYOffset;
       }), (0, _operators.distinctUntilChanged)(), (0, _operators.tap)(function (x) {
         return console.log(x);
@@ -31407,8 +31407,8 @@ function () {
     }
   }], [{
     key: "factory",
-    value: function factory(RafService) {
-      return new ParallaxDirective(RafService);
+    value: function factory(DomService) {
+      return new ParallaxDirective(DomService);
     }
   }]);
 
@@ -31416,9 +31416,9 @@ function () {
 }();
 
 exports.default = ParallaxDirective;
-ParallaxDirective.factory.$inject = ['RafService'];
+ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":210,"rxjs/operators":199}],204:[function(require,module,exports){
+},{"../shared/rect":211,"rxjs/operators":199}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31497,6 +31497,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _operators = require("rxjs/operators");
+
 var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -31510,36 +31512,41 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var StickyDirective =
 /*#__PURE__*/
 function () {
-  function StickyDirective(RafService) {
+  function StickyDirective(DomService) {
     _classCallCheck(this, StickyDirective);
 
-    this.rafService = RafService;
+    this.domService = DomService;
     this.restrict = 'A';
   }
 
   _createClass(StickyDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
-      var _this = this;
-
+      var subscription = this.scroll$(element, attributes).subscribe();
+      scope.$on('destroy', function () {
+        subscription.unsubscribe();
+      });
+    }
+  }, {
+    key: "scroll$",
+    value: function scroll$(element, attributes) {
       var node = element[0];
+      var dataset = node.dataset;
       var content = node.querySelector('[sticky-content]');
       var stickyTop = parseInt(attributes.sticky) || 0; // const target = document.querySelector('body');
       // const source = fromEvent(target, 'scroll');
 
-      var onScroll = function onScroll(x) {
-        // const top = target.scrollY || target.scrollTop;
-        // const subscription = this.rafService.raf$().subscribe(event => {
+      return this.domService.scrollAndRect$().pipe((0, _operators.tap)(function (top) {
         var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
         // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
 
-        var top = Math.max(0, stickyTop - rect.top);
-        content.setAttribute('style', "transform: translateY(".concat(top, "px);"));
-        var sticky = top > 0;
+        var maxTop = Math.max(0, stickyTop - rect.top);
+        content.setAttribute('style', "transform: translateY(".concat(maxTop, "px);"));
+        var sticky = maxTop > 0;
 
-        if (sticky !== _this.sticky) {
-          _this.sticky = sticky;
+        if (sticky !== Boolean(dataset.sticky)) {
+          dataset.sticky = sticky;
 
           if (sticky) {
             node.classList.add('sticky');
@@ -31547,18 +31554,12 @@ function () {
             node.classList.remove('sticky');
           }
         }
-      };
-
-      var subscription = this.rafService.scroll$().subscribe(onScroll);
-      onScroll();
-      scope.$on('destroy', function () {
-        subscription.unsubscribe();
-      });
+      }));
     }
   }], [{
     key: "factory",
-    value: function factory(RafService) {
-      return new StickyDirective(RafService);
+    value: function factory(DomService) {
+      return new StickyDirective(DomService);
     }
   }]);
 
@@ -31566,9 +31567,229 @@ function () {
 }();
 
 exports.default = StickyDirective;
-StickyDirective.factory.$inject = ['RafService'];
+StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":210}],206:[function(require,module,exports){
+},{"../shared/rect":211,"rxjs/operators":199}],206:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SwiperSlideItemDirective = exports.SwiperTileDirective = exports.SwiperHeroDirective = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var SwiperHeroDirective =
+/*#__PURE__*/
+function () {
+  function SwiperHeroDirective() {
+    _classCallCheck(this, SwiperHeroDirective);
+
+    this.restrict = 'A';
+  }
+
+  _createClass(SwiperHeroDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      scope.$on('swiperSlideItemLast', function (slide) {
+        _this.onSwiper(element);
+      });
+      scope.$on('destroy', function () {
+        if (element.swiper) {
+          element.swiper.destroy();
+        }
+      });
+      this.onSwiper(element);
+    }
+  }, {
+    key: "onSwiper",
+    value: function onSwiper(element) {
+      if (element.swiper) {
+        element.swiper.update();
+      } else {
+        // var items = element[0].querySelectorAll('.swiper-slide');
+        element.swiper = new Swiper(element, {
+          speed: 600,
+          parallax: true,
+          autoplay: 5000,
+          loop: true,
+          spaceBetween: 0,
+          keyboardControl: true,
+          mousewheelControl: false,
+          onSlideClick: function onSlideClick(swiper) {
+            angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+          },
+          on: {
+            /*
+            setTranslate: function () {
+            	console.log('setTranslate', this);
+            },
+            */
+            setTransition: function setTransition() {// console.log('setTransition', this);
+
+              /*
+              var x = 73 - 5 + (Math.random() * 10);
+              var y = 24;
+              var r = 18 - 5 + (Math.random() * 10);
+              console.log(x, y, r)
+              dynamics.animate(element[0].querySelector('.fico'), {
+              	rotateZ: '-' + r + 'deg',
+              	translateX: '-' + x + '%',
+              	translateY: '-' + y + '%',
+              }, {
+              	type: dynamics.bezier,
+              	points: [{
+              		"x": 0,
+              		"y": 0,
+              		"cp": [{
+              			"x": 0.462, "y": -0.877
+              		}]
+              	}, {
+              		"x": 1,
+              		"y": 1,
+              		"cp": [{
+              			"x": 0.538, "y": 1.899
+              		}]
+              	}],
+              });
+              */
+            }
+          }
+          /*
+          pagination: {
+          	el: '.swiper-pagination',
+          	clickable: true,
+          },
+          */
+
+          /*
+          navigation: {
+          	nextEl: '.swiper-button-next',
+          	prevEl: '.swiper-button-prev',
+          },
+          */
+
+        });
+        element.addClass('swiper-init');
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperHeroDirective();
+    }
+  }]);
+
+  return SwiperHeroDirective;
+}();
+
+exports.SwiperHeroDirective = SwiperHeroDirective;
+SwiperHeroDirective.factory.$inject = [];
+
+var SwiperTileDirective =
+/*#__PURE__*/
+function () {
+  function SwiperTileDirective() {
+    _classCallCheck(this, SwiperTileDirective);
+
+    this.restrict = 'A';
+  }
+
+  _createClass(SwiperTileDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this2 = this;
+
+      scope.$on('swiperSlideItemLast', function (slide) {
+        _this2.onSwiper(element);
+      });
+      scope.$on('destroy', function () {
+        if (element.swiper) {
+          element.swiper.destroy();
+        }
+      });
+      this.onSwiper(element);
+    }
+  }, {
+    key: "onSwiper",
+    value: function onSwiper(element) {
+      if (element.swiper) {
+        element.swiper.update();
+      } else {
+        element.swiper = new Swiper(element, {
+          speed: 600,
+          parallax: true,
+          autoplay: 5000,
+          loop: true,
+          spaceBetween: 0,
+          keyboardControl: true,
+          mousewheelControl: false,
+          onSlideClick: function onSlideClick(swiper) {
+            angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          }
+        });
+        element.addClass('swiper-init');
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperTileDirective();
+    }
+  }]);
+
+  return SwiperTileDirective;
+}();
+
+exports.SwiperTileDirective = SwiperTileDirective;
+SwiperTileDirective.factory.$inject = [];
+
+var SwiperSlideItemDirective =
+/*#__PURE__*/
+function () {
+  function SwiperSlideItemDirective($timeout) {
+    _classCallCheck(this, SwiperSlideItemDirective);
+
+    this.$timeout = $timeout;
+    this.restrict = 'A';
+  }
+
+  _createClass(SwiperSlideItemDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      if (scope.$last === true) {
+        this.$timeout(function () {
+          scope.$emit('swiperSlideItemLast', element);
+        });
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout) {
+      return new SwiperSlideItemDirective($timeout);
+    }
+  }]);
+
+  return SwiperSlideItemDirective;
+}();
+
+exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
+SwiperSlideItemDirective.factory.$inject = ['$timeout'];
+
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31630,6 +31851,7 @@ function (_Highway$Transition) {
 
       _gsap.default.to(to, 0.35, {
         opacity: 1,
+        delay: 0.5,
         overwrite: 'all',
         onComplete: function onComplete() {
           from.remove();
@@ -31664,7 +31886,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"@dogstudio/highway":1,"gsap":2}],207:[function(require,module,exports){
+},{"@dogstudio/highway":1,"gsap":2}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31734,15 +31956,17 @@ function () {
           var to = _ref.to,
               trigger = _ref.trigger,
               location = _ref.location;
-          H.detach(H.links); // console.log('NAVIGATE_IN', location);
+          H.detach(H.links);
+          console.log('NAVIGATE_IN', location);
 
           _this2.$timeout(function () {
             var element = angular.element(to.view);
-            var scope = element.scope(); // console.log(scope, element, element.contents());
+            var scope = element.scope();
 
             _this2.$compile(element.contents())(scope);
 
             _this2.$timeout(function () {
+              // console.log(scope, element, element.contents());
               var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
               H.links = links;
               H.attach(links);
@@ -31759,7 +31983,7 @@ function () {
               	el: to.view
               });
               */
-            }, 100);
+            }, 200);
           });
         });
         H.on('NAVIGATE_END', function (_ref2) {
@@ -31784,9 +32008,9 @@ function () {
             	window.scrollTo(0, 0);
             }
             */
-          }, 500);
+          }, 200);
         });
-      });
+      }, 200);
     }
   }]);
 
@@ -31797,7 +32021,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"./highway/page-transition":206,"@dogstudio/highway":1}],208:[function(require,module,exports){
+},{"./highway/page-transition":207,"@dogstudio/highway":1}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31861,7 +32085,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31885,14 +32109,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var RafService =
+var DomService =
 /*#__PURE__*/
 function () {
-  function RafService() {
-    _classCallCheck(this, RafService);
+  function DomService() {
+    _classCallCheck(this, DomService);
   }
 
-  _createClass(RafService, [{
+  _createClass(DomService, [{
     key: "raf$",
     value: function raf$() {
       return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe();
@@ -31905,8 +32129,10 @@ function () {
           width: window.innerWidth,
           height: window.innerHeight
         });
-      }) // shareReplay()
-      );
+      }), (0, _operators.startWith)(new _rect.default({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })), (0, _operators.shareReplay)());
     }
   }, {
     key: "scroll$",
@@ -31914,23 +32140,27 @@ function () {
       var target = document.querySelector('body');
       return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.map)(function (x) {
         return target.scrollY || target.scrollTop;
-      }) // shareReplay()
-      );
+      }), (0, _operators.startWith)(target.scrollY || target.scrollTop), (0, _operators.shareReplay)());
+    }
+  }, {
+    key: "scrollAndRect$",
+    value: function scrollAndRect$() {
+      return (0, _rxjs.combineLatest)(this.scroll$(), this.windowRect$()).pipe((0, _operators.shareReplay)());
     }
   }], [{
     key: "factory",
     value: function factory() {
-      return new RafService();
+      return new DomService();
     }
   }]);
 
-  return RafService;
+  return DomService;
 }();
 
-exports.default = RafService;
-RafService.factory.$inject = [];
+exports.default = DomService;
+DomService.factory.$inject = [];
 
-},{"../shared/rect":210,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],210:[function(require,module,exports){
+},{"../shared/rect":211,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

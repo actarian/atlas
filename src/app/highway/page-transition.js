@@ -11,6 +11,7 @@ export default class PageTransition extends Highway.Transition {
 		TweenLite.set(from, { position: 'absolute' });
 		TweenLite.to(to, 0.35, {
 			opacity: 1,
+			delay: 0.5,
 			overwrite: 'all',
 			onComplete: () => {
 				from.remove();

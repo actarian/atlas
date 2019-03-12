@@ -1,4 +1,3 @@
-/*
 [appear] {
 	opacity: 0;
 	transform: translateY(30px);
@@ -10,10 +9,11 @@
 		transform: translateY(0px);
 	}
 }
-*/
 
+/*
 [appear] {
 	&.appeared {
 		border: 1px solid red;
 	}
 }
+*/

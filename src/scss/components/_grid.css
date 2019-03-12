@@ -15,6 +15,7 @@
 
 .row {
 	@include make-row();
+	width: 100%;
 }
 
 .container {
@@ -22,3 +23,17 @@
 }
 
 @include make-grid-columns();
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+	@include media-breakpoint-down($breakpoint) {
+		.hidden-#{$breakpoint}-down {
+			display: none;
+		}
+	}
+
+	@include media-breakpoint-up($breakpoint) {
+		.hidden-#{$breakpoint}-up {
+			display: none;
+		}
+	}
+}

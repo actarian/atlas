@@ -1,12 +1,12 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
-import { fromEvent, range } from 'rxjs';
+import { combineLatest, fromEvent, range } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { map } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
-export default class RafService {
+export default class DomService {
 
 	constructor() {
 
@@ -24,7 +24,11 @@ export default class RafService {
 				width: window.innerWidth,
 				height: window.innerHeight
 			})),
-			// shareReplay()
+			startWith(new Rect({
+				width: window.innerWidth,
+				height: window.innerHeight
+			})),
+			shareReplay()
 		);
 	}
 
@@ -32,14 +36,21 @@ export default class RafService {
 		const target = document.querySelector('body');
 		return fromEvent(target, 'scroll').pipe(
 			map(x => target.scrollY || target.scrollTop),
-			// shareReplay()
+			startWith(target.scrollY || target.scrollTop),
+			shareReplay()
+		);
+	}
+
+	scrollAndRect$() {
+		return combineLatest(this.scroll$(), this.windowRect$()).pipe(
+			shareReplay()
 		);
 	}
 
 	static factory() {
-		return new RafService();
+		return new DomService();
 	}
 
 }
 
-RafService.factory.$inject = [];
+DomService.factory.$inject = [];
