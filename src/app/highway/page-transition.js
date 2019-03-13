@@ -8,13 +8,13 @@ export default class PageTransition extends Highway.Transition {
 	in ({ from, to, done }) {
 		// TweenLite.set(to, { position: 'fixed', zIndex: 10000, top: 0, width: '100%', opacity: 0 });
 		TweenLite.set(to, { opacity: 0, minHeight: from.offsetHeight });
-		TweenLite.set(from, { position: 'absolute' });
+		from.remove();
+		window.scrollTo(0, 0);
 		TweenLite.to(to, 0.35, {
 			opacity: 1,
 			delay: 0.5,
 			overwrite: 'all',
 			onComplete: () => {
-				from.remove();
 				TweenLite.set(to, { minHeight: 0 });
 				done();
 			}

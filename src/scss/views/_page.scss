@@ -11,6 +11,14 @@
 
 	.view {
 		background: white;
+		opacity: 0;
+		transition: all ease-in-out 350ms;
+	}
+
+	.init & {
+		.view {
+			opacity: 1;
+		}
 	}
 
 	/*

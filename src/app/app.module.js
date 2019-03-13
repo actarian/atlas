@@ -3,6 +3,7 @@
 
 import AppearDirective from './directives/appear.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
+import LazyDirective from './directives/lazy.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
@@ -19,6 +20,7 @@ app.factory('ApiService', ApiService.factory)
 	.factory('DomService', DomService.factory);
 
 app.directive('appear', AppearDirective.factory)
+	.directive('lazy', LazyDirective.factory)
 	.directive('parallax', ParallaxDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
 	.directive('sticky', StickyDirective.factory)

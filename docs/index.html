@@ -57,7 +57,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Muli:300,400,600,700" rel="stylesheet">
 </head>
 
-<body ng-controller="RootCtrl as rootCtrl">
+<body ng-controller="RootCtrl as rootCtrl" ng-class="{ init: rootCtrl.init }">
 	<ng-include src="'templates/shared/svg.html'"></ng-include>
 	<ng-include src="'templates/shared/header.html'"></ng-include>
 	<main class="page" data-router-wrapper>

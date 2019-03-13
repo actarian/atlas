@@ -39,6 +39,9 @@ class RootCtrl {
 			}
 		};
 		this.setHighway();
+		this.$timeout(() => {
+			this.init = true;
+		}, 1000);
 	}
 
 	setHighway() {
@@ -75,6 +78,7 @@ class RootCtrl {
 					}, 200);
 				});
 			});
+			/*
 			H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
 				setTimeout(() => {
 					document.querySelector('.view').scrollIntoView({
@@ -82,7 +86,6 @@ class RootCtrl {
 						block: 'start',
 						inline: 'start'
 					});
-					/*
 					if (window.scroll) {
 						window.scroll({
 							top: 0,
@@ -92,9 +95,9 @@ class RootCtrl {
 					} else {
 						window.scrollTo(0, 0);
 					}
-					*/
 				}, 200);
 			});
+			*/
 		}, 200);
 	}
 }

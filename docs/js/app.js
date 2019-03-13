@@ -31180,6 +31180,8 @@ var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
 var _glslCanvas = _interopRequireDefault(require("./directives/glsl-canvas.directive"));
 
+var _lazy = _interopRequireDefault(require("./directives/lazy.directive"));
+
 var _parallax = _interopRequireDefault(require("./directives/parallax.directive"));
 
 var _scroll = _interopRequireDefault(require("./directives/scroll.directive"));
@@ -31202,13 +31204,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('glslCanvas', _glslCanvas.default.factory);
+app.directive('appear', _appear.default.factory).directive('lazy', _lazy.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('glslCanvas', _glslCanvas.default.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/appear.directive":202,"./directives/glsl-canvas.directive":203,"./directives/parallax.directive":204,"./directives/scroll.directive":205,"./directives/sticky.directive":206,"./directives/swiper.directive":207,"./root.controller":209,"./services/api.service":210,"./services/dom.service":211}],202:[function(require,module,exports){
+},{"./directives/appear.directive":202,"./directives/glsl-canvas.directive":203,"./directives/lazy.directive":204,"./directives/parallax.directive":205,"./directives/scroll.directive":206,"./directives/sticky.directive":207,"./directives/swiper.directive":208,"./root.controller":210,"./services/api.service":211,"./services/dom.service":212}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31242,24 +31244,23 @@ function () {
     key: "link",
     value: function link(scope, element, attributes, controller) {
       var node = element[0];
-      var dataset = node.dataset;
       var section = this.getSection(node);
-      dataset.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-      dataset.to = '';
+      element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+      element.to = '';
       var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
         if (intersection.y > 0.35) {
-          if (dataset.to !== '') {
+          if (element.to !== '') {
             return;
           }
 
-          dataset.to = setTimeout(function () {
+          element.to = setTimeout(function () {
             node.classList.add('appeared');
-          }, 150 * dataset.index); // (i - firstVisibleIndex));
+          }, 150 * element.index); // (i - firstVisibleIndex));
         } else {
             /*
-            if (dataset.to !== '') {
-            	clearTimeout(dataset.to);
-            	dataset.to = '';
+            if (element.to !== '') {
+            	clearTimeout(element.to);
+            	element.to = '';
             }
             if (node.classList.contains('appeared')) {
             	node.classList.remove('appeared');
@@ -31315,7 +31316,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":199}],203:[function(require,module,exports){
+},{"../shared/rect":213,"rxjs/operators":199}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31401,6 +31402,132 @@ exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = [];
 
 },{}],204:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _operators = require("rxjs/operators");
+
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var LazyDirective =
+/*#__PURE__*/
+function () {
+  function LazyDirective(DomService) {
+    _classCallCheck(this, LazyDirective);
+
+    this.domService = DomService;
+    this.restrict = 'A';
+    this.scope = {
+      src: "@",
+      srcset: "@",
+      backgroundSrc: "@"
+    };
+  }
+
+  _createClass(LazyDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      element.subscription = this.lazy$(node).subscribe(function (intersection) {
+        if (intersection.y > 0.0) {
+          if (!element.lazyed) {
+            element.lazyed = true;
+
+            _this.onAppearsInViewport(node, scope);
+
+            console.log(node); // element.subscription.unsubscribe();
+            // element.subscription = null;
+          }
+        }
+      });
+      scope.$on('destroy', function () {
+        if (element.subscription) {
+          element.subscription.unsubscribe();
+        }
+      });
+    }
+  }, {
+    key: "lazy$",
+    value: function lazy$(node) {
+      return this.domService.scrollAndRect$().pipe((0, _operators.map)(function (datas) {
+        var scrollTop = datas[0];
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+        return intersection;
+      }));
+    }
+  }, {
+    key: "onAppearsInViewport",
+    value: function onAppearsInViewport(image, scope) {
+      if (scope.srcset) {
+        image.setAttribute('srcset', scope.srcset);
+        image.removeAttribute('data-srcset');
+
+        if (scope.src) {
+          image.setAttribute('src', scope.src);
+          image.removeAttribute('data-src');
+        }
+      } else if (scope.src) {
+        var input = scope.src;
+        this.onImagePreload(input, function (output) {
+          image.setAttribute('src', output);
+          image.removeAttribute('data-src');
+          image.classList.add('ready');
+        });
+      } else if (scope.backgroundSrc) {
+        image.setStyle('background-image', "url(".concat(scope.backgroundSrc, ")"));
+        image.removeAttribute('data-background-src');
+      }
+    }
+  }, {
+    key: "onImagePreload",
+    value: function onImagePreload(src, callback) {
+      var img = new Image();
+
+      img.onload = function () {
+        if (typeof callback === 'function') {
+          callback(img.src);
+        }
+      };
+
+      img.onerror = function (e) {
+        img.onerror = null;
+        img.src = 'data:image/png;base64,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';
+      };
+
+      img.src = src;
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new LazyDirective(DomService);
+    }
+  }]);
+
+  return LazyDirective;
+}();
+
+exports.default = LazyDirective;
+LazyDirective.factory.$inject = ['DomService'];
+
+},{"../shared/rect":213,"rxjs/operators":199}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31506,7 +31633,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":199}],205:[function(require,module,exports){
+},{"../shared/rect":213,"rxjs/operators":199}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31514,51 +31641,36 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _rxjs = require("rxjs");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ScrollDirective =
 /*#__PURE__*/
 function () {
   // @Output() public scroll = new EventEmitter();
-  function ScrollDirective() {
+  function ScrollDirective(DomService) {
     _classCallCheck(this, ScrollDirective);
 
-    // this.require = 'ngModel';
+    this.domService = DomService; // this.require = 'ngModel';
+
     this.restrict = 'A';
   }
 
   _createClass(ScrollDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
-      // console.log('ScrollDirective.link', element);
-      // const source = fromEvent(element[0], 'scroll');
       var callback = scope.$eval(attributes.scroll);
 
       if (typeof callback === 'function') {
-        // console.log(callback);
-        var target = document.querySelector('body');
-
-        var onScroll = function onScroll(originalEvent) {
-          var event = {
-            scrollHeight: target.scrollHeight,
-            scrollLeft: target.scrollX || target.scrollLeft,
-            scrollTop: target.scrollY || target.scrollTop,
-            scrollWidth: target.scrollWidth,
-            originalEvent: originalEvent
-          }; // scope.$broadcast('onScrollDocumentEvent', event);
-
-          callback(event); // console.log('ScrollDirective.onScrollDocumentEvent', event);
-        };
-
-        var source = (0, _rxjs.fromEvent)(target, 'scroll');
-        var subscription = source.subscribe(onScroll);
-        onScroll();
+        var subscription = this.domService.scroll$().subscribe(function (event) {
+          return callback(event);
+        });
         scope.$on('destroy', function () {
           subscription.unsubscribe();
         });
@@ -31566,8 +31678,8 @@ function () {
     }
   }], [{
     key: "factory",
-    value: function factory() {
-      return new ScrollDirective();
+    value: function factory(DomService) {
+      return new ScrollDirective(DomService);
     }
   }]);
 
@@ -31575,9 +31687,9 @@ function () {
 }();
 
 exports.default = ScrollDirective;
-ScrollDirective.factory.$inject = [];
+ScrollDirective.factory.$inject = ['DomService'];
 
-},{"rxjs":3}],206:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31619,12 +31731,9 @@ function () {
     key: "scroll$",
     value: function scroll$(element, attributes) {
       var node = element[0];
-      var dataset = node.dataset;
       var content = node.querySelector('[sticky-content]');
-      var stickyTop = parseInt(attributes.sticky) || 0; // const target = document.querySelector('body');
-      // const source = fromEvent(target, 'scroll');
-
-      return this.domService.scrollAndRect$().pipe((0, _operators.tap)(function (top) {
+      var stickyTop = parseInt(attributes.sticky) || 0;
+      return this.domService.raf$().pipe((0, _operators.tap)(function (datas) {
         var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
         // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
@@ -31633,8 +31742,8 @@ function () {
         content.setAttribute('style', "transform: translateY(".concat(maxTop, "px);"));
         var sticky = maxTop > 0;
 
-        if (sticky !== Boolean(dataset.sticky)) {
-          dataset.sticky = sticky;
+        if (sticky !== element.sticky) {
+          element.sticky = sticky;
 
           if (sticky) {
             node.classList.add('sticky');
@@ -31657,7 +31766,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":199}],207:[function(require,module,exports){
+},{"../shared/rect":213,"rxjs/operators":199}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31877,7 +31986,7 @@ function () {
 exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
 SwiperSlideItemDirective.factory.$inject = ['$timeout'];
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31933,17 +32042,14 @@ function (_Highway$Transition) {
         minHeight: from.offsetHeight
       });
 
-      _gsap.default.set(from, {
-        position: 'absolute'
-      });
+      from.remove();
+      window.scrollTo(0, 0);
 
       _gsap.default.to(to, 0.35, {
         opacity: 1,
         delay: 0.5,
         overwrite: 'all',
         onComplete: function onComplete() {
-          from.remove();
-
           _gsap.default.set(to, {
             minHeight: 0
           });
@@ -31974,7 +32080,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"@dogstudio/highway":1,"gsap":2}],209:[function(require,module,exports){
+},{"@dogstudio/highway":1,"gsap":2}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32028,6 +32134,9 @@ function () {
       };
 
       this.setHighway();
+      this.$timeout(function () {
+        _this.init = true;
+      }, 1000);
     }
   }, {
     key: "setHighway",
@@ -32074,30 +32183,26 @@ function () {
             }, 200);
           });
         });
-        H.on('NAVIGATE_END', function (_ref2) {
-          var from = _ref2.from,
-              to = _ref2.to,
-              trigger = _ref2.trigger,
-              location = _ref2.location;
-          setTimeout(function () {
-            document.querySelector('.view').scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-              inline: 'start'
-            });
-            /*
-            if (window.scroll) {
-            	window.scroll({
-            		top: 0,
-            		left: 0,
-            		behavior: 'smooth'
-            	});
-            } else {
-            	window.scrollTo(0, 0);
-            }
-            */
-          }, 200);
+        /*
+        H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
+        	setTimeout(() => {
+        		document.querySelector('.view').scrollIntoView({
+        			behavior: 'smooth',
+        			block: 'start',
+        			inline: 'start'
+        		});
+        		if (window.scroll) {
+        			window.scroll({
+        				top: 0,
+        				left: 0,
+        				behavior: 'smooth'
+        			});
+        		} else {
+        			window.scrollTo(0, 0);
+        		}
+        	}, 200);
         });
+        */
       }, 200);
     }
   }]);
@@ -32109,7 +32214,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"./highway/page-transition":208,"@dogstudio/highway":1}],210:[function(require,module,exports){
+},{"./highway/page-transition":209,"@dogstudio/highway":1}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32173,7 +32278,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],211:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32212,28 +32317,60 @@ function () {
   }, {
     key: "windowRect$",
     value: function windowRect$() {
-      return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(function (x) {
-        return new _rect.default({
-          width: window.innerWidth,
-          height: window.innerHeight
-        });
-      }), (0, _operators.startWith)(new _rect.default({
+      var windowRect = new _rect.default({
         width: window.innerWidth,
         height: window.innerHeight
-      })), (0, _operators.shareReplay)());
+      });
+      return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(function (originalEvent) {
+        windowRect.width = window.innerWidth;
+        windowRect.height = window.innerHeight;
+        return windowRect;
+      }), (0, _operators.startWith)(windowRect), (0, _operators.shareReplay)());
     }
   }, {
     key: "scroll$",
     value: function scroll$() {
-      var target = document.querySelector('body');
-      return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.map)(function (x) {
-        return target.scrollY || target.scrollTop;
-      }), (0, _operators.startWith)(target.scrollY || target.scrollTop), (0, _operators.shareReplay)());
+      var target = window; // document.querySelector('body');
+
+      var event = {
+        /*
+        top: target.offsetTop || 0,
+        left: target.offsetLeft || 0,
+        width: target.offsetWidth || target.innerWidth,
+        height: target.offsetHeight || target.innerHeight,
+        */
+        scrollTop: target.scrollY || target.scrollTop || 0,
+        scrollLeft: target.scrollX || target.scrollLeft || 0,
+        originalEvent: null
+      };
+      return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.auditTime)(33), // 30 fps
+      (0, _operators.map)(function (originalEvent) {
+        /*
+        event.top = target.offsetTop || 0;
+        event.left = target.offsetLeft || 0;
+        event.width = target.offsetWidth || target.innerWidth;
+        event.height = target.offsetHeight || target.innerHeight;
+        */
+        event.scrollTop = target.scrollY || target.scrollTop || 0;
+        event.scrollLeft = target.scrollX || target.scrollLeft || 0;
+        event.originalEvent = originalEvent;
+        return event;
+      }), (0, _operators.startWith)(event), (0, _operators.shareReplay)());
     }
   }, {
     key: "scrollAndRect$",
     value: function scrollAndRect$() {
       return (0, _rxjs.combineLatest)(this.scroll$(), this.windowRect$()).pipe((0, _operators.shareReplay)());
+    }
+  }, {
+    key: "scrollTop",
+    get: function get() {
+      return window.scrollY || window.scrollTop || 0;
+    }
+  }, {
+    key: "scrollLeft",
+    get: function get() {
+      return window.scrollX || window.scrollLeft || 0;
     }
   }], [{
     key: "factory",
@@ -32248,7 +32385,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":212,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],212:[function(require,module,exports){
+},{"../shared/rect":213,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

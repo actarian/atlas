@@ -15,24 +15,23 @@ export default class AppearDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		const dataset = node.dataset;
 		const section = this.getSection(node);
-		dataset.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-		dataset.to = '';
+		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+		element.to = '';
 		const subscription = this.appear$(element, attributes).subscribe(
 			intersection => {
 				if (intersection.y > 0.35) {
-					if (dataset.to !== '') {
+					if (element.to !== '') {
 						return;
 					}
-					dataset.to = setTimeout(() => {
+					element.to = setTimeout(() => {
 						node.classList.add('appeared');
-					}, 150 * dataset.index); // (i - firstVisibleIndex));
+					}, 150 * element.index); // (i - firstVisibleIndex));
 				} else {
 					/*
-					if (dataset.to !== '') {
-						clearTimeout(dataset.to);
-						dataset.to = '';
+					if (element.to !== '') {
+						clearTimeout(element.to);
+						element.to = '';
 					}
 					if (node.classList.contains('appeared')) {
 						node.classList.remove('appeared');
