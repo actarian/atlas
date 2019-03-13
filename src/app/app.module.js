@@ -18,6 +18,10 @@ const MODULE_NAME = 'app';
 
 const app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 
+app.config(['$locationProvider', function($locationProvider) {
+	$locationProvider.html5Mode(true).hashPrefix('*');
+}]);
+
 app.factory('ApiService', ApiService.factory)
 	.factory('DomService', DomService.factory);
 

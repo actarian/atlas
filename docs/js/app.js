@@ -15479,6 +15479,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
+app.config(['$locationProvider', function ($locationProvider) {
+  $locationProvider.html5Mode(true).hashPrefix('*');
+}]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
 app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('lazy', _lazy.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
@@ -16490,11 +16493,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var RootCtrl =
 /*#__PURE__*/
 function () {
-  function RootCtrl($scope, $compile, $timeout, ApiService) {
+  function RootCtrl($scope, $compile, $location, $timeout, ApiService) {
     _classCallCheck(this, RootCtrl);
 
     this.$scope = $scope;
     this.$compile = $compile;
+    this.$location = $location;
     this.$timeout = $timeout;
     this.ApiService = ApiService;
     this.onInit();
@@ -16534,16 +16538,20 @@ function () {
       this.$scope.$on('onNavigationShouldFetch', function (scope, _ref) {
         var title = _ref.title,
             href = _ref.href;
-        console.log('onNavigationShouldFetch', title, href);
-        window.location.assign(href);
-        return;
+        console.log('onNavigationShouldFetch', title, href); // window.location.assign(href);
+        // return;
 
+        /*
         if (window.history && typeof window.history.pushState !== 'undefined') {
-          history.pushState(null, title, href);
+        	history.pushState(null, title, href);
         } else {
-          window.location.assign(href);
-          return;
+        	window.location.assign(href);
+        	return;
         }
+        */
+        // this.$location.state({ title, href });
+
+        _this2.$location.path(href);
 
         var wrapper = document.querySelector('[data-router-wrapper]');
         var wrapperElement = angular.element(wrapper);
@@ -16602,10 +16610,11 @@ function () {
             var parser = new DOMParser();
             var doc = parser.parseFromString(html, "text/html");
             var view = doc.querySelector('.view').innerHTML;
-
+            /*
             if (window.history && typeof window.history.replaceState !== 'undefined') {
-              history.replaceState(view, title, href);
+            	history.replaceState(view, title, href);
             }
+            */
 
             var to = from.cloneNode(false);
             to.innerHTML = view;
@@ -16618,6 +16627,8 @@ function () {
             _this2.$timeout(function () {
               transitionIn(from, to, onTransitionInDidEnd);
             });
+
+            console.log('fetched');
           }).catch(function (error) {
             console.log('Failed to fetch page: ', error);
           });
@@ -16699,7 +16710,7 @@ function () {
   return RootCtrl;
 }();
 
-RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
+RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 

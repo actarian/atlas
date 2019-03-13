@@ -15,11 +15,13 @@ class RootCtrl {
 	constructor(
 		$scope,
 		$compile,
+		$location,
 		$timeout,
 		ApiService
 	) {
 		this.$scope = $scope;
 		this.$compile = $compile;
+		this.$location = $location;
 		this.$timeout = $timeout;
 		this.ApiService = ApiService;
 		this.onInit();
@@ -48,14 +50,18 @@ class RootCtrl {
 	initCustomNavigation() {
 		this.$scope.$on('onNavigationShouldFetch', (scope, { title, href }) => {
 			console.log('onNavigationShouldFetch', title, href);
-			window.location.assign(href);
-			return;
+			// window.location.assign(href);
+			// return;
+			/*
 			if (window.history && typeof window.history.pushState !== 'undefined') {
 				history.pushState(null, title, href);
 			} else {
 				window.location.assign(href);
 				return;
 			}
+			*/
+			// this.$location.state({ title, href });
+			this.$location.path(href);
 			const wrapper = document.querySelector('[data-router-wrapper]');
 			const wrapperElement = angular.element(wrapper);
 			const from = document.querySelector('[data-router-view]');
@@ -103,9 +109,11 @@ class RootCtrl {
 						var parser = new DOMParser();
 						var doc = parser.parseFromString(html, "text/html");
 						var view = doc.querySelector('.view').innerHTML;
+						/*
 						if (window.history && typeof window.history.replaceState !== 'undefined') {
 							history.replaceState(view, title, href);
 						}
+						*/
 						const to = from.cloneNode(false);
 						to.innerHTML = view;
 						const toElement = angular.element(to);
@@ -115,6 +123,7 @@ class RootCtrl {
 						this.$timeout(() => {
 							transitionIn(from, to, onTransitionInDidEnd);
 						});
+						console.log('fetched');
 					}).catch(function(error) {
 						console.log('Failed to fetch page: ', error);
 					});
@@ -183,6 +192,6 @@ class RootCtrl {
 
 }
 
-RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
+RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'ApiService'];
 
 export default RootCtrl;
