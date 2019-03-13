@@ -31184,6 +31184,8 @@ var _lazy = _interopRequireDefault(require("./directives/lazy.directive"));
 
 var _parallax = _interopRequireDefault(require("./directives/parallax.directive"));
 
+var _picture = _interopRequireDefault(require("./directives/picture.directive"));
+
 var _scroll = _interopRequireDefault(require("./directives/scroll.directive"));
 
 var _sticky = _interopRequireDefault(require("./directives/sticky.directive"));
@@ -31204,13 +31206,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('lazy', _lazy.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('glslCanvas', _glslCanvas.default.factory);
+app.directive('appear', _appear.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('lazy', _lazy.default.factory).directive('parallax', _parallax.default.factory).directive('picture', _picture.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/appear.directive":202,"./directives/glsl-canvas.directive":203,"./directives/lazy.directive":204,"./directives/parallax.directive":205,"./directives/scroll.directive":206,"./directives/sticky.directive":207,"./directives/swiper.directive":208,"./root.controller":210,"./services/api.service":211,"./services/dom.service":212}],202:[function(require,module,exports){
+},{"./directives/appear.directive":202,"./directives/glsl-canvas.directive":203,"./directives/lazy.directive":204,"./directives/parallax.directive":205,"./directives/picture.directive":206,"./directives/scroll.directive":207,"./directives/sticky.directive":208,"./directives/swiper.directive":209,"./root.controller":211,"./services/api.service":212,"./services/dom.service":213}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31316,7 +31318,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":213,"rxjs/operators":199}],203:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":199}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31527,7 +31529,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":213,"rxjs/operators":199}],205:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":199}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31537,7 +31539,9 @@ exports.default = void 0;
 
 var _operators = require("rxjs/operators");
 
-var _rect = require("../shared/rect");
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31551,18 +31555,20 @@ function () {
   function ParallaxDirective(DomService) {
     _classCallCheck(this, ParallaxDirective);
 
-    this.domService = DomService; // this.require = 'ngModel';
-
+    this.domService = DomService;
     this.restrict = 'A';
   }
 
   _createClass(ParallaxDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
-      var image = element[0].querySelector('img');
-      var subscription = this.parallax$().pipe().subscribe(function (parallax) {
+      var node = element[0];
+      var image = node.querySelector('img');
+      var parallax = (parseInt(attributes.parallax) || 5) * 2; // console.log(node, parallax);
+
+      var subscription = this.parallax$(node, parallax).pipe().subscribe(function (parallax) {
         // console.log(parallax);
-        image.setAttribute('style', "height: ".concat(parallax.s * 100, "%; top: 50%; left: 50%; transform: translateX(-50%) translateY(").concat(parallax.p, "%);"));
+        image.setAttribute('style', "top: 50%; left: 50%; transform: translateX(-50%) translateY(".concat(parallax.p, "%) scale(").concat(parallax.s, ", ").concat(parallax.s, ");"));
       });
       scope.$on('destroy', function () {
         subscription.unsubscribe();
@@ -31570,30 +31576,14 @@ function () {
     }
   }, {
     key: "parallax$",
-    value: function parallax$() {
-      var _this = this;
-
-      return this.domService.raf$().pipe((0, _operators.map)(function (top) {
-        var windowRect = new _rect.Rect({
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight
-        }); // this.windowRect;
-
-        var node = _this.elementRef.nativeElement;
-        var parallax = (_this.parallax || 5) * 2;
+    value: function parallax$(node, parallax) {
+      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+        var windowRect = datas[1];
         var direction = 1; // i % 2 === 0 ? 1 : -1;
 
-        var rect = _rect.Rect.fromNode(node);
+        var rect = _rect.default.fromNode(node);
 
-        rect = new _rect.Rect({
-          top: rect.top,
-          left: rect.left,
-          width: rect.width,
-          height: rect.height
-        });
-        var intersection = rect.intersection(windowRect); // console.log(intersection);
+        var intersection = rect.intersection(windowRect);
 
         if (intersection.y > 0) {
           var y = Math.min(1, Math.max(-1, intersection.center.y));
@@ -31611,15 +31601,6 @@ function () {
         return x !== null;
       }));
     }
-  }, {
-    key: "scrollTop$",
-    value: function scrollTop$() {
-      return this.domService.raf$().pipe((0, _operators.map)(function (x) {
-        return window.pageYOffset;
-      }), (0, _operators.distinctUntilChanged)(), (0, _operators.tap)(function (x) {
-        return console.log(x);
-      }));
-    }
   }], [{
     key: "factory",
     value: function factory(DomService) {
@@ -31633,7 +31614,63 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":213,"rxjs/operators":199}],206:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":199}],206:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var PictureDirective =
+/*#__PURE__*/
+function () {
+  function PictureDirective(DomService) {
+    _classCallCheck(this, PictureDirective);
+
+    this.domService = DomService;
+    this.restrict = 'C';
+    this.transclude = true;
+    this.template = "<ng-transclude></ng-transclude>\n\t\t<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onToggle()\">\n\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t</div>";
+    this.scope = {
+      item: '=?'
+    };
+  }
+
+  _createClass(PictureDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      scope.item = scope.item || {};
+
+      scope.onToggle = function () {
+        scope.item.added = !scope.item.added;
+      };
+
+      scope.$on('destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new PictureDirective(DomService);
+    }
+  }]);
+
+  return PictureDirective;
+}();
+
+exports.default = PictureDirective;
+PictureDirective.factory.$inject = ['DomService'];
+
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31689,7 +31726,7 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = ['DomService'];
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31766,7 +31803,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":213,"rxjs/operators":199}],208:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":199}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31986,7 +32023,7 @@ function () {
 exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
 SwiperSlideItemDirective.factory.$inject = ['$timeout'];
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32080,7 +32117,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"@dogstudio/highway":1,"gsap":2}],210:[function(require,module,exports){
+},{"@dogstudio/highway":1,"gsap":2}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32214,7 +32251,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$timeout', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"./highway/page-transition":209,"@dogstudio/highway":1}],211:[function(require,module,exports){
+},{"./highway/page-transition":210,"@dogstudio/highway":1}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32278,7 +32315,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],212:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32313,6 +32350,11 @@ function () {
     key: "raf$",
     value: function raf$() {
       return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe();
+    }
+  }, {
+    key: "rafAndRect$",
+    value: function rafAndRect$() {
+      return (0, _rxjs.combineLatest)(this.scroll$(), this.windowRect$()).pipe((0, _operators.shareReplay)());
     }
   }, {
     key: "windowRect$",
@@ -32385,7 +32427,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":213,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],213:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs":3,"rxjs/internal/scheduler/animationFrame":162,"rxjs/operators":199}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

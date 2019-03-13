@@ -26,6 +26,12 @@ export default class DomService {
 		);
 	}
 
+	rafAndRect$() {
+		return combineLatest(this.scroll$(), this.windowRect$()).pipe(
+			shareReplay()
+		);
+	}
+
 	windowRect$() {
 		const windowRect = new Rect({
 			width: window.innerWidth,

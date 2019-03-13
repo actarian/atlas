@@ -25,6 +25,11 @@ body {
 	}
 }
 
+ng-transclude {
+	display: block;
+	position: static;
+}
+
 .hidden {
 	display: none;
 }

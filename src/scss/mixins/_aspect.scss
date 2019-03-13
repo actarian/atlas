@@ -27,9 +27,9 @@
 	padding-top: 100% / $w * $h;
 	overflow: hidden;
 
-	&>img,
-	&>video,
-	&>* {
+	img,
+	video,
+	canvas {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -44,9 +44,9 @@
 	padding-top: 100% / $w * $h;
 	overflow: hidden;
 
-	&>img,
-	&>video,
-	&>* {
+	img,
+	video,
+	canvas {
 		position: absolute;
 		bottom: 10px;
 		left: 0;
