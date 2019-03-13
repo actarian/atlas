@@ -1,6 +1,6 @@
 .media {
 
-	.btn--wishlist {
+	.overlay {
 		display: block;
 		position: absolute;
 		top: 0;
@@ -9,12 +9,26 @@
 		height: 100%;
 		background: rgba(0, 0, 0, 0.15);
 		opacity: 0;
+		transition: all 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
+	}
+
+	.btn--wishlist {
+		display: block;
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+		opacity: 0;
 
 		.icon--wishlist {
-			position: absolute;
-			right: 20px;
-			bottom: 20px;
 			fill: white;
+		}
+
+		&.added {
+			opacity: 1;
+
+			.icon--wishlist {
+				fill: #b92442;
+			}
 		}
 	}
 
@@ -30,8 +44,13 @@
 			transform: scale(1.1, 1.1);
 		}
 
+		.overlay {
+			opacity: 1;
+		}
+
 		.btn--wishlist {
 			opacity: 1;
 		}
 	}
+
 }

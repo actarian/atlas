@@ -372,6 +372,31 @@ button,
 .btn--wishlist .icon--wishlist + span {
   margin-left: 10px; }
 
+.btn--play {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+  pointer-events: none; }
+  .btn--play .icon {
+    fill: white;
+    width: 30px;
+    height: 30px; }
+
 .container {
   width: 100%;
   padding-right: 15px;
@@ -1569,7 +1594,7 @@ button,
         background: #b92442;
         color: #f9f5f5; }
 
-.media .btn--wishlist {
+.media .overlay {
   display: block;
   position: absolute;
   top: 0;
@@ -1577,12 +1602,22 @@ button,
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
+  transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
+
+.media .btn--wishlist {
+  display: block;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
   opacity: 0; }
   .media .btn--wishlist .icon--wishlist {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
     fill: white; }
+  .media .btn--wishlist.added {
+    opacity: 1; }
+    .media .btn--wishlist.added .icon--wishlist {
+      fill: #b92442; }
 
 .media ng-transclude {
   display: block;
@@ -1593,6 +1628,9 @@ button,
 .media:hover ng-transclude {
   -webkit-transform: scale(1.1, 1.1);
           transform: scale(1.1, 1.1); }
+
+.media:hover .overlay {
+  opacity: 1; }
 
 .media:hover .btn--wishlist {
   opacity: 1; }

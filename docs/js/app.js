@@ -15924,13 +15924,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var MediaDirective =
 /*#__PURE__*/
 function () {
-  function MediaDirective(DomService) {
+  function MediaDirective($timeout, DomService) {
     _classCallCheck(this, MediaDirective);
 
+    this.$timeout = $timeout;
     this.domService = DomService;
     this.restrict = 'C';
     this.transclude = true;
-    this.template = "<ng-transclude></ng-transclude>\n\t\t<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onToggle()\">\n\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t</div>";
+
+    this.template = function (element, attributes) {
+      if (attributes.controls !== undefined) {
+        return "<ng-transclude></ng-transclude>\n\t\t\t\t<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n\t\t\t\t<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t\t\t</div>";
+      } else {
+        return "<ng-transclude></ng-transclude>\n\t\t\t<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n\t\t\t<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t\t</div>";
+      }
+    };
+
     this.scope = {
       item: '=?'
     };
@@ -15939,18 +15948,68 @@ function () {
   _createClass(MediaDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      var video = node.querySelector('video');
       scope.item = scope.item || {};
 
-      scope.onToggle = function () {
+      scope.onOverlay = function () {
+        if (video) {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+        }
+      };
+
+      scope.onWishlist = function () {
         scope.item.added = !scope.item.added;
       };
 
-      element.on('$destroy', function () {});
+      var onPlay = function onPlay() {
+        _this.$timeout(function () {
+          _this.playing = true;
+        });
+      };
+
+      var onPause = function onPause() {
+        _this.$timeout(function () {
+          _this.playing = false;
+        });
+      };
+
+      var onEnded = function onEnded() {
+        _this.$timeout(function () {
+          _this.playing = false;
+        });
+      };
+
+      var onTimeUpdate = function onTimeUpdate() {
+        console.log(video.currentTime, video.duration);
+      };
+
+      if (video) {
+        video.addEventListener('play', onPlay);
+        video.addEventListener('pause', onPause);
+        video.addEventListener('ended', onEnded);
+        video.addEventListener('timeupdate', onTimeUpdate);
+      }
+
+      element.on('$destroy', function () {
+        if (video) {
+          video.removeEventListener('play', onPlay);
+          video.removeEventListener('pause', onPause);
+          video.removeEventListener('ended', onEnded);
+          video.removeEventListener('timeupdate', onTimeUpdate);
+        }
+      });
     }
   }], [{
     key: "factory",
-    value: function factory(DomService) {
-      return new MediaDirective(DomService);
+    value: function factory($timeout, DomService) {
+      return new MediaDirective($timeout, DomService);
     }
   }]);
 
@@ -15958,7 +16017,7 @@ function () {
 }();
 
 exports.default = MediaDirective;
-MediaDirective.factory.$inject = ['DomService'];
+MediaDirective.factory.$inject = ['$timeout', 'DomService'];
 
 },{}],205:[function(require,module,exports){
 "use strict";
