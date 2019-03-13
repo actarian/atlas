@@ -29,7 +29,8 @@
 
 	img,
 	video,
-	canvas {
+	canvas,
+	ng-transclude {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -46,7 +47,8 @@
 
 	img,
 	video,
-	canvas {
+	canvas,
+	ng-transclude {
 		position: absolute;
 		bottom: 10px;
 		left: 0;

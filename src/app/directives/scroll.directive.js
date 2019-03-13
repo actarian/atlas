@@ -17,7 +17,7 @@ export default class ScrollDirective {
 		const callback = scope.$eval(attributes.scroll);
 		if (typeof callback === 'function') {
 			const subscription = this.domService.scroll$().subscribe(event => callback(event));
-			scope.$on('destroy', () => {
+			element.on('$destroy', () => {
 				subscription.unsubscribe();
 			});
 		}

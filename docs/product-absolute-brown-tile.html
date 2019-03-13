@@ -57,7 +57,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Muli:300,400,600,700" rel="stylesheet">
 </head>
 
-<body ng-controller="RootCtrl as rootCtrl">
+<body ng-controller="RootCtrl as rootCtrl" ng-class="{ init: rootCtrl.init }">
 	<ng-include src="'templates/shared/svg.html'"></ng-include>
 	<ng-include src="'templates/shared/header.html'"></ng-include>
 	<main class="page" data-router-wrapper>
@@ -97,6 +97,9 @@
 	</div>
 	-->
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script> -->
+	<!--[if IE ]>
+	<script src="js/polyfills.js"></script>
+	<![endif]-->
 	<script src="js/vendors.js"></script>
 	<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c35ff0b6bd15a1c" type="text/javascript"></script>
 	<!-- <script src="js/artisan.min.js"></script> -->

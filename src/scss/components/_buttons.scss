@@ -144,6 +144,10 @@ button,
 	position: relative;
 	font-size: 15px;
 	font-weight: 500;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 100%;
 
 	&,
 	&:active,

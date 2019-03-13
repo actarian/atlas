@@ -27,7 +27,7 @@ export default class DomService {
 	}
 
 	rafAndRect$() {
-		return combineLatest(this.scroll$(), this.windowRect$()).pipe(
+		return combineLatest(this.raf$(), this.windowRect$()).pipe(
 			shareReplay()
 		);
 	}

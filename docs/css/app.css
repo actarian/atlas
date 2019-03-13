@@ -231,7 +231,11 @@ button,
 .btn--category {
   position: relative;
   font-size: 15px;
-  font-weight: 500; }
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%; }
   .btn--category, .btn--category:active, .btn--category:focus, .btn--category:hover, .btn--category:visited {
     color: #b92442; }
   .btn--category:after {
@@ -1565,6 +1569,34 @@ button,
         background: #b92442;
         color: #f9f5f5; }
 
+.media .btn--wishlist {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 0; }
+  .media .btn--wishlist .icon--wishlist {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    fill: white; }
+
+.media ng-transclude {
+  display: block;
+  position: relative;
+  -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
+  transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
+
+.media:hover ng-transclude {
+  -webkit-transform: scale(1.1, 1.1);
+          transform: scale(1.1, 1.1); }
+
+.media:hover .btn--wishlist {
+  opacity: 1; }
+
 .background,
 .picture {
   background: #faf7f7; }
@@ -1619,7 +1651,47 @@ button,
   height: auto;
   overflow: hidden;
   -webkit-box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
-          box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7); }
+          box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
+  /*
+	.btn--wishlist {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.15);
+		opacity: 0;
+
+		.icon--wishlist {
+			position: absolute;
+			right: 20px;
+			bottom: 20px;
+			fill: white;
+		}
+	}
+
+	ng-transclude {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transition: all 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
+	}
+
+	&:hover {
+
+		ng-transclude {
+			transform: scale(1.1, 1.1);
+		}
+
+		.btn--wishlist {
+			opacity: 1;
+		}
+	}
+	*/ }
   .section--negative .picture {
     -webkit-box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4);
             box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4); }
@@ -1630,34 +1702,6 @@ button,
     width: 100%;
     -o-object-fit: cover;
        object-fit: cover; }
-  .picture .btn--wishlist {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.15);
-    opacity: 0; }
-    .picture .btn--wishlist .icon--wishlist {
-      position: absolute;
-      right: 40px;
-      bottom: 40px;
-      fill: white; }
-  .picture ng-transclude {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
-    transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
-  .picture:hover ng-transclude {
-    -webkit-transform: scale(1.1, 1.1);
-            transform: scale(1.1, 1.1); }
-  .picture:hover .btn--wishlist {
-    opacity: 1; }
 
 .picture--vertical {
   position: relative;
@@ -1666,7 +1710,8 @@ button,
   overflow: hidden; }
   .picture--vertical img,
   .picture--vertical video,
-  .picture--vertical canvas {
+  .picture--vertical canvas,
+  .picture--vertical ng-transclude {
     position: absolute;
     top: 0;
     left: 0;
@@ -1680,7 +1725,8 @@ button,
   overflow: hidden; }
   .picture--horizontal img,
   .picture--horizontal video,
-  .picture--horizontal canvas {
+  .picture--horizontal canvas,
+  .picture--horizontal ng-transclude {
     position: absolute;
     top: 0;
     left: 0;
@@ -1900,7 +1946,8 @@ button,
     transition: all ease-in-out 400ms; }
     .listing--tiles > .listing__item .picture img,
     .listing--tiles > .listing__item .picture video,
-    .listing--tiles > .listing__item .picture canvas {
+    .listing--tiles > .listing__item .picture canvas,
+    .listing--tiles > .listing__item .picture ng-transclude {
       position: absolute;
       top: 0;
       left: 0;
@@ -1956,7 +2003,8 @@ button,
     transition: all ease-in-out 400ms; }
     .listing--trim-tiles > .listing__item .picture img,
     .listing--trim-tiles > .listing__item .picture video,
-    .listing--trim-tiles > .listing__item .picture canvas {
+    .listing--trim-tiles > .listing__item .picture canvas,
+    .listing--trim-tiles > .listing__item .picture ng-transclude {
       position: absolute;
       bottom: 10px;
       left: 0;
@@ -1997,7 +2045,8 @@ button,
       transition: all ease-in-out 400ms; }
       .listing--beinspired > .listing__item .picture img,
       .listing--beinspired > .listing__item .picture video,
-      .listing--beinspired > .listing__item .picture canvas {
+      .listing--beinspired > .listing__item .picture canvas,
+      .listing--beinspired > .listing__item .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2066,7 +2115,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--278x120 > .picture img,
       .listing--sizes .aspect--278x120 > .picture video,
-      .listing--sizes .aspect--278x120 > .picture canvas {
+      .listing--sizes .aspect--278x120 > .picture canvas,
+      .listing--sizes .aspect--278x120 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2085,7 +2135,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--120x120 > .picture img,
       .listing--sizes .aspect--120x120 > .picture video,
-      .listing--sizes .aspect--120x120 > .picture canvas {
+      .listing--sizes .aspect--120x120 > .picture canvas,
+      .listing--sizes .aspect--120x120 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2104,7 +2155,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--240x120 > .picture img,
       .listing--sizes .aspect--240x120 > .picture video,
-      .listing--sizes .aspect--240x120 > .picture canvas {
+      .listing--sizes .aspect--240x120 > .picture canvas,
+      .listing--sizes .aspect--240x120 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2123,7 +2175,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--75x75 > .picture img,
       .listing--sizes .aspect--75x75 > .picture video,
-      .listing--sizes .aspect--75x75 > .picture canvas {
+      .listing--sizes .aspect--75x75 > .picture canvas,
+      .listing--sizes .aspect--75x75 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2142,7 +2195,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--150x75 > .picture img,
       .listing--sizes .aspect--150x75 > .picture video,
-      .listing--sizes .aspect--150x75 > .picture canvas {
+      .listing--sizes .aspect--150x75 > .picture canvas,
+      .listing--sizes .aspect--150x75 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2161,7 +2215,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--30x60 > .picture img,
       .listing--sizes .aspect--30x60 > .picture video,
-      .listing--sizes .aspect--30x60 > .picture canvas {
+      .listing--sizes .aspect--30x60 > .picture canvas,
+      .listing--sizes .aspect--30x60 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2180,7 +2235,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--60x60 > .picture img,
       .listing--sizes .aspect--60x60 > .picture video,
-      .listing--sizes .aspect--60x60 > .picture canvas {
+      .listing--sizes .aspect--60x60 > .picture canvas,
+      .listing--sizes .aspect--60x60 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2199,7 +2255,8 @@ button,
       overflow: hidden; }
       .listing--sizes .aspect--90x45 > .picture img,
       .listing--sizes .aspect--90x45 > .picture video,
-      .listing--sizes .aspect--90x45 > .picture canvas {
+      .listing--sizes .aspect--90x45 > .picture canvas,
+      .listing--sizes .aspect--90x45 > .picture ng-transclude {
         position: absolute;
         top: 0;
         left: 0;
@@ -2867,7 +2924,8 @@ page-transition {
     margin-bottom: 80px; }
     .section--full-video .picture img,
     .section--full-video .picture video,
-    .section--full-video .picture canvas {
+    .section--full-video .picture canvas,
+    .section--full-video .picture ng-transclude {
       position: absolute;
       top: 0;
       left: 0;

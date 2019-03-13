@@ -12,6 +12,12 @@
 			}],
 			"bundle": [{
 				"input": [
+					"node_modules/whatwg/dist/fetch.umd.js"
+				],
+				"output": "docs/js/polyfills.js",
+				"minify": false
+			}, {
+				"input": [
 					"node_modules/swiper/dist/js/swiper.js",
 					"node_modules/glsl-canvas-js/dist/glsl-canvas.js",
 					"node_modules/angular/angular.js",

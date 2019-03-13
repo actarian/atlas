@@ -11,7 +11,7 @@ export class SwiperHeroDirective {
 		scope.$on('swiperSlideItemLast', (slide) => {
 			this.onSwiper(element);
 		});
-		scope.$on('destroy', () => {
+		element.on('$destroy', () => {
 			if (element.swiper) {
 				element.swiper.destroy();
 			}
@@ -106,7 +106,7 @@ export class SwiperTileDirective {
 		scope.$on('swiperSlideItemLast', (slide) => {
 			this.onSwiper(element);
 		});
-		scope.$on('destroy', () => {
+		element.on('$destroy', () => {
 			if (element.swiper) {
 				element.swiper.destroy();
 			}

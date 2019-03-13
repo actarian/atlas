@@ -15,7 +15,7 @@ export default class StickyDirective {
 
 	link(scope, element, attributes, controller) {
 		const subscription = this.scroll$(element, attributes).subscribe();
-		scope.$on('destroy', () => {
+		element.on('$destroy', () => {
 			subscription.unsubscribe();
 		});
 	}

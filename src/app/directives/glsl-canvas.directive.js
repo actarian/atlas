@@ -18,7 +18,7 @@ export default class GlslCanvasDirective {
 				u_y: mouse.y + 0.001,
 			});
 		});
-		scope.$on('destroy', () => {
+		element.on('$destroy', () => {
 			canvas.destroy();
 		});
 		/*

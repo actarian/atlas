@@ -25,13 +25,14 @@ export default class LazyDirective {
 				if (!element.lazyed) {
 					element.lazyed = true;
 					this.onAppearsInViewport(node, scope);
-					console.log(node);
-					// element.subscription.unsubscribe();
-					// element.subscription = null;
+					setTimeout(() => {
+						element.subscription.unsubscribe();
+						element.subscription = null;
+					}, 1);
 				}
 			}
 		});
-		scope.$on('destroy', () => {
+		element.on('$destroy', () => {
 			if (element.subscription) {
 				element.subscription.unsubscribe();
 			}
@@ -39,9 +40,8 @@ export default class LazyDirective {
 	}
 
 	lazy$(node) {
-		return this.domService.scrollAndRect$().pipe(
+		return this.domService.rafAndRect$().pipe(
 			map(datas => {
-				const scrollTop = datas[0];
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);

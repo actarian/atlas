@@ -40,7 +40,7 @@ export default class AppearDirective {
 				}
 			}
 		);
-		scope.$on('destroy', () => {
+		element.on('$destroy', () => {
 			subscription.unsubscribe();
 		});
 	}

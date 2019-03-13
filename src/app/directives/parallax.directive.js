@@ -15,22 +15,27 @@ export default class ParallaxDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		const image = node.querySelector('img');
-		const parallax = (parseInt(attributes.parallax) || 5) * 2;
-		// console.log(node, parallax);
-		const subscription = this.parallax$(node, parallax).pipe(
-			/*
-			distinctUntilChanged((a, b) => {
-				return a.p !== b.p;
-			}),
-			*/
-		).subscribe(parallax => {
-			// console.log(parallax);
-			image.setAttribute('style', `top: 50%; left: 50%; transform: translateX(-50%) translateY(${parallax.p}%) scale(${parallax.s}, ${parallax.s});`);
-		});
-		scope.$on('destroy', () => {
-			subscription.unsubscribe();
-		});
+		const childNode = node.querySelector('img, video');
+		if (childNode) {
+			// if (node.childElementCount > 0) {
+			// const childNode = node.firstElementChild;
+			const parallax = (parseInt(attributes.parallax) || 5) * 2;
+			// console.log(node, parallax);
+			const subscription = this.parallax$(node, parallax).pipe(
+				/*
+				distinctUntilChanged((a, b) => {
+					return a.p !== b.p;
+				}),
+				*/
+			).subscribe(parallax => {
+				// console.log(parallax);
+				childNode.setAttribute('style', `top: 50%; left: 50%; transform: translateX(-50%) translateY(${parallax.p}%) scale(${parallax.s}, ${parallax.s});`);
+			});
+			element.on('$destroy', () => {
+				subscription.unsubscribe();
+			});
+			// }
+		}
 	}
 
 	parallax$(node, parallax) {
