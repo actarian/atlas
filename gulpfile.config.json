@@ -41,6 +41,9 @@
 		}
 	},
 	"options": {
-		"tfs": false
+		"tfs": false,
+		"server": {
+			"path": "/atlas/"
+		}
 	}
 }
