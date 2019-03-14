@@ -65,17 +65,18 @@ export default class Rect {
 	}
 
 	intersection(rect) {
+		// !!! check
 		const center = {
 			x: (this.center.x - rect.center.x) / (rect.width / 2),
 			y: (this.center.y - rect.center.y) / (rect.height / 2),
 		};
-		if (this.intersect(rect)) {
+		if (true || this.intersect(rect)) {
 			let dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
 			let dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
 			let x = dx ? (1 - dx / this.width) : ((rect.left + rect.width) - this.left) / this.width;
 			let y = dy ? (1 - dy / this.height) : ((rect.top + rect.height) - this.top) / this.height;
-			x = Math.min(1, x);
-			y = Math.min(1, y);
+			// x = Math.min(1, x);
+			// y = Math.min(1, y);
 			return {
 				x: x,
 				y: y,

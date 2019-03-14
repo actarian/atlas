@@ -30,6 +30,8 @@
 			text-transform: uppercase;
 			background: $background-tertiary;
 			color: $nav-product;
+			transition: ease-in-out 350ms;
+			transition-property: background-color, color, border, opacity;
 
 			&:hover,
 			&.active {
@@ -41,5 +43,30 @@
 
 	@include media-breakpoint-down(lg) {}
 
-	@include media-breakpoint-down(md) {}
+	@include media-breakpoint-down(md) {
+		flex-wrap: wrap;
+		max-width: calc(100vw - 120px);
+		margin: 0 auto;
+
+		&>li {
+			flex: 0 0 20%;
+
+			&>a,
+			&>span {
+				min-height: 50px;
+			}
+		}
+	}
+}
+
+.menu--product {
+	background: $background-tertiary;
+}
+
+.section--product {
+	min-height: 80px;
+
+	@include media-breakpoint-down(md) {
+		min-height: 100px;
+	}
 }

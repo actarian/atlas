@@ -4,7 +4,11 @@
 import { map } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
+let INDEX = 0;
+
 export default class LazyDirective {
+
+	// src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
 
 	constructor(
 		DomService
@@ -12,18 +16,25 @@ export default class LazyDirective {
 		this.domService = DomService;
 		this.restrict = 'A';
 		this.scope = {
-			src: "@",
-			srcset: "@",
-			backgroundSrc: "@",
+			src: "@?",
+			srcset: "@?",
+			backgroundSrc: "@?",
 		};
 	}
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
+		node.index = INDEX++;
 		element.subscription = this.lazy$(node).subscribe(intersection => {
-			if (intersection.y > 0.0) {
-				if (!element.lazyed) {
-					element.lazyed = true;
+			/*
+			if (node.index === 0) {
+				console.log(intersection.y);
+				node.classList.add('debug');
+			}
+			*/
+			if (intersection.y > -0.1) {
+				if (!node.classList.contains('lazyed')) {
+					node.classList.add('lazyed');
 					this.onAppearsInViewport(node, scope);
 					setTimeout(() => {
 						element.subscription.unsubscribe();
@@ -40,7 +51,7 @@ export default class LazyDirective {
 	}
 
 	lazy$(node) {
-		return this.domService.rafAndRect$().pipe(
+		return this.domService.scrollAndRect$().pipe(
 			map(datas => {
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
@@ -59,12 +70,18 @@ export default class LazyDirective {
 				image.removeAttribute('data-src');
 			}
 		} else if (scope.src) {
+			console.log(scope.src);
+			image.setAttribute('src', null);
+			image.setAttribute('src', scope.src);
+			image.removeAttribute('data-src');
+			/*
 			const input = scope.src;
 			this.onImagePreload(input, (output) => {
 				image.setAttribute('src', output);
 				image.removeAttribute('data-src');
 				image.classList.add('ready');
 			});
+			*/
 		} else if (scope.backgroundSrc) {
 			image.setStyle('background-image', `url(${scope.backgroundSrc})`);
 			image.removeAttribute('data-background-src');

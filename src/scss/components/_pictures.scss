@@ -65,12 +65,20 @@
 }
 
 .picture--vertical {
+	width: 100%;
+	max-width: calc((100vh - 137px) / 90 * 68);
+	margin: 0 auto;
+
 	&>.media {
 		@include aspect-clip(68, 90);
 	}
 }
 
 .picture--horizontal {
+	width: 100%;
+	max-width: calc((100vh - 137px) / 88 * 153);
+	margin: 0 auto;
+
 	&>.media {
 		@include aspect-clip(153, 88);
 	}

@@ -15809,18 +15809,21 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var INDEX = 0;
+
 var LazyDirective =
 /*#__PURE__*/
 function () {
+  // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
   function LazyDirective(DomService) {
     _classCallCheck(this, LazyDirective);
 
     this.domService = DomService;
     this.restrict = 'A';
     this.scope = {
-      src: "@",
-      srcset: "@",
-      backgroundSrc: "@"
+      src: "@?",
+      srcset: "@?",
+      backgroundSrc: "@?"
     };
   }
 
@@ -15830,10 +15833,17 @@ function () {
       var _this = this;
 
       var node = element[0];
+      node.index = INDEX++;
       element.subscription = this.lazy$(node).subscribe(function (intersection) {
-        if (intersection.y > 0.0) {
-          if (!element.lazyed) {
-            element.lazyed = true;
+        /*
+        if (node.index === 0) {
+        	console.log(intersection.y);
+        	node.classList.add('debug');
+        }
+        */
+        if (intersection.y > -0.1) {
+          if (!node.classList.contains('lazyed')) {
+            node.classList.add('lazyed');
 
             _this.onAppearsInViewport(node, scope);
 
@@ -15853,7 +15863,7 @@ function () {
   }, {
     key: "lazy$",
     value: function lazy$(node) {
-      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+      return this.domService.scrollAndRect$().pipe((0, _operators.map)(function (datas) {
         var windowRect = datas[1];
 
         var rect = _rect.default.fromNode(node);
@@ -15874,12 +15884,18 @@ function () {
           image.removeAttribute('data-src');
         }
       } else if (scope.src) {
-        var input = scope.src;
-        this.onImagePreload(input, function (output) {
-          image.setAttribute('src', output);
-          image.removeAttribute('data-src');
-          image.classList.add('ready');
+        console.log(scope.src);
+        image.setAttribute('src', null);
+        image.setAttribute('src', scope.src);
+        image.removeAttribute('data-src');
+        /*
+        const input = scope.src;
+        this.onImagePreload(input, (output) => {
+        	image.setAttribute('src', output);
+        	image.removeAttribute('data-src');
+        	image.classList.add('ready');
         });
+        */
       } else if (scope.backgroundSrc) {
         image.setStyle('background-image', "url(".concat(scope.backgroundSrc, ")"));
         image.removeAttribute('data-background-src');
@@ -16660,7 +16676,7 @@ function () {
       this.brand = brand;
 
       this.$scope.onScroll = function (event) {
-        var scrolled = event.scrollTop > 100;
+        var scrolled = event.scrollTop > 40;
 
         if (_this.scrolled !== scrolled) {
           _this.$timeout(function () {
@@ -17131,18 +17147,19 @@ function () {
   }, {
     key: "intersection",
     value: function intersection(rect) {
+      // !!! check
       var center = {
         x: (this.center.x - rect.center.x) / (rect.width / 2),
         y: (this.center.y - rect.center.y) / (rect.height / 2)
       };
 
-      if (this.intersect(rect)) {
+      if (true || this.intersect(rect)) {
         var dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
         var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
         var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
-        var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
-        x = Math.min(1, x);
-        y = Math.min(1, y);
+        var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height; // x = Math.min(1, x);
+        // y = Math.min(1, y);
+
         return {
           x: x,
           y: y,

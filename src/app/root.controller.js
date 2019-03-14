@@ -29,7 +29,7 @@ class RootCtrl {
 	onInit(brand) {
 		this.brand = brand;
 		this.$scope.onScroll = (event) => {
-			const scrolled = event.scrollTop > 100;
+			const scrolled = event.scrollTop > 40;
 			if (this.scrolled !== scrolled) {
 				this.$timeout(() => {
 					this.scrolled = scrolled;
