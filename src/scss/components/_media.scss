@@ -1,4 +1,5 @@
-.media {
+[media],
+[video] {
 
 	.overlay {
 		display: block;
@@ -20,14 +21,27 @@
 		opacity: 0;
 
 		.icon--wishlist {
-			fill: white;
+			fill: $foreground-negative;
 		}
 
 		&.added {
 			opacity: 1;
 
 			.icon--wishlist {
-				fill: #b92442;
+				fill: $primary;
+			}
+		}
+
+	}
+
+	.group--gallery & {
+		.btn--wishlist {
+			right: 0;
+			bottom: -55px;
+			opacity: 1;
+
+			.icon--wishlist {
+				fill: $primary;
 			}
 		}
 	}
@@ -50,6 +64,14 @@
 
 		.btn--wishlist {
 			opacity: 1;
+		}
+	}
+
+	.section--negative & {
+		.btn--wishlist {
+			.icon--wishlist {
+				fill: $foreground-negative;
+			}
 		}
 	}
 

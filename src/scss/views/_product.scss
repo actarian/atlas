@@ -58,6 +58,14 @@
 	padding-bottom: 80px;
 }
 
+.section--horizontal {
+	padding-bottom: 80px;
+}
+
+.section--horizontal-02 {
+	padding-bottom: 80px;
+}
+
 .section--vertical-horizontal {
 	.row>div {
 		display: flex;
@@ -76,10 +84,11 @@
 		font-weight: 300;
 		line-height: 50px;
 		color: $foreground;
-		margin-bottom: 80px;
 	}
 
-	.abstract {}
+	.abstract {
+		margin-top: 80px;
+	}
 }
 
 .section--text-02 {
@@ -93,13 +102,14 @@
 		margin-bottom: 30px;
 	}
 
-	.abstract {}
+	.abstract {
+		margin-top: 80px;
+	}
 }
 
-.section--full-video {
+.section--full {
 	text-align: center;
-	padding-bottom: 60px;
-	margin-bottom: 140px;
+	padding-bottom: 80px;
 
 	.background {
 		top: 100px;
@@ -107,7 +117,6 @@
 	}
 
 	.picture {
-		@include aspect-clip(153, 88);
 		margin-bottom: 80px;
 	}
 
@@ -121,13 +130,18 @@
 	.abstract {}
 }
 
+.with--text {
+	padding-bottom: 60px;
+	margin-bottom: 140px;
+}
+
 .section--negative {
-	color: white;
+	color: $foreground-negative;
 }
 
 .section--distinct {
 	padding-top: 130px;
-	background: #faf7f7;
+	background: $background-tertiary;
 }
 
 .section--distinct+.section--distinct {
@@ -226,7 +240,7 @@
 		.width,
 		.height {
 			position: absolute;
-			background: #cdc9c7;
+			background: $background-tilesize;
 
 			&>span {
 				display: block;
@@ -236,7 +250,7 @@
 				font-size: 30px;
 				font-weight: 100;
 				white-space: nowrap;
-				color: #64605d;
+				color: $foreground-tilesize;
 			}
 		}
 
@@ -256,12 +270,36 @@
 			width: 1px;
 			height: 100%;
 			left: -50px;
+			top: 0;
 
 			&>span {
 				transform: translateX(-90px) translateY(-50%) rotateZ(-90deg);
 			}
 		}
 	}
+
+
+	$widths: 278 120 240 75 150 30 60 90;
+	$heights: 120 120 120 75 75 60 60 45;
+
+	@each $w in $widths {
+		$i: index($widths, $w);
+		$h: nth($heights, $i);
+
+		.aspect--#{$w}x#{$h} {
+			&>.picture {
+				@include aspect-clip($w, $h);
+				width: 100%;
+				overflow: visible;
+
+				&>img {
+					width: 100%;
+					object-fit: cover;
+				}
+			}
+		}
+	}
+
 }
 
 .section--store {
@@ -321,8 +359,8 @@
 }
 
 .variant--02 {
-	background: #faf7f7;
-	color: #b92442;
+	background: $background-tertiary;
+	color: $primary;
 }
 
 .section--intro-center {

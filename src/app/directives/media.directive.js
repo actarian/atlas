@@ -4,93 +4,38 @@
 export default class MediaDirective {
 
 	constructor(
-		$timeout,
-		DomService
+		ApiService
 	) {
-		this.$timeout = $timeout;
-		this.domService = DomService;
-		this.restrict = 'C';
+		this.apiService = ApiService;
+		this.restrict = 'A';
 		this.transclude = true;
-		this.template = (element, attributes) => {
-			if (attributes.controls !== undefined) {
-				return `<ng-transclude></ng-transclude>
-				<div class="overlay" ng-click="onOverlay()"></div>
-				<div class="btn btn--play" ng-class="{ playing: playing }">
-					<svg class="icon icon--play" ng-if="!playing"><use xlink:href="#play"></use></svg>
-					<svg class="icon icon--play" ng-if="playing"><use xlink:href="#pause"></use></svg>
-				</div>
-				<div class="btn btn--wishlist" ng-class="{ added: item.added }" ng-click="onWishlist()">
-					<svg class="icon icon--wishlist" ng-if="!item.added"><use xlink:href="#wishlist"></use></svg>
-					<svg class="icon icon--wishlist" ng-if="item.added"><use xlink:href="#wishlist-added"></use></svg>
-				</div>`;
-			} else {
-				return `<ng-transclude></ng-transclude>
-			<div class="overlay" ng-click="onOverlay()"></div>
-			<div class="btn btn--wishlist" ng-class="{ added: item.added }" ng-click="onWishlist()">
-				<svg class="icon icon--wishlist" ng-if="!item.added"><use xlink:href="#wishlist"></use></svg>
-				<svg class="icon icon--wishlist" ng-if="item.added"><use xlink:href="#wishlist-added"></use></svg>
-			</div>`;
-			}
-		};
+		this.template = `<div class="media">
+	<ng-transclude></ng-transclude>
+</div>
+<div class="overlay" ng-click="onOverlay()"></div>
+<div class="btn btn--wishlist" ng-class="{ added: item.added }" ng-click="onWishlist()">
+	<svg class="icon icon--wishlist" ng-if="!item.added"><use xlink:href="#wishlist"></use></svg>
+	<svg class="icon icon--wishlist" ng-if="item.added"><use xlink:href="#wishlist-added"></use></svg>
+</div>`;
 		this.scope = {
-			item: '=?',
+			item: '=?media',
 		};
 	}
 
 	link(scope, element, attributes, controller) {
-		const node = element[0];
-		const video = node.querySelector('video');
 		scope.item = scope.item || {};
-		scope.onOverlay = () => {
-			if (video) {
-				if (video.paused) {
-					video.play();
-				} else {
-					video.pause();
-				}
-			}
-		};
 		scope.onWishlist = () => {
-			scope.item.added = !scope.item.added;
+			this.apiService.wishlist.toggle(scope.item).then((item) => {
+				Object.assign(scope.item, item);
+			}, (error) => console.log(error));
 		};
-		const onPlay = () => {
-			this.$timeout(() => {
-				this.playing = true;
-			});
-		};
-		const onPause = () => {
-			this.$timeout(() => {
-				this.playing = false;
-			});
-		};
-		const onEnded = () => {
-			this.$timeout(() => {
-				this.playing = false;
-			});
-		};
-		const onTimeUpdate = () => {
-			console.log(video.currentTime, video.duration);
-		};
-		if (video) {
-			video.addEventListener('play', onPlay);
-			video.addEventListener('pause', onPause);
-			video.addEventListener('ended', onEnded);
-			video.addEventListener('timeupdate', onTimeUpdate);
-		}
-		element.on('$destroy', () => {
-			if (video) {
-				video.removeEventListener('play', onPlay);
-				video.removeEventListener('pause', onPause);
-				video.removeEventListener('ended', onEnded);
-				video.removeEventListener('timeupdate', onTimeUpdate);
-			}
-		});
+		element.on('$destroy', () => {});
 	}
 
-	static factory($timeout, DomService) {
-		return new MediaDirective($timeout, DomService);
+	static factory(ApiService) {
+		return new MediaDirective(ApiService);
 	}
 
 }
 
-MediaDirective.factory.$inject = ['$timeout', 'DomService'];
+MediaDirective.factory.$inject = ['ApiService'];

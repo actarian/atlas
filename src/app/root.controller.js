@@ -24,14 +24,10 @@ class RootCtrl {
 		this.$location = $location;
 		this.$timeout = $timeout;
 		this.ApiService = ApiService;
-		this.onInit();
 	}
 
-	hasHash(hash) {
-		return window.location.hash.indexOf(hash) !== -1;
-	}
-
-	onInit() {
+	onInit(brand) {
+		this.brand = brand;
 		this.$scope.onScroll = (event) => {
 			const scrolled = event.scrollTop > 100;
 			if (this.scrolled !== scrolled) {
@@ -45,6 +41,23 @@ class RootCtrl {
 		this.$timeout(() => {
 			this.init = true;
 		}, 1000);
+	}
+
+	getClasses() {
+		const classes = {};
+		classes[this.brand] = true;
+		if (this.init) {
+			classes.init = true;
+		}
+		return classes;
+	}
+
+	toggleBrand(event) {
+		const brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
+		const i = (brands.indexOf(this.brand) + 1) % brands.length;
+		this.brand = brands[i];
+		event.preventDefault();
+		event.stopImmediatePropagation();
 	}
 
 	initCustomNavigation() {
@@ -130,6 +143,10 @@ class RootCtrl {
 			};
 			transitionOut(from, onTransitionOutDidEnd);
 		});
+	}
+
+	hasHash(hash) {
+		return window.location.hash.indexOf(hash) !== -1;
 	}
 
 	setHighway() {

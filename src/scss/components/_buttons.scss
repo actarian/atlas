@@ -40,10 +40,10 @@ button,
 	justify-content: flex-start;
 	align-items: center;
 	font-size: 14px;
-	color: #b92442;
+	color: $primary;
 
 	svg {
-		fill: #b92442;
+		fill: $primary;
 	}
 
 	&,
@@ -51,7 +51,7 @@ button,
 	&:focus,
 	&:hover,
 	&:visited {
-		color: #b92442;
+		color: $primary;
 	}
 
 	b {
@@ -66,7 +66,7 @@ button,
 			bottom: -4px;
 			width: 100%;
 			height: 2px;
-			background: #b92442;
+			background: $primary;
 			transition: all ease-out 350ms;
 		}
 	}
@@ -97,7 +97,7 @@ button,
 	&:focus,
 	&:hover,
 	&:visited {
-		color: #b92442;
+		color: $primary;
 	}
 
 	&:after {
@@ -107,14 +107,14 @@ button,
 		bottom: -3px;
 		width: 100%;
 		height: 2px;
-		background: #b92442;
+		background: $primary;
 		transition: all ease-out 350ms;
 	}
 
 	&:hover {
 		&:after {
 			transform: scale(0, 1);
-			background: #b92442;
+			background: $primary;
 		}
 	}
 
@@ -125,16 +125,16 @@ button,
 		&:focus,
 		&:hover,
 		&:visited {
-			color: #ffffff;
+			color: $foreground-negative;
 		}
 
 		&:after {
-			background: #ffffff;
+			background: $foreground-negative;
 		}
 
 		&:hover {
 			&:after {
-				background: #b92442;
+				background: $primary;
 			}
 		}
 	}
@@ -154,7 +154,7 @@ button,
 	&:focus,
 	&:hover,
 	&:visited {
-		color: #b92442;
+		color: $primary;
 	}
 
 	&:after {
@@ -164,14 +164,14 @@ button,
 		bottom: -1px;
 		width: 100%;
 		height: 2px;
-		background: #b92442;
+		background: $primary;
 		transition: all ease-out 350ms;
 	}
 
 	&:hover {
 		&:after {
 			transform: scale(0, 1);
-			background: #b92442;
+			background: $primary;
 		}
 	}
 
@@ -182,16 +182,16 @@ button,
 		&:focus,
 		&:hover,
 		&:visited {
-			color: #ffffff;
+			color: $foreground-negative;
 		}
 
 		&:after {
-			background: #ffffff;
+			background: $foreground-negative;
 		}
 
 		&:hover {
 			&:after {
-				background: #b92442;
+				background: $primary;
 			}
 		}
 	}
@@ -224,7 +224,7 @@ button,
 
 	.section--negative & {
 		&:after {
-			background: white;
+			background: $background-negative;
 		}
 
 	}
@@ -235,10 +235,10 @@ button,
 	justify-content: flex-start;
 	align-items: center;
 	font-size: 14px;
-	color: #b92442;
+	color: $primary;
 
 	svg {
-		fill: #b92442;
+		fill: $primary;
 	}
 
 	&,
@@ -246,7 +246,7 @@ button,
 	&:focus,
 	&:hover,
 	&:visited {
-		color: #b92442;
+		color: $primary;
 	}
 
 	span {
@@ -260,7 +260,7 @@ button,
 			bottom: -4px;
 			width: 100%;
 			height: 2px;
-			background: #b92442;
+			background: $primary;
 			transition: all ease-out 350ms;
 		}
 	}
@@ -286,10 +286,10 @@ button,
 	justify-content: flex-start;
 	align-items: center;
 	font-size: 19px;
-	color: #b92442;
+	color: $primary;
 
 	svg {
-		fill: #b92442;
+		fill: $primary;
 	}
 
 	&,
@@ -297,7 +297,7 @@ button,
 	&:focus,
 	&:hover,
 	&:visited {
-		color: #b92442;
+		color: $primary;
 	}
 
 	b {
@@ -311,7 +311,7 @@ button,
 			bottom: -4px;
 			width: 100%;
 			height: 2px;
-			background: #b92442;
+			background: $primary;
 			transition: all ease-out 350ms;
 		}
 	}
@@ -358,7 +358,7 @@ button,
 	pointer-events: none;
 
 	.icon {
-		fill: white;
+		fill: $foreground-negative;
 		width: 30px;
 		height: 30px;
 	}

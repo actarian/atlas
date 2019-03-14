@@ -15466,6 +15466,10 @@ var _sticky = _interopRequireDefault(require("./directives/sticky.directive"));
 
 var _swiper = require("./directives/swiper.directive");
 
+var _video = _interopRequireDefault(require("./directives/video.directive"));
+
+var _wishlist = _interopRequireDefault(require("./directives/wishlist.directive"));
+
 var _root = _interopRequireDefault(require("./root.controller"));
 
 var _api = _interopRequireDefault(require("./services/api.service"));
@@ -15483,13 +15487,13 @@ app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('lazy', _lazy.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory);
+app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('lazy', _lazy.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
 app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/appear.directive":200,"./directives/glsl-canvas.directive":201,"./directives/href.directive":202,"./directives/lazy.directive":203,"./directives/media.directive":204,"./directives/parallax.directive":205,"./directives/scroll.directive":206,"./directives/sticky.directive":207,"./directives/swiper.directive":208,"./root.controller":209,"./services/api.service":210,"./services/dom.service":211}],200:[function(require,module,exports){
+},{"./directives/appear.directive":200,"./directives/glsl-canvas.directive":201,"./directives/href.directive":202,"./directives/lazy.directive":203,"./directives/media.directive":204,"./directives/parallax.directive":205,"./directives/scroll.directive":206,"./directives/sticky.directive":207,"./directives/swiper.directive":208,"./directives/video.directive":209,"./directives/wishlist.directive":210,"./root.controller":211,"./services/api.service":212,"./services/dom.service":213}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15595,7 +15599,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":197}],201:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":197}],201:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15907,7 +15911,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":197}],204:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":197}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15927,24 +15931,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var MediaDirective =
 /*#__PURE__*/
 function () {
-  function MediaDirective($timeout, DomService) {
+  function MediaDirective(ApiService) {
     _classCallCheck(this, MediaDirective);
 
-    this.$timeout = $timeout;
-    this.domService = DomService;
-    this.restrict = 'C';
+    this.apiService = ApiService;
+    this.restrict = 'A';
     this.transclude = true;
-
-    this.template = function (element, attributes) {
-      if (attributes.controls !== undefined) {
-        return "<ng-transclude></ng-transclude>\n\t\t\t\t<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n\t\t\t\t<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t\t\t</div>";
-      } else {
-        return "<ng-transclude></ng-transclude>\n\t\t\t<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n\t\t\t<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t\t</div>";
-      }
-    };
-
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>";
     this.scope = {
-      item: '=?'
+      item: '=?media'
     };
   }
 
@@ -15953,66 +15948,22 @@ function () {
     value: function link(scope, element, attributes, controller) {
       var _this = this;
 
-      var node = element[0];
-      var video = node.querySelector('video');
       scope.item = scope.item || {};
 
-      scope.onOverlay = function () {
-        if (video) {
-          if (video.paused) {
-            video.play();
-          } else {
-            video.pause();
-          }
-        }
-      };
-
       scope.onWishlist = function () {
-        scope.item.added = !scope.item.added;
-      };
-
-      var onPlay = function onPlay() {
-        _this.$timeout(function () {
-          _this.playing = true;
+        _this.apiService.wishlist.toggle(scope.item).then(function (item) {
+          Object.assign(scope.item, item);
+        }, function (error) {
+          return console.log(error);
         });
       };
 
-      var onPause = function onPause() {
-        _this.$timeout(function () {
-          _this.playing = false;
-        });
-      };
-
-      var onEnded = function onEnded() {
-        _this.$timeout(function () {
-          _this.playing = false;
-        });
-      };
-
-      var onTimeUpdate = function onTimeUpdate() {
-        console.log(video.currentTime, video.duration);
-      };
-
-      if (video) {
-        video.addEventListener('play', onPlay);
-        video.addEventListener('pause', onPause);
-        video.addEventListener('ended', onEnded);
-        video.addEventListener('timeupdate', onTimeUpdate);
-      }
-
-      element.on('$destroy', function () {
-        if (video) {
-          video.removeEventListener('play', onPlay);
-          video.removeEventListener('pause', onPause);
-          video.removeEventListener('ended', onEnded);
-          video.removeEventListener('timeupdate', onTimeUpdate);
-        }
-      });
+      element.on('$destroy', function () {});
     }
   }], [{
     key: "factory",
-    value: function factory($timeout, DomService) {
-      return new MediaDirective($timeout, DomService);
+    value: function factory(ApiService) {
+      return new MediaDirective(ApiService);
     }
   }]);
 
@@ -16020,7 +15971,7 @@ function () {
 }();
 
 exports.default = MediaDirective;
-MediaDirective.factory.$inject = ['$timeout', 'DomService'];
+MediaDirective.factory.$inject = ['ApiService'];
 
 },{}],205:[function(require,module,exports){
 "use strict";
@@ -16112,7 +16063,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":197}],206:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":197}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16245,7 +16196,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":212,"rxjs/operators":197}],208:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs/operators":197}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16482,6 +16433,171 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* jshint esversion: 6 */
 
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var VideoDirective =
+/*#__PURE__*/
+function () {
+  function VideoDirective($timeout, ApiService) {
+    _classCallCheck(this, VideoDirective);
+
+    this.$timeout = $timeout;
+    this.apiService = ApiService;
+    this.restrict = 'A';
+    this.transclude = true;
+    this.template = "<div class=\"media\">\n\t\t<ng-transclude></ng-transclude>\n\t</div>\n\t<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n\t\t\t\t<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n\t\t\t\t</div><wishlist item=\"item\"></wishlist>\n\t\t\t\t";
+    this.scope = {
+      item: '=?video'
+    };
+  }
+
+  _createClass(VideoDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      var video = node.querySelector('video');
+      scope.item = scope.item || {};
+
+      scope.onOverlay = function () {
+        if (video) {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+        }
+      };
+
+      var onPlay = function onPlay() {
+        _this.$timeout(function () {
+          _this.playing = true;
+        });
+      };
+
+      var onPause = function onPause() {
+        _this.$timeout(function () {
+          _this.playing = false;
+        });
+      };
+
+      var onEnded = function onEnded() {
+        _this.$timeout(function () {
+          _this.playing = false;
+        });
+      };
+
+      var onTimeUpdate = function onTimeUpdate() {
+        console.log(video.currentTime, video.duration);
+      };
+
+      if (video) {
+        video.addEventListener('play', onPlay);
+        video.addEventListener('pause', onPause);
+        video.addEventListener('ended', onEnded);
+        video.addEventListener('timeupdate', onTimeUpdate);
+      }
+
+      element.on('$destroy', function () {
+        if (video) {
+          video.removeEventListener('play', onPlay);
+          video.removeEventListener('pause', onPause);
+          video.removeEventListener('ended', onEnded);
+          video.removeEventListener('timeupdate', onTimeUpdate);
+        }
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, ApiService) {
+      return new VideoDirective($timeout, ApiService);
+    }
+  }]);
+
+  return VideoDirective;
+}();
+
+exports.default = VideoDirective;
+VideoDirective.factory.$inject = ['$timeout', 'ApiService'];
+
+},{}],210:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var WishlistDirective =
+/*#__PURE__*/
+function () {
+  function WishlistDirective(ApiService) {
+    _classCallCheck(this, WishlistDirective);
+
+    this.apiService = ApiService;
+    this.restrict = 'E';
+    this.scope = {
+      item: '='
+    };
+    this.template = "<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t\t</div>";
+  }
+
+  _createClass(WishlistDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      scope.item = scope.item || {};
+
+      scope.onWishlist = function () {
+        _this.apiService.wishlist.toggle(scope.item).then(function (item) {
+          Object.assign(scope.item, item);
+        }, function (error) {
+          return console.log(error);
+        });
+      };
+
+      element.on('$destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory(ApiService) {
+      return new WishlistDirective(ApiService);
+    }
+  }]);
+
+  return WishlistDirective;
+}();
+
+exports.default = WishlistDirective;
+WishlistDirective.factory.$inject = ['ApiService'];
+
+},{}],211:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 // Import Quicklink
 // See: https://github.com/GoogleChromeLabs/quicklink
 // import Quicklink from 'quicklink/dist/quicklink.mjs';
@@ -16501,18 +16617,14 @@ function () {
     this.$location = $location;
     this.$timeout = $timeout;
     this.ApiService = ApiService;
-    this.onInit();
   }
 
   _createClass(RootCtrl, [{
-    key: "hasHash",
-    value: function hasHash(hash) {
-      return window.location.hash.indexOf(hash) !== -1;
-    }
-  }, {
     key: "onInit",
-    value: function onInit() {
+    value: function onInit(brand) {
       var _this = this;
+
+      this.brand = brand;
 
       this.$scope.onScroll = function (event) {
         var scrolled = event.scrollTop > 100;
@@ -16529,6 +16641,27 @@ function () {
       this.$timeout(function () {
         _this.init = true;
       }, 1000);
+    }
+  }, {
+    key: "getClasses",
+    value: function getClasses() {
+      var classes = {};
+      classes[this.brand] = true;
+
+      if (this.init) {
+        classes.init = true;
+      }
+
+      return classes;
+    }
+  }, {
+    key: "toggleBrand",
+    value: function toggleBrand(event) {
+      var brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
+      var i = (brands.indexOf(this.brand) + 1) % brands.length;
+      this.brand = brands[i];
+      event.preventDefault();
+      event.stopImmediatePropagation();
     }
   }, {
     key: "initCustomNavigation",
@@ -16638,6 +16771,11 @@ function () {
       });
     }
   }, {
+    key: "hasHash",
+    value: function hasHash(hash) {
+      return window.location.hash.indexOf(hash) !== -1;
+    }
+  }, {
     key: "setHighway",
     value: function setHighway() {
       var _this3 = this;
@@ -16714,7 +16852,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'ApiService']
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],210:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16739,6 +16877,12 @@ function () {
 
     this.http = $http;
     var api = {
+      wishlist: {
+        toggle: function toggle(item) {
+          item.added = !item.added;
+          return Promise.resolve(item);
+        }
+      },
       store: {
         data: function data(storeId) {
           return $http.get('/store/store.data.json');
@@ -16778,7 +16922,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],211:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16890,7 +17034,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":212,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],212:[function(require,module,exports){
+},{"../shared/rect":214,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

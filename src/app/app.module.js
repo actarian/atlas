@@ -10,6 +10,8 @@ import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperHeroDirective, SwiperSlideItemDirective, SwiperTileDirective } from './directives/swiper.directive';
+import VideoDirective from './directives/video.directive';
+import WishlistDirective from './directives/wishlist.directive';
 import RootCtrl from './root.controller';
 import ApiService from './services/api.service';
 import DomService from './services/dom.service';
@@ -35,7 +37,9 @@ app.directive('appear', AppearDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
-	.directive('swiperSlideItem', SwiperSlideItemDirective.factory);
+	.directive('swiperSlideItem', SwiperSlideItemDirective.factory)
+	.directive('video', VideoDirective.factory)
+	.directive('wishlist', WishlistDirective.factory);
 
 app.controller('RootCtrl', RootCtrl);
 

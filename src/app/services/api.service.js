@@ -5,6 +5,12 @@ export default class ApiService {
 	constructor($http) {
 		this.http = $http;
 		const api = {
+			wishlist: {
+				toggle: (item) => {
+					item.added = !item.added;
+					return Promise.resolve(item);
+				},
+			},
 			store: {
 				data: function(storeId) {
 					return $http.get('/store/store.data.json');

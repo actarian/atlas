@@ -51,14 +51,11 @@
 		}
 	</style>
 	<link rel="stylesheet" href="css/vendors.css" />
-	<!--
-	<link rel="stylesheet" href="css/artisan.css" />
-	-->
 	<link rel="stylesheet" href="css/app.css" />
 	<link href="https://fonts.googleapis.com/css?family=Muli:300,400,600,700" rel="stylesheet">
 </head>
 
-<body ng-controller="RootCtrl as rootCtrl" ng-class="{ init: rootCtrl.init }">
+<body ng-controller="RootCtrl as rootCtrl" ng-init="rootCtrl.onInit('atlas-concorde')" ng-class="rootCtrl.getClasses()">
 	<ng-include src="'templates/shared/svg.html'"></ng-include>
 	<ng-include src="'templates/shared/header.html'"></ng-include>
 	<main class="page" data-router-wrapper>
@@ -87,22 +84,11 @@
 	</div>
 	<!-- FOOTER -->
 	<ng-include src="'templates/shared/footer.html'"></ng-include>
-	<!--
-	<div class="follower">
-		<div></div>
-		<div></div>
-	</div>
-	<div class="preloader">
-		<img class="brand" src="img/logo.svg" />
-	</div>
-	-->
-	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script> -->
 	<!--[if IE ]>
 	<script src="js/polyfills.js"></script>
 	<![endif]-->
 	<script src="js/vendors.js"></script>
 	<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c35ff0b6bd15a1c" type="text/javascript"></script>
-	<!-- <script src="js/artisan.min.js"></script> -->
 	<script src="js/app.js"></script>
 </body>
 

@@ -47,13 +47,12 @@ ng-transclude {
 ::-webkit-scrollbar {
 	width: 4px;
 	height: 4px;
-	background-color: #f3f3f3;
+	background-color: $background-tertiary;
 	border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-	// background: #c00019;
-	background: darken(#f3f3f3, 10%);
+	background: $background-negative;
 	border-radius: 2px;
 }
 */

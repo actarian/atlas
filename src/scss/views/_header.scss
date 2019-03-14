@@ -12,11 +12,12 @@
 .menu--primary {
 	order: 2;
 	min-height: 92px;
+	padding-bottom: 10px;
 }
 
 .menu--secondary {
 	order: 1;
-	background: #191919;
+	background: $background-header;
 	min-height: 36px;
 }
 
@@ -44,7 +45,7 @@
 			font-size: 20px;
 			font-weight: 400;
 			text-transform: uppercase;
-			color: #b2afb0;
+			color: $nav-header;
 			transition: all ease-in-out 350ms;
 		}
 
@@ -54,7 +55,7 @@
 
 			&>a,
 			&>span {
-				color: white;
+				color: $foreground-negative;
 			}
 		}
 
@@ -74,7 +75,7 @@
 	}
 
 	svg {
-		fill: #b2afb0;
+		fill: $nav-header;
 		transition: all ease-in-out 350ms;
 	}
 
@@ -91,7 +92,7 @@
 		&>span {
 			font-size: 13px;
 			font-weight: 400;
-			color: #b2afb0;
+			color: $nav-header;
 		}
 
 		&:hover,
@@ -100,7 +101,7 @@
 
 			&>a,
 			&>span {
-				color: white;
+				color: $foreground-negative;
 			}
 		}
 
@@ -111,7 +112,7 @@
 	}
 
 	svg {
-		fill: #b2afb0;
+		fill: $nav-header;
 		margin-left: 4px;
 	}
 
@@ -169,7 +170,7 @@
 	@include media-breakpoint-up(lg) {}
 
 	&.scrolled {
-		background: #191919;
+		background: $background-header;
 		transition: transform ease-in-out 350ms;
 		transform: translateY(-36px);
 

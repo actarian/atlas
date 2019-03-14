@@ -12,7 +12,7 @@
 	display: flex;
 	justify-content: flex-start;
 	width: 100%;
-	background: #faf7f7;
+	background: $background-tertiary;
 
 	&>li {
 		flex: 1 1 auto;
@@ -28,13 +28,13 @@
 			font-size: 15px;
 			font-weight: 400;
 			text-transform: uppercase;
-			background: #faf7f7;
-			color: #a39296;
+			background: $background-tertiary;
+			color: $nav-product;
 
 			&:hover,
 			&.active {
-				background: #b92442;
-				color: #f9f5f5;
+				background: $primary;
+				color: $nav-product-active;
 			}
 		}
 	}

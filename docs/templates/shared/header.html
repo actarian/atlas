@@ -3,18 +3,19 @@
 	<div class="menu menu--primary">
 		<div class="container">
 			<div class="group">
-				<a href="index.html" class="brand"><svg class="icon icon--brand">
-						<use xlink:href="#atlas-concorde-negative"></use>
-					</svg></a>
+				<a href="index.html" ng-click="rootCtrl.toggleBrand($event)" class="brand">
+					<svg class="icon icon--brand" ng-if="rootCtrl.brand == 'atlas-concorde'"><use xlink:href="#atlas-concorde-negative"></use></svg>
+					<svg class="icon icon--brand" ng-if="rootCtrl.brand == 'atlas-concorde-solution'"><use xlink:href="#atlas-concorde-solution-negative"></use></svg>
+					<svg class="icon icon--brand" ng-if="rootCtrl.brand == 'atlas-concorde-usa'"><use xlink:href="#atlas-concorde-usa-negative"></use></svg>
+					<svg class="icon icon--brand" ng-if="rootCtrl.brand == 'atlas-concorde-russia'"><use xlink:href="#atlas-concorde-russia-negative"></use></svg>
+				</a>
 			</div>
 			<div class="group">
 				<ul class="nav nav--primary">
 					<li><a href="#">Explore Our Collections</a></li>
 					<li><a href="#">Be Inspired</a></li>
 					<li><a href="#">Contract</a></li>
-					<li><a href="#"><svg class="icon icon--search">
-								<use xlink:href="#search"></use>
-							</svg></a></li>
+					<li><a href="#"><svg class="icon icon--search"><use xlink:href="#search"></use></svg></a></li>
 				</ul>
 			</div>
 		</div>
@@ -32,13 +33,8 @@
 			<div class="group">
 				<ul class="nav nav--secondary">
 					<li><a href="#">Faq</a></li>
-					<li><a href="#">Wishlist <svg class="icon icon--wishlist">
-								<use xlink:href="#wishlist"></use>
-							</svg></a></li>
-					<li><a href="#">International / English <svg class="icon icon--caret-down">
-								<use xlink:href="#caret-down"></use>
-							</svg>
-						</a></li>
+					<li><a href="#">Wishlist <svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg></a></li>
+					<li><a href="#">International / English <svg class="icon icon--caret-down"><use xlink:href="#caret-down"></use></svg></a></li>
 				</ul>
 			</div>
 		</div>

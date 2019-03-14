@@ -57,7 +57,7 @@
 		line-height: 0.9;
 		font-weight: 400;
 		margin-bottom: 2vw;
-		color: white;
+		color: $foreground-negative;
 		text-align: center;
 	}
 
@@ -65,7 +65,7 @@
 		font-size: 26px;
 		font-weight: 300;
 		text-transform: uppercase;
-		color: white;
+		color: $foreground-negative;
 	}
 
 }
@@ -99,14 +99,14 @@
 		font-size: 14px;
 		font-weight: 600;
 		text-transform: uppercase;
-		color: white;
+		color: $foreground-negative;
 	}
 
 	.title {
 		font-size: 5.2vw;
 		line-height: 1.1;
 		font-weight: 300;
-		color: white;
+		color: $foreground-negative;
 
 		b {
 			font-weight: 400;
