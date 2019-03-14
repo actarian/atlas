@@ -15531,14 +15531,14 @@ function () {
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
       element.to = '';
       var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
-        if (intersection.y > 0.35) {
+        if (intersection.y > 0.25) {
           if (element.to !== '') {
             return;
           }
 
           element.to = setTimeout(function () {
             node.classList.add('appeared');
-          }, 150 * element.index); // (i - firstVisibleIndex));
+          }, 100 * element.index); // (i - firstVisibleIndex));
         } else {
             /*
             if (element.to !== '') {
@@ -15809,8 +15809,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var INDEX = 0;
-
+// let INDEX = 0;
 var LazyDirective =
 /*#__PURE__*/
 function () {
@@ -15832,8 +15831,8 @@ function () {
     value: function link(scope, element, attributes, controller) {
       var _this = this;
 
-      var node = element[0];
-      node.index = INDEX++;
+      var node = element[0]; // node.index = INDEX++;
+
       element.subscription = this.lazy$(node).subscribe(function (intersection) {
         /*
         if (node.index === 0) {
@@ -17096,6 +17095,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -17147,19 +17148,35 @@ function () {
   }, {
     key: "intersection",
     value: function intersection(rect) {
-      // !!! check
+      var center = {
+        x: (this.center.x - rect.center.x) / (rect.width / 2),
+        y: (this.center.y - rect.center.y) / (rect.height / 2)
+      };
+      var dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
+      var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
+      var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
+      var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
+      return {
+        x: x,
+        y: y,
+        center: center
+      };
+    }
+  }, {
+    key: "intersection_",
+    value: function intersection_(rect) {
       var center = {
         x: (this.center.x - rect.center.x) / (rect.width / 2),
         y: (this.center.y - rect.center.y) / (rect.height / 2)
       };
 
-      if (true || this.intersect(rect)) {
+      if (this.intersect(rect)) {
         var dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
         var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
         var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
-        var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height; // x = Math.min(1, x);
-        // y = Math.min(1, y);
-
+        var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
+        x = (_readOnlyError("x"), Math.min(1, x));
+        y = (_readOnlyError("y"), Math.min(1, y));
         return {
           x: x,
           y: y,

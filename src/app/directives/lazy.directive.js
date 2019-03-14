@@ -4,7 +4,7 @@
 import { map } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
-let INDEX = 0;
+// let INDEX = 0;
 
 export default class LazyDirective {
 
@@ -24,7 +24,7 @@ export default class LazyDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		node.index = INDEX++;
+		// node.index = INDEX++;
 		element.subscription = this.lazy$(node).subscribe(intersection => {
 			/*
 			if (node.index === 0) {

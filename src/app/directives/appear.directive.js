@@ -20,13 +20,13 @@ export default class AppearDirective {
 		element.to = '';
 		const subscription = this.appear$(element, attributes).subscribe(
 			intersection => {
-				if (intersection.y > 0.35) {
+				if (intersection.y > 0.25) {
 					if (element.to !== '') {
 						return;
 					}
 					element.to = setTimeout(() => {
 						node.classList.add('appeared');
-					}, 150 * element.index); // (i - firstVisibleIndex));
+					}, 100 * element.index); // (i - firstVisibleIndex));
 				} else {
 					/*
 					if (element.to !== '') {
