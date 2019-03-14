@@ -2830,6 +2830,9 @@ page-transition {
     font-weight: 300;
     text-transform: uppercase;
     color: var(--color-foreground-negative); }
+  @media (min-width: 1830px) {
+    .section--hero .title {
+      font-size: 175px; } }
 
 .section--hero-secondary {
   position: relative;
@@ -2884,6 +2887,9 @@ page-transition {
     color: var(--color-foreground-negative); }
     .section--hero-secondary .title b {
       font-weight: 400; }
+  @media (min-width: 1830px) {
+    .section--hero-secondary .title {
+      font-size: 100px; } }
 
 .section--product {
   z-index: 100; }

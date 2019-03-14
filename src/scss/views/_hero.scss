@@ -68,6 +68,12 @@
 		color: $foreground-negative;
 	}
 
+	@include media-breakpoint-up(xl) {
+		.title {
+			font-size: 175px;
+		}
+	}
+
 }
 
 .section--hero-secondary {
@@ -110,6 +116,12 @@
 
 		b {
 			font-weight: 400;
+		}
+	}
+
+	@include media-breakpoint-up(xl) {
+		.title {
+			font-size: 100px;
 		}
 	}
 

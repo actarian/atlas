@@ -30,6 +30,9 @@ export default class HrefDirective {
 		const onClick = (event) => {
 			event.preventDefault();
 			event.stopImmediatePropagation();
+			if (href === '#') {
+				return;
+			}
 			const title = node.innerText;
 			scope.$emit('onNavigationShouldFetch', { title, href });
 		};

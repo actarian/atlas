@@ -15741,6 +15741,11 @@ function () {
       var onClick = function onClick(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
+
+        if (href === '#') {
+          return;
+        }
+
         var title = node.innerText;
         scope.$emit('onNavigationShouldFetch', {
           title: title,
@@ -16662,6 +16667,11 @@ function () {
       this.brand = brands[i];
       event.preventDefault();
       event.stopImmediatePropagation();
+    }
+  }, {
+    key: "pad",
+    value: function pad(index) {
+      return index < 10 ? '0' + index : index;
     }
   }, {
     key: "initCustomNavigation",

@@ -60,6 +60,10 @@ class RootCtrl {
 		event.stopImmediatePropagation();
 	}
 
+	pad(index) {
+		return index < 10 ? '0' + index : index;
+	}
+
 	initCustomNavigation() {
 		this.$scope.$on('onNavigationShouldFetch', (scope, { title, href }) => {
 			console.log('onNavigationShouldFetch', title, href);
