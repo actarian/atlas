@@ -46,7 +46,7 @@
 			font-weight: 400;
 			text-transform: uppercase;
 			color: $nav-header;
-			transition: all ease-in-out 350ms;
+			transition: background-color, color, border, opacity ease-in-out 350ms;
 		}
 
 		&:hover,
@@ -76,7 +76,7 @@
 
 	svg {
 		fill: $nav-header;
-		transition: all ease-in-out 350ms;
+		transition: fill, stroke, opacity ease-in-out 350ms;
 	}
 
 	@include media-breakpoint-down(lg) {}

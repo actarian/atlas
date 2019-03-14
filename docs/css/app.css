@@ -220,8 +220,8 @@ button,
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-transition: all ease-in-out 350ms;
-  transition: all ease-in-out 350ms;
+  -webkit-transition: background-color, color, border, opacity ease-in-out 350ms;
+  transition: background-color, color, border, opacity ease-in-out 350ms;
   /*
 	&:hover {
 		box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.15);
@@ -2554,8 +2554,8 @@ page-transition {
   font-weight: 400;
   text-transform: uppercase;
   color: var(--color-nav-header);
-  -webkit-transition: all ease-in-out 350ms;
-  transition: all ease-in-out 350ms; }
+  -webkit-transition: background-color, color, border, opacity ease-in-out 350ms;
+  transition: background-color, color, border, opacity ease-in-out 350ms; }
 
 .nav--primary > li:hover > a,
 .nav--primary > li:hover > span, .nav--primary > li:active > a,
@@ -2580,8 +2580,8 @@ page-transition {
 
 .nav--primary svg {
   fill: var(--color-nav-header);
-  -webkit-transition: all ease-in-out 350ms;
-  transition: all ease-in-out 350ms; }
+  -webkit-transition: fill, stroke, opacity ease-in-out 350ms;
+  transition: fill, stroke, opacity ease-in-out 350ms; }
 
 .nav--secondary > li > a,
 .nav--secondary > li > span {
@@ -2937,6 +2937,9 @@ page-transition {
 .section--product {
   z-index: 100; }
   .section--product.sticky [sticky-content] {
+    position: fixed;
+    width: 100%;
+    top: 62px;
     -webkit-transition: -webkit-box-shadow ease-in-out 350ms;
     transition: -webkit-box-shadow ease-in-out 350ms;
     transition: box-shadow ease-in-out 350ms;

@@ -16168,6 +16168,32 @@ function () {
       var node = element[0];
       var content = node.querySelector('[sticky-content]');
       var stickyTop = parseInt(attributes.sticky) || 0;
+      return this.domService.scroll$().pipe((0, _operators.tap)(function (scroll) {
+        var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
+        // top = Math.max(0, Math.min(maxtop, top - rect.top));
+
+
+        var maxTop = Math.max(0, stickyTop - rect.top); // content.setAttribute('style', `transform: translateY(${maxTop}px);`);
+
+        var sticky = maxTop > 0;
+
+        if (sticky !== element.sticky) {
+          element.sticky = sticky;
+
+          if (sticky) {
+            node.classList.add('sticky');
+          } else {
+            node.classList.remove('sticky');
+          }
+        }
+      }));
+    }
+  }, {
+    key: "scroll$_",
+    value: function scroll$_(element, attributes) {
+      var node = element[0];
+      var content = node.querySelector('[sticky-content]');
+      var stickyTop = parseInt(attributes.sticky) || 0;
       return this.domService.raf$().pipe((0, _operators.tap)(function (datas) {
         var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
         // top = Math.max(0, Math.min(maxtop, top - rect.top));

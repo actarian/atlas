@@ -6,7 +6,7 @@ button,
 	border: none;
 	outline: none;
 	cursor: pointer;
-	transition: all ease-in-out 350ms;
+	transition: background-color, color, border, opacity ease-in-out 350ms;
 
 	&,
 	&:active,
