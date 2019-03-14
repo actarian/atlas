@@ -11,6 +11,7 @@ body,
   --color-foreground-footer: #605f5e;
   --color-background-tilesize: #cdc9c7;
   --color-foreground-tilesize: #64605d;
+  --color-border: #e6e2df;
   --color-nav-header: #b2afb0;
   --color-nav-product: #a39296;
   --color-nav-product-active: #f9f5f5;
@@ -38,6 +39,7 @@ body,
   --color-foreground-footer: #605f5e;
   --color-background-tilesize: #cdc9c7;
   --color-foreground-tilesize: #64605d;
+  --color-border: #dfe4e6;
   --color-nav-header: #f4f8f9;
   --color-nav-product: #113253;
   --color-nav-product-active: #eeeff3;
@@ -65,6 +67,7 @@ body,
   --color-foreground-footer: #605f5e;
   --color-background-tilesize: #cdc9c7;
   --color-foreground-tilesize: #64605d;
+  --color-border: #dfe4e6;
   --color-nav-header: #f2f9ff;
   --color-nav-product: #7c99a7;
   --color-nav-product-active: #f3faff;
@@ -92,6 +95,7 @@ body,
   --color-foreground-footer: #605f5e;
   --color-background-tilesize: #cdc9c7;
   --color-foreground-tilesize: #64605d;
+  --color-border: #ebe6dd;
   --color-nav-header: #f5f0ed;
   --color-nav-product: #9a705a;
   --color-nav-product-active: #f7efec;
@@ -1838,7 +1842,9 @@ button,
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
 
 .picture--horizontal > .media {
   position: relative;
@@ -1853,7 +1859,9 @@ button,
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
 
 .swiper-container {
   width: 100%;
@@ -1990,7 +1998,9 @@ button,
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%; }
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
   .listing--tiles > .listing__item:not(:hover) .picture {
     -webkit-box-shadow: none;
             box-shadow: none; }
@@ -2047,7 +2057,9 @@ button,
       bottom: 10px;
       left: 0;
       width: 100%;
-      height: auto; }
+      height: auto;
+      -o-object-fit: cover;
+         object-fit: cover; }
   .listing--trim-tiles > .listing__item:not(:hover) .picture {
     -webkit-box-shadow: none;
             box-shadow: none; }
@@ -2089,7 +2101,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
     .listing--beinspired > .listing__item:not(:hover) .picture {
       -webkit-box-shadow: none;
               box-shadow: none; }
@@ -2159,7 +2173,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--278x120 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2183,7 +2199,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--120x120 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2207,7 +2225,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--240x120 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2231,7 +2251,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--75x75 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2255,7 +2277,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--150x75 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2279,7 +2303,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--30x60 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2303,7 +2329,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--60x60 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -2327,7 +2355,9 @@ button,
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
       .listing--sizes .aspect--90x45 > .picture > img {
         width: 100%;
         -o-object-fit: cover;
@@ -3051,6 +3081,9 @@ page-transition {
     margin-bottom: 90px;
     color: var(--color-foreground); }
 
+.section--decor-tiles + .section--decor-tiles {
+  border-top: 2px solid var(--color-border); }
+
 .section--trim-tiles {
   padding-top: 120px;
   text-align: center; }
@@ -3132,7 +3165,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--278x120 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3153,7 +3188,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--120x120 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3174,7 +3211,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--240x120 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3195,7 +3234,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--75x75 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3216,7 +3257,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--150x75 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3237,7 +3280,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--30x60 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3258,7 +3303,9 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--60x60 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
@@ -3279,14 +3326,16 @@ page-transition {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
   .section--tile .aspect--90x45 > .picture > img {
     width: 100%;
     -o-object-fit: cover;
        object-fit: cover; }
 
 .section--store {
-  border-top: 2px solid #e6e2df;
+  border-top: 2px solid var(--color-border);
   padding: 50px 0; }
   .section--store .title {
     font-size: 42px;

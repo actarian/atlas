@@ -188,6 +188,10 @@
 
 }
 
+.section--decor-tiles+.section--decor-tiles {
+	border-top: 2px solid $border;
+}
+
 .section--trim-tiles {
 	padding-top: 120px;
 	text-align: center;
@@ -303,7 +307,7 @@
 }
 
 .section--store {
-	border-top: 2px solid #e6e2df;
+	border-top: 2px solid $border;
 	padding: 50px 0;
 
 	.title {
