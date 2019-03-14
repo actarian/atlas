@@ -464,29 +464,43 @@ button,
   margin-left: 10px; }
 
 .btn--play {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  display: block;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 200px;
-  height: 200px;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
+  width: 196px;
+  height: 196px;
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
-  pointer-events: none; }
-  .btn--play .icon {
-    fill: var(--color-foreground-negative);
+  pointer-events: none;
+  -webkit-transition: opacity ease-in-out 350ms 200ms;
+  transition: opacity ease-in-out 350ms 200ms; }
+  .btn--play .icon--play-progress,
+  .btn--play .icon--play-progress-background {
+    display: block;
+    position: absolute;
+    width: 196px;
+    height: 196px;
+    top: 0;
+    left: 0;
+    fill: transparent;
+    stroke: var(--color-foreground-negative);
+    -webkit-transition: opacity ease-in-out 350ms;
+    transition: opacity ease-in-out 350ms; }
+  .btn--play .icon--play-progress-background {
+    opacity: 0.2; }
+  .btn--play .icon--play {
+    display: block;
+    position: absolute;
     width: 30px;
-    height: 30px; }
+    height: 30px;
+    top: 83px;
+    left: 83px;
+    fill: var(--color-foreground-negative); }
+  .btn--play.playing {
+    opacity: 0; }
+    .btn--play.playing .icon--play-progress {
+      opacity: 1; }
 
 .container {
   width: 100%;
@@ -1685,68 +1699,67 @@ button,
         background: var(--color-primary);
         color: var(--color-nav-product-active); }
 
-[media] .overlay,
-[video] .overlay {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
-  transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
-
-[media] .btn--wishlist,
-[video] .btn--wishlist {
-  display: block;
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  opacity: 0; }
-  [media] .btn--wishlist .icon--wishlist,
+[media],
+[video] {
+  cursor: pointer; }
+  [media] .overlay,
+  [video] .overlay {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
+    transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
+  [media] .btn--wishlist,
+  [video] .btn--wishlist {
+    display: block;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    opacity: 0; }
+    [media] .btn--wishlist .icon--wishlist,
+    [video] .btn--wishlist .icon--wishlist {
+      fill: var(--color-foreground-negative); }
+    [media] .btn--wishlist.added,
+    [video] .btn--wishlist.added {
+      opacity: 1; }
+      [media] .btn--wishlist.added .icon--wishlist,
+      [video] .btn--wishlist.added .icon--wishlist {
+        fill: var(--color-primary); }
+  .group--gallery [media] .btn--wishlist, .group--gallery
+  [video] .btn--wishlist {
+    right: 0;
+    bottom: -55px;
+    opacity: 1; }
+    .group--gallery [media] .btn--wishlist .icon--wishlist, .group--gallery
+    [video] .btn--wishlist .icon--wishlist {
+      fill: var(--color-primary); }
+  [media] ng-transclude,
+  [video] ng-transclude {
+    display: block;
+    position: relative;
+    -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
+    transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
+  [media]:hover ng-transclude,
+  [video]:hover ng-transclude {
+    -webkit-transform: scale(1.1, 1.1);
+            transform: scale(1.1, 1.1); }
+  [media]:hover .overlay,
+  [video]:hover .overlay {
+    opacity: 1; }
+  [media]:hover .btn--wishlist,
+  [video]:hover .btn--wishlist {
+    opacity: 1; }
+  .section--negative [media] .btn--wishlist .icon--wishlist, .section--negative
   [video] .btn--wishlist .icon--wishlist {
     fill: var(--color-foreground-negative); }
-  [media] .btn--wishlist.added,
-  [video] .btn--wishlist.added {
-    opacity: 1; }
-    [media] .btn--wishlist.added .icon--wishlist,
-    [video] .btn--wishlist.added .icon--wishlist {
-      fill: var(--color-primary); }
 
-.group--gallery [media] .btn--wishlist, .group--gallery
-[video] .btn--wishlist {
-  right: 0;
-  bottom: -55px;
+[video]:hover .btn--play.playing {
   opacity: 1; }
-  .group--gallery [media] .btn--wishlist .icon--wishlist, .group--gallery
-  [video] .btn--wishlist .icon--wishlist {
-    fill: var(--color-primary); }
-
-[media] ng-transclude,
-[video] ng-transclude {
-  display: block;
-  position: relative;
-  -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
-  transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
-
-[media]:hover ng-transclude,
-[video]:hover ng-transclude {
-  -webkit-transform: scale(1.1, 1.1);
-          transform: scale(1.1, 1.1); }
-
-[media]:hover .overlay,
-[video]:hover .overlay {
-  opacity: 1; }
-
-[media]:hover .btn--wishlist,
-[video]:hover .btn--wishlist {
-  opacity: 1; }
-
-.section--negative [media] .btn--wishlist .icon--wishlist, .section--negative
-[video] .btn--wishlist .icon--wishlist {
-  fill: var(--color-foreground-negative); }
 
 .background,
 .picture {

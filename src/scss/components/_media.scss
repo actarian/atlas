@@ -1,5 +1,6 @@
 [media],
 [video] {
+	cursor: pointer;
 
 	.overlay {
 		display: block;
@@ -53,7 +54,6 @@
 	}
 
 	&:hover {
-
 		ng-transclude {
 			transform: scale(1.1, 1.1);
 		}
@@ -75,4 +75,10 @@
 		}
 	}
 
+}
+
+[video]:hover {
+	.btn--play.playing {
+		opacity: 1;
+	}
 }

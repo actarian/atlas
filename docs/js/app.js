@@ -16448,7 +16448,7 @@ function () {
     this.apiService = ApiService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = "<div class=\"media\">\n\t\t<ng-transclude></ng-transclude>\n\t</div>\n\t<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n\t\t\t\t<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t\t\t\t\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n\t\t\t\t</div><wishlist item=\"item\"></wishlist>\n\t\t\t\t";
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><wishlist item=\"item\"></wishlist>";
     this.scope = {
       item: '=?video'
     };
@@ -16461,6 +16461,7 @@ function () {
 
       var node = element[0];
       var video = node.querySelector('video');
+      var progress = node.querySelector('.icon--play-progress path');
       scope.item = scope.item || {};
 
       scope.onOverlay = function () {
@@ -16475,24 +16476,25 @@ function () {
 
       var onPlay = function onPlay() {
         _this.$timeout(function () {
-          _this.playing = true;
+          scope.playing = true;
         });
       };
 
       var onPause = function onPause() {
         _this.$timeout(function () {
-          _this.playing = false;
+          scope.playing = false;
         });
       };
 
       var onEnded = function onEnded() {
         _this.$timeout(function () {
-          _this.playing = false;
+          scope.playing = false;
         });
       };
 
       var onTimeUpdate = function onTimeUpdate() {
-        console.log(video.currentTime, video.duration);
+        // console.log(video.currentTime, video.duration);
+        progress.style.strokeDashoffset = video.currentTime / video.duration;
       };
 
       if (video) {

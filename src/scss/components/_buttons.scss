@@ -344,22 +344,49 @@ button,
 }
 
 .btn--play {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	display: block;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 200px;
-	height: 200px;
-	border: 2px solid rgba(255, 255, 255, 0.15);
-	border-radius: 100px;
+	width: 196px;
+	height: 196px;
 	transform: translateX(-50%) translateY(-50%);
 	pointer-events: none;
+	transition: opacity ease-in-out 350ms 200ms;
 
-	.icon {
-		fill: $foreground-negative;
+	.icon--play-progress,
+	.icon--play-progress-background {
+		display: block;
+		position: absolute;
+		width: 196px;
+		height: 196px;
+		top: 0;
+		left: 0;
+		fill: transparent;
+		stroke: $foreground-negative;
+		transition: opacity ease-in-out 350ms;
+	}
+
+	.icon--play-progress-background {
+		opacity: 0.2;
+	}
+
+	.icon--play {
+		display: block;
+		position: absolute;
 		width: 30px;
 		height: 30px;
+		top: 83px;
+		left: 83px;
+		fill: $foreground-negative;
 	}
+
+	&.playing {
+		opacity: 0;
+
+		.icon--play-progress {
+			opacity: 1;
+		}
+	}
+
 }
