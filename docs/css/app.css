@@ -2642,8 +2642,8 @@ page-transition {
     -webkit-transform: translateY(-36px);
             transform: translateY(-36px); }
     .section--header.scrolled .menu--primary {
-      -webkit-transition: all ease-in-out 350ms;
-      transition: all ease-in-out 350ms;
+      -webkit-transition: background-color, color, border, opacity ease-in-out 350ms;
+      transition: background-color, color, border, opacity ease-in-out 350ms;
       min-height: 62px; }
     .section--header.scrolled .nav--primary > li > a,
     .section--header.scrolled .nav--primary > li > span {

@@ -175,7 +175,7 @@
 		transform: translateY(-36px);
 
 		.menu--primary {
-			transition: all ease-in-out 350ms;
+			transition: background-color, color, border, opacity ease-in-out 350ms;
 			min-height: 62px;
 		}
 
