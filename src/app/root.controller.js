@@ -28,6 +28,7 @@ class RootCtrl {
 
 	onInit(brand) {
 		this.brand = brand;
+		this.$scope.webglEnabled = false;
 		this.$scope.onScroll = (event) => {
 			const scrolled = event.scrollTop > 40;
 			if (this.scrolled !== scrolled) {

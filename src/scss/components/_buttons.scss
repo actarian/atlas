@@ -391,3 +391,16 @@ button,
 	}
 
 }
+
+
+.btn--menu {
+	background: transparent;
+	padding: 10px;
+
+	.icon--menu {
+		fill: $foreground-negative;
+		stroke: none;
+		width: 26px;
+		height: 16px;
+	}
+}

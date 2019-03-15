@@ -180,7 +180,6 @@
 
 	&.scrolled {
 		background: $background-header;
-		transform: translateY(-36px);
 
 		.menu--primary {
 			transition: ease-in-out 350ms;
@@ -214,6 +213,12 @@
 					height: 13px;
 				}
 			}
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		&.scrolled {
+			transform: translateY(-36px);
 		}
 	}
 

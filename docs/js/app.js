@@ -16673,6 +16673,7 @@ function () {
       var _this = this;
 
       this.brand = brand;
+      this.$scope.webglEnabled = false;
 
       this.$scope.onScroll = function (event) {
         var scrolled = event.scrollTop > 40;

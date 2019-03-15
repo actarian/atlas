@@ -37,10 +37,6 @@
 
 	// min-height: calc(100vh - 120px);
 
-	.aspect {
-		@include aspect-grid(1920, 800);
-	}
-
 	.container {
 		position: relative;
 		display: flex;
@@ -62,15 +58,51 @@
 	}
 
 	.abstract {
-		font-size: 26px;
+		font-size: 1.9vw;
 		font-weight: 300;
 		text-transform: uppercase;
 		color: $foreground-negative;
 	}
 
+	@include media-breakpoint-down(sm) {
+		.title {
+			font-size: 60px;
+			text-align: center;
+		}
+
+		.abstract {
+			font-size: 16px;
+			text-align: center;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+
+		/*
+		.aspect {
+			width: 100vw;
+			height: 100vh;
+			max-height: 200vw;
+		}
+		*/
+		.aspect {
+			@include aspect-grid(375, 667);
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		.aspect {
+			@include aspect-grid(1920, 800);
+		}
+	}
+
 	@include media-breakpoint-up(xl) {
 		.title {
 			font-size: 175px;
+		}
+
+		.abstract {
+			font-size: 26px;
 		}
 	}
 
@@ -82,10 +114,6 @@
 
 	.background {
 		z-index: 0;
-	}
-
-	.aspect {
-		@include aspect-grid(1920, 670);
 	}
 
 	.container {
@@ -119,10 +147,43 @@
 		}
 	}
 
+	@include media-breakpoint-down(sm) {
+
+		.category {
+			margin-bottom: 15px;
+			font-size: 12px;
+		}
+
+		.title {
+			font-size: 12.8vw;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+
+		/*
+		.aspect {
+			width: 100vw;
+			height: 100vh;
+			max-height: 200vw;
+		}
+		*/
+		.aspect {
+			@include aspect-grid(375, 667);
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		.aspect {
+			@include aspect-grid(1920, 670);
+		}
+	}
+
 	@include media-breakpoint-up(xl) {
 		.title {
 			font-size: 100px;
 		}
 	}
+
 
 }
