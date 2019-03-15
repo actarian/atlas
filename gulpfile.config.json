@@ -25,7 +25,6 @@
 					"node_modules/angular-sanitize/angular-sanitize.js",
 					"node_modules/jsonformatter/dist/json-formatter.js",
 					"node_modules/gsap/src/uncompressed/easing/EasePack.js",
-					"node_modules/gsap/src/uncompressed/TweenLite.js",
 					"node_modules/gsap/src/uncompressed/TweenMax.js",
 					"node_modules/gmaps-marker-clusterer/src/markerclusterer.js"
 				],

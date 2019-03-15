@@ -1,9 +1,9 @@
 <section class="section section--hero-secondary">
-	<div class="background" ng-if="!webglEnabled">
+	<div class="background" ng-if="!root.webglEnabled">
 		<img lazy data-src="img/product/marvel/absolute-brown/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
 	</div>
-	<div class="background" ng-if="webglEnabled">
-		<canvas glsl-canvas="img/product/marvel/absolute-brown/hero-secondary.jpg" class="glsl-canvas" data-fragment-url="shaders/hero-04.glsl"></canvas>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/product/marvel/absolute-brown/hero-secondary.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.glsl"></canvas>
 	</div>
 	<div class="aspect">
 		<div class="container">

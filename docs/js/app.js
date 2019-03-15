@@ -15607,74 +15607,115 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _operators = require("rxjs/operators");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var GlslCanvasDirective =
 /*#__PURE__*/
 function () {
-  function GlslCanvasDirective() {
+  function GlslCanvasDirective(DomService) {
     _classCallCheck(this, GlslCanvasDirective);
 
+    this.domService = DomService;
     this.restrict = 'A';
   }
 
   _createClass(GlslCanvasDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
-      var canvas = new GlslCanvas(element[0]);
-      canvas.on('render', function () {});
-      console.log(attributes.glslCanvas);
+      var node = element[0];
+      var canvas = new GlslCanvas(node);
       canvas.setTexture('u_texture', attributes.glslCanvas, {
         repeat: true
       });
-      canvas.on('move', function (mouse) {
-        canvas.setUniforms({
-          u_x: mouse.x + 0.001,
-          u_y: mouse.y + 0.001
+      canvas.setUniform('u_pow', 1.0);
+      canvas.setUniform('u_top', 0.0);
+      var pow = {
+        pow: 1.0,
+        top: 0.0
+      };
+      var top = {
+        top: 0.0
+      };
+      var tween;
+
+      var onOver = function onOver(event) {
+        // console.log('onOver');
+        if (tween) {
+          tween.kill();
+        }
+
+        tween = TweenLite.to(pow, 3, {
+          pow: 0.0,
+          ease: Elastic.easeOut.config(1, 0.3),
+          overwrite: 'all',
+          onUpdate: function onUpdate() {
+            // console.log(pow.pow);
+            canvas.setUniform('u_pow', pow.pow);
+          }
         });
+      };
+
+      var onOut = function onOut(event) {
+        // console.log('onOut');
+        if (tween) {
+          tween.kill();
+        }
+
+        tween = TweenLite.to(pow, 3, {
+          pow: 1.0,
+          ease: Elastic.easeOut.config(1, 0.3),
+          overwrite: 'all',
+          onUpdate: function onUpdate() {
+            // console.log(pow.pow);
+            canvas.setUniform('u_pow', pow.pow);
+          }
+        });
+      };
+
+      node.addEventListener('mouseover', onOver);
+      node.addEventListener('mouseout', onOut);
+      var scrollTween;
+      var subscription = this.domService.scroll$().pipe((0, _operators.auditTime)(1000 / 25)).subscribe(function (scroll) {
+        canvas.setUniform('u_top', window.scrollY || window.scrollTop || 0);
+        /*
+        scrollTween = TweenLite.to(top, 0.3, {
+        	top: scroll.scrollTop,
+        	overwrite: 'all',
+        	onUpdate: () => {
+        		// console.log(pow.pow);
+        		canvas.setUniform('u_top', top.top);
+        	},
+        });
+        */
+      });
+      canvas.on('error', function (error) {
+        console.log(error);
       });
       element.on('$destroy', function () {
+        if (tween) {
+          tween.kill();
+        }
+
+        if (scrollTween) {
+          scrollTween.kill();
+        }
+
+        node.removeEventListener('mouseover', onOver);
+        node.removeEventListener('mouseout', onOut);
+        subscription.unsubscribe();
         canvas.destroy();
       });
-      /*
-      canvas.on('over', function() {
-      	if (canvas.uniforms.get('u_texture').texture.url === 'data/mars.jpg') {
-      		canvas.setUniform('u_texture', 'data/moon.jpg');
-      	} else {
-      		// canvas.setUniform('u_texture', 'data/mars.jpg');
-      		canvas.setTexture('u_texture', 'data/mars.jpg', { repeat: true });
-      	}
-      });
-      canvas.setUniform('u_video', '#video-4');
-      canvas.setTexture('u_texture', 'data/noise.png', { repeat: true });
-      canvas.on('render', function() {
-      	canvas.setUniform('u_pos', Math.random() - 0.5, Math.random() - 0.5);
-      });
-      canvas.on('render', function() {
-      	canvas.setUniform('u_pos', Math.random() - 0.5, Math.random() - 0.5);
-      	canvas.setUniform('u_col', Math.random(), Math.random(), Math.random());
-      });
-      canvas.setUniform('u_texture', ['data/moon.jpg', 'data/mars.jpg']);
-      canvas.setUniform('u_video', '#video-4');
-      canvas.on('move', function(mouse) {
-      	canvas.setUniforms({
-      		u_x: mouse.x + 0.001,
-      		u_y: mouse.y + 0.001,
-      	});
-      });
-      */
     }
   }], [{
     key: "factory",
-    value: function factory() {
-      return new GlslCanvasDirective();
+    value: function factory(DomService) {
+      return new GlslCanvasDirective(DomService);
     }
   }]);
 
@@ -15682,9 +15723,9 @@ function () {
 }();
 
 exports.default = GlslCanvasDirective;
-GlslCanvasDirective.factory.$inject = [];
+GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{}],202:[function(require,module,exports){
+},{"rxjs/operators":197}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15883,7 +15924,7 @@ function () {
           image.removeAttribute('data-src');
         }
       } else if (scope.src) {
-        console.log(scope.src);
+        // console.log(scope.src);
         image.setAttribute('src', null);
         image.setAttribute('src', scope.src);
         image.removeAttribute('data-src');
@@ -16673,7 +16714,7 @@ function () {
       var _this = this;
 
       this.brand = brand;
-      this.$scope.webglEnabled = false;
+      this.webglEnabled = false;
 
       this.$scope.onScroll = function (event) {
         var scrolled = event.scrollTop > 40;
@@ -16713,6 +16754,51 @@ function () {
       event.stopImmediatePropagation();
     }
   }, {
+    key: "toggleNav",
+    value: function toggleNav(id) {
+      var nav = id || this.nav;
+      this.nav = this.nav === id ? null : id;
+
+      if (nav) {
+        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
+        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+
+        if (this.nav) {
+          TweenMax.set(items, {
+            alpha: 0
+          });
+          TweenMax.set(node, {
+            maxHeight: 0
+          });
+          TweenMax.to(node, 0.4, {
+            maxHeight: '100vh',
+            // delay: 0.5,
+            overwrite: 'all',
+            onComplete: function onComplete() {}
+          });
+          TweenMax.staggerTo(items, 0.35, {
+            opacity: 1
+          }, 0.1, function () {});
+          /*
+          items.forEach((item, i) => TweenMax.to(item, 0.3, {
+          	alpha: 1,
+          	delay: 0.2 * i,
+          	overwrite: 'all',
+          }));
+          */
+        } else {
+          console.log('remove', items);
+          TweenMax.staggerTo(items.reverse(), 0.35, {
+            opacity: 0
+          }, 0.1, function () {
+            TweenMax.to(node, 0.4, {
+              maxHeight: 0
+            });
+          });
+        }
+      }
+    }
+  }, {
     key: "pad",
     value: function pad(index) {
       return index < 10 ? '0' + index : index;
@@ -16746,7 +16832,7 @@ function () {
         var fromElement = angular.element(from);
 
         var transitionOut = function transitionOut(from, done) {
-          TweenLite.to(from, 0.35, {
+          TweenMax.to(from, 0.35, {
             opacity: 0,
             overwrite: 'all',
             onComplete: function onComplete() {
@@ -16756,17 +16842,17 @@ function () {
         };
 
         var transitionIn = function transitionIn(from, to, done) {
-          TweenLite.set(to, {
+          TweenMax.set(to, {
             opacity: 0,
             minHeight: from.offsetHeight
           }); // from.remove();
 
-          TweenLite.to(to, 0.35, {
+          TweenMax.to(to, 0.35, {
             opacity: 1,
             delay: 0.5,
             overwrite: 'all',
             onComplete: function onComplete() {
-              TweenLite.set(to, {
+              TweenMax.set(to, {
                 minHeight: 0
               });
               done();
@@ -17010,7 +17096,7 @@ function () {
   _createClass(DomService, [{
     key: "raf$",
     value: function raf$() {
-      return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe();
+      return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe((0, _operators.shareReplay)());
     }
   }, {
     key: "rafAndRect$",

@@ -35,6 +35,10 @@
 		*/
 	}
 
+	.aspect {
+		pointer-events: none;
+	}
+
 	// min-height: calc(100vh - 120px);
 
 	.container {
@@ -114,6 +118,10 @@
 
 	.background {
 		z-index: 0;
+	}
+
+	.aspect {
+		pointer-events: none;
 	}
 
 	.container {

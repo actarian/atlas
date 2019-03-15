@@ -48,6 +48,7 @@
 			color: $nav-header;
 			transition: ease-in-out 350ms;
 			transition-property: background-color, color, border, opacity;
+			cursor: pointer;
 		}
 
 		&:hover,
@@ -106,6 +107,7 @@
 			font-size: 13px;
 			font-weight: 400;
 			color: $nav-header;
+			cursor: pointer;
 		}
 
 		&:hover,
@@ -141,7 +143,7 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	z-index: 100;
+	z-index: 1000;
 
 	.brand {
 		display: block;

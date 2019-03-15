@@ -28,7 +28,7 @@ class RootCtrl {
 
 	onInit(brand) {
 		this.brand = brand;
-		this.$scope.webglEnabled = false;
+		this.webglEnabled = false;
 		this.$scope.onScroll = (event) => {
 			const scrolled = event.scrollTop > 40;
 			if (this.scrolled !== scrolled) {
@@ -61,6 +61,42 @@ class RootCtrl {
 		event.stopImmediatePropagation();
 	}
 
+	toggleNav(id) {
+		const nav = id || this.nav;
+		this.nav = (this.nav === id ? null : id);
+		if (nav) {
+			const node = document.querySelector(`#nav-${nav} .section--submenu`);
+			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+			if (this.nav) {
+				TweenMax.set(items, { alpha: 0 });
+				TweenMax.set(node, { maxHeight: 0 });
+				TweenMax.to(node, 0.4, {
+					maxHeight: '100vh',
+					// delay: 0.5,
+					overwrite: 'all',
+					onComplete: () => {}
+				});
+				TweenMax.staggerTo(items, 0.35, { opacity: 1 }, 0.1, () => {
+
+				});
+				/*
+				items.forEach((item, i) => TweenMax.to(item, 0.3, {
+					alpha: 1,
+					delay: 0.2 * i,
+					overwrite: 'all',
+				}));
+				*/
+			} else {
+				console.log('remove', items);
+				TweenMax.staggerTo(items.reverse(), 0.35, { opacity: 0 }, 0.1, () => {
+					TweenMax.to(node, 0.4, {
+						maxHeight: 0,
+					});
+				});
+			}
+		}
+	}
+
 	pad(index) {
 		return index < 10 ? '0' + index : index;
 	}
@@ -85,7 +121,7 @@ class RootCtrl {
 			const from = document.querySelector('[data-router-view]');
 			const fromElement = angular.element(from);
 			const transitionOut = (from, done) => {
-				TweenLite.to(from, 0.35, {
+				TweenMax.to(from, 0.35, {
 					opacity: 0,
 					overwrite: 'all',
 					onComplete: () => {
@@ -94,14 +130,14 @@ class RootCtrl {
 				});
 			};
 			const transitionIn = (from, to, done) => {
-				TweenLite.set(to, { opacity: 0, minHeight: from.offsetHeight });
+				TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
 				// from.remove();
-				TweenLite.to(to, 0.35, {
+				TweenMax.to(to, 0.35, {
 					opacity: 1,
 					delay: 0.5,
 					overwrite: 'all',
 					onComplete: () => {
-						TweenLite.set(to, { minHeight: 0 });
+						TweenMax.set(to, { minHeight: 0 });
 						done();
 					}
 				});

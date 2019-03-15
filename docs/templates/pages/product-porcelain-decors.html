@@ -1,9 +1,9 @@
 <section class="section section--hero-secondary">
-	<div class="background" ng-if="!webglEnabled" parallax>
+	<div class="background" ng-if="!root.webglEnabled" parallax>
 		<img lazy data-src="img/product/marvel/porcelain-decors/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
 	</div>
-	<div class="background" ng-if="webglEnabled">
-		<canvas glsl-canvas="img/product/marvel/porcelain-decors/hero-secondary.jpg" class="glsl-canvas" data-fragment-url="shaders/hero-04.glsl"></canvas>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/product/marvel/porcelain-decors/hero-secondary.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.glsl"></canvas>
 	</div>
 	<div class="aspect">
 		<div class="container">
@@ -29,7 +29,7 @@
 			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
 				<!-- , 'Agata Azul', 'Gold Onyx', 'Red Luxury' -->
 				<div class="picture" media>
-					<img lazy data-src="img/product/marvel/porcelain-decors/{{rootCtrl.pad($index + 1)}}.jpg" alt="title" />
+					<img lazy data-src="img/product/marvel/porcelain-decors/{{root.pad($index + 1)}}.jpg" alt="title" />
 				</div>
 				<div class="group group--cta">
 					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico 3D</span></a>
@@ -61,7 +61,7 @@
 		<div class="row listing listing--decor-tiles">
 			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
 				<div class="picture" media>
-					<img lazy data-src="img/product/marvel/porcelain-decors/{{rootCtrl.pad($index + 7)}}.jpg" alt="title" />
+					<img lazy data-src="img/product/marvel/porcelain-decors/{{root.pad($index + 7)}}.jpg" alt="title" />
 				</div>
 				<div class="group group--cta">
 					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico Esagono Lappato</span></a>
@@ -72,7 +72,7 @@
 		<div class="row listing listing--decor-tiles">
 			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
 				<div class="picture" media>
-					<img lazy data-src="img/product/marvel/porcelain-decors/{{rootCtrl.pad($index + 12)}}.jpg" alt="title" />
+					<img lazy data-src="img/product/marvel/porcelain-decors/{{root.pad($index + 12)}}.jpg" alt="title" />
 				</div>
 				<div class="group group--cta">
 					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico Twill Lappato</span></a>
@@ -83,7 +83,7 @@
 		<div class="row listing listing--decor-tiles">
 			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Gold Onyx', 'Agata Azul', 'Red Luxury', 'Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
 				<div class="picture" media>
-					<img lazy data-src="img/product/marvel/porcelain-decors/{{rootCtrl.pad($index + 17)}}.jpg" alt="title" />
+					<img lazy data-src="img/product/marvel/porcelain-decors/{{root.pad($index + 17)}}.jpg" alt="title" />
 				</div>
 				<div class="group group--cta">
 					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico Lappato</span></a>

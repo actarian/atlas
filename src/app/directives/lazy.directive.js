@@ -70,7 +70,7 @@ export default class LazyDirective {
 				image.removeAttribute('data-src');
 			}
 		} else if (scope.src) {
-			console.log(scope.src);
+			// console.log(scope.src);
 			image.setAttribute('src', null);
 			image.setAttribute('src', scope.src);
 			image.removeAttribute('data-src');

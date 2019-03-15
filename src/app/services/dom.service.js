@@ -22,7 +22,7 @@ export default class DomService {
 
 	raf$() {
 		return range(0, Number.POSITIVE_INFINITY, animationFrame).pipe(
-			// shareReplay()
+			shareReplay()
 		);
 	}
 

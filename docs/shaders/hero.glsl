@@ -3,89 +3,49 @@ precision highp float;
 #endif
 
 uniform vec2 u_resolution;
+uniform vec2 u_mouse;
 uniform float u_time;
-uniform sampler2D u_buffer0;
+uniform float u_pow;
+uniform float u_top;
 uniform sampler2D u_texture;
 uniform vec2 u_textureResolution;
 
-vec3 mod289(vec3 x) {
-	return x - floor(x * (1.0 / 289.0)) * 289.0;
+float random(vec2 st) {
+	return fract(sin(dot(st.xy, vec2(12.9898 , 78.233))) * (43758.5453123 + cos(u_time)));
 }
-
-vec2 mod289(vec2 x) {
-	return x - floor(x * (1.0 / 289.0)) * 289.0;
-}
-
-vec3 permute(vec3 x) {
-	return mod289(((x * 34.0) + 1.0) * x);
-}
-
-float snoise(vec2 v) {
-	const vec4 C = vec4(0.211324865405187, // (3.0-sqrt(3.0))/6.0
-	0.366025403784439, // 0.5*(sqrt(3.0)-1.0)
-	- 0.577350269189626, // -1.0 + 2.0 * C.x
- 0.024390243902439); // 1.0 / 41.0
- vec2 i = floor(v + dot(v, C.yy));
- vec2 x0 = v - i + dot(i, C.xx);
-
- vec2 i1;
- i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
- vec4 x12 = x0.xyxy + C.xxzz;
- x12.xy -= i1;
-
- i = mod289(i); // Avoid truncation effects in permutation
- vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
- + i.x + vec3(0.0, i1.x, 1.0));
-
- vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
- m = m*m ;
- m = m*m ;
-
- vec3 x = 2.0 * fract(p * C.www) - 1.0;
- vec3 h = abs(x) - 0.5;
- vec3 ox = floor(x + 0.5);
- vec3 a0 = x - ox;
-
- m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h*h);
-
- vec3 g;
- g.x = a0.x * x0.x + h.x * x0.y;
- g.yz = a0.yz * x12.xz + h.yz * x12.yw;
- return 130.0 * dot(m, g);
-}
-
-float rand(vec2 co) {
- return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
-#if defined(BUFFER_0)
 
 void main() {
- vec2 uv = gl_FragCoord.xy / u_resolution.xy;
- float time = u_time * 2.0;
+	vec2 st = gl_FragCoord.xy / u_resolution.xy;
+	float rr = u_resolution.x / u_resolution.y;
+	float tr = u_textureResolution.x / u_textureResolution.y;
+	st.y = st.y / rr * tr;
+	float top = u_top / u_resolution.y;
+	vec2 mx = u_mouse / u_resolution;
+	vec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 0.1;
 
- float noise = max(0.0, snoise(vec2(time, uv.y * 0.3)) - 0.3) * (1.0 / 0.7);
- noise = noise + (snoise(vec2(time * 10.0, uv.y * 2.4)) - 0.5) * 0.15;
- float xpos = uv.x - noise * noise * 0.25;
- vec4 color = texture2D(u_texture, vec2(xpos, uv.y));
- color.rgb = mix(color.rgb, vec3(rand(vec2(uv.y * time))), noise * 0.3).rgb;
+	float c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);
+	float s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);
+	float b = (length(vec2(c + s, c)) + 2.0) * 0.1;
 
- if (floor(mod(gl_FragCoord.y * 0.25, 2.0)) == 0.0) {
-	color.rgb *= 1.0 - (0.15 * noise);
- }
+	float center = length(st - 0.5);
 
- color.g = mix(color.r, texture2D(u_buffer0, vec2(xpos + noise * 0.05, uv.y)).g, 0.25);
- color.b = mix(color.r, texture2D(u_buffer0, vec2(xpos - noise * 0.05, uv.y)).b, 0.25);
+	vec2 sty = vec2(st.x, st.y + top);
+	float scale = 0.95 * (1.0 - b * center * u_pow);
+	vec2 stb = (sty - 0.5) * scale + 0.5;
 
- gl_FragColor = color;
+	vec3 video = texture2D(u_texture, stb).rgb;
+
+	float noise = random(st) * 0.05;
+
+	vec3 bulge = vec3(b);
+
+	vec3 color = vec3(0.0);
+	color = vec3(video - bulge * 0.1 - noise);
+	// color = vec3(noise);
+	// color = vec3(center);
+	// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;
+	// color = vec3(video);
+	// color = vec3(u_pow * center);
+
+	gl_FragColor = vec4(color, 1.0);
 }
-
-#else
-
-void main() {
- vec2 st = gl_FragCoord.xy / u_resolution.xy;
- vec3 color = texture2D(u_buffer0, st).rgb;
- gl_FragColor = vec4(vec3(color.r), 1.0);
-}
-
-#endif
