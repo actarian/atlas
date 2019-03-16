@@ -15607,14 +15607,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _operators = require("rxjs/operators");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var GlslCanvasDirective =
 /*#__PURE__*/
 function () {
@@ -15636,11 +15637,7 @@ function () {
       canvas.setUniform('u_pow', 1.0);
       canvas.setUniform('u_top', 0.0);
       var pow = {
-        pow: 1.0,
-        top: 0.0
-      };
-      var top = {
-        top: 0.0
+        pow: 1.0
       };
       var tween;
 
@@ -15650,9 +15647,10 @@ function () {
           tween.kill();
         }
 
-        tween = TweenLite.to(pow, 3, {
+        tween = TweenMax.to(pow, 3, {
           pow: 0.0,
-          ease: Elastic.easeOut.config(1, 0.3),
+          ease: Back.easeOut.config(1.7),
+          // Elastic.easeOut.config(1, 0.3),
           overwrite: 'all',
           onUpdate: function onUpdate() {
             // console.log(pow.pow);
@@ -15667,9 +15665,10 @@ function () {
           tween.kill();
         }
 
-        tween = TweenLite.to(pow, 3, {
+        tween = TweenMax.to(pow, 3, {
           pow: 1.0,
-          ease: Elastic.easeOut.config(1, 0.3),
+          ease: Back.easeOut.config(1.7),
+          // Elastic.easeOut.config(1, 0.3),
           overwrite: 'all',
           onUpdate: function onUpdate() {
             // console.log(pow.pow);
@@ -15680,19 +15679,8 @@ function () {
 
       node.addEventListener('mouseover', onOver);
       node.addEventListener('mouseout', onOut);
-      var scrollTween;
-      var subscription = this.domService.scroll$().pipe((0, _operators.auditTime)(1000 / 25)).subscribe(function (scroll) {
+      var subscription = this.domService.raf$().subscribe(function (scroll) {
         canvas.setUniform('u_top', window.scrollY || window.scrollTop || 0);
-        /*
-        scrollTween = TweenLite.to(top, 0.3, {
-        	top: scroll.scrollTop,
-        	overwrite: 'all',
-        	onUpdate: () => {
-        		// console.log(pow.pow);
-        		canvas.setUniform('u_top', top.top);
-        	},
-        });
-        */
       });
       canvas.on('error', function (error) {
         console.log(error);
@@ -15700,10 +15688,6 @@ function () {
       element.on('$destroy', function () {
         if (tween) {
           tween.kill();
-        }
-
-        if (scrollTween) {
-          scrollTween.kill();
         }
 
         node.removeEventListener('mouseover', onOver);
@@ -15725,7 +15709,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{"rxjs/operators":197}],202:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16071,17 +16055,13 @@ function () {
       var childNode = node.querySelector('img, video');
 
       if (childNode) {
-        // if (node.childElementCount > 0) {
-        // const childNode = node.firstElementChild;
-        var parallax = (parseInt(attributes.parallax) || 5) * 2; // console.log(node, parallax);
-
-        var subscription = this.parallax$(node, parallax).pipe().subscribe(function (parallax) {
-          // console.log(parallax);
+        var parallax = (parseInt(attributes.parallax) || 5) * 2;
+        var subscription = this.parallax$(node, parallax).subscribe(function (parallax) {
           childNode.setAttribute('style', "top: 50%; left: 50%; transform: translateX(-50%) translateY(".concat(parallax.p, "%) scale(").concat(parallax.s, ", ").concat(parallax.s, ");"));
         });
         element.on('$destroy', function () {
           subscription.unsubscribe();
-        }); // }
+        });
       }
     }
   }, {
@@ -16109,7 +16089,13 @@ function () {
         }
       }), (0, _operators.filter)(function (x) {
         return x !== null;
-      }));
+      })
+      /*
+      distinctUntilChanged((a, b) => {
+      	return a.p !== b.p;
+      }),
+      */
+      );
     }
   }], [{
     key: "factory",
@@ -16687,14 +16673,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* jshint esversion: 6 */
 
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
-// Import Quicklink
-// See: https://github.com/GoogleChromeLabs/quicklink
-// import Quicklink from 'quicklink/dist/quicklink.mjs';
-// Import Polyfills
-// See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
-// import 'intersection-observer';
-// import Highway from '@dogstudio/highway';
-// import PageTransition from './highway/page-transition';
 var RootCtrl =
 /*#__PURE__*/
 function () {
@@ -16724,84 +16702,12 @@ function () {
             _this.scrolled = scrolled;
           });
         }
-      }; // this.setHighway();
-
+      };
 
       this.initCustomNavigation();
       this.$timeout(function () {
         _this.init = true;
       }, 1000);
-    }
-  }, {
-    key: "getClasses",
-    value: function getClasses() {
-      var classes = {};
-      classes[this.brand] = true;
-
-      if (this.init) {
-        classes.init = true;
-      }
-
-      return classes;
-    }
-  }, {
-    key: "toggleBrand",
-    value: function toggleBrand(event) {
-      var brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
-      var i = (brands.indexOf(this.brand) + 1) % brands.length;
-      this.brand = brands[i];
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
-  }, {
-    key: "toggleNav",
-    value: function toggleNav(id) {
-      var nav = id || this.nav;
-      this.nav = this.nav === id ? null : id;
-
-      if (nav) {
-        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
-        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
-
-        if (this.nav) {
-          TweenMax.set(items, {
-            alpha: 0
-          });
-          TweenMax.set(node, {
-            maxHeight: 0
-          });
-          TweenMax.to(node, 0.4, {
-            maxHeight: '100vh',
-            // delay: 0.5,
-            overwrite: 'all',
-            onComplete: function onComplete() {}
-          });
-          TweenMax.staggerTo(items, 0.35, {
-            opacity: 1
-          }, 0.1, function () {});
-          /*
-          items.forEach((item, i) => TweenMax.to(item, 0.3, {
-          	alpha: 1,
-          	delay: 0.2 * i,
-          	overwrite: 'all',
-          }));
-          */
-        } else {
-          console.log('remove', items);
-          TweenMax.staggerTo(items.reverse(), 0.35, {
-            opacity: 0
-          }, 0.1, function () {
-            TweenMax.to(node, 0.4, {
-              maxHeight: 0
-            });
-          });
-        }
-      }
-    }
-  }, {
-    key: "pad",
-    value: function pad(index) {
-      return index < 10 ? '0' + index : index;
     }
   }, {
     key: "initCustomNavigation",
@@ -16911,77 +16817,88 @@ function () {
       });
     }
   }, {
+    key: "getClasses",
+    value: function getClasses() {
+      var classes = {};
+      classes[this.brand] = true;
+
+      if (this.init) {
+        classes.init = true;
+      }
+
+      return classes;
+    }
+  }, {
+    key: "toggleNav",
+    value: function toggleNav(id) {
+      var nav = id || this.nav;
+      this.nav = this.nav === id ? null : id;
+
+      if (nav) {
+        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
+        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+
+        if (this.nav) {
+          TweenMax.set(items, {
+            alpha: 0
+          });
+          TweenMax.set(node, {
+            maxHeight: 0
+          });
+          TweenMax.to(node, 0.4, {
+            maxHeight: '100vh',
+            // delay: 0.5,
+            overwrite: 'all',
+            onComplete: function onComplete() {
+              TweenMax.staggerTo(items, 0.35, {
+                opacity: 1,
+                stagger: 0.05,
+                delay: 0.0,
+                onComplete: function onComplete() {}
+              });
+            }
+          });
+          /*
+          items.forEach((item, i) => TweenMax.to(item, 0.3, {
+          	alpha: 1,
+          	delay: 0.2 * i,
+          	overwrite: 'all',
+          }));
+          */
+        } else {
+          console.log('remove', items);
+          TweenMax.staggerTo(items.reverse(), 0.35, {
+            opacity: 0,
+            stagger: 0.05,
+            delay: 0.0,
+            onComplete: function onComplete() {
+              TweenMax.to(node, 0.4, {
+                maxHeight: 0,
+                delay: 0.0
+              });
+            }
+          });
+        }
+      }
+    }
+  }, {
+    key: "toggleBrand",
+    value: function toggleBrand(event) {
+      var brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
+      var i = (brands.indexOf(this.brand) + 1) % brands.length;
+      this.brand = brands[i];
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, {
+    key: "pad",
+    value: function pad(index) {
+      return index < 10 ? '0' + index : index;
+    }
+  }, {
     key: "hasHash",
     value: function hasHash(hash) {
       return window.location.hash.indexOf(hash) !== -1;
-    }
-  }, {
-    key: "setHighway",
-    value: function setHighway() {
-      var _this3 = this;
-
-      return;
-      this.$timeout(function () {
-        var H = new Highway.Core({
-          transitions: {
-            default: PageTransition
-          }
-        });
-        H.on('NAVIGATE_IN', function (_ref2) {
-          var to = _ref2.to,
-              trigger = _ref2.trigger,
-              location = _ref2.location;
-          H.detach(H.links);
-          console.log('NAVIGATE_IN', location);
-
-          _this3.$timeout(function () {
-            var element = angular.element(to.view);
-            var scope = element.scope();
-
-            _this3.$compile(element.contents())(scope);
-
-            _this3.$timeout(function () {
-              // console.log(scope, element, element.contents());
-              var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
-              H.links = links;
-              H.attach(links);
-              links.forEach(function (x) {
-                x.classList.remove('active');
-
-                if (x.href === location.href) {
-                  x.classList.add('active');
-                }
-              });
-              /*
-              // link prefetch
-              Quicklink({
-              	el: to.view
-              });
-              */
-            }, 200);
-          });
-        });
-        /*
-        H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
-        	setTimeout(() => {
-        		document.querySelector('.view').scrollIntoView({
-        			behavior: 'smooth',
-        			block: 'start',
-        			inline: 'start'
-        		});
-        		if (window.scroll) {
-        			window.scroll({
-        				top: 0,
-        				left: 0,
-        				behavior: 'smooth'
-        			});
-        		} else {
-        			window.scrollTo(0, 0);
-        		}
-        	}, 200);
-        });
-        */
-      }, 200);
     }
   }]);
 

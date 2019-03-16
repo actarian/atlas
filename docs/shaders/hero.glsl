@@ -11,7 +11,7 @@ uniform sampler2D u_texture;
 uniform vec2 u_textureResolution;
 
 float random(vec2 st) {
-	return fract(sin(dot(st.xy, vec2(12.9898 , 78.233))) * (43758.5453123 + cos(u_time)));
+	return fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));
 }
 
 void main() {
@@ -25,27 +25,26 @@ void main() {
 
 	float c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);
 	float s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);
-	float b = (length(vec2(c + s, c)) + 2.0) * 0.1;
+	float b = (length(vec2(c + s, c)) + 2.0) * 0.2;
 
 	float center = length(st - 0.5);
-
 	vec2 sty = vec2(st.x, st.y + top);
 	float scale = 0.95 * (1.0 - b * center * u_pow);
 	vec2 stb = (sty - 0.5) * scale + 0.5;
 
 	vec3 video = texture2D(u_texture, stb).rgb;
-
-	float noise = random(st) * 0.05;
-
+	float noise = random(st) * 0.08;
 	vec3 bulge = vec3(b);
 
 	vec3 color = vec3(0.0);
-	color = vec3(video - bulge * 0.1 - noise);
+	color = vec3(video - noise);
+	// color = vec3(video);
+	// color = vec3(video - bulge * 0.1 - noise);
+	// color = vec3(bulge);
 	// color = vec3(noise);
 	// color = vec3(center);
-	// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;
-	// color = vec3(video);
 	// color = vec3(u_pow * center);
+	// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;
 
 	gl_FragColor = vec4(color, 1.0);
 }

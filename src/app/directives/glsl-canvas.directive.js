@@ -1,8 +1,6 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
-import { auditTime } from "rxjs/operators";
-
 export default class GlslCanvasDirective {
 
 	constructor(
@@ -18,17 +16,17 @@ export default class GlslCanvasDirective {
 		canvas.setTexture('u_texture', attributes.glslCanvas, { repeat: true });
 		canvas.setUniform('u_pow', 1.0);
 		canvas.setUniform('u_top', 0.0);
-		let pow = { pow: 1.0, top: 0.0 };
-		let top = { top: 0.0 };
+		let pow = { pow: 1.0 };
 		let tween;
 		const onOver = (event) => {
 			// console.log('onOver');
 			if (tween) {
 				tween.kill();
 			}
-			tween = TweenLite.to(pow, 3, {
+			tween = TweenMax.to(pow, 3, {
 				pow: 0.0,
-				ease: Elastic.easeOut.config(1, 0.3),
+				ease: Back.easeOut.config(1.7),
+				// Elastic.easeOut.config(1, 0.3),
 				overwrite: 'all',
 				onUpdate: () => {
 					// console.log(pow.pow);
@@ -41,9 +39,10 @@ export default class GlslCanvasDirective {
 			if (tween) {
 				tween.kill();
 			}
-			tween = TweenLite.to(pow, 3, {
+			tween = TweenMax.to(pow, 3, {
 				pow: 1.0,
-				ease: Elastic.easeOut.config(1, 0.3),
+				ease: Back.easeOut.config(1.7),
+				// Elastic.easeOut.config(1, 0.3),
 				overwrite: 'all',
 				onUpdate: () => {
 					// console.log(pow.pow);
@@ -53,21 +52,8 @@ export default class GlslCanvasDirective {
 		};
 		node.addEventListener('mouseover', onOver);
 		node.addEventListener('mouseout', onOut);
-		let scrollTween;
-		const subscription = this.domService.scroll$().pipe(
-			auditTime(1000 / 25)
-		).subscribe(scroll => {
+		const subscription = this.domService.raf$().subscribe(scroll => {
 			canvas.setUniform('u_top', window.scrollY || window.scrollTop || 0);
-			/*
-			scrollTween = TweenLite.to(top, 0.3, {
-				top: scroll.scrollTop,
-				overwrite: 'all',
-				onUpdate: () => {
-					// console.log(pow.pow);
-					canvas.setUniform('u_top', top.top);
-				},
-			});
-			*/
 		});
 		canvas.on('error', function(error) {
 			console.log(error);
@@ -75,9 +61,6 @@ export default class GlslCanvasDirective {
 		element.on('$destroy', () => {
 			if (tween) {
 				tween.kill();
-			}
-			if (scrollTween) {
-				scrollTween.kill();
 			}
 			node.removeEventListener('mouseover', onOver);
 			node.removeEventListener('mouseout', onOut);

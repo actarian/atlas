@@ -134,7 +134,8 @@ body {
 body {
   overflow-x: hidden;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; }
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth; }
   body.opened {
     height: 100vh !important;
     overflow: hidden; }
@@ -1850,6 +1851,8 @@ canvas {
   .section--negative .picture {
     -webkit-box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4);
             box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4); }
+  .picture img {
+    max-width: 100%; }
 
 .picture--vertical {
   width: 100%;

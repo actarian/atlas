@@ -1,15 +1,6 @@
 ﻿/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
-// Import Quicklink
-// See: https://github.com/GoogleChromeLabs/quicklink
-// import Quicklink from 'quicklink/dist/quicklink.mjs';
-// Import Polyfills
-// See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
-// import 'intersection-observer';
-// import Highway from '@dogstudio/highway';
-// import PageTransition from './highway/page-transition';
-
 class RootCtrl {
 
 	constructor(
@@ -37,68 +28,10 @@ class RootCtrl {
 				});
 			}
 		};
-		// this.setHighway();
 		this.initCustomNavigation();
 		this.$timeout(() => {
 			this.init = true;
 		}, 1000);
-	}
-
-	getClasses() {
-		const classes = {};
-		classes[this.brand] = true;
-		if (this.init) {
-			classes.init = true;
-		}
-		return classes;
-	}
-
-	toggleBrand(event) {
-		const brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
-		const i = (brands.indexOf(this.brand) + 1) % brands.length;
-		this.brand = brands[i];
-		event.preventDefault();
-		event.stopImmediatePropagation();
-	}
-
-	toggleNav(id) {
-		const nav = id || this.nav;
-		this.nav = (this.nav === id ? null : id);
-		if (nav) {
-			const node = document.querySelector(`#nav-${nav} .section--submenu`);
-			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-			if (this.nav) {
-				TweenMax.set(items, { alpha: 0 });
-				TweenMax.set(node, { maxHeight: 0 });
-				TweenMax.to(node, 0.4, {
-					maxHeight: '100vh',
-					// delay: 0.5,
-					overwrite: 'all',
-					onComplete: () => {}
-				});
-				TweenMax.staggerTo(items, 0.35, { opacity: 1 }, 0.1, () => {
-
-				});
-				/*
-				items.forEach((item, i) => TweenMax.to(item, 0.3, {
-					alpha: 1,
-					delay: 0.2 * i,
-					overwrite: 'all',
-				}));
-				*/
-			} else {
-				console.log('remove', items);
-				TweenMax.staggerTo(items.reverse(), 0.35, { opacity: 0 }, 0.1, () => {
-					TweenMax.to(node, 0.4, {
-						maxHeight: 0,
-					});
-				});
-			}
-		}
-	}
-
-	pad(index) {
-		return index < 10 ? '0' + index : index;
 	}
 
 	initCustomNavigation() {
@@ -186,66 +119,77 @@ class RootCtrl {
 		});
 	}
 
-	hasHash(hash) {
-		return window.location.hash.indexOf(hash) !== -1;
+	getClasses() {
+		const classes = {};
+		classes[this.brand] = true;
+		if (this.init) {
+			classes.init = true;
+		}
+		return classes;
 	}
 
-	setHighway() {
-		return;
-		this.$timeout(() => {
-			const H = new Highway.Core({
-				transitions: {
-					default: PageTransition,
-				}
-			});
-			H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
-				H.detach(H.links);
-				console.log('NAVIGATE_IN', location);
-				this.$timeout(() => {
-					const element = angular.element(to.view);
-					const scope = element.scope();
-					this.$compile(element.contents())(scope);
-					this.$timeout(() => {
-						// console.log(scope, element, element.contents());
-						const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
-						H.links = links;
-						H.attach(links);
-						links.forEach(x => {
-							x.classList.remove('active');
-							if (x.href === location.href) {
-								x.classList.add('active');
+	toggleNav(id) {
+		const nav = id || this.nav;
+		this.nav = (this.nav === id ? null : id);
+		if (nav) {
+			const node = document.querySelector(`#nav-${nav} .section--submenu`);
+			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+			if (this.nav) {
+				TweenMax.set(items, { alpha: 0 });
+				TweenMax.set(node, { maxHeight: 0 });
+				TweenMax.to(node, 0.4, {
+					maxHeight: '100vh',
+					// delay: 0.5,
+					overwrite: 'all',
+					onComplete: () => {
+						TweenMax.staggerTo(items, 0.35, {
+							opacity: 1,
+							stagger: 0.05,
+							delay: 0.0,
+							onComplete: () => {
+
 							}
 						});
-						/*
-						// link prefetch
-						Quicklink({
-							el: to.view
-						});
-						*/
-					}, 200);
-				});
-			});
-			/*
-			H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
-				setTimeout(() => {
-					document.querySelector('.view').scrollIntoView({
-						behavior: 'smooth',
-						block: 'start',
-						inline: 'start'
-					});
-					if (window.scroll) {
-						window.scroll({
-							top: 0,
-							left: 0,
-							behavior: 'smooth'
-						});
-					} else {
-						window.scrollTo(0, 0);
 					}
-				}, 200);
-			});
-			*/
-		}, 200);
+				});
+				/*
+				items.forEach((item, i) => TweenMax.to(item, 0.3, {
+					alpha: 1,
+					delay: 0.2 * i,
+					overwrite: 'all',
+				}));
+				*/
+			} else {
+				console.log('remove', items);
+				TweenMax.staggerTo(items.reverse(), 0.35, {
+					opacity: 0,
+					stagger: 0.05,
+					delay: 0.0,
+					onComplete: () => {
+						TweenMax.to(node, 0.4, {
+							maxHeight: 0,
+							delay: 0.0,
+						});
+					}
+				});
+			}
+		}
+	}
+
+	toggleBrand(event) {
+		const brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
+		const i = (brands.indexOf(this.brand) + 1) % brands.length;
+		this.brand = brands[i];
+		event.preventDefault();
+		event.stopImmediatePropagation();
+	}
+
+	pad(index) {
+		return index < 10 ? '0' + index : index;
+	}
+
+	hasHash(hash) {
+		return window.location.hash.indexOf(hash) !== -1;
 	}
 
 }
