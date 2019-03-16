@@ -15649,7 +15649,8 @@ function () {
 
         tween = TweenMax.to(pow, 3, {
           pow: 0.0,
-          ease: Back.easeOut.config(1.7),
+          ease: Expo.easeOut,
+          // Back.easeOut.config(1.7),
           // Elastic.easeOut.config(1, 0.3),
           overwrite: 'all',
           onUpdate: function onUpdate() {
@@ -15667,7 +15668,8 @@ function () {
 
         tween = TweenMax.to(pow, 3, {
           pow: 1.0,
-          ease: Back.easeOut.config(1.7),
+          ease: Expo.easeInOut,
+          // Back.easeOut.config(1.7),
           // Elastic.easeOut.config(1, 0.3),
           overwrite: 'all',
           onUpdate: function onUpdate() {
@@ -16829,57 +16831,70 @@ function () {
       return classes;
     }
   }, {
-    key: "toggleNav",
-    value: function toggleNav(id) {
-      var nav = id || this.nav;
-      this.nav = this.nav === id ? null : id;
+    key: "closeNav",
+    value: function closeNav() {
+      return new Promise(function (resolve, reject) {
+        var node = document.querySelector(".section--submenu.active");
 
-      if (nav) {
-        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
-        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
-
-        if (this.nav) {
-          TweenMax.set(items, {
-            alpha: 0
-          });
-          TweenMax.set(node, {
-            maxHeight: 0
-          });
-          TweenMax.to(node, 0.4, {
-            maxHeight: '100vh',
-            // delay: 0.5,
-            overwrite: 'all',
-            onComplete: function onComplete() {
-              TweenMax.staggerTo(items, 0.35, {
-                opacity: 1,
-                stagger: 0.05,
-                delay: 0.0,
-                onComplete: function onComplete() {}
-              });
-            }
-          });
-          /*
-          items.forEach((item, i) => TweenMax.to(item, 0.3, {
-          	alpha: 1,
-          	delay: 0.2 * i,
-          	overwrite: 'all',
-          }));
-          */
-        } else {
-          console.log('remove', items);
-          TweenMax.staggerTo(items.reverse(), 0.35, {
+        if (node) {
+          var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+          TweenMax.staggerTo(items.reverse(), 0.25, {
             opacity: 0,
             stagger: 0.05,
             delay: 0.0,
             onComplete: function onComplete() {
-              TweenMax.to(node, 0.4, {
+              TweenMax.to(node, 0.2, {
                 maxHeight: 0,
-                delay: 0.0
+                delay: 0.0,
+                onComplete: function onComplete() {
+                  resolve();
+                }
               });
             }
           });
+        } else {
+          resolve();
         }
-      }
+      });
+    }
+  }, {
+    key: "openNav",
+    value: function openNav(nav) {
+      return new Promise(function (resolve, reject) {
+        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
+        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+        TweenMax.set(items, {
+          alpha: 0
+        });
+        TweenMax.set(node, {
+          maxHeight: 0
+        });
+        TweenMax.to(node, 0.2, {
+          maxHeight: '100vh',
+          delay: 0.0,
+          overwrite: 'all',
+          onComplete: function onComplete() {
+            TweenMax.staggerTo(items, 0.35, {
+              opacity: 1,
+              stagger: 0.05,
+              delay: 0.0,
+              onComplete: function onComplete() {}
+            });
+          }
+        });
+      });
+    }
+  }, {
+    key: "toggleNav",
+    value: function toggleNav(id) {
+      var _this3 = this;
+
+      this.nav = this.nav === id ? null : id;
+      this.closeNav().then(function () {
+        if (_this3.nav) {
+          _this3.openNav(_this3.nav);
+        }
+      });
     }
   }, {
     key: "toggleBrand",

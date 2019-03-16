@@ -5,7 +5,7 @@
 	width: 100vw;
 	height: auto;
 	max-height: 0;
-	background: #1a1a1a;
+	background: $background-subheader;
 	color: white;
 	overflow: hidden;
 	transition: 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
@@ -48,16 +48,20 @@
 	.title {
 		position: relative;
 		display: inline-block;
-
 		font-size: 16px;
 		font-weight: 600;
-		margin-bottom: 20px;
+		margin-bottom: 5px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		padding-bottom: 4px;
+		max-width: 100%;
 
 		&:after {
 			content: '';
 			position: absolute;
 			left: 0;
-			bottom: -4px;
+			bottom: 0;
 			width: 100%;
 			height: 2px;
 			background: $foreground-negative;

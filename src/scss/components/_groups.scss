@@ -14,11 +14,10 @@
 	}
 
 	@include media-breakpoint-up(sm) {
-		&>.btn+.btn {
-			margin-left: 15px;
+		.btn {
+			margin-right: 15px;
 		}
 	}
-
 }
 
 .group--tile {

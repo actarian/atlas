@@ -1,5 +1,23 @@
 body,
 .atlas-concorde {
+	--font-primary: 'Muli', sans-serif;
+	--font-secondary: 'Roboto', sans-serif;
+	--font-size: 18px;
+	--line-height: 1.77;
+	--font-extralight: 200;
+	--font-light: 300;
+	--font-regular: 400;
+	--font-semibold: 600;
+	--font-bold: 700;
+	--font-extrabold: 800;
+	--font-black: 900;
+	--btn-radius: 20px;
+	--card-radius: 30px;
+	--bullet-size: 12px;
+}
+
+body,
+.atlas-concorde {
 	--color-background: #ffffff;
 	--color-background-negative: #000000;
 	--color-background-secondary: #ffffff;
@@ -22,14 +40,6 @@ body,
 	--color-primary: #b92442;
 	--color-facebook: #3B5998;
 	--color-google: #dd4b39;
-	--font-primary: 'Muli', sans-serif;
-	--font-secondary: 'Roboto', sans-serif;
-	--font-size: 18px;
-	--font-weight: 300;
-	--line-height: 1.77;
-	--btn-radius: 20px;
-	--card-radius: 30px;
-	--bullet-size: 12px;
 }
 
 .atlas-concorde-solution {
@@ -38,7 +48,7 @@ body,
 	--color-background-secondary: #ffffff;
 	--color-background-tertiary: #f0f1f3; // #f0f1f3;
 	--color-background-header: #123258;
-	--color-background-subheader: #1a1a1a;
+	--color-background-subheader: #113157;
 	--color-foreground: #0f3252;
 	--color-foreground-negative: #ffffff;
 	--color-foreground-secondary: #868887;
@@ -52,14 +62,6 @@ body,
 	--color-primary: #123258;
 	--color-facebook: #3B5998;
 	--color-google: #dd4b39;
-	--font-primary: 'Muli', sans-serif;
-	--font-secondary: 'Roboto', sans-serif;
-	--font-size: 18px;
-	--font-weight: 300;
-	--line-height: 1.77;
-	--btn-radius: 20px;
-	--card-radius: 30px;
-	--bullet-size: 12px;
 }
 
 .atlas-concorde-usa {
@@ -68,7 +70,7 @@ body,
 	--color-background-secondary: #ffffff;
 	--color-background-tertiary: #f3f7fa;
 	--color-background-header: #7f9cae;
-	--color-background-subheader: #1a1a1a;
+	--color-background-subheader: #7e9bad;
 	--color-foreground: #7c9baf;
 	--color-foreground-negative: #ffffff;
 	--color-foreground-secondary: #9a9b9d;
@@ -82,14 +84,6 @@ body,
 	--color-primary: #7f9cae;
 	--color-facebook: #3B5998;
 	--color-google: #dd4b39;
-	--font-primary: 'Muli', sans-serif;
-	--font-secondary: 'Roboto', sans-serif;
-	--font-size: 18px;
-	--font-weight: 300;
-	--line-height: 1.77;
-	--btn-radius: 20px;
-	--card-radius: 30px;
-	--bullet-size: 12px;
 }
 
 .atlas-concorde-russia {
@@ -98,7 +92,7 @@ body,
 	--color-background-secondary: #ffffff;
 	--color-background-tertiary: #f8f5f0; // #faf9f5;
 	--color-background-header: #ad8464;
-	--color-background-subheader: #1a1a1a;
+	--color-background-subheader: #ac8363;
 	--color-foreground: #af8462;
 	--color-foreground-negative: #ffffff;
 	--color-foreground-secondary: #99887e;
@@ -112,12 +106,4 @@ body,
 	--color-primary: #b08565;
 	--color-facebook: #3B5998;
 	--color-google: #dd4b39;
-	--font-primary: 'Muli', sans-serif;
-	--font-secondary: 'Roboto', sans-serif;
-	--font-size: 18px;
-	--font-weight: 300;
-	--line-height: 1.77;
-	--btn-radius: 20px;
-	--card-radius: 30px;
-	--bullet-size: 12px;
 }

@@ -128,52 +128,62 @@ class RootCtrl {
 		return classes;
 	}
 
-	toggleNav(id) {
-		const nav = id || this.nav;
-		this.nav = (this.nav === id ? null : id);
-		if (nav) {
-			const node = document.querySelector(`#nav-${nav} .section--submenu`);
-			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-			if (this.nav) {
-				TweenMax.set(items, { alpha: 0 });
-				TweenMax.set(node, { maxHeight: 0 });
-				TweenMax.to(node, 0.4, {
-					maxHeight: '100vh',
-					// delay: 0.5,
-					overwrite: 'all',
-					onComplete: () => {
-						TweenMax.staggerTo(items, 0.35, {
-							opacity: 1,
-							stagger: 0.05,
-							delay: 0.0,
-							onComplete: () => {
-
-							}
-						});
-					}
-				});
-				/*
-				items.forEach((item, i) => TweenMax.to(item, 0.3, {
-					alpha: 1,
-					delay: 0.2 * i,
-					overwrite: 'all',
-				}));
-				*/
-			} else {
-				console.log('remove', items);
-				TweenMax.staggerTo(items.reverse(), 0.35, {
+	closeNav() {
+		return new Promise((resolve, reject) => {
+			const node = document.querySelector(`.section--submenu.active`);
+			if (node) {
+				const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+				TweenMax.staggerTo(items.reverse(), 0.25, {
 					opacity: 0,
 					stagger: 0.05,
 					delay: 0.0,
 					onComplete: () => {
-						TweenMax.to(node, 0.4, {
+						TweenMax.to(node, 0.2, {
 							maxHeight: 0,
 							delay: 0.0,
+							onComplete: () => {
+								resolve();
+							}
 						});
 					}
 				});
+			} else {
+				resolve();
 			}
-		}
+		});
+	}
+
+	openNav(nav) {
+		return new Promise((resolve, reject) => {
+			const node = document.querySelector(`#nav-${nav} .section--submenu`);
+			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+			TweenMax.set(items, { alpha: 0 });
+			TweenMax.set(node, { maxHeight: 0 });
+			TweenMax.to(node, 0.2, {
+				maxHeight: '100vh',
+				delay: 0.0,
+				overwrite: 'all',
+				onComplete: () => {
+					TweenMax.staggerTo(items, 0.35, {
+						opacity: 1,
+						stagger: 0.05,
+						delay: 0.0,
+						onComplete: () => {
+
+						}
+					});
+				}
+			});
+		});
+	}
+
+	toggleNav(id) {
+		this.nav = (this.nav === id ? null : id);
+		this.closeNav().then(() => {
+			if (this.nav) {
+				this.openNav(this.nav);
+			}
+		});
 	}
 
 	toggleBrand(event) {

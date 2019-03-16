@@ -3,7 +3,7 @@
 body {
 	font-family: $font-secondary;
 	font-size: $font-size;
-	font-weight: $font-weight;
+	font-weight: $font-extralight;
 	line-height: $line-height;
 	background: $background;
 	color: $foreground-secondary;
@@ -15,7 +15,7 @@ body {
 .h4,
 .h5 {
 	font-family: $font-primary;
-	font-weight: 600;
+	font-weight: $font-semibold;
 }
 
 .h1 {
