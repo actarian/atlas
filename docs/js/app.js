@@ -17012,6 +17012,8 @@ var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -17026,6 +17028,28 @@ function () {
   }
 
   _createClass(DomService, [{
+    key: "getOuterHeight",
+    value: function getOuterHeight(node) {
+      var height = node.clientHeight;
+      var computedStyle = window.getComputedStyle(node);
+      height += (_readOnlyError("height"), parseInt(computedStyle.marginTop, 10));
+      height += (_readOnlyError("height"), parseInt(computedStyle.marginBottom, 10));
+      height += (_readOnlyError("height"), parseInt(computedStyle.borderTopWidth, 10));
+      height += (_readOnlyError("height"), parseInt(computedStyle.borderBottomWidth, 10));
+      return height;
+    }
+  }, {
+    key: "getOuterWidth",
+    value: function getOuterWidth(node) {
+      var width = node.clientWidth;
+      var computedStyle = window.getComputedStyle(node);
+      width += (_readOnlyError("width"), parseInt(computedStyle.marginLeft, 10));
+      width += (_readOnlyError("width"), parseInt(computedStyle.marginRight, 10));
+      width += (_readOnlyError("width"), parseInt(computedStyle.borderLeftWidth, 10));
+      width += (_readOnlyError("width"), parseInt(computedStyle.borderRightWidth, 10));
+      return width;
+    }
+  }, {
     key: "raf$",
     value: function raf$() {
       return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe((0, _operators.shareReplay)());
@@ -17051,8 +17075,7 @@ function () {
   }, {
     key: "scroll$",
     value: function scroll$() {
-      var target = window; // document.querySelector('body');
-
+      var target = window;
       var event = {
         /*
         top: target.offsetTop || 0,
@@ -17060,8 +17083,8 @@ function () {
         width: target.offsetWidth || target.innerWidth,
         height: target.offsetHeight || target.innerHeight,
         */
-        scrollTop: target.scrollY || target.scrollTop || 0,
-        scrollLeft: target.scrollX || target.scrollLeft || 0,
+        scrollTop: DomService.getScrollTop(target),
+        scrollLeft: DomService.getScrollLeft(target),
         originalEvent: null
       };
       return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.auditTime)(33), // 30 fps
@@ -17072,8 +17095,8 @@ function () {
         event.width = target.offsetWidth || target.innerWidth;
         event.height = target.offsetHeight || target.innerHeight;
         */
-        event.scrollTop = target.scrollY || target.scrollTop || 0;
-        event.scrollLeft = target.scrollX || target.scrollLeft || 0;
+        event.scrollTop = DomService.getScrollTop(target);
+        event.scrollLeft = DomService.getScrollLeft(target);
         event.originalEvent = originalEvent;
         return event;
       }), (0, _operators.startWith)(event), (0, _operators.shareReplay)());
@@ -17084,19 +17107,72 @@ function () {
       return (0, _rxjs.combineLatest)(this.scroll$(), this.windowRect$()).pipe((0, _operators.shareReplay)());
     }
   }, {
+    key: "smoothScroll$",
+    value: function smoothScroll$(selector) {
+      var _this = this;
+
+      var friction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20;
+      var body = document.querySelector('body');
+      var node = document.querySelector(selector); // const outerHeight = this.getOuterHeight(node);
+
+      return this.raf$().pipe((0, _operators.map)(function () {
+        var outerHeight = _this.getOuterHeight(node);
+
+        if (body.offsetHeight !== outerHeight) {
+          body.style = "height: ".concat(outerHeight, "px");
+        }
+
+        var nodeTop = node.top || 0;
+        var top = Math.round((nodeTop + (-_this.scrollTop - nodeTop) / friction) * 100) / 100;
+
+        if (node.top !== top) {
+          node.top = top;
+          node.style = "position: fixed; transform: translateY(".concat(top, "px)");
+          return top;
+        } else {
+          return null;
+        }
+      }), filter(function (x) {
+        return x !== null;
+      }), (0, _operators.shareReplay)());
+    }
+    /*
+    // trackpad
+    window.onwheel = function(e) {
+      e.preventDefault();
+      if (e.ctrlKey) {
+        zoom += e.deltaY;
+      } else {
+        offsetX += e.deltaX * 2;
+        offsetY -= e.deltaY * 2;
+      }
+    };
+    */
+
+  }, {
     key: "scrollTop",
     get: function get() {
-      return window.scrollY || window.scrollTop || 0;
+      return DomService.getScrollTop(window);
     }
   }, {
     key: "scrollLeft",
     get: function get() {
-      return window.scrollX || window.scrollLeft || 0;
+      return DomService.getScrollLeft(window);
     }
   }], [{
     key: "factory",
     value: function factory() {
       return new DomService();
+    }
+  }, {
+    key: "getScrollTop",
+    value: function getScrollTop(node) {
+      return node.pageYOffset || node.scrollY || node.scrollTop || 0;
+    }
+  }, {
+    key: "getScrollLeft",
+    value: function getScrollLeft(node) {
+      return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
     }
   }]);
 

@@ -13,11 +13,31 @@ export default class DomService {
 	}
 
 	get scrollTop() {
-		return window.scrollY || window.scrollTop || 0;
+		return DomService.getScrollTop(window);
 	}
 
 	get scrollLeft() {
-		return window.scrollX || window.scrollLeft || 0;
+		return DomService.getScrollLeft(window);
+	}
+
+	getOuterHeight(node) {
+		const height = node.clientHeight;
+		const computedStyle = window.getComputedStyle(node);
+		height += parseInt(computedStyle.marginTop, 10);
+		height += parseInt(computedStyle.marginBottom, 10);
+		height += parseInt(computedStyle.borderTopWidth, 10);
+		height += parseInt(computedStyle.borderBottomWidth, 10);
+		return height;
+	}
+
+	getOuterWidth(node) {
+		const width = node.clientWidth;
+		const computedStyle = window.getComputedStyle(node);
+		width += parseInt(computedStyle.marginLeft, 10);
+		width += parseInt(computedStyle.marginRight, 10);
+		width += parseInt(computedStyle.borderLeftWidth, 10);
+		width += parseInt(computedStyle.borderRightWidth, 10);
+		return width;
 	}
 
 	raf$() {
@@ -49,7 +69,7 @@ export default class DomService {
 	}
 
 	scroll$() {
-		const target = window; // document.querySelector('body');
+		const target = window;
 		const event = {
 			/*
 			top: target.offsetTop || 0,
@@ -57,8 +77,8 @@ export default class DomService {
 			width: target.offsetWidth || target.innerWidth,
 			height: target.offsetHeight || target.innerHeight,
 			*/
-			scrollTop: target.scrollY || target.scrollTop || 0,
-			scrollLeft: target.scrollX || target.scrollLeft || 0,
+			scrollTop: DomService.getScrollTop(target),
+			scrollLeft: DomService.getScrollLeft(target),
 			originalEvent: null,
 		};
 		return fromEvent(target, 'scroll').pipe(
@@ -70,8 +90,8 @@ export default class DomService {
 				event.width = target.offsetWidth || target.innerWidth;
 				event.height = target.offsetHeight || target.innerHeight;
 				*/
-				event.scrollTop = target.scrollY || target.scrollTop || 0;
-				event.scrollLeft = target.scrollX || target.scrollLeft || 0;
+				event.scrollTop = DomService.getScrollTop(target);
+				event.scrollLeft = DomService.getScrollLeft(target);
 				event.originalEvent = originalEvent;
 				return event;
 			}),
@@ -86,8 +106,54 @@ export default class DomService {
 		);
 	}
 
+	smoothScroll$(selector, friction = 20) {
+		const body = document.querySelector('body');
+		const node = document.querySelector(selector);
+		// const outerHeight = this.getOuterHeight(node);
+		return this.raf$().pipe(
+			map(() => {
+				const outerHeight = this.getOuterHeight(node);
+				if (body.offsetHeight !== outerHeight) {
+					body.style = `height: ${outerHeight}px`;
+				}
+				const nodeTop = node.top || 0;
+				const top = Math.round((nodeTop + (-this.scrollTop - nodeTop) / friction) * 100) / 100;
+				if (node.top !== top) {
+					node.top = top;
+					node.style = `position: fixed; transform: translateY(${top}px)`;
+					return top;
+				} else {
+					return null;
+				}
+			}),
+			filter(x => x !== null),
+			shareReplay(),
+		);
+	}
+
+	/*
+	// trackpad
+	window.onwheel = function(e) {
+	  e.preventDefault();
+	  if (e.ctrlKey) {
+	    zoom += e.deltaY;
+	  } else {
+	    offsetX += e.deltaX * 2;
+	    offsetY -= e.deltaY * 2;
+	  }
+	};
+	*/
+
 	static factory() {
 		return new DomService();
+	}
+
+	static getScrollTop(node) {
+		return node.pageYOffset || node.scrollY || node.scrollTop || 0;
+	}
+
+	static getScrollLeft(node) {
+		return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
 	}
 
 }

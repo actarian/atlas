@@ -375,11 +375,13 @@ button,
 	.icon--play {
 		display: block;
 		position: absolute;
+		top: 50%;
+		left: 50%;
+		fill: $foreground-negative;
 		width: 30px;
 		height: 30px;
-		top: 83px;
-		left: 83px;
-		fill: $foreground-negative;
+		margin-left: -13px;
+		margin-top: -14px;
 	}
 
 	&.playing {
@@ -388,6 +390,37 @@ button,
 		.icon--play-progress {
 			opacity: 1;
 		}
+	}
+
+	@include media-breakpoint-down(md) {
+		width: 150px;
+		height: 150px;
+
+		.icon--play-progress,
+		.icon--play-progress-background {
+			width: 150px;
+			height: 150px;
+		}
+	}
+
+	@include media-breakpoint-down(sm) {
+		width: 100px;
+		height: 100px;
+
+		.icon--play-progress,
+		.icon--play-progress-background {
+			width: 100px;
+			height: 100px;
+		}
+
+
+		.icon--play {
+			width: 20px;
+			height: 20px;
+			margin-left: -9px;
+			margin-top: -9px;
+		}
+
 	}
 
 }

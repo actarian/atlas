@@ -488,15 +488,38 @@ button,
   .btn--play .icon--play {
     display: block;
     position: absolute;
+    top: 50%;
+    left: 50%;
+    fill: var(--color-foreground-negative);
     width: 30px;
     height: 30px;
-    top: 83px;
-    left: 83px;
-    fill: var(--color-foreground-negative); }
+    margin-left: -13px;
+    margin-top: -14px; }
   .btn--play.playing {
     opacity: 0; }
     .btn--play.playing .icon--play-progress {
       opacity: 1; }
+  @media (max-width: 1439.98px) {
+    .btn--play {
+      width: 150px;
+      height: 150px; }
+      .btn--play .icon--play-progress,
+      .btn--play .icon--play-progress-background {
+        width: 150px;
+        height: 150px; } }
+  @media (max-width: 1023.98px) {
+    .btn--play {
+      width: 100px;
+      height: 100px; }
+      .btn--play .icon--play-progress,
+      .btn--play .icon--play-progress-background {
+        width: 100px;
+        height: 100px; }
+      .btn--play .icon--play {
+        width: 20px;
+        height: 20px;
+        margin-left: -9px;
+        margin-top: -9px; } }
 
 .btn--menu {
   background: transparent;
