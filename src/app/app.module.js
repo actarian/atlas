@@ -1,6 +1,7 @@
 ﻿/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import CollectionsCtrl from './collections/collections.controller';
 import AppearDirective from './directives/appear.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
 import HrefDirective from './directives/href.directive';
@@ -41,7 +42,16 @@ app.directive('appear', AppearDirective.factory)
 	.directive('video', VideoDirective.factory)
 	.directive('wishlist', WishlistDirective.factory);
 
-app.controller('RootCtrl', RootCtrl);
+app.controller('RootCtrl', RootCtrl)
+	.controller('CollectionsCtrl', CollectionsCtrl);
+
+app.filter('trusted', ['$sce', TrustedFilter]);
+
+function TrustedFilter($sce) {
+	return function(url) {
+		return $sce.trustAsResourceUrl(url);
+	};
+}
 
 // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 

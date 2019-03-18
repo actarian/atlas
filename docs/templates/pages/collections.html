@@ -1,0 +1,291 @@
+<section class="section section--hero-secondary">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/collections/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/collections/hero-secondary.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.glsl"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 offset-md-2">
+					<div class="category">Explore our collections</div>
+					<div class="title"><b>More than 30 collections</b> for every need</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<div ng-controller="CollectionsCtrl as collectionsCtrl">
+	<section class="section section--filters" sticky="61">
+		<form class="form form--filters" sticky-content>
+			<div class="form__group" ng-class="{ opened: selected == 1 }" ng-click="selected = selected == 1 ? null : 1">
+				<ul class="nav nav--select" ng-if="selected == 1">
+					<li><a>Marvel Edge</a></li>
+					<li><a>Boost</a></li>
+					<li><a>Klif</a></li>
+				</ul>
+				<label class="label">Collections</label>
+				<div class="control control--select">
+					<div class="input">
+						<div class="value">all collections</div>
+						<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+					</div>
+				</div>
+			</div>
+			<div class="form__group" ng-class="{ opened: selected == 2 }" ng-click="selected = selected == 2 ? null : 2">
+				<ul class="nav nav--select" ng-if="selected == 2">
+					<li><a>Marvel Edge</a></li>
+					<li><a>Boost</a></li>
+					<li><a>Klif</a></li>
+				</ul>
+				<label class="label">Look</label>
+				<div class="control control--select">
+					<div class="input">
+						<div class="value">all looks</div>
+						<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+					</div>
+				</div>
+			</div>
+			<div class="form__group" ng-class="{ opened: selected == 3 }" ng-click="selected = selected == 3 ? null : 3">
+				<ul class="nav nav--select" ng-if="selected == 3">
+					<li><a>Marvel Edge</a></li>
+					<li><a>Boost</a></li>
+					<li><a>Klif</a></li>
+				</ul>
+				<label class="label">Typology</label>
+				<div class="control control--select">
+					<div class="input">
+						<div class="value">all typologies</div>
+						<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+					</div>
+				</div>
+			</div>
+			<div class="form__group" ng-class="{ opened: selected == 4 }" ng-click="selected = selected == 4 ? null : 4">
+				<ul class="nav nav--select" ng-if="selected == 4">
+					<li><a>Marvel Edge</a></li>
+					<li><a>Boost</a></li>
+					<li><a>Klif</a></li>
+				</ul>
+				<label class="label">label tbd</label>
+				<div class="control control--select">
+					<div class="input">
+						<div class="value">all formats</div>
+						<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+					</div>
+				</div>
+			</div>
+			<div class="form__group" ng-click="selected = null">
+				<label class="label">Find your product</label>
+				<div class="group group--control">
+					<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+					<input class="control" placeholder="I'm looking for...">
+					<button class="btn btn--search" type="button">Advanced Search</button>
+				</div>
+			</div>
+		</form>
+	</section>
+	<div ng-if="!collectionsCtrl.filteredBrands">
+		<section class="section section--collections">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4" appear>
+						<div class="category">Brand</div>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
+						<!--
+				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
+				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
+				-->
+					</div>
+				</div>
+				<div class="listing listing--collections">
+					<div class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/collections/01.jpg" alt="title" />
+							<span class="look">marble look</span>
+						</div>
+						<div class="title">Marvel Edge</div>
+						<div class="abstract">The contemporary feel of timeless marble-look tiles.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/06.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/07.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/08.jpg" />
+							</div>
+						</div>
+						<div class="group group--tiles">
+							<div class="category">Wall tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/collections/02.jpg" alt="title" />
+							<span class="look">concrete look</span>
+						</div>
+						<div class="title">Boost</div>
+						<div class="abstract">The new soul of the concrete effect: industrial style becomes sophisticated elegance.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/09.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/10.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/11.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/12.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/13.jpg" />
+							</div>
+						</div>
+						<div class="group group--tiles">
+							<div class="category">Wall tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/09.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/10.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/11.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/12.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/14.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/15.jpg" />
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/collections/03.jpg" alt="title" />
+							<span class="look">stone look</span>
+						</div>
+						<div class="title">Klif</div>
+						<div class="abstract">The decisive character of the stone effect in a porcelain tile inspired by nature.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/16.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/17.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/19.jpg" />
+							</div>
+						</div>
+						<div class="group group--tiles">
+							<div class="category">Wall tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/16.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/17.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="section section--collections">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4" appear>
+						<div class="category">Brand</div>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+						<!--
+				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
+				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
+				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
+				-->
+					</div>
+				</div>
+				<div class="listing listing--collections">
+					<div class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/collections/01.jpg" alt="title" />
+							<span class="look">concrete look</span>
+						</div>
+						<div class="title">Realm</div>
+						<div class="abstract">A marked impact and neutral colors, for a contemporary taste.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/19.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/20.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/21.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/22.jpg" />
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/collections/02.jpg" alt="title" />
+							<span class="look">stone look</span>
+						</div>
+						<div class="title">Block Next</div>
+						<div class="abstract">A touch of authenticity that also interprets the warmest and most welcoming moods.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/23.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/24.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/25.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/26.jpg" />
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/collections/03.jpg" alt="title" />
+							<span class="look">stone look</span>
+						</div>
+						<div class="title">Peak Floor</div>
+						<div class="abstract">Perfect for making the most of any residential and commercial space, even outdoors.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/27.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/28.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/29.jpg" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div ng-if="collectionsCtrl.filteredBrands">
+		<section class="section section--collections" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4" appear>
+						<div class="category">Brand</div>
+						<svg ng-if="brand.brand === 'atlas-concorde'" class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
+						<svg ng-if="brand.brand === 'atlas-concorde-solution'" class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+						<svg ng-if="brand.brand === 'atlas-concorde-usa'" class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
+						<svg ng-if="brand.brand === 'atlas-concorde-russia'" class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
+					</div>
+				</div>
+				<div class="listing listing--collections">
+					<div class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
+						<div class="picture picture--collection">
+							<img lazy data-src="{{collection.image}}" alt="title" />
+							<span class="look" ng-bind="collection.look"></span>
+						</div>
+						<div class="title" ng-bind="collection.title"></div>
+						<div class="abstract" ng-bind="collection.abstract"></div>
+						<div class="group group--tiles" ng-repeat="category in collection.categories track by $index">
+							<div class="category" ng-bind="category.category"></div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="{{tile.image}}" ng-repeat="tile in category.tiles track by $index" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+<ng-include src="'templates/shared/store.html'"></ng-include>

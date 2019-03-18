@@ -1,0 +1,31 @@
+.group--control {
+	display: flex;
+	align-items: center;
+
+	&>.control {
+		flex: 1 1 auto;
+	}
+
+	&>.btn {
+		flex: 1 1 auto;
+	}
+
+}
+
+.control--select {
+
+	.input {
+		position: relative;
+
+		.icon--arrow-down {
+			position: absolute;
+			width: 13px;
+			height: 9px;
+			right: 15px;
+			top: 50%;
+			margin-top: -5px;
+			fill: $primary;
+		}
+	}
+
+}

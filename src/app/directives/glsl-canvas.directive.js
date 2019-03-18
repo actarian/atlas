@@ -42,7 +42,7 @@ export default class GlslCanvasDirective {
 			}
 			tween = TweenMax.to(pow, 3, {
 				pow: 1.0,
-				ease: Expo.easeInOut,
+				ease: Expo.easeOut,
 				// Back.easeOut.config(1.7),
 				// Elastic.easeOut.config(1, 0.3),
 				overwrite: 'all',

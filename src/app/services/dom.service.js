@@ -3,7 +3,7 @@
 
 import { combineLatest, fromEvent, range } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { auditTime, map, shareReplay, startWith } from 'rxjs/operators';
+import { auditTime, filter, map, shareReplay, startWith } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
 export default class DomService {
@@ -21,7 +21,7 @@ export default class DomService {
 	}
 
 	getOuterHeight(node) {
-		const height = node.clientHeight;
+		let height = node.clientHeight;
 		const computedStyle = window.getComputedStyle(node);
 		height += parseInt(computedStyle.marginTop, 10);
 		height += parseInt(computedStyle.marginBottom, 10);
@@ -31,7 +31,7 @@ export default class DomService {
 	}
 
 	getOuterWidth(node) {
-		const width = node.clientWidth;
+		let width = node.clientWidth;
 		const computedStyle = window.getComputedStyle(node);
 		width += parseInt(computedStyle.marginLeft, 10);
 		width += parseInt(computedStyle.marginRight, 10);
@@ -110,24 +110,55 @@ export default class DomService {
 		const body = document.querySelector('body');
 		const node = document.querySelector(selector);
 		// const outerHeight = this.getOuterHeight(node);
+		let down = false;
+		/*
+		const onWheel = (event) => {
+			down = true;
+		}
+		const onDown = () => {
+			down = true;
+		}
+		const onUp = () => {
+			down = false;
+		}
+		document.addEventListener('wheel', onWheel);
+		document.addEventListener('touchstart', onDown);
+		document.addEventListener('touchend', onUp);
+		*/
+		/*
+		document.addEventListener('touchstart', () => {
+			console.log('touchstart');
+			body.classList.add('down');
+			down = true;
+		}, {passive:true});
+		document.addEventListener('touchend', () => {
+			body.classList.remove('down');
+			down = false;
+		});
+		console.log(window);
+		*/
 		return this.raf$().pipe(
 			map(() => {
 				const outerHeight = this.getOuterHeight(node);
+				// console.log(window.DocumentTouch);
+				// console.log(document instanceof DocumentTouch);
+				// console.log(navigator.msMaxTouchPoints);
 				if (body.offsetHeight !== outerHeight) {
+					// margin ?
 					body.style = `height: ${outerHeight}px`;
 				}
 				const nodeTop = node.top || 0;
-				const top = Math.round((nodeTop + (-this.scrollTop - nodeTop) / friction) * 100) / 100;
+				const top = down ? -this.scrollTop : Math.round((nodeTop + (-this.scrollTop - nodeTop) / friction) * 100) / 100;
 				if (node.top !== top) {
 					node.top = top;
-					node.style = `position: fixed; transform: translateY(${top}px)`;
+					node.style = `position: fixed; width: 100%; transform: translateY(${top}px)`;
 					return top;
 				} else {
 					return null;
 				}
 			}),
 			filter(x => x !== null),
-			shareReplay(),
+			shareReplay()
 		);
 	}
 

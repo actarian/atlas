@@ -15448,6 +15448,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _collections = _interopRequireDefault(require("./collections/collections.controller"));
+
 var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
 var _glslCanvas = _interopRequireDefault(require("./directives/glsl-canvas.directive"));
@@ -15488,12 +15490,127 @@ app.config(['$locationProvider', function ($locationProvider) {
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
 app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('lazy', _lazy.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
-app.controller('RootCtrl', _root.default); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
+app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default);
+app.filter('trusted', ['$sce', TrustedFilter]);
+
+function TrustedFilter($sce) {
+  return function (url) {
+    return $sce.trustAsResourceUrl(url);
+  };
+} // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
+
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./directives/appear.directive":200,"./directives/glsl-canvas.directive":201,"./directives/href.directive":202,"./directives/lazy.directive":203,"./directives/media.directive":204,"./directives/parallax.directive":205,"./directives/scroll.directive":206,"./directives/sticky.directive":207,"./directives/swiper.directive":208,"./directives/video.directive":209,"./directives/wishlist.directive":210,"./root.controller":211,"./services/api.service":212,"./services/dom.service":213}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/glsl-canvas.directive":202,"./directives/href.directive":203,"./directives/lazy.directive":204,"./directives/media.directive":205,"./directives/parallax.directive":206,"./directives/scroll.directive":207,"./directives/sticky.directive":208,"./directives/swiper.directive":209,"./directives/video.directive":210,"./directives/wishlist.directive":211,"./root.controller":212,"./services/api.service":213,"./services/dom.service":214}],200:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var CollectionsCtrl =
+/*#__PURE__*/
+function () {
+  function CollectionsCtrl($scope, $timeout, DomService, ApiService) {
+    _classCallCheck(this, CollectionsCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.domService = DomService;
+    this.apiService = ApiService;
+    this.brands = window.brands || [];
+    console.log(this.brands);
+    this.filteredBrands = this.brands;
+  }
+
+  _createClass(CollectionsCtrl, [{
+    key: "closeNav",
+    value: function closeNav() {
+      return new Promise(function (resolve, reject) {
+        var node = document.querySelector(".section--submenu.active");
+
+        if (node) {
+          var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+          TweenMax.staggerTo(items.reverse(), 0.25, {
+            opacity: 0,
+            stagger: 0.05,
+            delay: 0.0,
+            onComplete: function onComplete() {
+              TweenMax.to(node, 0.2, {
+                maxHeight: 0,
+                delay: 0.0,
+                onComplete: function onComplete() {
+                  resolve();
+                }
+              });
+            }
+          });
+        } else {
+          resolve();
+        }
+      });
+    }
+  }, {
+    key: "openNav",
+    value: function openNav(nav) {
+      return new Promise(function (resolve, reject) {
+        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
+        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+        TweenMax.set(items, {
+          alpha: 0
+        });
+        TweenMax.set(node, {
+          maxHeight: 0
+        });
+        TweenMax.to(node, 0.2, {
+          maxHeight: '100vh',
+          delay: 0.0,
+          overwrite: 'all',
+          onComplete: function onComplete() {
+            TweenMax.staggerTo(items, 0.35, {
+              opacity: 1,
+              stagger: 0.05,
+              delay: 0.0,
+              onComplete: function onComplete() {}
+            });
+          }
+        });
+      });
+    }
+  }, {
+    key: "toggleFilter",
+    value: function toggleFilter(id) {
+      var _this = this;
+
+      this.nav = this.nav === id ? null : id;
+      this.closeNav().then(function () {
+        if (_this.nav) {
+          _this.openNav(_this.nav);
+        }
+      });
+    }
+  }]);
+
+  return CollectionsCtrl;
+}();
+
+CollectionsCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
+var _default = CollectionsCtrl;
+exports.default = _default;
+
+},{}],201:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15599,7 +15716,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":214,"rxjs/operators":197}],201:[function(require,module,exports){
+},{"../shared/rect":215,"rxjs/operators":197}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15668,7 +15785,7 @@ function () {
 
         tween = TweenMax.to(pow, 3, {
           pow: 1.0,
-          ease: Expo.easeInOut,
+          ease: Expo.easeOut,
           // Back.easeOut.config(1.7),
           // Elastic.easeOut.config(1, 0.3),
           overwrite: 'all',
@@ -15711,7 +15828,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{}],202:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15816,7 +15933,7 @@ function () {
 exports.default = HrefDirective;
 HrefDirective.factory.$inject = [];
 
-},{}],203:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15958,7 +16075,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":214,"rxjs/operators":197}],204:[function(require,module,exports){
+},{"../shared/rect":215,"rxjs/operators":197}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16020,7 +16137,7 @@ function () {
 exports.default = MediaDirective;
 MediaDirective.factory.$inject = ['ApiService'];
 
-},{}],205:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16112,7 +16229,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":214,"rxjs/operators":197}],206:[function(require,module,exports){
+},{"../shared/rect":215,"rxjs/operators":197}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16168,7 +16285,7 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = ['DomService'];
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16271,7 +16388,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":214,"rxjs/operators":197}],208:[function(require,module,exports){
+},{"../shared/rect":215,"rxjs/operators":197}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16491,7 +16608,7 @@ function () {
 exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
 SwiperSlideItemDirective.factory.$inject = ['$timeout'];
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16596,7 +16713,7 @@ function () {
 exports.default = VideoDirective;
 VideoDirective.factory.$inject = ['$timeout', 'ApiService'];
 
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16658,7 +16775,7 @@ function () {
 exports.default = WishlistDirective;
 WishlistDirective.factory.$inject = ['ApiService'];
 
-},{}],211:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16678,14 +16795,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var RootCtrl =
 /*#__PURE__*/
 function () {
-  function RootCtrl($scope, $compile, $location, $timeout, ApiService) {
+  function RootCtrl($scope, $compile, $location, $timeout, DomService, ApiService) {
     _classCallCheck(this, RootCtrl);
 
     this.$scope = $scope;
     this.$compile = $compile;
     this.$location = $location;
     this.$timeout = $timeout;
-    this.ApiService = ApiService;
+    this.domService = DomService;
+    this.apiService = ApiService;
   }
 
   _createClass(RootCtrl, [{
@@ -16695,6 +16813,11 @@ function () {
 
       this.brand = brand;
       this.webglEnabled = false;
+      /*
+      this.domService.smoothScroll$('.page').subscribe((top) => {
+      	// console.log(top);
+      });
+      */
 
       this.$scope.onScroll = function (event) {
         var scrolled = event.scrollTop > 40;
@@ -16920,11 +17043,11 @@ function () {
   return RootCtrl;
 }();
 
-RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'ApiService'];
+RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'DomService', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],212:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16994,7 +17117,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],213:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17011,8 +17134,6 @@ var _operators = require("rxjs/operators");
 var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17032,10 +17153,10 @@ function () {
     value: function getOuterHeight(node) {
       var height = node.clientHeight;
       var computedStyle = window.getComputedStyle(node);
-      height += (_readOnlyError("height"), parseInt(computedStyle.marginTop, 10));
-      height += (_readOnlyError("height"), parseInt(computedStyle.marginBottom, 10));
-      height += (_readOnlyError("height"), parseInt(computedStyle.borderTopWidth, 10));
-      height += (_readOnlyError("height"), parseInt(computedStyle.borderBottomWidth, 10));
+      height += parseInt(computedStyle.marginTop, 10);
+      height += parseInt(computedStyle.marginBottom, 10);
+      height += parseInt(computedStyle.borderTopWidth, 10);
+      height += parseInt(computedStyle.borderBottomWidth, 10);
       return height;
     }
   }, {
@@ -17043,10 +17164,10 @@ function () {
     value: function getOuterWidth(node) {
       var width = node.clientWidth;
       var computedStyle = window.getComputedStyle(node);
-      width += (_readOnlyError("width"), parseInt(computedStyle.marginLeft, 10));
-      width += (_readOnlyError("width"), parseInt(computedStyle.marginRight, 10));
-      width += (_readOnlyError("width"), parseInt(computedStyle.borderLeftWidth, 10));
-      width += (_readOnlyError("width"), parseInt(computedStyle.borderRightWidth, 10));
+      width += parseInt(computedStyle.marginLeft, 10);
+      width += parseInt(computedStyle.marginRight, 10);
+      width += parseInt(computedStyle.borderLeftWidth, 10);
+      width += parseInt(computedStyle.borderRightWidth, 10);
       return width;
     }
   }, {
@@ -17115,24 +17236,57 @@ function () {
       var body = document.querySelector('body');
       var node = document.querySelector(selector); // const outerHeight = this.getOuterHeight(node);
 
+      var down = false;
+      /*
+      const onWheel = (event) => {
+      	down = true;
+      }
+      const onDown = () => {
+      	down = true;
+      }
+      const onUp = () => {
+      	down = false;
+      }
+      document.addEventListener('wheel', onWheel);
+      document.addEventListener('touchstart', onDown);
+      document.addEventListener('touchend', onUp);
+      */
+
+      /*
+      document.addEventListener('touchstart', () => {
+      	console.log('touchstart');
+      	body.classList.add('down');
+      	down = true;
+      }, {passive:true});
+      document.addEventListener('touchend', () => {
+      	body.classList.remove('down');
+      	down = false;
+      });
+      console.log(window);
+      */
+
       return this.raf$().pipe((0, _operators.map)(function () {
-        var outerHeight = _this.getOuterHeight(node);
+        var outerHeight = _this.getOuterHeight(node); // console.log(window.DocumentTouch);
+        // console.log(document instanceof DocumentTouch);
+        // console.log(navigator.msMaxTouchPoints);
+
 
         if (body.offsetHeight !== outerHeight) {
+          // margin ?
           body.style = "height: ".concat(outerHeight, "px");
         }
 
         var nodeTop = node.top || 0;
-        var top = Math.round((nodeTop + (-_this.scrollTop - nodeTop) / friction) * 100) / 100;
+        var top = down ? -_this.scrollTop : Math.round((nodeTop + (-_this.scrollTop - nodeTop) / friction) * 100) / 100;
 
         if (node.top !== top) {
           node.top = top;
-          node.style = "position: fixed; transform: translateY(".concat(top, "px)");
+          node.style = "position: fixed; width: 100%; transform: translateY(".concat(top, "px)");
           return top;
         } else {
           return null;
         }
-      }), filter(function (x) {
+      }), (0, _operators.filter)(function (x) {
         return x !== null;
       }), (0, _operators.shareReplay)());
     }
@@ -17182,7 +17336,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":214,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],214:[function(require,module,exports){
+},{"../shared/rect":215,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

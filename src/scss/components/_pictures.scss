@@ -88,3 +88,8 @@
 		@include aspect-clip(153, 88);
 	}
 }
+
+.picture--collection {
+	width: 100%;
+	@include aspect-clip(457, 305);
+}

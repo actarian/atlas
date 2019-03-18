@@ -8,18 +8,25 @@ class RootCtrl {
 		$compile,
 		$location,
 		$timeout,
+		DomService,
 		ApiService
 	) {
 		this.$scope = $scope;
 		this.$compile = $compile;
 		this.$location = $location;
 		this.$timeout = $timeout;
-		this.ApiService = ApiService;
+		this.domService = DomService;
+		this.apiService = ApiService;
 	}
 
 	onInit(brand) {
 		this.brand = brand;
 		this.webglEnabled = false;
+		/*
+		this.domService.smoothScroll$('.page').subscribe((top) => {
+			// console.log(top);
+		});
+		*/
 		this.$scope.onScroll = (event) => {
 			const scrolled = event.scrollTop > 40;
 			if (this.scrolled !== scrolled) {
@@ -204,6 +211,6 @@ class RootCtrl {
 
 }
 
-RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'ApiService'];
+RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'DomService', 'ApiService'];
 
 export default RootCtrl;
