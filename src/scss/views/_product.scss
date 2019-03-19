@@ -1,5 +1,7 @@
 .section--product {
 	z-index: 100;
+	min-height: 80px;
+
 
 	&.sticky {
 		[sticky-content] {
@@ -9,6 +11,14 @@
 			transition: box-shadow ease-in-out 350ms;
 			box-shadow: 0 20px 20px -10px rgba(0, 0, 0, 0.15);
 		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		display: none;
+	}
+
+	@include media-breakpoint-down(md) {
+		min-height: 100px;
 	}
 }
 

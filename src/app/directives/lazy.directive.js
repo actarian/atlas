@@ -32,7 +32,7 @@ export default class LazyDirective {
 				node.classList.add('debug');
 			}
 			*/
-			if (intersection.y > -0.1) {
+			if (intersection.y > -0.5) {
 				if (!node.classList.contains('lazyed')) {
 					node.classList.add('lazyed');
 					this.onAppearsInViewport(node, scope);

@@ -10,7 +10,7 @@
 			<div class="row">
 				<div class="col-md-9 offset-md-2">
 					<div class="category">Explore our collections</div>
-					<div class="title"><b>More than 30 collections</b> for every need</div>
+					<div class="title"><b>More than 30 collections</b> for every need</div>
 				</div>
 			</div>
 		</div>
@@ -86,21 +86,21 @@
 		</form>
 	</section>
 	<div ng-if="!collectionsCtrl.filteredBrands">
-		<section class="section section--collections">
+		<section class="section section--collections atlas-concorde">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 offset-md-4" appear>
 						<div class="category">Brand</div>
 						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
 						<!--
-				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
-				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
-				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
-				-->
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
+						-->
 					</div>
 				</div>
 				<div class="listing listing--collections">
-					<div class="listing__item" appear>
+					<a href="product-project.html" class="listing__item" appear>
 						<div class="picture picture--collection">
 							<img lazy data-src="img/collections/01.jpg" alt="title" />
 							<span class="look">marble look</span>
@@ -130,8 +130,8 @@
 								<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
 							</div>
 						</div>
-					</div>
-					<div class="listing__item" appear>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
 						<div class="picture picture--collection">
 							<img lazy data-src="img/collections/02.jpg" alt="title" />
 							<span class="look">concrete look</span>
@@ -159,8 +159,8 @@
 								<img class="tiles__item" lazy data-src="img/collections/tiles/15.jpg" />
 							</div>
 						</div>
-					</div>
-					<div class="listing__item" appear>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
 						<div class="picture picture--collection">
 							<img lazy data-src="img/collections/03.jpg" alt="title" />
 							<span class="look">stone look</span>
@@ -184,25 +184,20 @@
 								<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</section>
-		<section class="section section--collections">
+		<section class="section section--collections atlas-concorde-solution">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 offset-md-4" appear>
 						<div class="category">Brand</div>
 						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
-						<!--
-				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
-				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
-				<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
-				-->
 					</div>
 				</div>
 				<div class="listing listing--collections">
-					<div class="listing__item" appear>
+					<a href="product-project.html" class="listing__item" appear>
 						<div class="picture picture--collection">
 							<img lazy data-src="img/collections/01.jpg" alt="title" />
 							<span class="look">concrete look</span>
@@ -218,8 +213,8 @@
 								<img class="tiles__item" lazy data-src="img/collections/tiles/22.jpg" />
 							</div>
 						</div>
-					</div>
-					<div class="listing__item" appear>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
 						<div class="picture picture--collection">
 							<img lazy data-src="img/collections/02.jpg" alt="title" />
 							<span class="look">stone look</span>
@@ -235,8 +230,8 @@
 								<img class="tiles__item" lazy data-src="img/collections/tiles/26.jpg" />
 							</div>
 						</div>
-					</div>
-					<div class="listing__item" appear>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
 						<div class="picture picture--collection">
 							<img lazy data-src="img/collections/03.jpg" alt="title" />
 							<span class="look">stone look</span>
@@ -251,13 +246,13 @@
 								<img class="tiles__item" lazy data-src="img/collections/tiles/29.jpg" />
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</section>
 	</div>
 	<div ng-if="collectionsCtrl.filteredBrands">
-		<section class="section section--collections" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
+		<section class="section section--collections" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 offset-md-4" appear>
@@ -269,7 +264,7 @@
 					</div>
 				</div>
 				<div class="listing listing--collections">
-					<div class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
+					<a href="product-project.html" class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
 						<div class="picture picture--collection">
 							<img lazy data-src="{{collection.image}}" alt="title" />
 							<span class="look" ng-bind="collection.look"></span>
@@ -282,7 +277,7 @@
 								<img class="tiles__item" lazy data-src="{{tile.image}}" ng-repeat="tile in category.tiles track by $index" />
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</section>
