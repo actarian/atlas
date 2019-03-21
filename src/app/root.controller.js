@@ -21,7 +21,7 @@ class RootCtrl {
 
 	onInit(brand) {
 		this.brand = brand;
-		this.webglEnabled = false;
+		this.webglEnabled = true;
 		/*
 		this.domService.smoothScroll$('.page').subscribe((top) => {
 			// console.log(top);
@@ -136,8 +136,26 @@ class RootCtrl {
 	}
 
 	closeNav() {
+		const node = document.querySelector(`.section--submenu.active`);
+		return this.onDroppedOut(node);
+	}
+
+	openNav(nav) {
+		const node = document.querySelector(`#nav-${nav} .section--submenu`);
+		return this.onDroppedIn(node);
+	}
+
+	toggleNav(id) {
+		this.nav = (this.nav === id ? null : id);
+		this.closeNav().then(() => {
+			if (this.nav) {
+				this.openNav(this.nav);
+			}
+		});
+	}
+
+	onDroppedOut(node) {
 		return new Promise((resolve, reject) => {
-			const node = document.querySelector(`.section--submenu.active`);
 			if (node) {
 				const items = [].slice.call(node.querySelectorAll('.submenu__item'));
 				TweenMax.staggerTo(items.reverse(), 0.25, {
@@ -160,9 +178,8 @@ class RootCtrl {
 		});
 	}
 
-	openNav(nav) {
+	onDroppedIn(node) {
 		return new Promise((resolve, reject) => {
-			const node = document.querySelector(`#nav-${nav} .section--submenu`);
 			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
 			TweenMax.set(items, { alpha: 0 });
 			TweenMax.set(node, { maxHeight: 0 });
@@ -181,15 +198,6 @@ class RootCtrl {
 					});
 				}
 			});
-		});
-	}
-
-	toggleNav(id) {
-		this.nav = (this.nav === id ? null : id);
-		this.closeNav().then(() => {
-			if (this.nav) {
-				this.openNav(this.nav);
-			}
 		});
 	}
 

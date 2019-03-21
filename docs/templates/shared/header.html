@@ -12,16 +12,16 @@
 			</div>
 			<div class="group">
 				<ul class="nav nav--primary hidden-xs-down">
-					<li id="nav-1">
-						<span ng-click="root.toggleNav(1)">Explore Our Collections</span>
+					<li id="nav-1" has-dropdown has-dropdown-consumer="root">
+						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections.html'"></ng-include>
 					</li>
-					<li id="nav-2">
-						<span ng-click="root.toggleNav(2)">Be Inspired</span>
+					<li id="nav-2" has-dropdown has-dropdown-consumer="root">
+						<span>Be Inspired</span>
 						<ng-include src="'templates/shared/submenu-beinspired.html'"></ng-include>
 					</li>
-					<li id="nav-3">
-						<span ng-click="root.toggleNav(3)">Contract</span>
+					<li id="nav-3" has-dropdown has-dropdown-consumer="root">
+						<span>Contract</span>
 						<ng-include src="'templates/shared/submenu-contract.html'"></ng-include>
 					</li>
 					<li><a href="#" ng-click="root.webglEnabled = !root.webglEnabled"><svg class="icon icon--search"><use xlink:href="#search"></use></svg></a></li>

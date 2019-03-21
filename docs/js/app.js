@@ -15452,9 +15452,15 @@ var _collections = _interopRequireDefault(require("./collections/collections.con
 
 var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
+var _autocomplete = _interopRequireDefault(require("./directives/autocomplete.directive"));
+
 var _glslCanvas = _interopRequireDefault(require("./directives/glsl-canvas.directive"));
 
+var _hasDropdown = _interopRequireDefault(require("./directives/has-dropdown.directive"));
+
 var _href = _interopRequireDefault(require("./directives/href.directive"));
+
+var _lazyScript = _interopRequireDefault(require("./directives/lazy-script.directive"));
 
 var _lazy = _interopRequireDefault(require("./directives/lazy.directive"));
 
@@ -15489,7 +15495,7 @@ app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('lazy', _lazy.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
+app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('autocomplete', _autocomplete.default.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
 app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default);
 app.filter('trusted', ['$sce', TrustedFilter]);
 
@@ -15503,7 +15509,7 @@ function TrustedFilter($sce) {
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/glsl-canvas.directive":202,"./directives/href.directive":203,"./directives/lazy.directive":204,"./directives/media.directive":205,"./directives/parallax.directive":206,"./directives/scroll.directive":207,"./directives/sticky.directive":208,"./directives/swiper.directive":209,"./directives/video.directive":210,"./directives/wishlist.directive":211,"./root.controller":212,"./services/api.service":213,"./services/dom.service":214}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/autocomplete.directive":202,"./directives/glsl-canvas.directive":203,"./directives/has-dropdown.directive":204,"./directives/href.directive":205,"./directives/lazy-script.directive":206,"./directives/lazy.directive":207,"./directives/media.directive":208,"./directives/parallax.directive":209,"./directives/scroll.directive":210,"./directives/sticky.directive":211,"./directives/swiper.directive":212,"./directives/video.directive":213,"./directives/wishlist.directive":214,"./root.controller":215,"./services/api.service":216,"./services/dom.service":217}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15524,82 +15530,125 @@ var CollectionsCtrl =
 /*#__PURE__*/
 function () {
   function CollectionsCtrl($scope, $timeout, DomService, ApiService) {
+    var _this = this;
+
     _classCallCheck(this, CollectionsCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.domService = DomService;
     this.apiService = ApiService;
+    this.filters = window.filters || {};
     this.brands = window.brands || [];
-    console.log(this.brands);
-    this.filteredBrands = this.brands;
+    console.log(this.filters, this.brands);
+    Object.keys(this.filters).forEach(function (x) {
+      var filter = _this.filters[x];
+
+      if (x === 'collections') {
+        filter.filterCollection = function (collection, value) {
+          return collection.id === value;
+        };
+      } else {
+        filter.filterCollection = function (collection, value) {
+          return collection.features.indexOf(value) !== -1;
+        };
+      }
+
+      filter.options.unshift({
+        label: _this.filters[x].placeholder,
+        value: null
+      });
+      filter.value = null;
+    });
+    this.updateStateFilters(this.brands); // console.log(this.filters);
+    // console.log(this.brands);
   }
 
   _createClass(CollectionsCtrl, [{
-    key: "closeNav",
-    value: function closeNav() {
-      return new Promise(function (resolve, reject) {
-        var node = document.querySelector(".section--submenu.active");
+    key: "doFilterBrands",
+    value: function doFilterBrands() {
+      var _this2 = this;
 
-        if (node) {
-          var items = [].slice.call(node.querySelectorAll('.submenu__item'));
-          TweenMax.staggerTo(items.reverse(), 0.25, {
-            opacity: 0,
-            stagger: 0.05,
-            delay: 0.0,
-            onComplete: function onComplete() {
-              TweenMax.to(node, 0.2, {
-                maxHeight: 0,
-                delay: 0.0,
-                onComplete: function onComplete() {
-                  resolve();
-                }
-              });
-            }
-          });
-        } else {
-          resolve();
-        }
+      /*
+      const filters = Object.keys(this.filters).map((x) => {
+      	return Object.assign({ type: x }, this.filters[x]);
+      }).filter(x => x.value !== null);
+      */
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this2.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
       });
-    }
-  }, {
-    key: "openNav",
-    value: function openNav(nav) {
-      return new Promise(function (resolve, reject) {
-        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
-        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
-        TweenMax.set(items, {
-          alpha: 0
-        });
-        TweenMax.set(node, {
-          maxHeight: 0
-        });
-        TweenMax.to(node, 0.2, {
-          maxHeight: '100vh',
-          delay: 0.0,
-          overwrite: 'all',
-          onComplete: function onComplete() {
-            TweenMax.staggerTo(items, 0.35, {
-              opacity: 1,
-              stagger: 0.05,
-              delay: 0.0,
-              onComplete: function onComplete() {}
+      var filteredBrands = filters.length ? [] : this.brands;
+
+      if (filters.length) {
+        this.brands.map(function (x) {
+          return Object.assign({}, x);
+        }).forEach(function (brand) {
+          var filteredCollections = [];
+          brand.collections.forEach(function (collection) {
+            var has = true;
+            filters.forEach(function (filter) {
+              has = has && filter.filterCollection(collection, filter.value);
             });
+
+            if (has) {
+              filteredCollections.push(collection);
+            }
+          }); // console.log(has, collection, filters);
+
+          if (filteredCollections.length) {
+            brand.collections = filteredCollections;
+            filteredBrands.push(brand);
           }
         });
+      } // console.log(filteredBrands, filters);
+
+
+      this.filteredBrands = filteredBrands;
+      this.updateStateFilters(filteredBrands);
+    }
+  }, {
+    key: "updateStateFilters",
+    value: function updateStateFilters(brands) {
+      var _this3 = this;
+
+      var collections = [].concat.apply([], brands.map(function (x) {
+        return x.collections;
+      }));
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this3.filters[x];
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < collections.length && !has) {
+              var collection = collections[i];
+              has = filter.filterCollection(collection, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        }); // console.log(filter.options);
       });
     }
   }, {
-    key: "toggleFilter",
-    value: function toggleFilter(id) {
-      var _this = this;
-
-      this.nav = this.nav === id ? null : id;
-      this.closeNav().then(function () {
-        if (_this.nav) {
-          _this.openNav(_this.nav);
-        }
-      });
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.doFilterBrands();
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
     }
   }]);
 
@@ -15716,7 +15765,164 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":215,"rxjs/operators":197}],202:[function(require,module,exports){
+},{"../shared/rect":218,"rxjs/operators":197}],202:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _hasDropdown = _interopRequireDefault(require("./has-dropdown.directive"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var AutocompleteDirective =
+/*#__PURE__*/
+function () {
+  function AutocompleteDirective($timeout) {
+    _classCallCheck(this, AutocompleteDirective);
+
+    this.$timeout = $timeout;
+    this.restrict = 'A';
+    this.scope = {
+      filter: '=autocomplete',
+      handler: '=',
+      onSetItem: '=?',
+      onRemoveItem: '=?'
+    };
+    this.template = "\n\t\t<div class=\"dropdown\">\n\t\t\t<ul class=\"nav nav--select\">\n\t\t\t\t<li ng-repeat=\"item in items track by $index\" ng-class=\"{ active: item.value == filter.value, disabled: item.disabled }\"><span ng-click=\"setItem(item)\" ng-bind=\"item.label\"></span></li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<label class=\"label\" ng-bind=\"filter.label\"></label>\n\t\t<div class=\"control control--select\" ng-class=\"{ selected: filter.value }\">\n\t\t\t<div class=\"input\">\n\t\t\t\t<svg class=\"icon icon--search\" ng-if=\"!filter.value\"><use xlink:href=\"#search\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--close\" ng-if=\"filter.value\" ng-click=\"removeItem()\"><use xlink:href=\"#close\"></use></svg>\n\t\t\t\t<input type=\"text\" class=\"value\" ng-model=\"autocomplete.query\" ng-model-options=\"{ debounce: 200 }\" ng-disabled=\"filter.value\" placeholder=\"{{filter.placeholder}}\" ng-change=\"onChange($event)\" ng-click=\"onClick($event)\"></input>\n\t\t\t\t<svg class=\"icon icon--arrow-down\"><use xlink:href=\"#arrow-down\"></use></svg>\n\t\t\t</div>\n\t\t</div>\n\t\t";
+  }
+
+  _createClass(AutocompleteDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      var input = node.querySelector('input');
+      var uid = _hasDropdown.default.dropDownUid++;
+      var autocomplete = scope.autocomplete = {
+        query: null
+      };
+      var filter = scope.filter;
+      scope.items = scope.filter.options;
+      node.initialFocus = null; // scope.$parent.hasDropdown = null;
+
+      scope.setItem = function (item) {
+        filter.value = item.value;
+        autocomplete.query = null;
+
+        if (scope.handler) {
+          scope.handler.setFilter(item, filter);
+        }
+      };
+
+      scope.removeItem = function (item) {
+        filter.value = null;
+        autocomplete.query = null;
+
+        if (scope.handler) {
+          scope.handler.removeFilter(filter);
+        }
+      };
+
+      scope.onChange = function (event) {
+        autocomplete.results = filter.options.filter(function (x) {
+          return x.label.toLowerCase().indexOf(autocomplete.query.toLowerCase()) !== -1;
+        });
+
+        if (autocomplete.results) {
+          scope.items = autocomplete.results;
+          scope.$parent.hasDropdown = uid;
+          node.initialFocus = true;
+        } else {
+          scope.items = filter.options;
+          scope.$parent.hasDropdown = null;
+        } // console.log('onChange', autocomplete.query, autocomplete.results);
+
+      };
+
+      var onClickInput = function onClickInput(event) {
+        event.stopPropagation(); // console.log('onClickInput', event);
+      };
+
+      var onClick = function onClick(event) {
+        var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+
+        if (clickedInside) {
+          node.initialFocus = true;
+
+          _this.$timeout(function () {
+            if (scope.$parent.hasDropdown === uid) {
+              scope.$parent.hasDropdown = null;
+            } else {
+              scope.$parent.hasDropdown = uid;
+            }
+
+            scope.items = filter.options;
+            autocomplete.query = null;
+            autocomplete.results = [];
+          }); // console.log(node, clickedInside, scope.$parent.hasDropdown);
+
+        } else if (node.initialFocus !== null) {
+          node.initialFocus = false;
+
+          _this.$timeout(function () {
+            if (scope.$parent.hasDropdown === uid) {
+              scope.$parent.hasDropdown = null;
+              scope.items = filter.options;
+              autocomplete.query = null;
+              autocomplete.results = [];
+            }
+          });
+        }
+      };
+
+      scope.$parent.$watch('hasDropdown', function (value) {
+        // console.log('hasDropdown', value, uid);
+        if (scope.$parent.hasDropdown === uid) {
+          node.classList.add('opened');
+        } else {
+          node.classList.remove('opened');
+        }
+      });
+
+      var addListeners = function addListeners() {
+        input.addEventListener('click', onClickInput);
+        document.addEventListener('click', onClick); // element.on('click', onClick);
+      };
+
+      var removeListeners = function removeListeners() {
+        input.removeEventListener('click', onClickInput);
+        document.removeEventListener('click', onClick); // element.off('click', onClick);
+      };
+
+      addListeners();
+      element.on('$destroy', function () {
+        removeListeners();
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout) {
+      return new AutocompleteDirective($timeout);
+    }
+  }]);
+
+  return AutocompleteDirective;
+}();
+
+exports.default = AutocompleteDirective;
+AutocompleteDirective.factory.$inject = ['$timeout'];
+
+},{"./has-dropdown.directive":204}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15753,6 +15959,7 @@ function () {
       });
       canvas.setUniform('u_pow', 1.0);
       canvas.setUniform('u_top', 0.0);
+      canvas.setUniform('u_strength', attributes.withVideo !== undefined ? 0.1 : 0.05);
       var pow = {
         pow: 1.0
       };
@@ -15828,7 +16035,123 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{}],203:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var HasDropdownDirective =
+/*#__PURE__*/
+function () {
+  function HasDropdownDirective($timeout) {
+    _classCallCheck(this, HasDropdownDirective);
+
+    this.$timeout = $timeout;
+    this.restrict = 'A';
+    this.scope = false;
+  }
+
+  _createClass(HasDropdownDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var node = element[0];
+      var uid = HasDropdownDirective.dropDownUid++;
+      node.initialFocus = null;
+      var consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null; // scope.hasDropdown = null;
+
+      var onClick = function onClick(event) {
+        var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+
+        if (clickedInside) {
+          node.initialFocus = true;
+
+          if (consumer) {
+            var dropdown = node.querySelector('[dropdown]');
+
+            if (scope.hasDropdown === uid) {
+              consumer.onDroppedOut(dropdown);
+            } else {
+              consumer.onDroppedIn(dropdown);
+            }
+
+            console.log(consumer, dropdown);
+          }
+
+          _this.$timeout(function () {
+            if (scope.hasDropdown === uid) {
+              scope.hasDropdown = null;
+            } else {
+              scope.hasDropdown = uid;
+            }
+          });
+        } else if (node.initialFocus !== null) {
+          node.initialFocus = false;
+
+          if (consumer) {
+            var _dropdown = node.querySelector('[dropdown]');
+
+            consumer.onDroppedOut(_dropdown);
+            console.log(consumer, _dropdown);
+          }
+
+          _this.$timeout(function () {
+            if (scope.hasDropdown === uid) {
+              scope.hasDropdown = null;
+            }
+          });
+        }
+      };
+
+      scope.$watch('hasDropdown', function (value) {
+        if (scope.hasDropdown === uid) {
+          node.classList.add('opened');
+        } else {
+          node.classList.remove('opened');
+        }
+      });
+
+      var addListeners = function addListeners() {
+        document.addEventListener('click', onClick);
+      };
+
+      var removeListeners = function removeListeners() {
+        document.removeEventListener('click', onClick);
+      };
+
+      addListeners();
+      element.on('$destroy', function () {
+        removeListeners();
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout) {
+      return new HasDropdownDirective($timeout);
+    }
+  }]);
+
+  return HasDropdownDirective;
+}();
+
+exports.default = HasDropdownDirective;
+HasDropdownDirective.dropDownUid = 0;
+HasDropdownDirective.factory.$inject = ['$timeout'];
+
+},{}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15933,7 +16256,61 @@ function () {
 exports.default = HrefDirective;
 HrefDirective.factory.$inject = [];
 
-},{}],204:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var LazyScriptDirective =
+/*#__PURE__*/
+function () {
+  function LazyScriptDirective() {
+    _classCallCheck(this, LazyScriptDirective);
+
+    this.restrict = 'A';
+    this.scope = false;
+  }
+
+  _createClass(LazyScriptDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      // if (attributes.type === 'text/javascript-lazy') {
+      var code = element.text();
+
+      try {
+        new Function(code)();
+      } catch (error) {
+        console.log('LazyScriptDirective.error', error);
+      } // }
+      // element.on('$destroy', () => {});
+
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new LazyScriptDirective();
+    }
+  }]);
+
+  return LazyScriptDirective;
+}();
+
+exports.default = LazyScriptDirective;
+LazyScriptDirective.factory.$inject = [];
+
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16075,7 +16452,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":215,"rxjs/operators":197}],205:[function(require,module,exports){
+},{"../shared/rect":218,"rxjs/operators":197}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16137,7 +16514,7 @@ function () {
 exports.default = MediaDirective;
 MediaDirective.factory.$inject = ['ApiService'];
 
-},{}],206:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16229,7 +16606,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":215,"rxjs/operators":197}],207:[function(require,module,exports){
+},{"../shared/rect":218,"rxjs/operators":197}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16285,7 +16662,7 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = ['DomService'];
 
-},{}],208:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16388,7 +16765,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":215,"rxjs/operators":197}],209:[function(require,module,exports){
+},{"../shared/rect":218,"rxjs/operators":197}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16608,7 +16985,7 @@ function () {
 exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
 SwiperSlideItemDirective.factory.$inject = ['$timeout'];
 
-},{}],210:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16713,7 +17090,7 @@ function () {
 exports.default = VideoDirective;
 VideoDirective.factory.$inject = ['$timeout', 'ApiService'];
 
-},{}],211:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16775,7 +17152,7 @@ function () {
 exports.default = WishlistDirective;
 WishlistDirective.factory.$inject = ['ApiService'];
 
-},{}],212:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16812,7 +17189,7 @@ function () {
       var _this = this;
 
       this.brand = brand;
-      this.webglEnabled = false;
+      this.webglEnabled = true;
       /*
       this.domService.smoothScroll$('.page').subscribe((top) => {
       	// console.log(top);
@@ -16956,9 +17333,31 @@ function () {
   }, {
     key: "closeNav",
     value: function closeNav() {
-      return new Promise(function (resolve, reject) {
-        var node = document.querySelector(".section--submenu.active");
+      var node = document.querySelector(".section--submenu.active");
+      return this.onDroppedOut(node);
+    }
+  }, {
+    key: "openNav",
+    value: function openNav(nav) {
+      var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
+      return this.onDroppedIn(node);
+    }
+  }, {
+    key: "toggleNav",
+    value: function toggleNav(id) {
+      var _this3 = this;
 
+      this.nav = this.nav === id ? null : id;
+      this.closeNav().then(function () {
+        if (_this3.nav) {
+          _this3.openNav(_this3.nav);
+        }
+      });
+    }
+  }, {
+    key: "onDroppedOut",
+    value: function onDroppedOut(node) {
+      return new Promise(function (resolve, reject) {
         if (node) {
           var items = [].slice.call(node.querySelectorAll('.submenu__item'));
           TweenMax.staggerTo(items.reverse(), 0.25, {
@@ -16981,10 +17380,9 @@ function () {
       });
     }
   }, {
-    key: "openNav",
-    value: function openNav(nav) {
+    key: "onDroppedIn",
+    value: function onDroppedIn(node) {
       return new Promise(function (resolve, reject) {
-        var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
         var items = [].slice.call(node.querySelectorAll('.submenu__item'));
         TweenMax.set(items, {
           alpha: 0
@@ -17005,18 +17403,6 @@ function () {
             });
           }
         });
-      });
-    }
-  }, {
-    key: "toggleNav",
-    value: function toggleNav(id) {
-      var _this3 = this;
-
-      this.nav = this.nav === id ? null : id;
-      this.closeNav().then(function () {
-        if (_this3.nav) {
-          _this3.openNav(_this3.nav);
-        }
       });
     }
   }, {
@@ -17047,7 +17433,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'DomService',
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],213:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17117,7 +17503,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],214:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17336,7 +17722,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":215,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],215:[function(require,module,exports){
+},{"../shared/rect":218,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

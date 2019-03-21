@@ -1,13 +1,29 @@
-app.directive('script', function() {
-	return {
-		restrict: 'E',
-		scope: false,
-		link: function(scope, elem, attr) {
-			if (attr.type === 'text/javascript-lazy') {
-				var code = elem.text();
-				var f = new Function(code);
-				f();
-			}
+/* jshint esversion: 6 */
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
+export default class LazyScriptDirective {
+
+	constructor() {
+		this.restrict = 'A';
+		this.scope = false;
+	}
+
+	link(scope, element, attributes, controller) {
+		// if (attributes.type === 'text/javascript-lazy') {
+		const code = element.text();
+		try {
+			new Function(code)();
+		} catch (error) {
+			console.log('LazyScriptDirective.error', error);
 		}
-	};
-});
+		// }
+		// element.on('$destroy', () => {});
+	}
+
+	static factory() {
+		return new LazyScriptDirective();
+	}
+
+}
+
+LazyScriptDirective.factory.$inject = [];

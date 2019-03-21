@@ -1,201 +1,199 @@
-{
-	"brands": [{
-		"brand": "atlas-concorde",
-		"collections": [{
-			"image": "img/collections/01.jpg",
-			"look": "marble look",
-			"title": "Marvel Edge",
-			"abstract": "The contemporary feel of timeless marble-look tiles.",
-			"categories": [{
-				"category": "Porcelain tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/01.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/02.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/03.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/04.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/05.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/06.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/07.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/08.jpg"
-				}]
+[{
+	"brand": "atlas-concorde",
+	"collections": [{
+		"image": "img/collections/01.jpg",
+		"look": "marble look",
+		"title": "Marvel Edge",
+		"abstract": "The contemporary feel of timeless marble-look tiles.",
+		"categories": [{
+			"category": "Porcelain tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/01.jpg"
 			}, {
-				"category": "Wall tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/01.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/02.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/03.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/04.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/05.jpg"
-				}]
+				"name": "",
+				"image": "img/collections/tiles/02.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/03.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/04.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/05.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/06.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/07.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/08.jpg"
 			}]
 		}, {
-			"image": "img/collections/02.jpg",
-			"look": "concrete look",
-			"title": "Boost",
-			"abstract": "The new soul of the concrete effect: industrial style becomes sophisticated elegance.",
-			"categories": [{
-				"category": "Porcelain tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/09.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/10.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/11.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/12.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/13.jpg"
-				}]
+			"category": "Wall tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/01.jpg"
 			}, {
-				"category": "Wall tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/09.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/10.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/11.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/12.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/13.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/14.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/15.jpg"
-				}]
-			}]
-		}, {
-			"image": "img/collections/03.jpg",
-			"look": "stone look",
-			"title": "Klif",
-			"abstract": "The decisive character of the stone effect in a porcelain tile inspired by nature.",
-			"categories": [{
-				"category": "Porcelain tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/16.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/17.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/18.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/19.jpg"
-				}]
+				"name": "",
+				"image": "img/collections/tiles/02.jpg"
 			}, {
-				"category": "Wall tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/16.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/17.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/18.jpg"
-				}]
+				"name": "",
+				"image": "img/collections/tiles/03.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/04.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/05.jpg"
 			}]
 		}]
 	}, {
-		"brand": "atlas-concorde-solution",
-		"collections": [{
-			"image": "img/collections/04.jpg",
-			"look": "concrete look",
-			"title": "Realm",
-			"abstract": "A marked impact and neutral colors, for a contemporary taste.",
-			"categories": [{
-				"category": "Porcelain tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/19.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/20.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/21.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/22.jpg"
-				}]
+		"image": "img/collections/02.jpg",
+		"look": "concrete look",
+		"title": "Boost",
+		"abstract": "The new soul of the concrete effect: industrial style becomes sophisticated elegance.",
+		"categories": [{
+			"category": "Porcelain tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/09.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/10.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/11.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/12.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/13.jpg"
 			}]
 		}, {
-			"image": "img/collections/05.jpg",
-			"look": "stone look",
-			"title": "Block Next",
-			"abstract": "A touch of authenticity that also interprets the warmest and most welcoming moods.",
-			"categories": [{
-				"category": "Porcelain tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/23.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/24.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/25.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/26.jpg"
-				}]
+			"category": "Wall tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/09.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/10.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/11.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/12.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/13.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/14.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/15.jpg"
+			}]
+		}]
+	}, {
+		"image": "img/collections/03.jpg",
+		"look": "stone look",
+		"title": "Klif",
+		"abstract": "The decisive character of the stone effect in a porcelain tile inspired by nature.",
+		"categories": [{
+			"category": "Porcelain tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/16.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/17.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/18.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/19.jpg"
 			}]
 		}, {
-			"image": "img/collections/06.jpg",
-			"look": "stone look",
-			"title": "Peak Floor",
-			"abstract": "Perfect for making the most of any residential and commercial space, even outdoors.",
-			"categories": [{
-				"category": "Porcelain tiles",
-				"tiles": [{
-					"name": "",
-					"image": "img/collections/tiles/27.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/28.jpg"
-				}, {
-					"name": "",
-					"image": "img/collections/tiles/29.jpg"
-				}]
+			"category": "Wall tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/16.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/17.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/18.jpg"
 			}]
 		}]
 	}]
-}
+}, {
+	"brand": "atlas-concorde-solution",
+	"collections": [{
+		"image": "img/collections/04.jpg",
+		"look": "concrete look",
+		"title": "Realm",
+		"abstract": "A marked impact and neutral colors, for a contemporary taste.",
+		"categories": [{
+			"category": "Porcelain tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/19.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/20.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/21.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/22.jpg"
+			}]
+		}]
+	}, {
+		"image": "img/collections/05.jpg",
+		"look": "stone look",
+		"title": "Block Next",
+		"abstract": "A touch of authenticity that also interprets the warmest and most welcoming moods.",
+		"categories": [{
+			"category": "Porcelain tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/23.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/24.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/25.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/26.jpg"
+			}]
+		}]
+	}, {
+		"image": "img/collections/06.jpg",
+		"look": "stone look",
+		"title": "Peak Floor",
+		"abstract": "Perfect for making the most of any residential and commercial space, even outdoors.",
+		"categories": [{
+			"category": "Porcelain tiles",
+			"tiles": [{
+				"name": "",
+				"image": "img/collections/tiles/27.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/28.jpg"
+			}, {
+				"name": "",
+				"image": "img/collections/tiles/29.jpg"
+			}]
+		}]
+	}]
+}]

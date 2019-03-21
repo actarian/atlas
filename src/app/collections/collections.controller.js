@@ -13,67 +13,94 @@ class CollectionsCtrl {
 		this.$timeout = $timeout;
 		this.domService = DomService;
 		this.apiService = ApiService;
+		this.filters = window.filters || {};
 		this.brands = window.brands || [];
-		console.log(this.brands);
-		this.filteredBrands = this.brands;
+		console.log(this.filters, this.brands);
+		Object.keys(this.filters).forEach(x => {
+			const filter = this.filters[x];
+			if (x === 'collections') {
+				filter.filterCollection = (collection, value) => {
+					return collection.id === value;
+				};
+			} else {
+				filter.filterCollection = (collection, value) => {
+					return collection.features.indexOf(value) !== -1;
+				};
+			}
+			filter.options.unshift({
+				label: this.filters[x].placeholder,
+				value: null,
+			});
+			filter.value = null;
+		});
+		this.updateStateFilters(this.brands);
+		// console.log(this.filters);
+		// console.log(this.brands);
 	}
 
-	closeNav() {
-		return new Promise((resolve, reject) => {
-			const node = document.querySelector(`.section--submenu.active`);
-			if (node) {
-				const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-				TweenMax.staggerTo(items.reverse(), 0.25, {
-					opacity: 0,
-					stagger: 0.05,
-					delay: 0.0,
-					onComplete: () => {
-						TweenMax.to(node, 0.2, {
-							maxHeight: 0,
-							delay: 0.0,
-							onComplete: () => {
-								resolve();
-							}
-						});
+	doFilterBrands() {
+		/*
+		const filters = Object.keys(this.filters).map((x) => {
+			return Object.assign({ type: x }, this.filters[x]);
+		}).filter(x => x.value !== null);
+		*/
+		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
+		const filteredBrands = filters.length ? [] : this.brands;
+		if (filters.length) {
+			this.brands.map(x => Object.assign({}, x)).forEach(brand => {
+				const filteredCollections = [];
+				brand.collections.forEach(collection => {
+					let has = true;
+					filters.forEach(filter => {
+						has = has && filter.filterCollection(collection, filter.value);
+					});
+					if (has) {
+						filteredCollections.push(collection);
 					}
 				});
-			} else {
-				resolve();
-			}
-		});
-	}
-
-	openNav(nav) {
-		return new Promise((resolve, reject) => {
-			const node = document.querySelector(`#nav-${nav} .section--submenu`);
-			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-			TweenMax.set(items, { alpha: 0 });
-			TweenMax.set(node, { maxHeight: 0 });
-			TweenMax.to(node, 0.2, {
-				maxHeight: '100vh',
-				delay: 0.0,
-				overwrite: 'all',
-				onComplete: () => {
-					TweenMax.staggerTo(items, 0.35, {
-						opacity: 1,
-						stagger: 0.05,
-						delay: 0.0,
-						onComplete: () => {
-
-						}
-					});
+				// console.log(has, collection, filters);
+				if (filteredCollections.length) {
+					brand.collections = filteredCollections;
+					filteredBrands.push(brand);
 				}
 			});
+		}
+		// console.log(filteredBrands, filters);
+		this.filteredBrands = filteredBrands;
+		this.updateStateFilters(filteredBrands);
+	}
+
+	updateStateFilters(brands) {
+		const collections = [].concat.apply([], brands.map(x => x.collections));
+		Object.keys(this.filters).forEach(x => {
+			const filter = this.filters[x];
+			filter.options.forEach(option => {
+				let has = false;
+				if (option.value) {
+					let i = 0;
+					while (i < collections.length && !has) {
+						const collection = collections[i];
+						has = filter.filterCollection(collection, option.value);
+						i++;
+					}
+				} else {
+					has = true;
+				}
+				option.disabled = !has;
+			});
+			// console.log(filter.options);
 		});
 	}
 
-	toggleFilter(id) {
-		this.nav = (this.nav === id ? null : id);
-		this.closeNav().then(() => {
-			if (this.nav) {
-				this.openNav(this.nav);
-			}
-		});
+	setFilter(item, filter) {
+		item = item || filter.options[0];
+		filter.value = item.value;
+		filter.placeholder = item.label;
+		this.doFilterBrands();
+	}
+
+	removeFilter(filter) {
+		this.setFilter(null, filter);
 	}
 
 }

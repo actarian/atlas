@@ -16,6 +16,27 @@
 
 	.input {
 		position: relative;
+		display: flex;
+		align-items: center;
+
+		.icon--search {
+			width: 16px;
+			height: 16px;
+			line-height: 1;
+			fill: $primary;
+		}
+
+		.icon--close {
+			width: 20px;
+			height: 30px;
+			padding: 10px 10px 10px 0;
+			fill: $primary;
+		}
+
+		.value {
+			outline: none !important;
+			line-height: inherit;
+		}
 
 		.icon--arrow-down {
 			position: absolute;
@@ -26,6 +47,22 @@
 			margin-top: -5px;
 			fill: $primary;
 		}
+
+		&[disabled] {
+			pointer-events: none;
+		}
 	}
 
+	&.selected {
+		.input {
+			.value {
+
+				&,
+				&::placeholder {
+					font-weight: $font-regular;
+					color: $foreground;
+				}
+			}
+		}
+	}
 }

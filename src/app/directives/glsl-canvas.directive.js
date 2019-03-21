@@ -16,6 +16,7 @@ export default class GlslCanvasDirective {
 		canvas.setTexture('u_texture', attributes.glslCanvas, { repeat: true });
 		canvas.setUniform('u_pow', 1.0);
 		canvas.setUniform('u_top', 0.0);
+		canvas.setUniform('u_strength', attributes.withVideo !== undefined ? 0.1 : 0.05);
 		let pow = { pow: 1.0 };
 		let tween;
 		const onOver = (event) => {

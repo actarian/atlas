@@ -3,8 +3,11 @@
 
 import CollectionsCtrl from './collections/collections.controller';
 import AppearDirective from './directives/appear.directive';
+import AutocompleteDirective from './directives/autocomplete.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
+import HasDropdownDirective from './directives/has-dropdown.directive';
 import HrefDirective from './directives/href.directive';
+import LazyScriptDirective from './directives/lazy-script.directive';
 import LazyDirective from './directives/lazy.directive';
 import MediaDirective from './directives/media.directive';
 import ParallaxDirective from './directives/parallax.directive';
@@ -31,7 +34,10 @@ app.factory('ApiService', ApiService.factory)
 app.directive('appear', AppearDirective.factory)
 	.directive('href', HrefDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
+	.directive('hasDropdown', HasDropdownDirective.factory)
+	.directive('autocomplete', AutocompleteDirective.factory)
 	.directive('lazy', LazyDirective.factory)
+	.directive('lazyScript', LazyScriptDirective.factory)
 	.directive('media', MediaDirective.factory)
 	.directive('parallax', ParallaxDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
