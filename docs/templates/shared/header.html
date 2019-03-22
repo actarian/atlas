@@ -12,9 +12,13 @@
 			</div>
 			<div class="group">
 				<ul class="nav nav--primary hidden-xs-down">
-					<li id="nav-1" has-dropdown has-dropdown-consumer="root">
+					<li id="nav-1" has-dropdown has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
 						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections.html'"></ng-include>
+					</li>
+					<li id="nav-1" has-dropdown has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
+						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+						<ng-include src="'templates/shared/submenu-collections-usa.html'"></ng-include>
 					</li>
 					<li id="nav-2" has-dropdown has-dropdown-consumer="root">
 						<span>Be Inspired</span>

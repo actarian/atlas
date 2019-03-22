@@ -101,6 +101,22 @@
 
 }
 
+.listing--submenu {
+	display: flex;
+	justify-content: flex-start;
+
+	@include media-breakpoint-up(md) {
+		width: calc(100% + 64px);
+
+		&>.submenu__item {
+			max-width: calc(33.33% - 64px);
+			flex: 1 1 33.33%;
+			margin-right: 64px;
+		}
+	}
+
+}
+
 .nav--submenu {
 	flex-wrap: wrap;
 
