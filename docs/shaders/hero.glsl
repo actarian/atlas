@@ -19,7 +19,11 @@ void main() {
 	vec2 st = gl_FragCoord.xy / u_resolution.xy;
 	float rr = u_resolution.x / u_resolution.y;
 	float tr = u_textureResolution.x / u_textureResolution.y;
-	st.y = st.y / rr * tr;
+	if (tr > rr) {
+		st.x = ((st.x - 0.5) * rr / tr) + 0.5;
+	} else {
+		st.y = ((st.y - 0.5) / rr * tr) + 0.5;
+	}
 	float top = u_top / u_resolution.y;
 	vec2 mx = u_mouse / u_resolution;
 	vec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;
