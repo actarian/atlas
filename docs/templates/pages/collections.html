@@ -374,7 +374,7 @@
 			-->
 		</form>
 	</section>
-	<div ng-if="!collectionsCtrl.filteredBrands">
+	<div class="section--collections-results" ng-if="!collectionsCtrl.filteredBrands">
 		<section class="section section--collections atlas-concorde">
 			<div class="container">
 				<div class="row">
@@ -540,7 +540,7 @@
 			</div>
 		</section>
 	</div>
-	<div ng-if="collectionsCtrl.filteredBrands">
+	<div class="section--collections-results" ng-if="collectionsCtrl.filteredBrands">
 		<section class="section section--collections" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
 			<div class="container">
 				<div class="row">
