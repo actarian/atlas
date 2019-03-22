@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="thermal-expansion_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#4A4A49;}
+	.st2{fill:#B2B2B2;}
+	.st3{fill:#3C3C3B;}
+</style>
+<g id="thermal-expansion">
+	<g>
+		<path class="st0" d="M64.1,125.4l-11-8.8H10.8v-34L0.2,74.1l10.6-4.6v-67h106.6v67.1l10.4,4.5l-10.4,8.4v34.1H75.1L64.1,125.4z
+			 M16.7,110.7h38.5l8.9,7.2l8.9-7.2h38.5v-31l5-4l-5-2.2v-65H16.7v65l-5.2,2.2l5.2,4.2V110.7z"/>
+		<rect x="13.8" y="5.5" class="st1" width="100.7" height="108.1"/>
+		<polygon class="st2" points="64.1,121.7 5.8,74.9 64.1,49.8 122.2,74.9 		"/>
+		<path class="st3" d="M64.1,123.1L3.7,74.6l60.5-26l60.2,26L64.1,123.1z M8,75.2l56.1,45l55.9-45L64.1,51.1L8,75.2z"/>
+		<rect x="62.9" y="19.4" class="st0" width="9" height="62.4"/>
+		<g>
+			<path class="st0" d="M57.8,82.4c0-5.3,4.3-9.7,9.6-9.7S77,77,77,82.4c0,5.3-4.3,9.6-9.6,9.6C62.1,92,57.8,87.7,57.8,82.4"/>
+		</g>
+		<path class="st0" d="M76.4,67.2h-18v-2.4h18V67.2z M76.4,60.9h-18v-2.4h18V60.9z M76.4,54.6h-18v-2.4h18V54.6z M76.4,48.2h-18
+			v-2.4h18V48.2z M76.4,41.9h-18v-2.4h18V41.9z M76.4,35.6h-18v-2.4h18V35.6z M76.4,29.3h-18v-2.4h18V29.3z"/>
+		<polygon class="st0" points="92.5,54.1 83,37.7 102,37.7 		"/>
+		<rect x="89.3" y="19" class="st0" width="6.4" height="20.4"/>
+		<polygon class="st0" points="39.6,54 49.1,70.4 30.1,70.4 		"/>
+		<rect x="36.4" y="68.7" class="st0" width="6.4" height="20.4"/>
+	</g>
+</g>
+</svg>

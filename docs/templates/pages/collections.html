@@ -86,7 +86,13 @@
 		brand: 'atlas-concorde',
 		collections: [{
 			id: 11,
-			image: 'img/collections/01.jpg',
+			images: [{
+				url: 'img/collections/01.jpg',
+				features: [31],
+			}, {
+				url: 'img/collections/01.jpg',
+				features: [32],
+			}],
 			look: 'marble look',
 			title: 'Marvel Edge',
 			abstract: 'The contemporary feel of timeless marble-look tiles.',
@@ -139,7 +145,13 @@
 			features: [22, 31, 32, 41],
 		}, {
 			id: 12,
-			image: 'img/collections/02.jpg',
+			images: [{
+				url: 'img/collections/02.jpg',
+				features: [31],
+			}, {
+				url: 'img/collections/02.jpg',
+				features: [32],
+			}],
 			look: 'concrete look',
 			title: 'Boost',
 			abstract: 'The new soul of the concrete effect: industrial style becomes sophisticated elegance.',
@@ -189,7 +201,13 @@
 			features: [24, 31, 32, 42],
 		}, {
 			id: 13,
-			image: 'img/collections/03.jpg',
+			images: [{
+				url: 'img/collections/03.jpg',
+				features: [31],
+			}, {
+				url: 'img/collections/03.jpg',
+				features: [32],
+			}],
 			look: 'stone look',
 			title: 'Klif',
 			abstract: 'The decisive character of the stone effect in a porcelain tile inspired by nature.',
@@ -227,7 +245,10 @@
 		brand: 'atlas-concorde-solution',
 		collections: [{
 			id: 14,
-			image: 'img/collections/04.jpg',
+			images: [{
+				url: 'img/collections/04.jpg',
+				features: [31],
+			}],
 			look: 'concrete look',
 			title: 'Realm',
 			abstract: 'A marked impact and neutral colors, for a contemporary taste.',
@@ -250,7 +271,10 @@
 			features: [24, 31, 41, 42],
 		}, {
 			id: 15,
-			image: 'img/collections/05.jpg',
+			images: [{
+				url: 'img/collections/05.jpg',
+				features: [31],
+			}],
 			look: 'stone look',
 			title: 'Block Next',
 			abstract: 'A touch of authenticity that also interprets the warmest and most welcoming moods.',
@@ -273,7 +297,10 @@
 			features: [23, 31, 41, 42],
 		}, {
 			id: 16,
-			image: 'img/collections/06.jpg',
+			images: [{
+				url: 'img/collections/06.jpg',
+				features: [31],
+			}],
 			look: 'stone look',
 			title: 'Peak Floor',
 			abstract: 'Perfect for making the most of any residential and commercial space, even outdoors.',
@@ -528,7 +555,7 @@
 				<div class="listing listing--collections">
 					<a href="product-project.html" class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
 						<div class="picture picture--collection">
-							<img lazy data-src="{{collection.image}}" alt="title" />
+							<img lazy data-src="{{collection.images | imageWithFeatures : [collectionsCtrl.filters.typologies.value] }}" alt="title" />
 							<span class="look" ng-bind="collection.look"></span>
 						</div>
 						<div class="title" ng-bind="collection.title"></div>

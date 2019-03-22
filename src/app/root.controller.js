@@ -55,6 +55,7 @@ class RootCtrl {
 			}
 			*/
 			// this.$location.state({ title, href });
+			this.$scope.$broadcast('onNavigationStart', href);
 			this.$location.path(href);
 			const wrapper = document.querySelector('[data-router-wrapper]');
 			const wrapperElement = angular.element(wrapper);
@@ -93,6 +94,7 @@ class RootCtrl {
 					.then((html) => {
 						fromElement.remove();
 						window.scrollTo(0, 0);
+						this.$scope.$broadcast('onNavigationTransitionIn', href);
 						/*
 						window.scroll({
 							top: 0,
@@ -117,7 +119,7 @@ class RootCtrl {
 						this.$timeout(() => {
 							transitionIn(from, to, onTransitionInDidEnd);
 						});
-						console.log('fetched');
+						// console.log('fetched');
 					}).catch(function(error) {
 						console.log('Failed to fetch page: ', error);
 					});
@@ -155,6 +157,12 @@ class RootCtrl {
 	}
 
 	onDroppedOut(node) {
+		if (node) {
+			TweenMax.set(node, { maxHeight: 0 });
+			return Promise.resolve();
+		} else {
+			return Promise.resolve();
+		}
 		return new Promise((resolve, reject) => {
 			if (node) {
 				const items = [].slice.call(node.querySelectorAll('.submenu__item'));
@@ -165,6 +173,7 @@ class RootCtrl {
 					onComplete: () => {
 						TweenMax.to(node, 0.2, {
 							maxHeight: 0,
+							ease: Expo.easeOut,
 							delay: 0.0,
 							onComplete: () => {
 								resolve();
@@ -181,16 +190,17 @@ class RootCtrl {
 	onDroppedIn(node) {
 		return new Promise((resolve, reject) => {
 			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-			TweenMax.set(items, { alpha: 0 });
+			TweenMax.set(items, { opacity: 0 });
 			TweenMax.set(node, { maxHeight: 0 });
-			TweenMax.to(node, 0.2, {
+			TweenMax.to(node, 0.3, {
 				maxHeight: '100vh',
+				ease: Expo.easeOut,
 				delay: 0.0,
 				overwrite: 'all',
 				onComplete: () => {
 					TweenMax.staggerTo(items, 0.35, {
 						opacity: 1,
-						stagger: 0.05,
+						stagger: 0.07,
 						delay: 0.0,
 						onComplete: () => {
 

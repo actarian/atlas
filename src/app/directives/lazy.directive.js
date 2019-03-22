@@ -24,6 +24,7 @@ export default class LazyDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
+		node.classList.remove('lazyed');
 		// node.index = INDEX++;
 		element.subscription = this.lazy$(node).subscribe(intersection => {
 			/*
@@ -35,7 +36,7 @@ export default class LazyDirective {
 			if (intersection.y > -0.5) {
 				if (!node.classList.contains('lazyed')) {
 					node.classList.add('lazyed');
-					this.onAppearsInViewport(node, scope);
+					this.onAppearsInViewport(node, scope, attributes);
 					setTimeout(() => {
 						element.subscription.unsubscribe();
 						element.subscription = null;
@@ -61,18 +62,24 @@ export default class LazyDirective {
 		);
 	}
 
-	onAppearsInViewport(image, scope) {
+	onAppearsInViewport(image, scope, attributes) {
 		if (scope.srcset) {
+			// attributes.$set('srcset', scope.srcset);
 			image.setAttribute('srcset', scope.srcset);
 			image.removeAttribute('data-srcset');
 			if (scope.src) {
+				// attributes.$set('src', scope.src);
 				image.setAttribute('src', scope.src);
 				image.removeAttribute('data-src');
 			}
 		} else if (scope.src) {
 			// console.log(scope.src);
+
+			// attributes.$set('src', scope.src);
 			image.setAttribute('src', null);
-			image.setAttribute('src', scope.src);
+			setTimeout(() => {
+				image.setAttribute('src', scope.src);
+			}, 1);
 			image.removeAttribute('data-src');
 			/*
 			const input = scope.src;

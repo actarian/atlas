@@ -15478,6 +15478,10 @@ var _video = _interopRequireDefault(require("./directives/video.directive"));
 
 var _wishlist = _interopRequireDefault(require("./directives/wishlist.directive"));
 
+var _imageWithFeatures = require("./filters/image-with-features.filter");
+
+var _trusted = require("./filters/trusted.filter");
+
 var _root = _interopRequireDefault(require("./root.controller"));
 
 var _api = _interopRequireDefault(require("./services/api.service"));
@@ -15497,19 +15501,12 @@ app.config(['$locationProvider', function ($locationProvider) {
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
 app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('autocomplete', _autocomplete.default.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
 app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default);
-app.filter('trusted', ['$sce', TrustedFilter]);
-
-function TrustedFilter($sce) {
-  return function (url) {
-    return $sce.trustAsResourceUrl(url);
-  };
-} // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
-
+app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/autocomplete.directive":202,"./directives/glsl-canvas.directive":203,"./directives/has-dropdown.directive":204,"./directives/href.directive":205,"./directives/lazy-script.directive":206,"./directives/lazy.directive":207,"./directives/media.directive":208,"./directives/parallax.directive":209,"./directives/scroll.directive":210,"./directives/sticky.directive":211,"./directives/swiper.directive":212,"./directives/video.directive":213,"./directives/wishlist.directive":214,"./root.controller":215,"./services/api.service":216,"./services/dom.service":217}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/autocomplete.directive":202,"./directives/glsl-canvas.directive":203,"./directives/has-dropdown.directive":204,"./directives/href.directive":205,"./directives/lazy-script.directive":206,"./directives/lazy.directive":207,"./directives/media.directive":208,"./directives/parallax.directive":209,"./directives/scroll.directive":210,"./directives/sticky.directive":211,"./directives/swiper.directive":212,"./directives/video.directive":213,"./directives/wishlist.directive":214,"./filters/image-with-features.filter":215,"./filters/trusted.filter":216,"./root.controller":217,"./services/api.service":218,"./services/dom.service":219}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15540,7 +15537,6 @@ function () {
     this.apiService = ApiService;
     this.filters = window.filters || {};
     this.brands = window.brands || [];
-    console.log(this.filters, this.brands);
     Object.keys(this.filters).forEach(function (x) {
       var filter = _this.filters[x];
 
@@ -15605,8 +15601,13 @@ function () {
       } // console.log(filteredBrands, filters);
 
 
-      this.filteredBrands = filteredBrands;
-      this.updateStateFilters(filteredBrands);
+      this.filteredBrands = [];
+      this.$timeout(function () {
+        _this2.filteredBrands = filteredBrands;
+
+        _this2.updateStateFilters(filteredBrands); // delayer for image update
+
+      }, 50);
     }
   }, {
     key: "updateStateFilters",
@@ -15765,7 +15766,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":218,"rxjs/operators":197}],202:[function(require,module,exports){
+},{"../shared/rect":220,"rxjs/operators":197}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16074,6 +16075,7 @@ function () {
       var consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null; // scope.hasDropdown = null;
 
       var onClick = function onClick(event) {
+        // console.log(event);
         var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
 
         if (clickedInside) {
@@ -16086,9 +16088,8 @@ function () {
               consumer.onDroppedOut(dropdown);
             } else {
               consumer.onDroppedIn(dropdown);
-            }
+            } // console.log(consumer, dropdown);
 
-            console.log(consumer, dropdown);
           }
 
           _this.$timeout(function () {
@@ -16104,8 +16105,7 @@ function () {
           if (consumer) {
             var _dropdown = node.querySelector('[dropdown]');
 
-            consumer.onDroppedOut(_dropdown);
-            console.log(consumer, _dropdown);
+            consumer.onDroppedOut(_dropdown); // console.log(consumer, dropdown);
           }
 
           _this.$timeout(function () {
@@ -16116,11 +16116,23 @@ function () {
         }
       };
 
-      scope.$watch('hasDropdown', function (value) {
+      var onShowHide = function onShowHide(value) {
         if (scope.hasDropdown === uid) {
           node.classList.add('opened');
         } else {
           node.classList.remove('opened');
+        }
+      };
+
+      scope.$watch('hasDropdown', onShowHide);
+      scope.$on('onNavigationTransitionIn', function () {
+        console.log('onNavigationTransitionIn');
+        scope.hasDropdown = null;
+        onShowHide();
+
+        if (consumer) {
+          var dropdown = node.querySelector('[dropdown]');
+          consumer.onDroppedOut(dropdown); // console.log(consumer, dropdown);
         }
       });
 
@@ -16352,7 +16364,8 @@ function () {
     value: function link(scope, element, attributes, controller) {
       var _this = this;
 
-      var node = element[0]; // node.index = INDEX++;
+      var node = element[0];
+      node.classList.remove('lazyed'); // node.index = INDEX++;
 
       element.subscription = this.lazy$(node).subscribe(function (intersection) {
         /*
@@ -16365,7 +16378,7 @@ function () {
           if (!node.classList.contains('lazyed')) {
             node.classList.add('lazyed');
 
-            _this.onAppearsInViewport(node, scope);
+            _this.onAppearsInViewport(node, scope, attributes);
 
             setTimeout(function () {
               element.subscription.unsubscribe();
@@ -16394,19 +16407,24 @@ function () {
     }
   }, {
     key: "onAppearsInViewport",
-    value: function onAppearsInViewport(image, scope) {
+    value: function onAppearsInViewport(image, scope, attributes) {
       if (scope.srcset) {
+        // attributes.$set('srcset', scope.srcset);
         image.setAttribute('srcset', scope.srcset);
         image.removeAttribute('data-srcset');
 
         if (scope.src) {
+          // attributes.$set('src', scope.src);
           image.setAttribute('src', scope.src);
           image.removeAttribute('data-src');
         }
       } else if (scope.src) {
         // console.log(scope.src);
+        // attributes.$set('src', scope.src);
         image.setAttribute('src', null);
-        image.setAttribute('src', scope.src);
+        setTimeout(function () {
+          image.setAttribute('src', scope.src);
+        }, 1);
         image.removeAttribute('data-src');
         /*
         const input = scope.src;
@@ -16452,7 +16470,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":218,"rxjs/operators":197}],208:[function(require,module,exports){
+},{"../shared/rect":220,"rxjs/operators":197}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16606,7 +16624,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":218,"rxjs/operators":197}],210:[function(require,module,exports){
+},{"../shared/rect":220,"rxjs/operators":197}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16765,7 +16783,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":218,"rxjs/operators":197}],212:[function(require,module,exports){
+},{"../shared/rect":220,"rxjs/operators":197}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17158,6 +17176,64 @@ WishlistDirective.factory.$inject = ['ApiService'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.ImageWithFeatures = ImageWithFeatures;
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+function ImageWithFeatures() {
+  return function (images, features) {
+    if (!images) {
+      return null;
+    }
+
+    if (!images.length) {
+      return null;
+    }
+
+    if (images.length === 1 || !features || features[0] === null) {
+      return images[0].url;
+    }
+
+    var image = images.find(function (image) {
+      var has = true;
+      features.forEach(function (f) {
+        return has = has && image.features.indexOf(f) !== -1;
+      });
+      return has;
+    });
+
+    if (image) {
+      return image.url;
+    } else {
+      return images[0].url;
+    }
+  };
+}
+
+},{}],216:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.TrustedFilter = TrustedFilter;
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+function TrustedFilter($sce) {
+  return function (url) {
+    return $sce.trustAsResourceUrl(url);
+  };
+}
+
+},{}],217:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -17232,6 +17308,8 @@ function () {
         */
         // this.$location.state({ title, href });
 
+        _this2.$scope.$broadcast('onNavigationStart', href);
+
         _this2.$location.path(href);
 
         var wrapper = document.querySelector('[data-router-wrapper]');
@@ -17280,6 +17358,8 @@ function () {
           }).then(function (html) {
             fromElement.remove();
             window.scrollTo(0, 0);
+
+            _this2.$scope.$broadcast('onNavigationTransitionIn', href);
             /*
             window.scroll({
             	top: 0,
@@ -17287,6 +17367,7 @@ function () {
             	behavior: 'smooth'
             });
             */
+
 
             var parser = new DOMParser();
             var doc = parser.parseFromString(html, "text/html");
@@ -17307,9 +17388,8 @@ function () {
 
             _this2.$timeout(function () {
               transitionIn(from, to, onTransitionInDidEnd);
-            });
+            }); // console.log('fetched');
 
-            console.log('fetched');
           }).catch(function (error) {
             console.log('Failed to fetch page: ', error);
           });
@@ -17357,6 +17437,15 @@ function () {
   }, {
     key: "onDroppedOut",
     value: function onDroppedOut(node) {
+      if (node) {
+        TweenMax.set(node, {
+          maxHeight: 0
+        });
+        return Promise.resolve();
+      } else {
+        return Promise.resolve();
+      }
+
       return new Promise(function (resolve, reject) {
         if (node) {
           var items = [].slice.call(node.querySelectorAll('.submenu__item'));
@@ -17367,6 +17456,7 @@ function () {
             onComplete: function onComplete() {
               TweenMax.to(node, 0.2, {
                 maxHeight: 0,
+                ease: Expo.easeOut,
                 delay: 0.0,
                 onComplete: function onComplete() {
                   resolve();
@@ -17385,19 +17475,20 @@ function () {
       return new Promise(function (resolve, reject) {
         var items = [].slice.call(node.querySelectorAll('.submenu__item'));
         TweenMax.set(items, {
-          alpha: 0
+          opacity: 0
         });
         TweenMax.set(node, {
           maxHeight: 0
         });
-        TweenMax.to(node, 0.2, {
+        TweenMax.to(node, 0.3, {
           maxHeight: '100vh',
+          ease: Expo.easeOut,
           delay: 0.0,
           overwrite: 'all',
           onComplete: function onComplete() {
             TweenMax.staggerTo(items, 0.35, {
               opacity: 1,
-              stagger: 0.05,
+              stagger: 0.07,
               delay: 0.0,
               onComplete: function onComplete() {}
             });
@@ -17433,7 +17524,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'DomService',
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],216:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17503,7 +17594,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],217:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17722,7 +17813,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":218,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],218:[function(require,module,exports){
+},{"../shared/rect":220,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],220:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

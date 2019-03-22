@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="bulk-bending-strength_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#575756;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:#4A4A49;}
+	.st3{fill:#706F6F;}
+</style>
+<g id="bulk-bending-strength">
+	<g>
+		<rect x="13.6" y="9.9" class="st0" width="100.7" height="108.1"/>
+		<path class="st1" d="M117.3,121H10.7V7h106.6C117.3,7,117.3,121,117.3,121z M16.6,115.1h94.9V12.9H16.6V115.1z"/>
+		<rect x="13.6" y="9.9" class="st2" width="100.7" height="108.1"/>
+		<rect x="62.3" y="28.7" class="st1" width="3.4" height="25.3"/>
+		<polygon class="st1" points="64,56.5 53.2,44.7 55.7,42.4 64,51.5 72.3,42.4 74.8,44.7 		"/>
+		<rect x="81.2" y="74" class="st1" width="3.4" height="25.3"/>
+		<polygon class="st1" points="74.5,85.6 72,83.3 82.9,71.5 93.7,83.3 91.2,85.6 82.9,76.5 		"/>
+		<rect x="43.5" y="74" class="st1" width="3.4" height="25.3"/>
+		<polygon class="st1" points="53.6,85.6 45.2,76.5 36.9,85.6 34.4,83.3 45.2,71.5 56.1,83.3 		"/>
+		<rect x="48.4" y="9.9" class="st3" width="2.3" height="51.1"/>
+		<rect x="77.3" y="9.9" class="st3" width="2.3" height="51.1"/>
+		<rect x="29.7" y="66.9" class="st3" width="2.3" height="51.1"/>
+		<rect x="58.5" y="66.9" class="st3" width="2.3" height="51.1"/>
+		<rect x="67.3" y="66.9" class="st3" width="2.3" height="51.1"/>
+		<rect x="96.2" y="66.9" class="st3" width="2.3" height="51.1"/>
+		<rect x="25.7" y="61.1" class="st1" width="76.7" height="5.9"/>
+	</g>
+</g>
+</svg>

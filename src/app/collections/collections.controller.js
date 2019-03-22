@@ -15,7 +15,6 @@ class CollectionsCtrl {
 		this.apiService = ApiService;
 		this.filters = window.filters || {};
 		this.brands = window.brands || [];
-		console.log(this.filters, this.brands);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			if (x === 'collections') {
@@ -66,8 +65,12 @@ class CollectionsCtrl {
 			});
 		}
 		// console.log(filteredBrands, filters);
-		this.filteredBrands = filteredBrands;
-		this.updateStateFilters(filteredBrands);
+		this.filteredBrands = [];
+		this.$timeout(() => {
+			this.filteredBrands = filteredBrands;
+			this.updateStateFilters(filteredBrands);
+			// delayer for image update
+		}, 50);
 	}
 
 	updateStateFilters(brands) {

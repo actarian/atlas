@@ -16,6 +16,8 @@ import StickyDirective from './directives/sticky.directive';
 import { SwiperHeroDirective, SwiperSlideItemDirective, SwiperTileDirective } from './directives/swiper.directive';
 import VideoDirective from './directives/video.directive';
 import WishlistDirective from './directives/wishlist.directive';
+import { ImageWithFeatures } from './filters/image-with-features.filter';
+import { TrustedFilter } from './filters/trusted.filter';
 import RootCtrl from './root.controller';
 import ApiService from './services/api.service';
 import DomService from './services/dom.service';
@@ -51,13 +53,8 @@ app.directive('appear', AppearDirective.factory)
 app.controller('RootCtrl', RootCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl);
 
-app.filter('trusted', ['$sce', TrustedFilter]);
-
-function TrustedFilter($sce) {
-	return function(url) {
-		return $sce.trustAsResourceUrl(url);
-	};
-}
+app.filter('imageWithFeatures', [ImageWithFeatures])
+	.filter('trusted', ['$sce', TrustedFilter]);
 
 // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 

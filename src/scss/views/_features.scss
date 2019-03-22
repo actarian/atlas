@@ -1,0 +1,133 @@
+.section--technical-features {
+	padding: 0 0 90px 0;
+
+	.row {
+		padding-bottom: 80px;
+	}
+
+	.category {
+		padding-bottom: 50px;
+		font-size: 15px;
+		text-transform: uppercase;
+		color: $foreground-secondary;
+	}
+}
+
+.group--icon {
+	margin-left: -6px;
+	margin-right: 15px;
+
+	img {
+		width: 64px;
+		height: 64px;
+	}
+}
+
+.listing--features {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	padding-bottom: 20px;
+
+	&>.listing__item {
+		display: flex;
+		align-items: center;
+		padding: 0 15px;
+
+		.feature {
+			font-size: 12px;
+			line-height: 1.5;
+			color: $foreground-secondary;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		width: calc(100% + 64px);
+
+		&>.listing__item {
+			max-width: calc(100% - 64px);
+			flex: 1 1 100%;
+			margin-right: 64px;
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		width: calc(100% + 64px);
+
+		&>.listing__item {
+			max-width: calc(50% - 64px);
+			flex: 1 1 50%;
+			margin-right: 64px;
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		width: calc(100% + 64px);
+
+		&>.listing__item {
+			max-width: calc(25% - 64px);
+			flex: 1 1 25%;
+			margin-right: 64px;
+		}
+	}
+
+}
+
+.listing--technical-features {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	padding-bottom: 20px;
+
+	&>.listing__item {
+		display: flex;
+		padding: 0 15px;
+
+		.feature {
+			margin-bottom: 10px;
+			font-size: 12px;
+			line-height: 1.5;
+			color: $foreground-secondary;
+		}
+
+		.abstract {
+			font-size: 14px;
+			line-height: 1.5;
+			color: $foreground-secondary;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		width: calc(100% + 64px);
+
+		&>.listing__item {
+			max-width: calc(100% - 64px);
+			flex: 1 1 100%;
+			margin-right: 64px;
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		width: calc(100% + 64px);
+
+		&>.listing__item {
+			max-width: calc(50% - 64px);
+			flex: 1 1 50%;
+			margin-right: 64px;
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		width: calc(100% + 64px);
+
+		&>.listing__item {
+			max-width: calc(33.33% - 64px);
+			flex: 1 1 33.33%;
+			margin-right: 64px;
+		}
+	}
+}

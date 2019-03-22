@@ -18,6 +18,7 @@ export default class HasDropdownDirective {
 		const consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null;
 		// scope.hasDropdown = null;
 		const onClick = (event) => {
+			// console.log(event);
 			const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
 			if (clickedInside) {
 				node.initialFocus = true;
@@ -28,7 +29,7 @@ export default class HasDropdownDirective {
 					} else {
 						consumer.onDroppedIn(dropdown);
 					}
-					console.log(consumer, dropdown);
+					// console.log(consumer, dropdown);
 				}
 				this.$timeout(() => {
 					if (scope.hasDropdown === uid) {
@@ -42,7 +43,7 @@ export default class HasDropdownDirective {
 				if (consumer) {
 					const dropdown = node.querySelector('[dropdown]');
 					consumer.onDroppedOut(dropdown);
-					console.log(consumer, dropdown);
+					// console.log(consumer, dropdown);
 				}
 				this.$timeout(() => {
 					if (scope.hasDropdown === uid) {
@@ -51,11 +52,22 @@ export default class HasDropdownDirective {
 				});
 			}
 		};
-		scope.$watch('hasDropdown', (value) => {
+		const onShowHide = (value) => {
 			if (scope.hasDropdown === uid) {
 				node.classList.add('opened');
 			} else {
 				node.classList.remove('opened');
+			}
+		};
+		scope.$watch('hasDropdown', onShowHide);
+		scope.$on('onNavigationTransitionIn', () => {
+			console.log('onNavigationTransitionIn');
+			scope.hasDropdown = null;
+			onShowHide();
+			if (consumer) {
+				const dropdown = node.querySelector('[dropdown]');
+				consumer.onDroppedOut(dropdown);
+				// console.log(consumer, dropdown);
 			}
 		});
 		const addListeners = () => {
