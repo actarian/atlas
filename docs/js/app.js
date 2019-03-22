@@ -15698,14 +15698,20 @@ function () {
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
       element.to = '';
       var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
-        if (intersection.y > 0.25) {
+        if (intersection.y > 0.5) {
           if (element.to !== '') {
             return;
           }
 
+          var x = intersection.rect.left;
+          var y = intersection.rect.top;
+          var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
+          var timeout = index * 50; // const timeout = 100 * element.index;
+          // console.log(x, y, timeout, node);
+
           element.to = setTimeout(function () {
             node.classList.add('appeared');
-          }, 100 * element.index); // (i - firstVisibleIndex));
+          }, timeout); // (i - firstVisibleIndex));
         } else {
             /*
             if (element.to !== '') {
@@ -15733,6 +15739,7 @@ function () {
         var rect = _rect.default.fromNode(node);
 
         var intersection = rect.intersection(windowRect);
+        intersection.rect = rect;
         return intersection;
       }));
     }

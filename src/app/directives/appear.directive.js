@@ -22,28 +22,32 @@ export default class AppearDirective {
 		const section = this.getSection(node);
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
 		element.to = '';
-		const subscription = this.appear$(element, attributes).subscribe(
-			intersection => {
-				if (intersection.y > 0.25) {
-					if (element.to !== '') {
-						return;
-					}
-					element.to = setTimeout(() => {
-						node.classList.add('appeared');
-					}, 100 * element.index); // (i - firstVisibleIndex));
-				} else {
-					/*
-					if (element.to !== '') {
-						clearTimeout(element.to);
-						element.to = '';
-					}
-					if (node.classList.contains('appeared')) {
-						node.classList.remove('appeared');
-					}
-					*/
+		const subscription = this.appear$(element, attributes).subscribe((intersection) => {
+			if (intersection.y > 0.5) {
+				if (element.to !== '') {
+					return;
 				}
+				const x = intersection.rect.left;
+				const y = intersection.rect.top;
+				const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
+				const timeout = index * 50;
+				// const timeout = 100 * element.index;
+				// console.log(x, y, timeout, node);
+				element.to = setTimeout(() => {
+					node.classList.add('appeared');
+				}, timeout); // (i - firstVisibleIndex));
+			} else {
+				/*
+				if (element.to !== '') {
+					clearTimeout(element.to);
+					element.to = '';
+				}
+				if (node.classList.contains('appeared')) {
+					node.classList.remove('appeared');
+				}
+				*/
 			}
-		);
+		});
 		element.on('$destroy', () => {
 			subscription.unsubscribe();
 		});
@@ -57,6 +61,7 @@ export default class AppearDirective {
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
+				intersection.rect = rect;
 				return intersection;
 			})
 		);
