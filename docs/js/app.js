@@ -15698,13 +15698,14 @@ function () {
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
       element.to = '';
       var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
-        if (intersection.y > 0.5) {
+        if (intersection.y > 0.05) {
           if (element.to !== '') {
             return;
           }
 
           var x = intersection.rect.left;
-          var y = intersection.rect.top;
+          var y = 0; // intersection.rect.top;
+
           var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
           var timeout = index * 50; // const timeout = 100 * element.index;
           // console.log(x, y, timeout, node);

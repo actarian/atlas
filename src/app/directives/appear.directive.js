@@ -23,12 +23,12 @@ export default class AppearDirective {
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
 		element.to = '';
 		const subscription = this.appear$(element, attributes).subscribe((intersection) => {
-			if (intersection.y > 0.5) {
+			if (intersection.y > 0.05) {
 				if (element.to !== '') {
 					return;
 				}
 				const x = intersection.rect.left;
-				const y = intersection.rect.top;
+				const y = 0; // intersection.rect.top;
 				const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
 				const timeout = index * 50;
 				// const timeout = 100 * element.index;
