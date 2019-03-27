@@ -11,7 +11,7 @@ export default class AutocompleteDirective {
 		this.$timeout = $timeout;
 		this.restrict = 'A';
 		this.scope = {
-			filter: '=autocomplete',
+			filter: '=selectWithAutocomplete',
 			handler: '=',
 			onSetItem: '=?',
 			onRemoveItem: '=?',

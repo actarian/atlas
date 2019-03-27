@@ -10,11 +10,24 @@ export default class LazyScriptDirective {
 
 	link(scope, element, attributes, controller) {
 		// if (attributes.type === 'text/javascript-lazy') {
-		const code = element.text();
-		try {
-			new Function(code)();
-		} catch (error) {
-			console.log('LazyScriptDirective.error', error);
+		if (attributes.src !== undefined) {
+			fetch(attributes.src, {
+				mode: 'no-cors'
+			}).then(response => {
+				const code = response.text();
+				try {
+					new Function(code)();
+				} catch (error) {
+					console.log('LazyScriptDirective.error', error);
+				}
+			});
+		} else {
+			const code = element.text();
+			try {
+				new Function(code)();
+			} catch (error) {
+				console.log('LazyScriptDirective.error', error);
+			}
 		}
 		// }
 		// element.on('$destroy', () => {});

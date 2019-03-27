@@ -11,24 +11,10 @@ export default class ApiService {
 					return Promise.resolve(item);
 				},
 			},
-			store: {
-				data: function(storeId) {
-					return $http.get('/store/store.data.json');
+			storeLocator: {
+				position: function(position) {
+					return $http.get('/atlas/data/store-locator.json', position);
 				},
-				getById: function(storeId) {
-					return $http.get('/store/store.json');
-				},
-				getDetailById: function(storeId) {
-					return $http.get('/store/store.detail.json');
-				},
-			},
-			reserve: {
-				data: function(storeId) {
-					return $http.get('/reserve/reserve.data.json');
-				},
-				days: function(storeId, from, to) {
-					return $http.get('/reserve/days.json', { from: from, to: to });
-				}
 			},
 		};
 		Object.assign(this, api);

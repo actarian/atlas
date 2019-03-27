@@ -12,19 +12,19 @@
 			</div>
 			<div class="group">
 				<ul class="nav nav--primary hidden-xs-down">
-					<li id="nav-1" has-dropdown has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
+					<li has-dropdown has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
 						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections.html'"></ng-include>
 					</li>
-					<li id="nav-1" has-dropdown has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
+					<li has-dropdown has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
 						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections-usa.html'"></ng-include>
 					</li>
-					<li id="nav-2" has-dropdown has-dropdown-consumer="root">
+					<li has-dropdown has-dropdown-consumer="root">
 						<span>Be Inspired</span>
 						<ng-include src="'templates/shared/submenu-beinspired.html'"></ng-include>
 					</li>
-					<li id="nav-3" has-dropdown has-dropdown-consumer="root">
+					<li has-dropdown has-dropdown-consumer="root">
 						<span>Projects</span>
 						<ng-include src="'templates/shared/submenu-projects.html'"></ng-include>
 					</li>
@@ -38,7 +38,7 @@
 		<div class="container">
 			<div class="group">
 				<ul class="nav nav--secondary">
-					<li><a href="#">Store locator</a></li>
+					<li><a href="store-locator.html">Store locator</a></li>
 					<li><a href="#">Company</a></li>
 					<li><a href="#">Contacts</a></li>
 					<li><a href="#">News</a></li>

@@ -43,7 +43,7 @@
 		&>a,
 		&>span {
 			font-size: 20px;
-			font-weight: 400;
+			font-weight: $font-semibold;
 			text-transform: uppercase;
 			color: $nav-header;
 			transition: ease-in-out 350ms;
@@ -123,7 +123,7 @@
 		&>a,
 		&>span {
 			font-size: 13px;
-			font-weight: 400;
+			font-weight: $font-semibold;
 			color: $nav-header;
 			cursor: pointer;
 		}

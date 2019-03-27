@@ -15450,6 +15450,8 @@ exports.default = void 0;
 
 var _collections = _interopRequireDefault(require("./collections/collections.controller"));
 
+var _storeLocator = _interopRequireDefault(require("./store-locator/store-locator.controller"));
+
 var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
 var _autocomplete = _interopRequireDefault(require("./directives/autocomplete.directive"));
@@ -15499,14 +15501,14 @@ app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('autocomplete', _autocomplete.default.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
-app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default);
+app.directive('appear', _appear.default.factory).directive('href', _href.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
+app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default).controller('StoreLocatorCtrl', _storeLocator.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/autocomplete.directive":202,"./directives/glsl-canvas.directive":203,"./directives/has-dropdown.directive":204,"./directives/href.directive":205,"./directives/lazy-script.directive":206,"./directives/lazy.directive":207,"./directives/media.directive":208,"./directives/parallax.directive":209,"./directives/scroll.directive":210,"./directives/sticky.directive":211,"./directives/swiper.directive":212,"./directives/video.directive":213,"./directives/wishlist.directive":214,"./filters/image-with-features.filter":215,"./filters/trusted.filter":216,"./root.controller":217,"./services/api.service":218,"./services/dom.service":219}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/autocomplete.directive":202,"./directives/glsl-canvas.directive":203,"./directives/has-dropdown.directive":204,"./directives/href.directive":205,"./directives/lazy-script.directive":206,"./directives/lazy.directive":207,"./directives/media.directive":208,"./directives/parallax.directive":209,"./directives/scroll.directive":210,"./directives/sticky.directive":211,"./directives/swiper.directive":212,"./directives/video.directive":213,"./directives/wishlist.directive":214,"./filters/image-with-features.filter":215,"./filters/trusted.filter":216,"./root.controller":217,"./services/api.service":218,"./services/dom.service":219,"./store-locator/store-locator.controller":221}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15801,7 +15803,7 @@ function () {
     this.$timeout = $timeout;
     this.restrict = 'A';
     this.scope = {
-      filter: '=autocomplete',
+      filter: '=selectWithAutocomplete',
       handler: '=',
       onSetItem: '=?',
       onRemoveItem: '=?'
@@ -16307,12 +16309,26 @@ function () {
     key: "link",
     value: function link(scope, element, attributes, controller) {
       // if (attributes.type === 'text/javascript-lazy') {
-      var code = element.text();
+      if (attributes.src !== undefined) {
+        fetch(attributes.src, {
+          mode: 'no-cors'
+        }).then(function (response) {
+          var code = response.text();
 
-      try {
-        new Function(code)();
-      } catch (error) {
-        console.log('LazyScriptDirective.error', error);
+          try {
+            new Function(code)();
+          } catch (error) {
+            console.log('LazyScriptDirective.error', error);
+          }
+        });
+      } else {
+        var code = element.text();
+
+        try {
+          new Function(code)();
+        } catch (error) {
+          console.log('LazyScriptDirective.error', error);
+        }
       } // }
       // element.on('$destroy', () => {});
 
@@ -17563,26 +17579,9 @@ function () {
           return Promise.resolve(item);
         }
       },
-      store: {
-        data: function data(storeId) {
-          return $http.get('/store/store.data.json');
-        },
-        getById: function getById(storeId) {
-          return $http.get('/store/store.json');
-        },
-        getDetailById: function getDetailById(storeId) {
-          return $http.get('/store/store.detail.json');
-        }
-      },
-      reserve: {
-        data: function data(storeId) {
-          return $http.get('/reserve/reserve.data.json');
-        },
-        days: function days(storeId, from, to) {
-          return $http.get('/reserve/days.json', {
-            from: from,
-            to: to
-          });
+      storeLocator: {
+        position: function position(_position) {
+          return $http.get('/atlas/data/store-locator.json', _position);
         }
       }
     };
@@ -17962,6 +17961,337 @@ function () {
 }();
 
 exports.default = Rect;
+
+},{}],221:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var GOOGLE_MAPS = null;
+
+var StoreLocatorCtrl =
+/*#__PURE__*/
+function () {
+  function StoreLocatorCtrl($scope, $timeout, DomService, ApiService) {
+    var _this = this;
+
+    _classCallCheck(this, StoreLocatorCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.domService = DomService;
+    this.apiService = ApiService;
+    this.model = {};
+    this.apiKey = window.apiKey || 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M'; //
+    // When the window has finished loading create our google map below
+
+    if (GOOGLE_MAPS !== null) {
+      this.initMap();
+    }
+
+    google.maps.event.addDomListener(window, 'load', function () {
+      GOOGLE_MAPS = google.maps;
+
+      _this.initMap();
+    }); //
+  }
+
+  _createClass(StoreLocatorCtrl, [{
+    key: "initMap",
+    value: function initMap() {
+      // Basic options for a simple Google Map
+      // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+      var mapOptions = {
+        // How zoomed in you want the map to start at (always required)
+        zoom: 7,
+        // The latitude and longitude to center the map (always required)
+        center: new google.maps.LatLng(41.4632232, 14.3898072),
+        // New York
+        // How you would like to style the map.
+        // This is where you would paste any style found on Snazzy Maps.
+        styles: [{
+          "featureType": "administrative",
+          "elementType": "geometry.fill",
+          "stylers": [{
+            "visibility": "on"
+          }]
+        }, {
+          "featureType": "administrative",
+          "elementType": "labels.text.fill",
+          "stylers": [{
+            "color": "#444444"
+          }]
+        }, {
+          "featureType": "landscape",
+          "elementType": "all",
+          "stylers": [{
+            "color": "#f2f2f2"
+          }]
+        }, {
+          "featureType": "poi",
+          "elementType": "all",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "road",
+          "elementType": "all",
+          "stylers": [{
+            "saturation": -100
+          }, {
+            "lightness": 45
+          }]
+        }, {
+          "featureType": "road.highway",
+          "elementType": "all",
+          "stylers": [{
+            "visibility": "simplified"
+          }]
+        }, {
+          "featureType": "road.arterial",
+          "elementType": "labels.icon",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "transit",
+          "elementType": "all",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "water",
+          "elementType": "all",
+          "stylers": [{
+            "color": "#ffffff"
+          }, {
+            "visibility": "on"
+          }]
+        }]
+      }; // Get the HTML DOM element that will contain your map
+      // We are using a div with id="map" seen below in the <body>
+
+      var mapElement = document.getElementById('map');
+
+      if (!mapElement) {
+        return;
+      } // Create the Google Map using our element and options defined above
+
+
+      var map = new google.maps.Map(mapElement, mapOptions);
+      this.map = map;
+    }
+  }, {
+    key: "calculateDistance",
+    value: function calculateDistance(lat1, lon1, lat2, lon2, unit) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+      } else {
+        var radlat1 = Math.PI * lat1 / 180;
+        var radlat2 = Math.PI * lat2 / 180;
+        var theta = lon1 - lon2;
+        var radtheta = Math.PI * theta / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+
+        if (dist > 1) {
+          dist = 1;
+        }
+
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist = dist * 60 * 1.1515;
+
+        if (unit == "K") {
+          dist = dist * 1.609344;
+        }
+
+        if (unit == "N") {
+          dist = dist * 0.8684;
+        }
+
+        return dist;
+      }
+    }
+  }, {
+    key: "addMarkers",
+    value: function addMarkers(stores) {
+      var _this2 = this;
+
+      var current = null;
+      var bounds = new google.maps.LatLngBounds();
+      stores.forEach(function (store) {
+        store.distance = _this2.calculateDistance(store.latitude, store.longitude, _this2.position.lat, _this2.position.lng, 'K');
+        /*
+        var latlng = node.getAttribute('nav-map').split(',').map(function(x) {
+        	return parseFloat(x);
+        });
+        */
+
+        var position = new google.maps.LatLng(store.latitude, store.longitude);
+        bounds.extend(position);
+        var marker = new google.maps.Marker({
+          position: position,
+          map: _this2.map,
+          icon: './img/icons/favicon-32x32.png',
+          title: store.name
+        });
+
+        function onMarkerDidSelect() {
+          console.log(marker);
+          /*
+          infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
+          infowindow.open(map, marker);
+          */
+        }
+
+        marker.addListener('click', onMarkerDidSelect);
+        /*
+        function panTo(e) {
+        	if (current !== marker) {
+        		current = marker;
+        		var ll = new google.maps.LatLng(latlng[0], latlng[1]);
+        		map.panTo(ll);
+        		onMarkerDidSelect();
+        	}
+        }
+        node.addEventListener('click', panTo);
+        node.addEventListener('mouseover', panTo);
+        */
+      });
+
+      if (stores.length) {
+        this.map.fitBounds(bounds);
+      }
+    }
+  }, {
+    key: "getGeolocation",
+    value: function getGeolocation(map) {
+      var _this3 = this;
+
+      var position = this.map.getCenter(); // Try HTML5 geolocation.
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (location) {
+          position = {
+            lat: location.coords.latitude,
+            lng: location.coords.longitude
+          };
+
+          _this3.setInfoWindow(position, 1);
+
+          _this3.searchPosition(position);
+
+          _this3.map.setCenter(position);
+        }, function () {
+          _this3.setInfoWindow(position, 2);
+
+          _this3.searchPosition(position);
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        this.setInfoWindow(position, 3);
+        this.searchPosition(position);
+      }
+    }
+  }, {
+    key: "searchPosition",
+    value: function searchPosition(position) {
+      var _this4 = this;
+
+      this.position = position;
+      this.map.setCenter(position);
+      this.setInfoWindow(position, 1);
+      this.apiService.storeLocator.position(position).then(function (success) {
+        var stores = success.data;
+        _this4.stores = stores;
+        console.log('StoreLocatorCtrl.searchPosition', position, stores);
+
+        _this4.addMarkers(stores);
+      });
+      /*
+      this.$timeout(() => {
+      	this.position = position;
+      });
+      */
+    }
+  }, {
+    key: "panTo",
+    value: function panTo(store) {
+      var position = new google.maps.LatLng(store.latitude, store.longitude);
+      this.map.setZoom(10);
+      this.map.panTo(position);
+    }
+  }, {
+    key: "onSubmit",
+    value: function onSubmit() {
+      var _this5 = this;
+
+      console.log(this.model);
+      var geocoder = this.geocoder || new google.maps.Geocoder();
+      this.geocoder = geocoder;
+      geocoder.geocode({
+        address: this.model.address
+      }, function (results, status) {
+        _this5.model = {};
+
+        if (status == 'OK') {
+          var position = results[0].geometry.location;
+
+          _this5.searchPosition(position);
+        } else {
+          console.log('StoreLocatorCtrl.onSubmit.error Geocode was not successful for the following reason: ' + status);
+        }
+      });
+      /*
+      fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.model.address + '&key=' + this.apiKey)
+      	.then(response => response.json())
+      	.then(results => {
+      		console.log('StoreLocatorCtrl.onSubmit', results);
+      	});
+      	*/
+    }
+  }, {
+    key: "setInfoWindow",
+    value: function setInfoWindow(position, mode) {
+      var infoWindow = this.infoWindow || new google.maps.InfoWindow();
+      this.infoWindow = infoWindow;
+      infoWindow.setPosition(position);
+
+      switch (mode) {
+        case 1:
+          infoWindow.setContent('Current location');
+          break;
+
+        case 2:
+          infoWindow.setContent('Error: The Geolocation service failed.');
+          break;
+
+        default:
+          infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
+      }
+
+      infoWindow.open(this.map);
+    }
+  }]);
+
+  return StoreLocatorCtrl;
+}();
+
+StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
+var _default = StoreLocatorCtrl;
+exports.default = _default;
 
 },{}]},{},[198]);
 //# sourceMappingURL=app.js.map

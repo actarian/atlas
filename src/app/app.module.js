@@ -2,6 +2,7 @@
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 import CollectionsCtrl from './collections/collections.controller';
+import StoreLocatorCtrl from './store-locator/store-locator.controller';
 import AppearDirective from './directives/appear.directive';
 import AutocompleteDirective from './directives/autocomplete.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
@@ -37,7 +38,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('href', HrefDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
 	.directive('hasDropdown', HasDropdownDirective.factory)
-	.directive('autocomplete', AutocompleteDirective.factory)
+	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('lazy', LazyDirective.factory)
 	.directive('lazyScript', LazyScriptDirective.factory)
 	.directive('media', MediaDirective.factory)
@@ -51,7 +52,8 @@ app.directive('appear', AppearDirective.factory)
 	.directive('wishlist', WishlistDirective.factory);
 
 app.controller('RootCtrl', RootCtrl)
-	.controller('CollectionsCtrl', CollectionsCtrl);
+	.controller('CollectionsCtrl', CollectionsCtrl)
+	.controller('StoreLocatorCtrl', StoreLocatorCtrl);
 
 app.filter('imageWithFeatures', [ImageWithFeatures])
 	.filter('trusted', ['$sce', TrustedFilter]);
