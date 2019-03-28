@@ -97,6 +97,11 @@
 		margin: 0 10px;
 	}
 
+	.form {
+		border-top: 2px solid $border;
+		border-bottom: 2px solid $border;
+	}
+
 	.group--control {
 		margin: 20px 0;
 
@@ -150,7 +155,7 @@
 	width: 40%;
 	flex: 0 0 40%;
 	box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);
-	background: $background;
+	background: $background-tertiary;
 	overflow-x: hidden;
 	overflow-y: auto;
 }

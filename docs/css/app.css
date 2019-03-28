@@ -3904,6 +3904,9 @@ page-transition {
     width: 22px;
     height: 22px;
     margin: 0 10px; }
+  .section--store-locator .form {
+    border-top: 2px solid var(--color-border);
+    border-bottom: 2px solid var(--color-border); }
   .section--store-locator .group--control {
     margin: 20px 0; }
     .section--store-locator .group--control input {
@@ -3960,7 +3963,7 @@ page-transition {
           flex: 0 0 40%;
   -webkit-box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);
           box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);
-  background: var(--color-background);
+  background: var(--color-background-tertiary);
   overflow-x: hidden;
   overflow-y: auto; }
 
