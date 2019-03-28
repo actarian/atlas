@@ -18013,6 +18013,8 @@ function () {
   _createClass(StoreLocatorCtrl, [{
     key: "initMap",
     value: function initMap() {
+      var _this2 = this;
+
       // Basic options for a simple Google Map
       // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
       var mapOptions = {
@@ -18093,7 +18095,9 @@ function () {
 
 
       var map = new google.maps.Map(mapElement, mapOptions);
-      this.map = map;
+      this.$timeout(function () {
+        _this2.map = map;
+      });
     }
   }, {
     key: "calculateDistance",
@@ -18129,16 +18133,16 @@ function () {
   }, {
     key: "addMarkers",
     value: function addMarkers(stores) {
-      var _this2 = this;
+      var _this3 = this;
 
       var bounds = new google.maps.LatLngBounds();
       stores.forEach(function (store) {
-        store.distance = _this2.calculateDistance(store.latitude, store.longitude, _this2.position.lat(), _this2.position.lng(), 'K');
+        store.distance = _this3.calculateDistance(store.latitude, store.longitude, _this3.position.lat(), _this3.position.lng(), 'K');
         var position = new google.maps.LatLng(store.latitude, store.longitude);
         bounds.extend(position);
         var marker = new google.maps.Marker({
           position: position,
-          map: _this2.map,
+          map: _this3.map,
           icon: './img/icons/favicon-32x32.png',
           title: store.name
         });
@@ -18171,7 +18175,7 @@ function () {
   }, {
     key: "getGeolocation",
     value: function getGeolocation(map) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.error = null;
       this.busyLocation = true;
@@ -18182,41 +18186,41 @@ function () {
           // console.log(location.coords);
           position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
 
-          _this3.setInfoWindow(position, 1);
+          _this4.setInfoWindow(position, 1);
 
-          _this3.searchPosition(position).finally(function () {
-            return _this3.busyLocation = false;
+          _this4.searchPosition(position).finally(function () {
+            return _this4.busyLocation = false;
           });
 
-          _this3.map.setCenter(position);
+          _this4.map.setCenter(position);
         }, function () {
-          _this3.setInfoWindow(position, 2);
+          _this4.setInfoWindow(position, 2);
 
-          _this3.searchPosition(position).finally(function () {
-            return _this3.busyLocation = false;
+          _this4.searchPosition(position).finally(function () {
+            return _this4.busyLocation = false;
           });
         });
       } else {
         // Browser doesn't support Geolocation
         this.setInfoWindow(position, 3);
         this.searchPosition(position).finally(function () {
-          return _this3.busyLocation = false;
+          return _this4.busyLocation = false;
         });
       }
     }
   }, {
     key: "searchPosition",
     value: function searchPosition(position) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.position = position;
       this.map.setCenter(position);
       this.setInfoWindow(position, 1);
       return this.apiService.storeLocator.position(position).then(function (success) {
         var stores = success.data;
-        _this4.stores = stores; // console.log('StoreLocatorCtrl.searchPosition', position, stores);
+        _this5.stores = stores; // console.log('StoreLocatorCtrl.searchPosition', position, stores);
 
-        _this4.addMarkers(stores);
+        _this5.addMarkers(stores);
       });
     }
   }, {
@@ -18229,7 +18233,7 @@ function () {
   }, {
     key: "onSubmit",
     value: function onSubmit() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.error = null;
       this.busyFind = true;
@@ -18238,23 +18242,23 @@ function () {
       geocoder.geocode({
         address: this.model.address
       }, function (results, status) {
-        _this5.model = {};
+        _this6.model = {};
 
         if (status == 'OK') {
           var position = results[0].geometry.location; // console.log('location', location);
           // const position = new google.maps.LatLng(location);
 
-          _this5.searchPosition(position).finally(function () {
-            return _this5.busyFind = false;
+          _this6.searchPosition(position).finally(function () {
+            return _this6.busyFind = false;
           });
         } else {
-          _this5.$timeout(function () {
+          _this6.$timeout(function () {
             var message = 'Geocode was not successful for the following reason: ' + status;
             console.log('StoreLocatorCtrl.onSubmit.error', message);
-            _this5.error = {
+            _this6.error = {
               message: message
             };
-            _this5.busyFind = false;
+            _this6.busyFind = false;
           });
         }
       });

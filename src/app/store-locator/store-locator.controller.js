@@ -53,7 +53,9 @@ class StoreLocatorCtrl {
 		}
 		// Create the Google Map using our element and options defined above
 		var map = new google.maps.Map(mapElement, mapOptions);
-		this.map = map;
+		this.$timeout(() => {
+			this.map = map;
+		});
 	}
 
 	calculateDistance(lat1, lon1, lat2, lon2, unit) {

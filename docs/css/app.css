@@ -647,13 +647,15 @@ button,
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #fff;
     z-index: 2;
     margin-top: 4px;
     -webkit-animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
             animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+    background: var(--color-primary);
     -webkit-animation-delay: .15s;
             animation-delay: .15s; }
+    .section--negative .btn--busy:before {
+      background: var(--color-foreground-negative); }
   .btn--busy > svg {
     display: none; }
   .btn--busy > span::before {
@@ -667,12 +669,14 @@ button,
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #fff;
     z-index: 2;
     margin-top: 4px;
     -webkit-animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
             animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+    background: var(--color-primary);
     margin-left: -10px; }
+    .section--negative .btn--busy > span::before {
+      background: var(--color-foreground-negative); }
   .btn--busy > span::after {
     position: absolute;
     top: 50%;
@@ -684,14 +688,16 @@ button,
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #fff;
     z-index: 2;
     margin-top: 4px;
     -webkit-animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
             animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+    background: var(--color-primary);
     margin-left: 10px;
     -webkit-animation-delay: .3s;
             animation-delay: .3s; }
+    .section--negative .btn--busy > span::after {
+      background: var(--color-foreground-negative); }
 
 /*--------------------
 Keyframe
