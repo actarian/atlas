@@ -132,6 +132,18 @@
 		max-height: 40px;
 	}
 
+	.group--error {
+		position: absolute;
+		top: 0;
+		background: $background;
+		width: calc(100% - 30px);
+		margin: 15px;
+		border-radius: 5px;
+		padding: 10px;
+		font-size: 0.8rem;
+		text-align: center;
+	}
+
 }
 
 .section--stores {

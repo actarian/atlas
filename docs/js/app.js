@@ -17994,7 +17994,9 @@ function () {
     this.domService = DomService;
     this.apiService = ApiService;
     this.model = {};
-    this.apiKey = window.apiKey || 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M'; //
+    this.apiKey = window.apiKey || 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M';
+    this.busyFind = false;
+    this.busyLocation = false; //
     // When the window has finished loading create our google map below
 
     if (GOOGLE_MAPS !== null) {
@@ -18171,6 +18173,8 @@ function () {
     value: function getGeolocation(map) {
       var _this3 = this;
 
+      this.error = null;
+      this.busyLocation = true;
       var position = this.map.getCenter(); // Try HTML5 geolocation.
 
       if (navigator.geolocation) {
@@ -18180,18 +18184,24 @@ function () {
 
           _this3.setInfoWindow(position, 1);
 
-          _this3.searchPosition(position);
+          _this3.searchPosition(position).finally(function () {
+            return _this3.busyLocation = false;
+          });
 
           _this3.map.setCenter(position);
         }, function () {
           _this3.setInfoWindow(position, 2);
 
-          _this3.searchPosition(position);
+          _this3.searchPosition(position).finally(function () {
+            return _this3.busyLocation = false;
+          });
         });
       } else {
         // Browser doesn't support Geolocation
         this.setInfoWindow(position, 3);
-        this.searchPosition(position);
+        this.searchPosition(position).finally(function () {
+          return _this3.busyLocation = false;
+        });
       }
     }
   }, {
@@ -18202,7 +18212,7 @@ function () {
       this.position = position;
       this.map.setCenter(position);
       this.setInfoWindow(position, 1);
-      this.apiService.storeLocator.position(position).then(function (success) {
+      return this.apiService.storeLocator.position(position).then(function (success) {
         var stores = success.data;
         _this4.stores = stores; // console.log('StoreLocatorCtrl.searchPosition', position, stores);
 
@@ -18221,6 +18231,8 @@ function () {
     value: function onSubmit() {
       var _this5 = this;
 
+      this.error = null;
+      this.busyFind = true;
       var geocoder = this.geocoder || new google.maps.Geocoder();
       this.geocoder = geocoder;
       geocoder.geocode({
@@ -18232,9 +18244,18 @@ function () {
           var position = results[0].geometry.location; // console.log('location', location);
           // const position = new google.maps.LatLng(location);
 
-          _this5.searchPosition(position);
+          _this5.searchPosition(position).finally(function () {
+            return _this5.busyFind = false;
+          });
         } else {
-          console.log('StoreLocatorCtrl.onSubmit.error Geocode was not successful for the following reason: ' + status);
+          _this5.$timeout(function () {
+            var message = 'Geocode was not successful for the following reason: ' + status;
+            console.log('StoreLocatorCtrl.onSubmit.error', message);
+            _this5.error = {
+              message: message
+            };
+            _this5.busyFind = false;
+          });
         }
       });
     }

@@ -17,6 +17,8 @@ class StoreLocatorCtrl {
 		this.apiService = ApiService;
 		this.model = {};
 		this.apiKey = window.apiKey || 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M';
+		this.busyFind = false;
+		this.busyLocation = false;
 
 		//
 		// When the window has finished loading create our google map below
@@ -119,6 +121,8 @@ class StoreLocatorCtrl {
 	}
 
 	getGeolocation(map) {
+		this.error = null;
+		this.busyLocation = true;
 		let position = this.map.getCenter();
 		// Try HTML5 geolocation.
 		if (navigator.geolocation) {
@@ -126,16 +130,16 @@ class StoreLocatorCtrl {
 				// console.log(location.coords);
 				position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
 				this.setInfoWindow(position, 1);
-				this.searchPosition(position);
+				this.searchPosition(position).finally(() => this.busyLocation = false);
 				this.map.setCenter(position);
 			}, () => {
 				this.setInfoWindow(position, 2);
-				this.searchPosition(position);
+				this.searchPosition(position).finally(() => this.busyLocation = false);
 			});
 		} else {
 			// Browser doesn't support Geolocation
 			this.setInfoWindow(position, 3);
-			this.searchPosition(position);
+			this.searchPosition(position).finally(() => this.busyLocation = false);
 		}
 	}
 
@@ -143,7 +147,7 @@ class StoreLocatorCtrl {
 		this.position = position;
 		this.map.setCenter(position);
 		this.setInfoWindow(position, 1);
-		this.apiService.storeLocator.position(position).then(success => {
+		return this.apiService.storeLocator.position(position).then(success => {
 			const stores = success.data;
 			this.stores = stores;
 			// console.log('StoreLocatorCtrl.searchPosition', position, stores);
@@ -158,6 +162,8 @@ class StoreLocatorCtrl {
 	}
 
 	onSubmit() {
+		this.error = null;
+		this.busyFind = true;
 		const geocoder = this.geocoder || new google.maps.Geocoder();
 		this.geocoder = geocoder;
 		geocoder.geocode({ address: this.model.address }, (results, status) => {
@@ -166,9 +172,14 @@ class StoreLocatorCtrl {
 				const position = results[0].geometry.location;
 				// console.log('location', location);
 				// const position = new google.maps.LatLng(location);
-				this.searchPosition(position);
+				this.searchPosition(position).finally(() => this.busyFind = false);
 			} else {
-				console.log('StoreLocatorCtrl.onSubmit.error Geocode was not successful for the following reason: ' + status);
+				this.$timeout(() => {
+					const message = 'Geocode was not successful for the following reason: ' + status;
+					console.log('StoreLocatorCtrl.onSubmit.error', message);
+					this.error = { message };
+					this.busyFind = false;
+				});
 			}
 		});
 	}

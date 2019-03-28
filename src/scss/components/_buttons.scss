@@ -572,3 +572,74 @@ button,
 		}
 	}
 }
+
+@mixin center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+@mixin ball {
+	@include center;
+	content: '';
+	display: block;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: #fff;
+	z-index: 2;
+	margin-top: 4px;
+	animation: ball .45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+}
+
+.btn--busy {
+	position: relative;
+	user-select: none;
+	pointer-events: none;
+	transition: none;
+
+	&,
+	&:hover,
+	&:focus,
+	&:active,
+	&.active {
+		color: rgba(0, 0, 0, 0) !important;
+	}
+
+	&:before {
+		@include ball;
+		animation-delay: .15s;
+	}
+
+	&>svg {
+		display: none;
+	}
+
+	&>span {
+		&::before {
+			@include ball;
+			margin-left: -10px;
+		}
+
+		&::after {
+			@include ball;
+			margin-left: 10px;
+			animation-delay: .3s;
+		}
+	}
+
+}
+
+/*--------------------
+Keyframe
+--------------------*/
+@keyframes ball {
+	from {
+		transform: translateY(0) scaleY(.8);
+	}
+
+	to {
+		transform: translateY(-10px);
+	}
+}

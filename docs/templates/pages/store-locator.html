@@ -19,11 +19,14 @@
 						<form name="form" class="form" role="form" novalidate="" autocomplete="off" ng-submit="form.$valid && locator.onSubmit()" ng-keyup="$event.keyCode == 13 && form.$valid && locator.onSubmit()">
 							<div class="group group--control">
 								<input type="text" name="address" placeholder="Your address" required ng-model="locator.model.address" />
-								<button type="submit" class="btn btn--secondary" ng-disabled="!locator.map"><span>Find your nearest store</span></button>
+								<button type="submit" class="btn btn--secondary" ng-class="{ 'btn--busy': locator.busyFind }" ng-disabled="!locator.map || !form.$valid"><span>Find your nearest store</span></button>
 							</div>
 						</form>
+						<div class="group group--error" ng-if="locator.error">
+							<span>{{locator.error.message}}</span>
+						</div>
 						<div class="group group--cta">
-							<button type="button" class="btn btn--position" ng-click="locator.getGeolocation()" ng-disabled="!locator.map"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>Find my position</span></button>
+							<button type="button" class="btn btn--position" ng-class="{ 'btn--busy': locator.busyLocation }" ng-click="locator.getGeolocation()" ng-disabled="!locator.map"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>Find my position</span></button>
 						</div>
 					</div>
 				</div>
@@ -33,14 +36,17 @@
 	<section class="section section--store-locator" ng-show="locator.position">
 		<div class="section section--map">
 			<div class="map" id="map"></div>
+			<div class="group group--error" ng-if="locator.error">
+				<span>{{locator.error.message}}</span>
+			</div>
 			<form name="form" class="form form--address" role="form" novalidate="" autocomplete="off" ng-submit="form.$valid && locator.onSubmit()" ng-keyup="$event.keyCode == 13 && form.$valid && locator.onSubmit()">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12 offset-md-2">
 							<div class="group group--control">
-								<button type="button" class="btn btn--position" ng-click="locator.getGeolocation()" ng-disabled="!locator.map"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>Find my position</span></button>
+								<button type="button" class="btn btn--position" ng-class="{ 'btn--busy': locator.busyLocation }" ng-click="locator.getGeolocation()" ng-disabled="!locator.map"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>Find my position</span></button>
 								<input type="text" name="address" placeholder="Your address" required ng-model="locator.model.address" />
-								<button type="submit" class="btn btn--link" ng-disabled="!locator.map"><span>search</span></button>
+								<button type="submit" class="btn btn--link" ng-class="{ 'btn--busy': locator.busyFind }" ng-disabled="!locator.map || !form.$valid"><span>Search</span></button>
 							</div>
 						</div>
 					</div>
