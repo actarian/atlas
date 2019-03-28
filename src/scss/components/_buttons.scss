@@ -499,3 +499,76 @@ button,
 		}
 	}
 }
+
+.btn--position {
+	display: inline-flex;
+	align-items: center;
+	font-size: 13px;
+	font-weight: $font-bold;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	.icon--pin {
+		width: 15px;
+		height: 17px;
+		margin-right: 10px;
+		fill: $primary;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: $primary;
+	}
+
+	&>span {
+		display: inline-block;
+		position: relative;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -3px;
+			width: 100%;
+			height: 2px;
+			background: $primary;
+			transform: scale(0, 1);
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&:hover {
+		&>span:after {
+			transform: scale(1, 1);
+			background: $primary;
+		}
+	}
+
+	.section--negative & {
+
+		.icon--pin {
+			fill: $foreground-negative;
+		}
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			color: $foreground-negative;
+		}
+
+		&>span:after {
+			background: $foreground-negative;
+		}
+
+		&:hover {
+			&>span:after {
+				background: $primary;
+			}
+		}
+	}
+}

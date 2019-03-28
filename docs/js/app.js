@@ -18129,16 +18129,9 @@ function () {
     value: function addMarkers(stores) {
       var _this2 = this;
 
-      var current = null;
       var bounds = new google.maps.LatLngBounds();
       stores.forEach(function (store) {
-        store.distance = _this2.calculateDistance(store.latitude, store.longitude, _this2.position.lat, _this2.position.lng, 'K');
-        /*
-        var latlng = node.getAttribute('nav-map').split(',').map(function(x) {
-        	return parseFloat(x);
-        });
-        */
-
+        store.distance = _this2.calculateDistance(store.latitude, store.longitude, _this2.position.lat(), _this2.position.lng(), 'K');
         var position = new google.maps.LatLng(store.latitude, store.longitude);
         bounds.extend(position);
         var marker = new google.maps.Marker({
@@ -18147,16 +18140,14 @@ function () {
           icon: './img/icons/favicon-32x32.png',
           title: store.name
         });
+        /*
+        marker.addListener('click', () => {
+        	console.log(marker);
+        	// infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
+        	// infowindow.open(map, marker);
+        });
+        */
 
-        function onMarkerDidSelect() {
-          console.log(marker);
-          /*
-          infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
-          infowindow.open(map, marker);
-          */
-        }
-
-        marker.addListener('click', onMarkerDidSelect);
         /*
         function panTo(e) {
         	if (current !== marker) {
@@ -18184,10 +18175,8 @@ function () {
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (location) {
-          position = {
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-          };
+          // console.log(location.coords);
+          position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
 
           _this3.setInfoWindow(position, 1);
 
@@ -18215,16 +18204,10 @@ function () {
       this.setInfoWindow(position, 1);
       this.apiService.storeLocator.position(position).then(function (success) {
         var stores = success.data;
-        _this4.stores = stores;
-        console.log('StoreLocatorCtrl.searchPosition', position, stores);
+        _this4.stores = stores; // console.log('StoreLocatorCtrl.searchPosition', position, stores);
 
         _this4.addMarkers(stores);
       });
-      /*
-      this.$timeout(() => {
-      	this.position = position;
-      });
-      */
     }
   }, {
     key: "panTo",
@@ -18238,7 +18221,6 @@ function () {
     value: function onSubmit() {
       var _this5 = this;
 
-      console.log(this.model);
       var geocoder = this.geocoder || new google.maps.Geocoder();
       this.geocoder = geocoder;
       geocoder.geocode({
@@ -18247,20 +18229,14 @@ function () {
         _this5.model = {};
 
         if (status == 'OK') {
-          var position = results[0].geometry.location;
+          var position = results[0].geometry.location; // console.log('location', location);
+          // const position = new google.maps.LatLng(location);
 
           _this5.searchPosition(position);
         } else {
           console.log('StoreLocatorCtrl.onSubmit.error Geocode was not successful for the following reason: ' + status);
         }
       });
-      /*
-      fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.model.address + '&key=' + this.apiKey)
-      	.then(response => response.json())
-      	.then(results => {
-      		console.log('StoreLocatorCtrl.onSubmit', results);
-      	});
-      	*/
     }
   }, {
     key: "setInfoWindow",

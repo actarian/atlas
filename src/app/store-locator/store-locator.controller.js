@@ -80,15 +80,9 @@ class StoreLocatorCtrl {
 	}
 
 	addMarkers(stores) {
-		var current = null;
 		const bounds = new google.maps.LatLngBounds();
 		stores.forEach((store) => {
-			store.distance = this.calculateDistance(store.latitude, store.longitude, this.position.lat, this.position.lng, 'K');
-			/*
-			var latlng = node.getAttribute('nav-map').split(',').map(function(x) {
-				return parseFloat(x);
-			});
-			*/
+			store.distance = this.calculateDistance(store.latitude, store.longitude, this.position.lat(), this.position.lng(), 'K');
 			const position = new google.maps.LatLng(store.latitude, store.longitude);
 			bounds.extend(position);
 			var marker = new google.maps.Marker({
@@ -98,15 +92,13 @@ class StoreLocatorCtrl {
 				title: store.name,
 			});
 
-			function onMarkerDidSelect() {
+			/*
+			marker.addListener('click', () => {
 				console.log(marker);
-				/*
-				infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
-				infowindow.open(map, marker);
-				*/
-
-			}
-			marker.addListener('click', onMarkerDidSelect);
+				// infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
+				// infowindow.open(map, marker);
+			});
+			*/
 
 			/*
 			function panTo(e) {
@@ -131,10 +123,8 @@ class StoreLocatorCtrl {
 		// Try HTML5 geolocation.
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((location) => {
-				position = {
-					lat: location.coords.latitude,
-					lng: location.coords.longitude
-				};
+				// console.log(location.coords);
+				position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
 				this.setInfoWindow(position, 1);
 				this.searchPosition(position);
 				this.map.setCenter(position);
@@ -156,14 +146,9 @@ class StoreLocatorCtrl {
 		this.apiService.storeLocator.position(position).then(success => {
 			const stores = success.data;
 			this.stores = stores;
-			console.log('StoreLocatorCtrl.searchPosition', position, stores);
+			// console.log('StoreLocatorCtrl.searchPosition', position, stores);
 			this.addMarkers(stores);
 		});
-		/*
-		this.$timeout(() => {
-			this.position = position;
-		});
-		*/
 	}
 
 	panTo(store) {
@@ -173,25 +158,19 @@ class StoreLocatorCtrl {
 	}
 
 	onSubmit() {
-		console.log(this.model);
 		const geocoder = this.geocoder || new google.maps.Geocoder();
 		this.geocoder = geocoder;
 		geocoder.geocode({ address: this.model.address }, (results, status) => {
 			this.model = {};
 			if (status == 'OK') {
 				const position = results[0].geometry.location;
+				// console.log('location', location);
+				// const position = new google.maps.LatLng(location);
 				this.searchPosition(position);
 			} else {
 				console.log('StoreLocatorCtrl.onSubmit.error Geocode was not successful for the following reason: ' + status);
 			}
 		});
-		/*
-		fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.model.address + '&key=' + this.apiKey)
-			.then(response => response.json())
-			.then(results => {
-				console.log('StoreLocatorCtrl.onSubmit', results);
-			});
-			*/
 	}
 
 	setInfoWindow(position, mode) {

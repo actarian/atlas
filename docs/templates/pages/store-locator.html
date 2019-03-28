@@ -5,10 +5,10 @@
 <div ng-controller="StoreLocatorCtrl as locator">
 	<section class="section section--hero-store-locator section--negative" ng-show="!locator.position">
 		<div class="background" ng-if="!root.webglEnabled" parallax>
-			<img lazy data-src="img/collections/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
+			<img lazy data-src="img/store-locator/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
 		</div>
 		<div class="background" ng-if="root.webglEnabled">
-			<canvas glsl-canvas="img/collections/hero-secondary.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.glsl"></canvas>
+			<canvas glsl-canvas="img/store-locator/hero.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.glsl"></canvas>
 		</div>
 		<div class="aspect">
 			<div class="container">
@@ -35,10 +35,14 @@
 			<div class="map" id="map"></div>
 			<form name="form" class="form form--address" role="form" novalidate="" autocomplete="off" ng-submit="form.$valid && locator.onSubmit()" ng-keyup="$event.keyCode == 13 && form.$valid && locator.onSubmit()">
 				<div class="container">
-					<div class="group group--control">
-						<button type="button" class="btn btn--position" ng-click="locator.getGeolocation()" ng-disabled="!locator.map"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>Find my position</span></button>
-						<input type="text" name="address" placeholder="Your address" required ng-model="locator.model.address" />
-						<button type="submit" class="btn btn--link" ng-disabled="!locator.map"><span>search</span></button>
+					<div class="row">
+						<div class="col-md-12 offset-md-2">
+							<div class="group group--control">
+								<button type="button" class="btn btn--position" ng-click="locator.getGeolocation()" ng-disabled="!locator.map"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>Find my position</span></button>
+								<input type="text" name="address" placeholder="Your address" required ng-model="locator.model.address" />
+								<button type="submit" class="btn btn--link" ng-disabled="!locator.map"><span>search</span></button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -46,12 +50,12 @@
 		<div class="section section--stores">
 			<div class="group group--legend">
 				<div class="category">Showroom with</div>
-				<div class="legend"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>200m<sup>2</sup> exposition area</span></div>
-				<div class="legend"><svg class="icon icon--pin"><use xlink:href="#pin"></use></svg> <span>100m<sup>2</sup> exposition area</span></div>
+				<div class="legend"><svg class="icon icon--atlas"><use xlink:href="#atlas"></use></svg> <span>200m<sup>2</sup> exposition area</span></div>
+				<div class="legend"><svg class="icon icon--atlas icon--atlas--secondary"><use xlink:href="#atlas"></use></svg> <span>100m<sup>2</sup> exposition area</span></div>
 			</div>
 			<div class="listing listing--stores">
-				<div class="listing__item" ng-mouseover="locator.panTo(item)" appear ng-repeat="item in locator.stores">
-					<div class="title"><span ng-bind="item.name"></span> <svg class="icon icon--store"><use xlink:href="#store"></use></svg></div>
+				<div class="listing__item" ng-click="locator.panTo(item)" appear ng-repeat="item in locator.stores">
+					<div class="title"><span ng-bind="item.name"></span> <svg class="icon icon--atlas" ng-class="{ 'icon--atlas--secondary' : item.importante !== 1 }"><use xlink:href="#atlas"></use></svg></div>
 					<div class="group group--info">
 						<div class="address">
 							{{item.address}}<br>
@@ -62,8 +66,8 @@
 						<div class="distance">At approx. <b>{{item.distance | number : 0}} km</b></div>
 					</div>
 					<div class="group group--cta">
-						<a href="#" class="btn btn--link"><span>More info</span></a>
-						<a ng-href="https://www.google.it/maps/dir/{{locator.position.lat}},{{locator.position.lng}}/{{item.name}}/@{{item.latitude}},{{item.longitude}}/" target="_blank" class="btn btn--link"><span>How to reach the store</span></a>
+						<a ng-href="{{item.webSite}}" target="_blank" class="btn btn--link" ng-if="item.webSite"><span>More info</span></a>
+						<a ng-href="https://www.google.it/maps/dir/{{locator.position.lat()}},{{locator.position.lng()}}/{{item.name}}/@{{item.latitude}},{{item.longitude}}/" target="_blank" class="btn btn--link"><span>How to reach the store</span></a>
 					</div>
 				</div>
 			</div>
