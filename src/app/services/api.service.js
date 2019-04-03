@@ -13,7 +13,7 @@ export default class ApiService {
 			},
 			storeLocator: {
 				position: function(position) {
-					return $http.get('/atlas/data/store-locator.json', position);
+					return $http.get('/data/store-locator.json', position);
 				},
 			},
 		};

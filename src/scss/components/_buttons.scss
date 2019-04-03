@@ -87,11 +87,10 @@ button,
 	}
 }
 
-.btn--link {
+%btn--link {
 	position: relative;
 	font-size: 15px;
-	font-weight: 300;
-	text-transform: uppercase;
+	font-weight: $font-semibold;
 
 	&,
 	&:active,
@@ -139,6 +138,15 @@ button,
 			}
 		}
 	}
+}
+
+.btn--link {
+	@extend %btn--link;
+	text-transform: uppercase;
+}
+
+.btn--link-secondary {
+	@extend %btn--link;
 }
 
 .btn--category {
@@ -587,16 +595,16 @@ button,
 	width: 4px;
 	height: 4px;
 	border-radius: 50%;
+	background: #fff;
 	z-index: 2;
 	margin-top: 4px;
 	animation: ball .45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
-
+	/*
 	background: $primary;
-
 	.section--negative & {
 		background: $foreground-negative;
 	}
-
+	*/
 }
 
 .btn--busy {

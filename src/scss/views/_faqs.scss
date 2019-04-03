@@ -1,0 +1,143 @@
+.section--faq {
+	min-height: 100vh;
+	padding: 130px 0;
+
+	@include media-breakpoint-down(sm) {
+		.col--primary {
+			order: 1;
+		}
+
+		.col--secondary {
+			order: 2;
+		}
+	}
+}
+
+.listing--faq-category {
+	&>.listing__item {
+		display: block;
+		padding-bottom: 75px;
+
+		.category {
+			font-size: 42px;
+			margin-bottom: 50px;
+			color: $foreground;
+		}
+	}
+}
+
+.listing--faq {
+	&>.listing__item {
+		display: block;
+		padding-bottom: 30px;
+
+		.icon--caret-down {
+			width: 12px;
+			height: 8px;
+			fill: $primary;
+		}
+
+		.title {
+			display: flex;
+			align-items: flex-end;
+			border-bottom: 1px solid $border;
+			cursor: pointer;
+
+			&>span {
+				flex: 1 1 auto;
+				font-size: 18px;
+				font-weight: $font-regular;
+				line-height: 1.5;
+				color: $foreground;
+			}
+
+			&>svg {
+				flex: 0 0 30px;
+				margin-bottom: 9px;
+			}
+		}
+
+		.group--content {
+			display: none;
+			padding-left: 70px;
+			overflow: hidden;
+		}
+
+		.abstract {
+			margin-top: 30px;
+			font-size: 16px;
+			line-height: 1.5;
+			font-weight: $font-regular;
+			color: $foreground-secondary;
+		}
+
+		.group--cta {
+			padding: 0;
+			margin-bottom: 30px;
+			text-align: left;
+		}
+
+		&.opened {
+			.group--content {
+				max-height: 2000px;
+			}
+		}
+	}
+}
+
+.group--faq-menu {
+	position: sticky;
+	top: 100px;
+
+	.title {
+		font-size: 14px;
+		line-height: 1.5;
+		text-transform: uppercase;
+		color: $foreground-secondary;
+		margin-bottom: 60px;
+	}
+
+	.group--cta {
+		text-align: left;
+	}
+
+	.icon--search {
+		width: 16px;
+		height: 17px;
+		fill: $primary;
+		margin-right: 10px;
+	}
+}
+
+.nav--faq-menu {
+	flex-direction: column;
+
+	&>li {
+		&>a {
+			@extend %btn--link;
+			margin-bottom: 30px;
+
+			&>span {
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				display: block;
+				width: 100%;
+			}
+		}
+	}
+}
+
+.hilight {
+	background: $primary;
+	color: $foreground-negative;
+}
+
+.control--search {
+	appearance: none;
+	border: none;
+	border-bottom: 1px solid #ccc;
+	width: calc(100% - 40px);
+	font-size: 18px;
+	line-height: 20px;
+}

@@ -2,11 +2,11 @@
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 import CollectionsCtrl from './collections/collections.controller';
-import StoreLocatorCtrl from './store-locator/store-locator.controller';
 import AppearDirective from './directives/appear.directive';
 import AutocompleteDirective from './directives/autocomplete.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
 import HasDropdownDirective from './directives/has-dropdown.directive';
+import HilightDirective from './directives/hilight.directive';
 import HrefDirective from './directives/href.directive';
 import LazyScriptDirective from './directives/lazy-script.directive';
 import LazyDirective from './directives/lazy.directive';
@@ -17,11 +17,13 @@ import StickyDirective from './directives/sticky.directive';
 import { SwiperHeroDirective, SwiperSlideItemDirective, SwiperTileDirective } from './directives/swiper.directive';
 import VideoDirective from './directives/video.directive';
 import WishlistDirective from './directives/wishlist.directive';
+import FaqCtrl from './faq/faq.controller';
 import { ImageWithFeatures } from './filters/image-with-features.filter';
 import { TrustedFilter } from './filters/trusted.filter';
 import RootCtrl from './root.controller';
 import ApiService from './services/api.service';
 import DomService from './services/dom.service';
+import StoreLocatorCtrl from './store-locator/store-locator.controller';
 
 const MODULE_NAME = 'app';
 
@@ -35,9 +37,10 @@ app.factory('ApiService', ApiService.factory)
 	.factory('DomService', DomService.factory);
 
 app.directive('appear', AppearDirective.factory)
-	.directive('href', HrefDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
 	.directive('hasDropdown', HasDropdownDirective.factory)
+	.directive('hilight', HilightDirective.factory)
+	.directive('href', HrefDirective.factory)
 	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('lazy', LazyDirective.factory)
 	.directive('lazyScript', LazyScriptDirective.factory)
@@ -53,6 +56,7 @@ app.directive('appear', AppearDirective.factory)
 
 app.controller('RootCtrl', RootCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
+	.controller('FaqCtrl', FaqCtrl)
 	.controller('StoreLocatorCtrl', StoreLocatorCtrl);
 
 app.filter('imageWithFeatures', [ImageWithFeatures])

@@ -15,19 +15,19 @@ export default class HrefDirective {
 		if (attributes.target === '_blank') {
 			return;
 		}
-		const href = attributes.href;
-		const absolute = /^(http:|https:|\/\/)/.test(href);
-		const domain = this.getDomain(href);
-		const currentDomain = this.getDomain(window.location.href);
-		if (absolute && domain !== currentDomain) {
-			return;
-		}
-		if (window.location.href.indexOf(href) !== -1) {
-			node.classList.add('active');
-		} else {
-			node.classList.remove('active');
-		}
 		const onClick = (event) => {
+			const href = attributes.href;
+			const absolute = /^(http:|https:|\/\/)/.test(href);
+			const domain = this.getDomain(href);
+			const currentDomain = this.getDomain(window.location.href);
+			if (absolute && domain !== currentDomain) {
+				return;
+			}
+			if (window.location.href.indexOf(href) !== -1) {
+				node.classList.add('active');
+			} else {
+				node.classList.remove('active');
+			}
 			event.preventDefault();
 			event.stopImmediatePropagation();
 			if (href === '#') {

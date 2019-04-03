@@ -17,9 +17,15 @@ export default class ParallaxDirective {
 		const node = element[0];
 		const childNode = node.querySelector('img, video');
 		if (childNode) {
+			const style = window.getComputedStyle(node);
+			const position = style.position;
 			const parallax = (parseInt(attributes.parallax) || 5) * 2;
 			const subscription = this.parallax$(node, parallax).subscribe(parallax => {
-				childNode.setAttribute('style', `top: 50%; left: 50%; transform: translateX(-50%) translateY(${parallax.p}%) scale(${parallax.s}, ${parallax.s});`);
+				if (position === 'absolute') {
+					childNode.setAttribute('style', `top: 50%; left: 50%; transform: translateX(-50%) translateY(${parallax.p}%) scale(${parallax.s}, ${parallax.s});`);
+				} else {
+					childNode.setAttribute('style', `transform: translateX(0) translateY(${parallax.p+50}%) scale(${parallax.s}, ${parallax.s});`);
+				}
 			});
 			element.on('$destroy', () => {
 				subscription.unsubscribe();
