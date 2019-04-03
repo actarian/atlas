@@ -25,10 +25,15 @@ class StoreLocatorCtrl {
 		if (GOOGLE_MAPS !== null) {
 			this.initMap();
 		}
-		google.maps.event.addDomListener(window, 'load', () => {
+		if (google.maps.Map) {
 			GOOGLE_MAPS = google.maps;
 			this.initMap();
-		});
+		} else {
+			google.maps.event.addDomListener(window, 'load', () => {
+				GOOGLE_MAPS = google.maps;
+				this.initMap();
+			});
+		}
 		//
 
 	}

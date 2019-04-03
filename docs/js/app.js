@@ -17846,7 +17846,7 @@ function () {
       },
       storeLocator: {
         position: function position(_position) {
-          return $http.get('/data/store-locator.json', _position);
+          return $http.get('data/store-locator.json', _position);
         }
       }
     };
@@ -18268,11 +18268,17 @@ function () {
       this.initMap();
     }
 
-    google.maps.event.addDomListener(window, 'load', function () {
+    if (google.maps.Map) {
       GOOGLE_MAPS = google.maps;
+      this.initMap();
+    } else {
+      google.maps.event.addDomListener(window, 'load', function () {
+        GOOGLE_MAPS = google.maps;
 
-      _this.initMap();
-    }); //
+        _this.initMap();
+      });
+    } //
+
   }
 
   _createClass(StoreLocatorCtrl, [{
