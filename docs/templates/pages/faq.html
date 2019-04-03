@@ -333,11 +333,11 @@
 			<div class="col-md-10 offset-md-2 col--secondary">
 				<div class="listing listing--faq-category" ng-if="!faqCtrl.filteredFaqCategories">
 					<!-- @foreach category in categories -->
-					<div class="listing__item">
+					<div class="listing__item" appear>
 						<div class="category">Destinations of use</div>
 						<div id="destinations-of-use" class="listing listing--faq">
 							<!-- @foreach item in category.items -->
-							<div id="faq--100" class="listing__item">
+							<div id="faq--100" class="listing__item" appear>
 								<div class="title" ng-click="faqCtrl.toggle(100)"><span>On what kind of surfaces can POLISHED and HONED porcelain stoneware tiles be installed?</span> <svg class="icon icon--caret-down"><use xlink:href="#caret-down"></use></svg></div>
 								<div class="group group--content">
 									<div class="abstract">Polished and honed porcelain stoneware tiles can be installed on indoor floors and as a wall cladding in indoor and outdoor areas.</div>
@@ -351,10 +351,10 @@
 					</div>
 				</div>
 				<div class="listing listing--faq-category" ng-if="faqCtrl.filteredFaqCategories">
-					<div id="{{category.slug}}" class="listing__item" ng-repeat="category in faqCtrl.filteredFaqCategories track by $index">
+					<div id="{{category.slug}}" class="listing__item" ng-repeat="category in faqCtrl.filteredFaqCategories track by $index" appear>
 						<div class="category" hilight="category.title" query="faqCtrl.query">{{category.title}}</div>
 						<div class="listing listing--faq">
-							<div id="faq--{{item.id}}" class="listing__item" ng-repeat="item in category.items track by $index">
+							<div id="faq--{{item.id}}" class="listing__item" ng-repeat="item in category.items track by $index" appear>
 								<div class="title" ng-click="faqCtrl.toggle(item.id)"><span hilight="item.title" query="faqCtrl.query">{{item.title}}</span> <svg class="icon icon--caret-down"><use xlink:href="#caret-down"></use></svg></div>
 								<div class="group group--content" ng-style="{ display: item.opened ? 'block' : 'none' }">
 									<div class="abstract" hilight="item.abstract" query="faqCtrl.query">{{item.abstract}}</div>

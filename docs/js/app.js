@@ -17325,7 +17325,11 @@ function () {
     this.unsubscribe = new _rxjs.Subject();
     this.search$().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (filteredFaqCategories) {
       _this.$timeout(function () {
-        _this.filteredFaqCategories = filteredFaqCategories;
+        _this.filteredFaqCategories = [];
+
+        _this.$timeout(function () {
+          _this.filteredFaqCategories = filteredFaqCategories;
+        }, 50);
       });
     });
     $scope.$on('destroy', function () {
@@ -17382,10 +17386,8 @@ function () {
   }, {
     key: "navTo",
     value: function navTo(category, event) {
-      console.log('navTo', category, event);
       var node = document.querySelector("#".concat(category.slug));
       var top = this.domService.scrollTop + node.getBoundingClientRect().top - 100;
-      console.log(top);
       window.scroll({
         top: top,
         left: 0,
@@ -17400,21 +17402,27 @@ function () {
       var _this2 = this;
 
       var node = document.querySelector('.control--search');
-      return (0, _rxjs.fromEvent)(node, 'input').pipe((0, _operators.debounceTime)(200), (0, _operators.map)(function (event) {
+      return (0, _rxjs.fromEvent)(node, 'input').pipe((0, _operators.debounceTime)(1000), (0, _operators.map)(function (event) {
         return event.target.value.toLowerCase();
       }), (0, _operators.map)(function (query) {
         _this2.query = query;
+
+        _this2.faqCategories.forEach(function (x) {
+          return x.items.forEach(function (i) {
+            return i.opened = false;
+          });
+        });
 
         if (query !== '') {
           var filteredFaqCategories = _this2.faqCategories.map(function (x) {
             return Object.assign({}, x);
           }).filter(function (category) {
-            var has = false; // has = has || category.title.toLowerCase().indexOf(query) !== -1;
-
+            var has = false;
             var items = category.items.filter(function (item) {
               var hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
               var hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
               item.opened = hasAbstract;
+              _this2.flags[item.id] = item.opened;
               has = has || hasTitle || hasAbstract;
               return hasTitle || hasAbstract;
             });
@@ -17437,6 +17445,7 @@ function () {
 
           return filteredFaqCategories;
         } else {
+          _this2.flags = {};
           return _this2.faqCategories.slice();
         }
       }), (0, _operators.shareReplay)());

@@ -27,7 +27,10 @@ class FaqCtrl {
 			takeUntil(this.unsubscribe)
 		).subscribe((filteredFaqCategories) => {
 			this.$timeout(() => {
-				this.filteredFaqCategories = filteredFaqCategories;
+				this.filteredFaqCategories = [];
+				this.$timeout(() => {
+					this.filteredFaqCategories = filteredFaqCategories;
+				}, 50);
 			});
 		});
 		$scope.$on('destroy', () => {
@@ -68,10 +71,8 @@ class FaqCtrl {
 	}
 
 	navTo(category, event) {
-		console.log('navTo', category, event);
 		const node = document.querySelector(`#${category.slug}`);
 		const top = this.domService.scrollTop + node.getBoundingClientRect().top - 100;
-		console.log(top);
 		window.scroll({
 			top: top,
 			left: 0,
@@ -84,20 +85,21 @@ class FaqCtrl {
 	search$() {
 		const node = document.querySelector('.control--search');
 		return fromEvent(node, 'input').pipe(
-			debounceTime(200),
+			debounceTime(1000),
 			map(function(event) {
 				return event.target.value.toLowerCase();
 			}),
 			map(query => {
 				this.query = query;
+				this.faqCategories.forEach(x => x.items.forEach(i => i.opened = false));
 				if (query !== '') {
 					const filteredFaqCategories = this.faqCategories.map(x => Object.assign({}, x)).filter(category => {
 						let has = false;
-						// has = has || category.title.toLowerCase().indexOf(query) !== -1;
 						let items = category.items.filter(item => {
 							const hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
 							const hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
 							item.opened = hasAbstract;
+							this.flags[item.id] = item.opened;
 							has = has || hasTitle || hasAbstract;
 							return hasTitle || hasAbstract;
 						});
@@ -116,6 +118,7 @@ class FaqCtrl {
 					*/
 					return filteredFaqCategories;
 				} else {
+					this.flags = {};
 					return this.faqCategories.slice();
 				}
 			}),
