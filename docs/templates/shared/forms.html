@@ -1,0 +1,86 @@
+<!-- checkbox -->
+<script type="text/ng-template" id="templates/forms/checkbox.html">
+	<input type="hidden" name="{{field}}" ng-model="ngModel" ng-required="required" />
+	<div class="form-check group--form group--form-{{type}}" ng-class="getClasses()">
+		<label for="{{field}}" class="form__label">
+			<span ng-bind-html="placeholder"></span><sup ng-if="required">✽</sup>
+		</label>
+		<control-messages></control-messages>
+		<div class="input-group" ng-repeat="item in source">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" ng-model="$parent.ngModel" name="input-{{field}}" ng-value="item.id" />
+				{{item.name}}
+			</label>
+		</div>
+	</div>
+</script>
+<!-- file -->
+<script type="text/ng-template" id="templates/forms/file.html">
+	<div class="group--form group--form-{{type}}" ng-class="getClasses()">
+		<label for="{{field}}" class="form__label">
+			<span ng-bind="title"></span><sup ng-if="required">✽</sup>
+			<span ng-bind="ngModel.name"></span>
+		</label>
+		<input type="{{getType()}}" name="{{field}}" class="form__control" file-model="ngModel" ng-model="ngModel" validate="file" ng-model-options="options" placeholder="{{placeholder}}" ng-required="required" on-busy="onBusy()" on-complete="onComplete()" accept="{{accept}}" maxsize="{{maxsize}}" ng-focus="focus = true" ng-blur="focus = false">
+		<control-messages></control-messages>
+	</div>
+</script>
+<!-- radio -->
+<script type="text/ng-template" id="templates/forms/radio.html">
+	<input type="hidden" name="{{field}}" ng-model="ngModel" ng-required="required" />
+	<div class="form-check group--form group--form-{{type}}" ng-class="getClasses()">
+		<label for="{{field}}" class="form__label">
+			<span ng-bind-html="placeholder"></span><sup ng-if="required">✽</sup>
+		</label>
+		<control-messages></control-messages>
+		<div class="input-group" ng-repeat="item in source">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" ng-model="$parent.ngModel" name="input-{{field}}" ng-value="item.id" />
+				{{item.name}}
+			</label>
+		</div>
+	</div>
+</script>
+<!-- select -->
+<script type="text/ng-template" id="templates/forms/select.html">
+	<div class="group--form group--form-{{type}}" ng-class="getClasses()">
+		<label for="{{field}}" class="form__label">
+			<span ng-bind="title"></span><sup ng-if="required">✽</sup>
+		</label>
+		<select name="{{field}}" class="form__control" ng-model="ngModel" ng-options="{{getOptions()}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange()" ng-focus="focus = true" ng-blur="focus = false">
+			<option value="" disabled selected hidden>{{placeholder}}</option>
+		</select>
+		<control-messages></control-messages>
+	</div>
+</script>
+<!-- text -->
+<script type="text/ng-template" id="templates/forms/text.html">
+	<div class="group--form group--form-{{type}}" ng-class="getClasses()">
+		<label for="{{field}}" class="form__label" ng-if="title != 'untitled'">
+			<span ng-bind="title"></span><sup ng-if="required">✽</sup>
+		</label>
+		<div class="input-group">
+			<input type="{{getType()}}" name="{{field}}" class="{{class || 'form__control'}}" ng-model="ngModel" ng-model-options="options" placeholder="{{placeholder}}" ng-minlength="minLength" ng-maxlength="maxLength" min="{{min}}" max="{{max}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange" ng-focus="focus = true" ng-blur="focus = false">
+			<span class="input-group-addon" ng-if="type == 'password' && ngModel">
+				<span class="icon-eye" ng-click="toggleVisibility()"></span>
+			</span>
+		</div>
+		<control-messages></control-messages>
+	</div>
+</script>
+<!-- messages -->
+<script type="text/ng-template" id="templates/forms/messages.html">
+	<span ng-messages="getMessages()" role="alert">
+		<span ng-message="required" class="label-error animated flash">obbligatorio</span>
+		<span ng-message="minlength" class="label-error animated flash" ng-if="type == 'password'">almeno 6 caratteri</span>
+		<span ng-message="email" class="label-error animated flash" ng-if="type == 'email'">valore non corretto</span>
+		<span ng-message="date" class="label-error animated flash" ng-if="type == 'date'">formato non corretto</span>
+		<span ng-message="min" class="label-error animated flash" ng-if="type == 'date'">intervallo non corretto</span>
+		<span ng-message="max" class="label-error animated flash" ng-if="type == 'date'">intervallo non corretto</span>
+		<span ng-message="maxsize" class="label-error animated flash" ng-if="type == 'file'">dimensione massima superata</span>
+		<span ng-message="accept" class="label-error animated flash" ng-if="type == 'file'">estensione non consentita</span>
+		<span ng-message="positive" class="label-error animated flash" ng-if="validate == 'number' || validate == 'range'">solo valori positivi</span>
+		<span ng-message="number" class="label-error animated flash" ng-if="validate == 'number' || validate == 'range'">solo valori numerici</span>
+		<span ng-message="match" class="label-error animated flash" ng-if="match">non corrispondente</span>
+	</span>
+</script>

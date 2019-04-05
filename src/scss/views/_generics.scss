@@ -1,0 +1,77 @@
+.section--generic {
+	padding: 130px 0;
+
+}
+
+.section--generic-intro {
+	font-size: 18px;
+	line-height: 32px;
+	font-weight: $font-light;
+
+	.title {
+		font-size: 24px;
+		line-height: 36px;
+		font-weight: $font-extralight;
+		color: $foreground-secondary;
+		margin-bottom: 40px;
+	}
+
+	.abstract {
+		margin-bottom: 60px;
+
+		p {
+			margin-bottom: 10px;
+		}
+	}
+}
+
+.group--generic-info {
+	position: sticky;
+	top: 100px;
+
+	.title {
+		font-size: 14px;
+		line-height: 1.5;
+		text-transform: uppercase;
+		color: $foreground-secondary;
+		margin-bottom: 20px;
+	}
+
+	.description {
+		font-size: 15px;
+		line-height: 18px;
+		margin-bottom: 50px;
+	}
+
+	.icon--pin-outline,
+	.icon--project {
+		width: 13px;
+		height: 16px;
+		fill: $foreground;
+		margin-right: 10px;
+	}
+
+}
+
+[swiper-gallery] {
+	.swiper-slide {
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		background: black;
+
+		img {
+			transition: opacity ease-in-out 350ms;
+			height: calc(100vh - 137px);
+			max-height: 780px;
+		}
+
+		&:not(.swiper-slide-active) {
+			img {
+				opacity: 0.5;
+			}
+		}
+	}
+}

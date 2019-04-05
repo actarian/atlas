@@ -89,7 +89,13 @@ class RootCtrl {
 				}, 200);
 			};
 			const onTransitionOutDidEnd = () => {
-				fetch(href)
+				let fetchHref = href;
+				const base = document.querySelector('base');
+				const baseHref = base ? base.getAttribute('href') : '/';
+				if (baseHref !== '/' && fetchHref.indexOf(baseHref) !== 0) {
+					fetchHref = (baseHref + fetchHref).replace('//', '/');
+				}
+				fetch(fetchHref)
 					.then((response) => response.text())
 					.then((html) => {
 						fromElement.remove();

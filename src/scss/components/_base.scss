@@ -64,3 +64,11 @@ ng-transclude {
 	position: absolute;
 	visibility: hidden;
 }
+
+.border-bottom {
+	border-bottom: 2px solid $border;
+}
+
+.border-top {
+	border-top: 2px solid $border;
+}

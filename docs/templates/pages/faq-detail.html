@@ -1,9 +1,9 @@
-<section class="section section--hero-secondary section--negative" ng-show="!locator.position">
+<section class="section section--hero-secondary section--negative">
 	<div class="background" ng-if="!root.webglEnabled" parallax>
 		<img lazy data-src="img/faq-detail/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
 	</div>
 	<div class="background" ng-if="root.webglEnabled">
-		<canvas glsl-canvas="img/faq-detail/hero.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.glsl"></canvas>
+		<canvas glsl-canvas="img/faq-detail/hero.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.txt"></canvas>
 	</div>
 	<div class="aspect">
 		<div class="container">
@@ -16,11 +16,11 @@
 		</div>
 	</div>
 </section>
-<section class="section section--faq">
+<section class="section section--generic">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10 offset-md-2">
-				<section class="section section--intro">
+			<div class="col-md-10 offset-md-2 col-primary">
+				<section class="section section--generic-intro">
 					<div class="title">Atlas Concorde ventilated facade is <b>a technological system consisting of a series of layers that are mechanically linked to the building via a metallic structure</b>. If applied to the external walls of buildings, this system fulfi ls two important aspects for a perfect living comfort: insulation and moisture vapour transmission.</div>
 					<div class="abstract">We are the spaces we live. Marvel tells stories about authenticity and beauty, as unique as the people who live in them.</div>
 				</section>
@@ -39,7 +39,7 @@
 					</div>
 				</section>
 			</div>
-			<div class="col-md-3 offset-md-1 col--primary">
+			<div class="col-md-3 offset-md-1 col--secondary">
 				<div class="group group--faq-menu" appear>
 					<div class="title">What we concerne about</div>
 					<ul class="nav nav--faq-menu">

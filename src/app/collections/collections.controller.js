@@ -5,26 +5,24 @@ class CollectionsCtrl {
 
 	constructor(
 		$scope,
-		$timeout,
-		DomService,
-		ApiService
+		$timeout
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
-		this.domService = DomService;
-		this.apiService = ApiService;
 		this.filters = window.filters || {};
 		this.brands = window.brands || [];
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
-			if (x === 'collections') {
-				filter.filterCollection = (collection, value) => {
-					return collection.id === value;
-				};
-			} else {
-				filter.filterCollection = (collection, value) => {
-					return collection.features.indexOf(value) !== -1;
-				};
+			switch (x) {
+				case 'collections':
+					filter.doFilter = (item, value) => {
+						return item.id === value;
+					};
+					break;
+				default:
+					filter.doFilter = (item, value) => {
+						return item.features.indexOf(value) !== -1;
+					};
 			}
 			filter.options.unshift({
 				label: this.filters[x].placeholder,
@@ -32,12 +30,12 @@ class CollectionsCtrl {
 			});
 			filter.value = null;
 		});
-		this.updateStateFilters(this.brands);
+		this.updateFilterStates(this.brands);
 		// console.log(this.filters);
 		// console.log(this.brands);
 	}
 
-	doFilterBrands() {
+	applyFilters() {
 		/*
 		const filters = Object.keys(this.filters).map((x) => {
 			return Object.assign({ type: x }, this.filters[x]);
@@ -51,7 +49,7 @@ class CollectionsCtrl {
 				brand.collections.forEach(collection => {
 					let has = true;
 					filters.forEach(filter => {
-						has = has && filter.filterCollection(collection, filter.value);
+						has = has && filter.doFilter(collection, filter.value);
 					});
 					if (has) {
 						filteredCollections.push(collection);
@@ -68,12 +66,12 @@ class CollectionsCtrl {
 		this.filteredBrands = [];
 		this.$timeout(() => {
 			this.filteredBrands = filteredBrands;
-			this.updateStateFilters(filteredBrands);
+			this.updateFilterStates(filteredBrands);
 			// delayer for image update
 		}, 50);
 	}
 
-	updateStateFilters(brands) {
+	updateFilterStates(brands) {
 		const collections = [].concat.apply([], brands.map(x => x.collections));
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
@@ -83,7 +81,7 @@ class CollectionsCtrl {
 					let i = 0;
 					while (i < collections.length && !has) {
 						const collection = collections[i];
-						has = filter.filterCollection(collection, option.value);
+						has = filter.doFilter(collection, option.value);
 						i++;
 					}
 				} else {
@@ -99,7 +97,7 @@ class CollectionsCtrl {
 		item = item || filter.options[0];
 		filter.value = item.value;
 		filter.placeholder = item.label;
-		this.doFilterBrands();
+		this.applyFilters();
 	}
 
 	removeFilter(filter) {
@@ -108,6 +106,6 @@ class CollectionsCtrl {
 
 }
 
-CollectionsCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
+CollectionsCtrl.$inject = ['$scope', '$timeout'];
 
 export default CollectionsCtrl;

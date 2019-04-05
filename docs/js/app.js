@@ -15450,6 +15450,8 @@ exports.default = void 0;
 
 var _collections = _interopRequireDefault(require("./collections/collections.controller"));
 
+var _contacts = _interopRequireDefault(require("./contacts/contacts.controller"));
+
 var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
 var _autocomplete = _interopRequireDefault(require("./directives/autocomplete.directive"));
@@ -15484,13 +15486,25 @@ var _faq = _interopRequireDefault(require("./faq/faq.controller"));
 
 var _imageWithFeatures = require("./filters/image-with-features.filter");
 
+var _notIn = require("./filters/notIn.filter");
+
 var _trusted = require("./filters/trusted.filter");
+
+var _controlMessages = _interopRequireDefault(require("./forms/control-messages.directive"));
+
+var _control = _interopRequireDefault(require("./forms/control.directive"));
+
+var _validate = _interopRequireDefault(require("./forms/validate.directive"));
+
+var _references = _interopRequireDefault(require("./references/references.controller"));
 
 var _root = _interopRequireDefault(require("./root.controller"));
 
 var _api = _interopRequireDefault(require("./services/api.service"));
 
 var _dom = _interopRequireDefault(require("./services/dom.service"));
+
+var _state = _interopRequireDefault(require("./shared/state"));
 
 var _storeLocator = _interopRequireDefault(require("./store-locator/store-locator.controller"));
 
@@ -15504,15 +15518,15 @@ var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
-app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory);
-app.directive('appear', _appear.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
-app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default).controller('FaqCtrl', _faq.default).controller('StoreLocatorCtrl', _storeLocator.default);
-app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
+app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('StateService', _state.default.factory);
+app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperSlideItem', _swiper.SwiperSlideItemDirective.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
+app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
+app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./directives/appear.directive":201,"./directives/autocomplete.directive":202,"./directives/glsl-canvas.directive":203,"./directives/has-dropdown.directive":204,"./directives/hilight.directive":205,"./directives/href.directive":206,"./directives/lazy-script.directive":207,"./directives/lazy.directive":208,"./directives/media.directive":209,"./directives/parallax.directive":210,"./directives/scroll.directive":211,"./directives/sticky.directive":212,"./directives/swiper.directive":213,"./directives/video.directive":214,"./directives/wishlist.directive":215,"./faq/faq.controller":216,"./filters/image-with-features.filter":217,"./filters/trusted.filter":218,"./root.controller":219,"./services/api.service":220,"./services/dom.service":221,"./store-locator/store-locator.controller":223}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/lazy-script.directive":208,"./directives/lazy.directive":209,"./directives/media.directive":210,"./directives/parallax.directive":211,"./directives/scroll.directive":212,"./directives/sticky.directive":213,"./directives/swiper.directive":214,"./directives/video.directive":215,"./directives/wishlist.directive":216,"./faq/faq.controller":217,"./filters/image-with-features.filter":218,"./filters/notIn.filter":219,"./filters/trusted.filter":220,"./forms/control-messages.directive":221,"./forms/control.directive":222,"./forms/validate.directive":223,"./references/references.controller":224,"./root.controller":225,"./services/api.service":226,"./services/dom.service":227,"./shared/state":229,"./store-locator/store-locator.controller":230}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15532,28 +15546,31 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var CollectionsCtrl =
 /*#__PURE__*/
 function () {
-  function CollectionsCtrl($scope, $timeout, DomService, ApiService) {
+  function CollectionsCtrl($scope, $timeout) {
     var _this = this;
 
     _classCallCheck(this, CollectionsCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
-    this.domService = DomService;
-    this.apiService = ApiService;
     this.filters = window.filters || {};
     this.brands = window.brands || [];
     Object.keys(this.filters).forEach(function (x) {
       var filter = _this.filters[x];
 
-      if (x === 'collections') {
-        filter.filterCollection = function (collection, value) {
-          return collection.id === value;
-        };
-      } else {
-        filter.filterCollection = function (collection, value) {
-          return collection.features.indexOf(value) !== -1;
-        };
+      switch (x) {
+        case 'collections':
+          filter.doFilter = function (item, value) {
+            return item.id === value;
+          };
+
+          break;
+
+        default:
+          filter.doFilter = function (item, value) {
+            return item.features.indexOf(value) !== -1;
+          };
+
       }
 
       filter.options.unshift({
@@ -15562,13 +15579,13 @@ function () {
       });
       filter.value = null;
     });
-    this.updateStateFilters(this.brands); // console.log(this.filters);
+    this.updateFilterStates(this.brands); // console.log(this.filters);
     // console.log(this.brands);
   }
 
   _createClass(CollectionsCtrl, [{
-    key: "doFilterBrands",
-    value: function doFilterBrands() {
+    key: "applyFilters",
+    value: function applyFilters() {
       var _this2 = this;
 
       /*
@@ -15591,7 +15608,7 @@ function () {
           brand.collections.forEach(function (collection) {
             var has = true;
             filters.forEach(function (filter) {
-              has = has && filter.filterCollection(collection, filter.value);
+              has = has && filter.doFilter(collection, filter.value);
             });
 
             if (has) {
@@ -15611,13 +15628,13 @@ function () {
       this.$timeout(function () {
         _this2.filteredBrands = filteredBrands;
 
-        _this2.updateStateFilters(filteredBrands); // delayer for image update
+        _this2.updateFilterStates(filteredBrands); // delayer for image update
 
       }, 50);
     }
   }, {
-    key: "updateStateFilters",
-    value: function updateStateFilters(brands) {
+    key: "updateFilterStates",
+    value: function updateFilterStates(brands) {
       var _this3 = this;
 
       var collections = [].concat.apply([], brands.map(function (x) {
@@ -15633,7 +15650,7 @@ function () {
 
             while (i < collections.length && !has) {
               var collection = collections[i];
-              has = filter.filterCollection(collection, option.value);
+              has = filter.doFilter(collection, option.value);
               i++;
             }
           } else {
@@ -15650,7 +15667,7 @@ function () {
       item = item || filter.options[0];
       filter.value = item.value;
       filter.placeholder = item.label;
-      this.doFilterBrands();
+      this.applyFilters();
     }
   }, {
     key: "removeFilter",
@@ -15662,11 +15679,61 @@ function () {
   return CollectionsCtrl;
 }();
 
-CollectionsCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
+CollectionsCtrl.$inject = ['$scope', '$timeout'];
 var _default = CollectionsCtrl;
 exports.default = _default;
 
 },{}],201:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var ContactsCtrl =
+/*#__PURE__*/
+function () {
+  function ContactsCtrl($scope, $timeout, StateService) {
+    _classCallCheck(this, ContactsCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.model = {};
+    this.state = StateService.getState();
+    this.state.ready();
+  }
+
+  _createClass(ContactsCtrl, [{
+    key: "onSubmit",
+    value: function onSubmit() {
+      var _this = this;
+
+      if (this.state.busy()) {
+        this.$timeout(function () {
+          _this.state.ready();
+        }, 2000);
+      }
+    }
+  }]);
+
+  return ContactsCtrl;
+}();
+
+ContactsCtrl.$inject = ['$scope', '$timeout', 'StateService'];
+var _default = ContactsCtrl;
+exports.default = _default;
+
+},{}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15780,7 +15847,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":222,"rxjs/operators":197}],202:[function(require,module,exports){
+},{"../shared/rect":228,"rxjs/operators":197}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15937,7 +16004,7 @@ function () {
 exports.default = AutocompleteDirective;
 AutocompleteDirective.factory.$inject = ['$timeout'];
 
-},{"./has-dropdown.directive":204}],203:[function(require,module,exports){
+},{"./has-dropdown.directive":205}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16050,7 +16117,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{}],204:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16177,7 +16244,7 @@ exports.default = HasDropdownDirective;
 HasDropdownDirective.dropDownUid = 0;
 HasDropdownDirective.factory.$inject = ['$timeout'];
 
-},{}],205:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16251,7 +16318,7 @@ function () {
 exports.default = HilightDirective;
 HilightDirective.factory.$inject = [];
 
-},{}],206:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16360,7 +16427,7 @@ function () {
 exports.default = HrefDirective;
 HrefDirective.factory.$inject = [];
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16428,7 +16495,7 @@ function () {
 exports.default = LazyScriptDirective;
 LazyScriptDirective.factory.$inject = [];
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16576,7 +16643,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":222,"rxjs/operators":197}],209:[function(require,module,exports){
+},{"../shared/rect":228,"rxjs/operators":197}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16638,7 +16705,7 @@ function () {
 exports.default = MediaDirective;
 MediaDirective.factory.$inject = ['ApiService'];
 
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16736,7 +16803,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":222,"rxjs/operators":197}],211:[function(require,module,exports){
+},{"../shared/rect":228,"rxjs/operators":197}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16792,7 +16859,7 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = ['DomService'];
 
-},{}],212:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16895,13 +16962,25 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":222,"rxjs/operators":197}],213:[function(require,module,exports){
+},{"../shared/rect":228,"rxjs/operators":197}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SwiperSlideItemDirective = exports.SwiperTileDirective = exports.SwiperHeroDirective = void 0;
+exports.SwiperSlideItemDirective = exports.SwiperTileDirective = exports.SwiperHeroDirective = exports.SwiperGalleryDirective = exports.SwiperDirective = void 0;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16912,16 +16991,36 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* jshint esversion: 6 */
 
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
-var SwiperHeroDirective =
+var DEFAULT_SWIPER_OPTIONS = {
+  slidesPerView: 'auto',
+  spaceBetween: 1,
+  centeredSlides: true,
+  loop: true,
+  loopAdditionalSlides: 100,
+  speed: 600,
+  autoplay: 5000,
+  keyboardControl: true,
+  mousewheelControl: false,
+  onSlideClick: function onSlideClick(swiper) {
+    angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+  },
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true
+  }
+};
+
+var SwiperDirective =
 /*#__PURE__*/
 function () {
-  function SwiperHeroDirective() {
-    _classCallCheck(this, SwiperHeroDirective);
+  function SwiperDirective() {
+    _classCallCheck(this, SwiperDirective);
 
     this.restrict = 'A';
+    this.options = DEFAULT_SWIPER_OPTIONS;
   }
 
-  _createClass(SwiperHeroDirective, [{
+  _createClass(SwiperDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
       var _this = this;
@@ -16934,7 +17033,9 @@ function () {
           element.swiper.destroy();
         }
       });
-      this.onSwiper(element);
+      setTimeout(function () {
+        _this.onSwiper(element);
+      }, 1);
     }
   }, {
     key: "onSwiper",
@@ -16942,73 +17043,145 @@ function () {
       if (element.swiper) {
         element.swiper.update();
       } else {
-        // var items = element[0].querySelectorAll('.swiper-slide');
-        element.swiper = new Swiper(element, {
-          speed: 600,
-          parallax: true,
-          autoplay: 5000,
-          loop: true,
-          spaceBetween: 0,
-          keyboardControl: true,
-          mousewheelControl: false,
-          onSlideClick: function onSlideClick(swiper) {
-            angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-          },
-          on: {
-            /*
-            setTranslate: function () {
-            	console.log('setTranslate', this);
-            },
-            */
-            setTransition: function setTransition() {// console.log('setTransition', this);
-
-              /*
-              var x = 73 - 5 + (Math.random() * 10);
-              var y = 24;
-              var r = 18 - 5 + (Math.random() * 10);
-              console.log(x, y, r)
-              dynamics.animate(element[0].querySelector('.fico'), {
-              	rotateZ: '-' + r + 'deg',
-              	translateX: '-' + x + '%',
-              	translateY: '-' + y + '%',
-              }, {
-              	type: dynamics.bezier,
-              	points: [{
-              		"x": 0,
-              		"y": 0,
-              		"cp": [{
-              			"x": 0.462, "y": -0.877
-              		}]
-              	}, {
-              		"x": 1,
-              		"y": 1,
-              		"cp": [{
-              			"x": 0.538, "y": 1.899
-              		}]
-              	}],
-              });
-              */
-            }
-          }
-          /*
-          pagination: {
-          	el: '.swiper-pagination',
-          	clickable: true,
-          },
-          */
-
-          /*
-          navigation: {
-          	nextEl: '.swiper-button-next',
-          	prevEl: '.swiper-button-prev',
-          },
-          */
-
-        });
+        element.swiper = new Swiper(element, this.options);
         element.addClass('swiper-init');
       }
     }
   }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperDirective();
+    }
+  }]);
+
+  return SwiperDirective;
+}();
+
+exports.SwiperDirective = SwiperDirective;
+SwiperDirective.factory.$inject = [];
+
+var SwiperGalleryDirective =
+/*#__PURE__*/
+function (_SwiperDirective) {
+  _inherits(SwiperGalleryDirective, _SwiperDirective);
+
+  function SwiperGalleryDirective() {
+    var _this2;
+
+    _classCallCheck(this, SwiperGalleryDirective);
+
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperGalleryDirective).call(this));
+    _this2.options = {
+      slidesPerView: 'auto',
+      spaceBetween: 1,
+      centeredSlides: true,
+      loop: true,
+      loopAdditionalSlides: 100,
+      speed: 600,
+      autoplay: 5000,
+      keyboardControl: true,
+      mousewheelControl: false,
+      onSlideClick: function onSlideClick(swiper) {
+        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      }
+    };
+    return _this2;
+  }
+
+  _createClass(SwiperGalleryDirective, null, [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperGalleryDirective();
+    }
+  }]);
+
+  return SwiperGalleryDirective;
+}(SwiperDirective);
+
+exports.SwiperGalleryDirective = SwiperGalleryDirective;
+SwiperGalleryDirective.factory.$inject = [];
+
+var SwiperHeroDirective =
+/*#__PURE__*/
+function (_SwiperDirective2) {
+  _inherits(SwiperHeroDirective, _SwiperDirective2);
+
+  function SwiperHeroDirective() {
+    var _this3;
+
+    _classCallCheck(this, SwiperHeroDirective);
+
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperHeroDirective).call(this));
+    _this3.options = {
+      speed: 600,
+      parallax: true,
+      autoplay: 5000,
+      loop: true,
+      spaceBetween: 0,
+      keyboardControl: true,
+      mousewheelControl: false,
+      onSlideClick: function onSlideClick(swiper) {
+        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+      },
+      on: {
+        /*
+        setTranslate: function () {
+        	console.log('setTranslate', this);
+        },
+        */
+        setTransition: function setTransition() {// console.log('setTransition', this);
+
+          /*
+          var x = 73 - 5 + (Math.random() * 10);
+          var y = 24;
+          var r = 18 - 5 + (Math.random() * 10);
+          console.log(x, y, r)
+          dynamics.animate(element[0].querySelector('.fico'), {
+          	rotateZ: '-' + r + 'deg',
+          	translateX: '-' + x + '%',
+          	translateY: '-' + y + '%',
+          }, {
+          	type: dynamics.bezier,
+          	points: [{
+          		"x": 0,
+          		"y": 0,
+          		"cp": [{
+          			"x": 0.462, "y": -0.877
+          		}]
+          	}, {
+          		"x": 1,
+          		"y": 1,
+          		"cp": [{
+          			"x": 0.538, "y": 1.899
+          		}]
+          	}],
+          });
+          */
+        }
+      }
+      /*
+      pagination: {
+      	el: '.swiper-pagination',
+      	clickable: true,
+      },
+      */
+
+      /*
+      navigation: {
+      	nextEl: '.swiper-button-next',
+      	prevEl: '.swiper-button-prev',
+      },
+      */
+
+    };
+    return _this3;
+  }
+
+  _createClass(SwiperHeroDirective, null, [{
     key: "factory",
     value: function factory() {
       return new SwiperHeroDirective();
@@ -17016,61 +17189,42 @@ function () {
   }]);
 
   return SwiperHeroDirective;
-}();
+}(SwiperDirective);
 
 exports.SwiperHeroDirective = SwiperHeroDirective;
 SwiperHeroDirective.factory.$inject = [];
 
 var SwiperTileDirective =
 /*#__PURE__*/
-function () {
+function (_SwiperDirective3) {
+  _inherits(SwiperTileDirective, _SwiperDirective3);
+
   function SwiperTileDirective() {
+    var _this4;
+
     _classCallCheck(this, SwiperTileDirective);
 
-    this.restrict = 'A';
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperTileDirective).call(this));
+    _this4.options = {
+      speed: 600,
+      parallax: true,
+      autoplay: 5000,
+      loop: true,
+      spaceBetween: 0,
+      keyboardControl: true,
+      mousewheelControl: false,
+      onSlideClick: function onSlideClick(swiper) {
+        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      }
+    };
+    return _this4;
   }
 
-  _createClass(SwiperTileDirective, [{
-    key: "link",
-    value: function link(scope, element, attributes, controller) {
-      var _this2 = this;
-
-      scope.$on('swiperSlideItemLast', function (slide) {
-        _this2.onSwiper(element);
-      });
-      element.on('$destroy', function () {
-        if (element.swiper) {
-          element.swiper.destroy();
-        }
-      });
-      this.onSwiper(element);
-    }
-  }, {
-    key: "onSwiper",
-    value: function onSwiper(element) {
-      if (element.swiper) {
-        element.swiper.update();
-      } else {
-        element.swiper = new Swiper(element, {
-          speed: 600,
-          parallax: true,
-          autoplay: 5000,
-          loop: true,
-          spaceBetween: 0,
-          keyboardControl: true,
-          mousewheelControl: false,
-          onSlideClick: function onSlideClick(swiper) {
-            angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-          },
-          pagination: {
-            el: '.swiper-pagination',
-            clickable: true
-          }
-        });
-        element.addClass('swiper-init');
-      }
-    }
-  }], [{
+  _createClass(SwiperTileDirective, null, [{
     key: "factory",
     value: function factory() {
       return new SwiperTileDirective();
@@ -17078,7 +17232,7 @@ function () {
   }]);
 
   return SwiperTileDirective;
-}();
+}(SwiperDirective);
 
 exports.SwiperTileDirective = SwiperTileDirective;
 SwiperTileDirective.factory.$inject = [];
@@ -17115,7 +17269,7 @@ function () {
 exports.SwiperSlideItemDirective = SwiperSlideItemDirective;
 SwiperSlideItemDirective.factory.$inject = ['$timeout'];
 
-},{}],214:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17220,7 +17374,7 @@ function () {
 exports.default = VideoDirective;
 VideoDirective.factory.$inject = ['$timeout', 'ApiService'];
 
-},{}],215:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17282,7 +17436,7 @@ function () {
 exports.default = WishlistDirective;
 WishlistDirective.factory.$inject = ['ApiService'];
 
-},{}],216:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17459,7 +17613,7 @@ FaqCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = FaqCtrl;
 exports.default = _default;
 
-},{"rxjs":1,"rxjs/operators":197}],217:[function(require,module,exports){
+},{"rxjs":1,"rxjs/operators":197}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17500,7 +17654,32 @@ function ImageWithFeatures() {
   };
 }
 
-},{}],218:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.NotInFilter = NotInFilter;
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+function NotInFilter($filter) {
+  return function (array, filters, element) {
+    if (filters) {
+      return $filter('filter')(array, function (item) {
+        for (var i = 0; i < filters.length; i++) {
+          if (filters[i][element] === item[element]) return false;
+        }
+
+        return true;
+      });
+    }
+  };
+}
+
+},{}],220:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17517,7 +17696,576 @@ function TrustedFilter($sce) {
   };
 }
 
-},{}],219:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var ControlMessagesDirective =
+/*#__PURE__*/
+function () {
+  function ControlMessagesDirective() {
+    _classCallCheck(this, ControlMessagesDirective);
+
+    this.restrict = 'E';
+    this.templateUrl = 'templates/forms/messages.html';
+    this.transclude = {
+      'message': '?messageItems'
+    };
+  }
+
+  _createClass(ControlMessagesDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {}
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new ControlMessagesDirective();
+    }
+  }]);
+
+  return ControlMessagesDirective;
+}();
+
+exports.default = ControlMessagesDirective;
+ControlMessagesDirective.factory.$inject = [];
+
+},{}],222:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var formatLabel = function formatLabel() {
+  var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var prepend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var expression = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+  var splitted = string.split(',');
+
+  if (splitted.length > 1) {
+    var formatted = splitted.shift();
+    splitted.forEach(function (value, index) {
+      if (expression) {
+        formatted = formatted.split('{' + index + '}').join('\' + ' + prepend + value + ' + \'');
+      } else {
+        formatted = formatted.split('{' + index + '}').join(prepend + value);
+      }
+    });
+
+    if (expression) {
+      return '\'' + formatted + '\'';
+    } else {
+      return formatted;
+    }
+  } else {
+    return prepend + string;
+  }
+};
+
+var uniqueId = 0;
+
+var ControlDirective =
+/*#__PURE__*/
+function () {
+  function ControlDirective($parse) {
+    var _this = this;
+
+    _classCallCheck(this, ControlDirective);
+
+    this.$parse = $parse;
+    this.restrict = 'A';
+
+    this.templateUrl = function (element, attributes) {
+      var template = 'templates/forms/text.html';
+
+      switch (attributes.control) {
+        case 'select':
+          template = 'templates/forms/select.html';
+          break;
+      }
+
+      return template;
+    };
+
+    this.scope = {
+      ngModel: '=',
+      required: '=',
+      form: '@',
+      title: '@',
+      placeholder: '@',
+      source: '=?',
+      key: '@?',
+      label: '@?'
+    };
+    this.require = 'ngModel';
+    this.transclude = true;
+    this.link = {
+      pre: function pre(scope, element, attributes, controller, transclude) {
+        var label = scope.label = scope.label ? scope.label : 'name';
+        var key = scope.key = scope.key ? scope.key : 'id';
+
+        if (attributes.control === 'select') {
+          var filter = attributes.filter ? '| ' + attributes.filter : '';
+          var optionLabel = formatLabel(label, 'item.', true);
+
+          scope.getOptions = function () {
+            return attributes.number ? 'item.' + key + ' as ' + optionLabel + ' disable when item.disabled for item in source ' + filter : optionLabel + ' disable when item.disabled for item in source ' + filter + ' track by item.' + key;
+          };
+        }
+
+        var type = scope.type = attributes.control;
+        var form = scope.form = scope.form || 'form';
+        var title = scope.title = scope.title || 'untitled';
+        var placeholder = scope.placeholder = scope.placeholder || title;
+        var field = scope.field = title.replace(/[^0-9a-zA-Z]/g, "").split(' ').join('') + ++uniqueId;
+        scope.format = attributes.format || null;
+        scope.precision = attributes.precision || null;
+        scope.validate = attributes.validate || attributes.control;
+        scope.minLength = attributes.minLength || 0;
+        scope.maxLength = attributes.maxLength || Number.POSITIVE_INFINITY;
+        scope.min = attributes.min || null;
+        scope.max = attributes.max || null;
+        scope.options = _this.$parse(attributes.options)(scope) || {};
+        scope.focus = false;
+        scope.visible = false;
+
+        scope.onChange = function (model) {
+          _this.$parse(attributes.onChange)(scope.$parent);
+        };
+
+        scope.onFilter = function (model) {
+          _this.$parse(attributes.onFilter)(scope.$parent);
+        };
+
+        scope.getType = function () {
+          var type = 'text';
+
+          switch (attributes.control) {
+            case 'password':
+              type = scope.visible ? 'text' : 'password';
+              break;
+
+            default:
+              type = attributes.control;
+          }
+
+          return type;
+        };
+
+        scope.getClasses = function () {
+          var form = _this.$parse(scope.form)(scope.$parent);
+
+          var field = _this.$parse(scope.form + '.' + scope.field)(scope.$parent);
+
+          return {
+            'focus': scope.focus,
+            'success': field.$valid,
+            'error': field.$invalid && (form.$submitted || field.$touched),
+            'empty': !field.$viewValue
+          };
+        };
+
+        scope.getMessages = function () {
+          var form = _this.$parse(scope.form)(scope.$parent);
+
+          var field = _this.$parse(scope.form + '.' + scope.field)(scope.$parent);
+
+          return (form.$submitted || field.$touched) && field.$error;
+        };
+
+        scope.toggleVisibility = function () {
+          scope.visible = !scope.visible;
+        };
+      }
+    };
+  }
+
+  _createClass(ControlDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {}
+  }], [{
+    key: "factory",
+    value: function factory($parse) {
+      return new ControlDirective($parse);
+    }
+  }]);
+
+  return ControlDirective;
+}();
+
+exports.default = ControlDirective;
+ControlDirective.factory.$inject = ['$parse'];
+
+},{}],223:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var ValidateDirective =
+/*#__PURE__*/
+function () {
+  function ValidateDirective($filter) {
+    _classCallCheck(this, ValidateDirective);
+
+    this.$filter = $filter;
+    this.require = 'ngModel';
+  }
+
+  _createClass(ValidateDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, model) {
+      var type = attributes.validate;
+      var format = attributes.format || '';
+      var precision = attributes.precision || 2;
+      var focus = false; // console.log('validate', type);
+
+      switch (type) {
+        case 'date':
+        case 'datetime':
+        case 'datetime-local':
+          model.$formatters.push(function (value) {
+            if (value) {
+              return $filter('date')(value, format);
+            } else {
+              return null;
+            }
+          });
+          break;
+
+        case 'number':
+          model.$parsers.unshift(function (value) {
+            var valid = false;
+
+            if (value !== undefined && value !== "") {
+              valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
+
+              value = Number(value);
+              model.$setValidity('number', valid);
+
+              if (valid) {
+                model.$setValidity('positive', value >= 0.01);
+
+                if (attributes.min !== undefined) {
+                  model.$setValidity('range', value >= Number(attributes.min));
+                }
+
+                if (attributes.max !== undefined) {
+                  model.$setValidity('range', value <= Number(attributes.max));
+                }
+              }
+            } else {
+              valid = true;
+              value = Number(value);
+              model.$setValidity('number', true);
+              model.$setValidity('positive', true);
+
+              if (attributes.min !== undefined) {
+                model.$setValidity('range', true);
+              }
+
+              if (attributes.max !== undefined) {
+                model.$setValidity('range', true);
+              }
+            }
+
+            return value;
+          });
+          model.$formatters.push(function (value) {
+            if (value) {
+              return $filter('number')(value, precision) + ' ' + format;
+            } else {
+              return null;
+            }
+          });
+          break;
+
+        case 'anynumber':
+          model.$parsers.unshift(function (value) {
+            var valid = false;
+
+            if (value !== undefined && value !== "") {
+              valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
+
+              value = Number(value);
+              model.$setValidity('number', valid);
+
+              if (valid) {
+                if (attributes.min !== undefined) {
+                  model.$setValidity('range', value >= Number(attributes.min));
+                }
+
+                if (attributes.max !== undefined) {
+                  model.$setValidity('range', value <= Number(attributes.max));
+                }
+              }
+            } else {
+              valid = true;
+              value = Number(value);
+              model.$setValidity('number', true);
+
+              if (attributes.min !== undefined) {
+                model.$setValidity('range', true);
+              }
+
+              if (attributes.max !== undefined) {
+                model.$setValidity('range', true);
+              }
+            }
+
+            return value;
+          });
+          model.$formatters.push(function (value) {
+            if (value || value === 0) {
+              return $filter('number')(value, precision) + ' ' + format;
+            } else {
+              return null;
+            }
+          });
+          break;
+      }
+
+      var onFocus = function onFocus() {
+        focus = true;
+
+        if (format) {
+          element[0].value = model.$modelValue || null;
+
+          if (!model.$modelValue) {
+            model.$setViewValue(null);
+          }
+        }
+      };
+
+      var doBlur = function doBlur() {
+        if (format && !model.$invalid) {
+          switch (type) {
+            case 'date':
+            case 'datetime':
+            case 'datetime-local':
+              element[0].value = model.$modelValue ? $filter('date')(model.$modelValue, format) : ' ';
+              break;
+
+            default:
+              element[0].value = model.$modelValue ? $filter('number')(model.$modelValue, precision) + ' ' + format : ' ';
+              break;
+          }
+        }
+      };
+
+      var onBlur = function onBlur() {
+        focus = false;
+        doBlur();
+      };
+
+      var addListeners = function addListeners() {
+        element.on('focus', onFocus);
+        element.on('blur', onBlur);
+      };
+
+      var removeListeners = function removeListeners() {
+        element.off('focus', onFocus);
+        element.off('blur', onBlur);
+      };
+
+      scope.$on('$destroy', function () {
+        removeListeners();
+      });
+      addListeners();
+    }
+  }], [{
+    key: "factory",
+    value: function factory($filter) {
+      return new ValidateDirective($filter);
+    }
+  }]);
+
+  return ValidateDirective;
+}();
+
+exports.default = ValidateDirective;
+ValidateDirective.factory.$inject = ['$filter'];
+
+},{}],224:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var ReferencesCtrl =
+/*#__PURE__*/
+function () {
+  function ReferencesCtrl($scope, $timeout) {
+    var _this = this;
+
+    _classCallCheck(this, ReferencesCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.filters = window.filters || {};
+    this.references = window.references || [];
+    Object.keys(this.filters).forEach(function (x) {
+      var filter = _this.filters[x];
+
+      switch (x) {
+        case 'collections':
+          filter.doFilter = function (item, value) {
+            return item.collections.indexOf(value) !== -1;
+          };
+
+          break;
+
+        case 'countries':
+          filter.doFilter = function (item, value) {
+            return item.countryId === value;
+          };
+
+          break;
+
+        default:
+          filter.doFilter = function (item, value) {
+            return item.features.indexOf(value) !== -1;
+          };
+
+      }
+
+      filter.options.unshift({
+        label: _this.filters[x].placeholder,
+        value: null
+      });
+      filter.value = null;
+    });
+    this.filteredReferences = this.references.slice();
+    this.updateFilterStates(this.filteredReferences);
+  }
+
+  _createClass(ReferencesCtrl, [{
+    key: "applyFilters",
+    value: function applyFilters() {
+      var _this2 = this;
+
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this2.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredReferences = this.references.slice();
+      console.log(filteredReferences);
+
+      if (filters.length) {
+        filteredReferences = filteredReferences.filter(function (reference) {
+          var has = true;
+          filters.forEach(function (filter) {
+            has = has && filter.doFilter(reference, filter.value);
+          });
+          return has;
+        });
+      } // console.log(filteredReferences, filters);
+
+
+      this.filteredReferences = [];
+      this.$timeout(function () {
+        _this2.filteredReferences = filteredReferences;
+
+        _this2.updateFilterStates(filteredReferences); // delayer for image update
+
+      }, 50);
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates(references) {
+      var _this3 = this;
+
+      console.log('updateFilterStates', references);
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this3.filters[x];
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < references.length && !has) {
+              var reference = references[i];
+              has = filter.doFilter(reference, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        }); // console.log(filter.options);
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }]);
+
+  return ReferencesCtrl;
+}();
+
+ReferencesCtrl.$inject = ['$scope', '$timeout'];
+var _default = ReferencesCtrl;
+exports.default = _default;
+
+},{}],225:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17642,7 +18390,15 @@ function () {
         };
 
         var onTransitionOutDidEnd = function onTransitionOutDidEnd() {
-          fetch(href).then(function (response) {
+          var fetchHref = href;
+          var base = document.querySelector('base');
+          var baseHref = base ? base.getAttribute('href') : '/';
+
+          if (baseHref !== '/' && fetchHref.indexOf(baseHref) !== 0) {
+            fetchHref = (baseHref + fetchHref).replace('//', '/');
+          }
+
+          fetch(fetchHref).then(function (response) {
             return response.text();
           }).then(function (html) {
             fromElement.remove();
@@ -17813,7 +18569,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'DomService',
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],220:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17866,7 +18622,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],221:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18085,7 +18841,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":222,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],222:[function(require,module,exports){
+},{"../shared/rect":228,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18227,7 +18983,202 @@ function () {
 
 exports.default = Rect;
 
-},{}],223:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.State = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var State =
+/*#__PURE__*/
+function () {
+  function State($timeout, $rootScope) {
+    _classCallCheck(this, State);
+
+    this.$timeout = $timeout;
+    this.$rootScope = $rootScope;
+    this.idle();
+  }
+
+  _createClass(State, [{
+    key: "idle",
+    value: function idle() {
+      this.isBusy = false;
+      this.isError = false;
+      this.isErroring = false;
+      this.isSuccess = false;
+      this.isSuccessing = false;
+      this.button = null;
+      this.errors = [];
+    }
+  }, {
+    key: "busy",
+    value: function busy() {
+      if (!this.isBusy) {
+        this.isBusy = true;
+        this.isError = false;
+        this.isErroring = false;
+        this.isSuccess = false;
+        this.isSuccessing = false;
+        this.errors = [];
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "classes",
+    value: function classes(addons) {
+      var classes = {
+        ready: this.isReady,
+        busy: this.isBusy,
+        successing: this.isSuccessing,
+        success: this.isSuccess,
+        errorring: this.isErroring,
+        error: this.isError
+      };
+
+      if (addons) {
+        Object.keys(addons).forEach(function (key) {
+          classes[addons[key]] = classes[key];
+        });
+      }
+
+      return classes;
+    }
+  }, {
+    key: "enabled",
+    value: function enabled() {
+      return !this.isBusy && !this.isErroring && !this.isSuccessing;
+    }
+  }, {
+    key: "error",
+    value: function error(_error) {
+      var _this = this;
+
+      console.log('State.error', _error);
+      this.isBusy = false;
+      this.isError = true;
+      this.isErroring = true;
+      this.isSuccess = false;
+      this.isSuccessing = false;
+      this.errors.push(_error);
+      $timeout(function () {
+        _this.isErroring = false;
+      }, DELAY);
+    }
+  }, {
+    key: "errorMessage",
+    value: function errorMessage() {
+      return this.isError ? this.errors[this.errors.length - 1] : null;
+    }
+  }, {
+    key: "labels",
+    value: function labels(addons) {
+      var defaults = {
+        ready: 'submit',
+        busy: 'sending',
+        error: 'error',
+        success: 'success'
+      };
+
+      if (addons) {
+        angular.extend(defaults, addons);
+      }
+
+      var label = defaults.ready;
+
+      if (this.isBusy) {
+        label = defaults.busy;
+      } else if (this.isSuccess) {
+        label = defaults.success;
+      } else if (this.isError) {
+        label = defaults.error;
+      }
+
+      return label;
+    }
+  }, {
+    key: "ready",
+    value: function ready() {
+      this.idle();
+      this.isReady = true;
+      this.$rootScope.$broadcast('$thisReady', this);
+    }
+  }, {
+    key: "submitClass",
+    value: function submitClass() {
+      return {
+        busy: this.isBusy,
+        ready: this.isReady,
+        successing: this.isSuccessing,
+        success: this.isSuccess,
+        errorring: this.isErroring,
+        error: this.isError
+      };
+    }
+  }, {
+    key: "success",
+    value: function success() {
+      var _this2 = this;
+
+      this.isBusy = false;
+      this.isError = false;
+      this.isErroring = false;
+      this.isSuccess = true;
+      this.isSuccessing = true;
+      this.errors = [];
+      this.$timeout(function () {
+        _this2.isSuccessing = false;
+      }, DELAY);
+    }
+  }]);
+
+  return State;
+}();
+
+exports.State = State;
+
+var StateService =
+/*#__PURE__*/
+function () {
+  function StateService($timeout, $rootScope) {
+    _classCallCheck(this, StateService);
+
+    this.$timeout = $timeout;
+    this.$rootScope = $rootScope;
+  }
+
+  _createClass(StateService, [{
+    key: "getState",
+    value: function getState() {
+      return new State(this.$timeout, this.$rootScope);
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, $rootScope) {
+      return new StateService($timeout, $rootScope);
+    }
+  }]);
+
+  return StateService;
+}();
+
+exports.default = StateService;
+StateService.factory.$inject = ['$timeout', '$rootScope'];
+
+},{}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

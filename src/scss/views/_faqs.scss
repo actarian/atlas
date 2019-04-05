@@ -4,11 +4,11 @@
 
 	@include media-breakpoint-down(sm) {
 		.col--primary {
-			order: 1;
+			order: 2;
 		}
 
 		.col--secondary {
-			order: 2;
+			order: 1;
 		}
 	}
 }
@@ -97,15 +97,8 @@
 		margin-bottom: 60px;
 	}
 
-	.group--cta {
-		text-align: left;
-	}
-
-	.icon--search {
-		width: 16px;
-		height: 17px;
-		fill: $primary;
-		margin-right: 10px;
+	.group--search {
+		margin-top: 40px;
 	}
 }
 
@@ -125,6 +118,17 @@
 				width: 100%;
 			}
 		}
+	}
+}
+
+.group--search {
+	margin-bottom: 40px;
+
+	.icon--search {
+		width: 16px;
+		height: 17px;
+		fill: $primary;
+		margin-right: 10px;
 	}
 }
 

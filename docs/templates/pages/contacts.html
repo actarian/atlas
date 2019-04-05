@@ -1,0 +1,86 @@
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/contacts/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/contacts/hero.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.txt"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 offset-md-2">
+					<div class="category">Contacts</div>
+					<div class="title">We’re here,<br><b>waiting for you.</b></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--contacts">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4">
+				<div class="category">Contact Us</div>
+				<div class="title">It’s time to know each other</div>
+				<div class="abstract">We are a global specialist in premium porcelain and wall tiles for every style and application in residential, commercial and public architecture. Let’s start a project together.</div>
+			</div>
+		</div>
+	</div>
+</section>
+<ng-include src="'templates/shared/forms.html'"></ng-include>
+<section class="section section--form" ng-controller="ContactsCtrl as c">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4">
+				<form name="c.form" role="form" novalidate autocomplete="off" ng-submit="c.form.$valid && c.onSubmit()" ng-keyup="$event.keyCode == 13 && c.form.$valid && c.onSubmit()">
+					<div class="group group--form" ng-if="c.state.isReady">
+						<div class="row">
+							<!--
+							<div class="col-md-8">
+								<span ng-repeat="item in c.model.languages track by $index">
+									<span class="badge badge-default" ng-click="c.onRemoveLanguage(item)"><span ng-bind="item.name"></span> <i class="icon-remove"></i></span>
+								</span>
+							</div>
+							-->
+							<div class="col-md-8">
+								<div title="Contact for" placeholder="select a contact" form="c.form" control="select" source="c.data.contactReasons" ng-model="c.model.contactReason" required="true"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Type of contact" placeholder="select a contact" form="c.form" control="select" source="c.data.contactTypes" ng-model="c.model.contactType" required="true"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Name" placeholder="name" form="c.form" control="text" ng-model="c.model.name" required="true"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Last Name" placeholder="last name" form="c.form" control="text" ng-model="c.model.lastName" required="true"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Email" placeholder="" form="c.form" control="email" ng-model="c.model.email" required="true"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Phone" placeholder="phone" form="c.form" control="text" ng-model="c.model.phone"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Company" placeholder="company" form="c.form" control="text" ng-model="c.model.company"></div>
+							</div>
+							<div class="col-md-8">
+								<div title="Country" placeholder="select a country" form="c.form" control="select" source="c.data.countries" ng-model="c.model.country" required="true"></div>
+							</div>
+						</div>
+						<div title="Message" placeholder="message" form="c.form" control="textarea" ng-model="c.model.message"></div>
+						<div title="Agree" placeholder="agree" form="c.form" control="checkbox" ng-model="c.model.agreed">agree</div>
+					</div>
+					<div class="group group--cta">
+						<button type="submit" class="btn btn--secondary animated infinite" ng-class="c.state.classes({ busy: 'bounce', error: 'shake', success: 'pulse' })">
+							<span ng-if="c.state.isReady">Let’s start a conversation</span>
+							<span ng-if="c.state.isError">error</span>
+							<span ng-if="c.state.isSuccess">success</span>
+						</button>
+					</div>
+				</form>
+				<json-formatter json="c.model"></json-formatter>
+				<json-formatter json="c.state"></json-formatter>
+			</div>
+		</div>
+	</div>
+</section>
