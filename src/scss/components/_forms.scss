@@ -97,16 +97,36 @@ $placeholder: #ccc;
 $warning: $primary;
 $success: $blue;
 
-.group--form {
+%group--form {
 	position: relative;
+	margin-bottom: 40px;
+}
+
+.group--form,
+.group--text,
+.group--password,
+.group--select,
+.group--textarea {
+	@extend %group--form;
 }
 
 .form__label {
 	display: block;
 	position: relative;
+	margin-bottom: 10px;
+	font-size: 11px;
+	font-weight: $font-bold;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: $foreground;
 
 	span {
 		display: inline-block;
+	}
+
+	sup {
+		font-size: 0.7em;
+		margin-left: 4px;
 	}
 
 	/*
@@ -151,31 +171,21 @@ $success: $blue;
 .form__control {
 	display: block;
 	width: 100%;
-	height: 40px;
+	height: 35px;
+	line-height: 35px;
 	margin: 0;
+	padding: 0 0 0 30px;
 	border-radius: 0;
 	border: none;
-	border-bottom: 2px solid $foreground;
+	border-bottom: 1px solid $foreground;
 	appearance: none;
+	font-size: 16px;
+	font-weight: $font-regular;
+	background: $background;
+	color: $foreground-secondary;
 
-	&::-webkit-input-placeholder {
-		/* Chrome/Opera/Safari */
-		color: $placeholder;
-	}
-
-	&::-moz-placeholder {
-		/* Firefox 19+ */
-		color: $placeholder;
-	}
-
-	&:-ms-input-placeholder {
-		/* IE 10+ */
-		color: $placeholder;
-	}
-
-	&:-moz-placeholder {
-		/* Firefox 18- */
-		color: $placeholder;
+	&::placeholder {
+		color: $foreground-secondary;
 	}
 
 	&.empty {}
@@ -187,10 +197,74 @@ $success: $blue;
 	&.error {}
 }
 
+.group--select {
+	svg {
+		position: absolute;
+		right: 0;
+		top: 50%;
+		margin-top: -5px;
+		width: 10px;
+		height: 10px;
+		pointer-events: none;
+		fill: $foreground;
+	}
+}
+
+.group--textarea {
+	.form__control {
+		height: auto;
+		border: 1px solid $foreground;
+	}
+}
+
+.group--input {
+	position: relative;
+	display: flex;
+	align-items: center;
+
+	&>*+* {
+		margin-left: 10px;
+	}
+
+	ng-transclude {
+		flex: 1 1 auto;
+	}
+}
+
+.group--checkbox {
+	position: relative;
+	margin-bottom: 10px;
+
+	.form__label {
+		cursor: pointer;
+	}
+
+	.group--input {
+		align-items: flex-start;
+		line-height: 20px;
+		font-size: 14px;
+	}
+
+	&.error {
+		sup {
+			color: $primary;
+		}
+	}
+}
+
+.group--select {
+	@extend %group--form;
+}
+
 control-messages {
 	display: none;
-	position: relative;
-	background: $background-tertiary;
+	position: absolute;
+	width: 100%;
+	padding: 3px 0;
+	font-size: 10px;
+	font-weight: $font-bold;
+	text-transform: uppercase;
+	// background: $background-tertiary;
 	color: $primary;
 
 	.error>& {

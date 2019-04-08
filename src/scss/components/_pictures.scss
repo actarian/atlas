@@ -95,3 +95,7 @@
 	width: 100%;
 	@include aspect-clip(457, 305);
 }
+
+[parallax] {
+	overflow: hidden;
+}

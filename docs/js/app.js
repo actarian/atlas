@@ -15708,6 +15708,7 @@ function () {
 
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.data = window.data || {};
     this.model = {};
     this.state = StateService.getState();
     this.state.ready();
@@ -15717,6 +15718,8 @@ function () {
     key: "onSubmit",
     value: function onSubmit() {
       var _this = this;
+
+      console.log('ContactsCtrl.onSubmit', this.model);
 
       if (this.state.busy()) {
         this.$timeout(function () {
@@ -15771,7 +15774,9 @@ function () {
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
       element.to = '';
       var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
-        if (intersection.y > 0.05) {
+        if (intersection.y > -0.05) {
+          subscription.unsubscribe();
+
           if (element.to !== '') {
             return;
           }
@@ -15783,20 +15788,24 @@ function () {
           var timeout = index * 50; // const timeout = 100 * element.index;
           // console.log(x, y, timeout, node);
 
-          element.to = setTimeout(function () {
+          if (index > 0) {
+            element.to = setTimeout(function () {
+              node.classList.add('appeared');
+            }, timeout); // (i - firstVisibleIndex));
+          } else {
             node.classList.add('appeared');
-          }, timeout); // (i - firstVisibleIndex));
-        } else {
-            /*
-            if (element.to !== '') {
-            	clearTimeout(element.to);
-            	element.to = '';
-            }
-            if (node.classList.contains('appeared')) {
-            	node.classList.remove('appeared');
-            }
-            */
           }
+        } else {
+          /*
+          if (element.to !== '') {
+          	clearTimeout(element.to);
+          	element.to = '';
+          }
+          if (node.classList.contains('appeared')) {
+          	node.classList.remove('appeared');
+          }
+          */
+        }
       });
       element.on('$destroy', function () {
         subscription.unsubscribe();
@@ -15806,7 +15815,7 @@ function () {
     key: "appear$",
     value: function appear$(element, attributes) {
       var node = element[0];
-      return this.domService.scrollAndRect$().pipe((0, _operators.map)(function (datas) {
+      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
         var scrollTop = datas[0];
         var windowRect = datas[1];
 
@@ -16207,7 +16216,7 @@ function () {
 
       scope.$watch('hasDropdown', onShowHide);
       scope.$on('onNavigationTransitionIn', function () {
-        console.log('onNavigationTransitionIn');
+        // console.log('onNavigationTransitionIn');
         scope.hasDropdown = null;
         onShowHide();
 
@@ -17728,7 +17737,7 @@ function () {
 
   _createClass(ControlMessagesDirective, [{
     key: "link",
-    value: function link(scope, element, attributes, controller) {}
+    value: function link(scope, element, attributes, model) {}
   }], [{
     key: "factory",
     value: function factory() {
@@ -17786,24 +17795,39 @@ var formatLabel = function formatLabel() {
 };
 
 var uniqueId = 0;
+var errorElements = [],
+    to;
 
 var ControlDirective =
 /*#__PURE__*/
 function () {
-  function ControlDirective($parse) {
+  function ControlDirective($parse, DomService) {
     var _this = this;
 
     _classCallCheck(this, ControlDirective);
 
     this.$parse = $parse;
+    this.domService = DomService;
     this.restrict = 'A';
 
     this.templateUrl = function (element, attributes) {
       var template = 'templates/forms/text.html';
 
       switch (attributes.control) {
+        case 'checkbox':
+          template = 'templates/forms/checkbox.html';
+          break;
+
+        case 'password':
+          template = 'templates/forms/password.html';
+          break;
+
         case 'select':
           template = 'templates/forms/select.html';
+          break;
+
+        case 'textarea':
+          template = 'templates/forms/textarea.html';
           break;
       }
 
@@ -17824,92 +17848,147 @@ function () {
     this.transclude = true;
     this.link = {
       pre: function pre(scope, element, attributes, controller, transclude) {
-        var label = scope.label = scope.label ? scope.label : 'name';
-        var key = scope.key = scope.key ? scope.key : 'id';
-
-        if (attributes.control === 'select') {
-          var filter = attributes.filter ? '| ' + attributes.filter : '';
-          var optionLabel = formatLabel(label, 'item.', true);
-
-          scope.getOptions = function () {
-            return attributes.number ? 'item.' + key + ' as ' + optionLabel + ' disable when item.disabled for item in source ' + filter : optionLabel + ' disable when item.disabled for item in source ' + filter + ' track by item.' + key;
-          };
-        }
-
-        var type = scope.type = attributes.control;
-        var form = scope.form = scope.form || 'form';
-        var title = scope.title = scope.title || 'untitled';
-        var placeholder = scope.placeholder = scope.placeholder || title;
-        var field = scope.field = title.replace(/[^0-9a-zA-Z]/g, "").split(' ').join('') + ++uniqueId;
-        scope.format = attributes.format || null;
-        scope.precision = attributes.precision || null;
-        scope.validate = attributes.validate || attributes.control;
-        scope.minLength = attributes.minLength || 0;
-        scope.maxLength = attributes.maxLength || Number.POSITIVE_INFINITY;
-        scope.min = attributes.min || null;
-        scope.max = attributes.max || null;
-        scope.options = _this.$parse(attributes.options)(scope) || {};
-        scope.focus = false;
-        scope.visible = false;
-
-        scope.onChange = function (model) {
-          _this.$parse(attributes.onChange)(scope.$parent);
-        };
-
-        scope.onFilter = function (model) {
-          _this.$parse(attributes.onFilter)(scope.$parent);
-        };
-
-        scope.getType = function () {
-          var type = 'text';
-
-          switch (attributes.control) {
-            case 'password':
-              type = scope.visible ? 'text' : 'password';
-              break;
-
-            default:
-              type = attributes.control;
-          }
-
-          return type;
-        };
-
-        scope.getClasses = function () {
-          var form = _this.$parse(scope.form)(scope.$parent);
-
-          var field = _this.$parse(scope.form + '.' + scope.field)(scope.$parent);
-
-          return {
-            'focus': scope.focus,
-            'success': field.$valid,
-            'error': field.$invalid && (form.$submitted || field.$touched),
-            'empty': !field.$viewValue
-          };
-        };
-
-        scope.getMessages = function () {
-          var form = _this.$parse(scope.form)(scope.$parent);
-
-          var field = _this.$parse(scope.form + '.' + scope.field)(scope.$parent);
-
-          return (form.$submitted || field.$touched) && field.$error;
-        };
-
-        scope.toggleVisibility = function () {
-          scope.visible = !scope.visible;
-        };
+        _this.linkMethod(scope, element, attributes, controller, transclude);
       }
     };
   }
 
   _createClass(ControlDirective, [{
+    key: "linkMethod",
+    value: function linkMethod(scope, element, attributes, controller, transclude) {
+      var _this2 = this;
+
+      var label = scope.label = scope.label ? scope.label : 'name';
+      var key = scope.key = scope.key ? scope.key : 'id';
+
+      if (attributes.control === 'select') {
+        var filter = attributes.filter ? '| ' + attributes.filter : '';
+        var optionLabel = formatLabel(label, 'item.', true);
+
+        scope.getOptions = function () {
+          return attributes.number ? 'item.' + key + ' as ' + optionLabel + ' disable when item.disabled for item in source ' + filter : optionLabel + ' disable when item.disabled for item in source ' + filter + ' track by item.' + key;
+        };
+      }
+
+      var type = scope.type = attributes.control;
+      var form = scope.form = scope.form || 'form';
+      var title = scope.title = scope.title || 'untitled';
+      var placeholder = scope.placeholder = scope.placeholder || title;
+      var field = scope.field = title.replace(/[^0-9a-zA-Z]/g, "").split(' ').join('') + ++uniqueId;
+      scope.format = attributes.format || null;
+      scope.precision = attributes.precision || null;
+      scope.validate = attributes.validate || attributes.control;
+      scope.minLength = attributes.minLength || 0;
+      scope.maxLength = attributes.maxLength || Number.POSITIVE_INFINITY;
+      scope.min = attributes.min || null;
+      scope.max = attributes.max || null;
+      scope.options = this.$parse(attributes.options)(scope) || {};
+      scope.focus = false;
+      scope.visible = false;
+
+      scope.onChange = function (model) {
+        // console.log('ControlDirective.onChange');
+        _this2.$parse(attributes.onChange)(scope.$parent);
+      };
+
+      scope.onFilter = function (model) {
+        _this2.$parse(attributes.onFilter)(scope.$parent);
+      };
+
+      scope.getType = function () {
+        var type = 'text';
+
+        switch (attributes.control) {
+          case 'password':
+            type = scope.visible ? 'text' : 'password';
+            break;
+
+          default:
+            type = attributes.control;
+        }
+
+        return type;
+      };
+
+      scope.onFocus = function () {
+        scope.focus = true; // console.log('ControlDirective.onFocus', scope.focus);
+      };
+
+      scope.onBlur = function () {
+        scope.focus = false; // console.log('ControlDirective.onBlur', scope.focus);
+      };
+
+      scope.getClasses = function () {
+        var field = _this2.$parse(scope.form + '.' + scope.field)(scope.$parent);
+
+        if (field) {
+          var focus = scope.focus;
+          var success = field.$valid;
+
+          var _form = _this2.$parse(scope.form)(scope.$parent);
+
+          var error = field.$invalid && (_form.$submitted || field.$touched);
+          var empty = !field.$viewValue;
+
+          if (error) {
+            _this2.onError(element);
+          }
+
+          return {
+            focus: focus,
+            success: success,
+            error: error,
+            empty: empty
+          };
+        }
+      };
+
+      scope.getMessages = function () {
+        var form = _this2.$parse(scope.form)(scope.$parent);
+
+        var field = _this2.$parse(scope.form + '.' + scope.field)(scope.$parent);
+
+        return (form.$submitted || field.$touched) && field.$error;
+      };
+
+      scope.toggleVisibility = function () {
+        scope.visible = !scope.visible;
+      };
+    }
+  }, {
+    key: "onError",
+    value: function onError(element) {
+      var _this3 = this;
+
+      errorElements.push(element);
+
+      if (to) {
+        clearTimeout(to);
+      }
+
+      to = setTimeout(function () {
+        if (errorElements.length) {
+          var top = errorElements.reduce(function (previous, current, index, array) {
+            var node = current[0];
+            return Math.min(previous, node.getBoundingClientRect().top);
+          }, Number.POSITIVE_INFINITY);
+          window.scroll({
+            top: _this3.domService.scrollTop + top - 100,
+            left: 0,
+            behavior: 'smooth'
+          });
+        }
+
+        errorElements = [];
+      }, 100);
+    }
+  }, {
     key: "link",
     value: function link(scope, element, attributes, controller) {}
   }], [{
     key: "factory",
-    value: function factory($parse) {
-      return new ControlDirective($parse);
+    value: function factory($parse, DomService) {
+      return new ControlDirective($parse, DomService);
     }
   }]);
 
@@ -17917,7 +17996,7 @@ function () {
 }();
 
 exports.default = ControlDirective;
-ControlDirective.factory.$inject = ['$parse'];
+ControlDirective.factory.$inject = ['$parse', 'DomService'];
 
 },{}],223:[function(require,module,exports){
 "use strict";
@@ -18194,8 +18273,7 @@ function () {
       }).filter(function (x) {
         return x.value !== null;
       });
-      var filteredReferences = this.references.slice();
-      console.log(filteredReferences);
+      var filteredReferences = this.references.slice(); // console.log(filteredReferences);
 
       if (filters.length) {
         filteredReferences = filteredReferences.filter(function (reference) {
@@ -18221,7 +18299,7 @@ function () {
     value: function updateFilterStates(references) {
       var _this3 = this;
 
-      console.log('updateFilterStates', references);
+      // console.log('updateFilterStates', references);
       Object.keys(this.filters).forEach(function (x) {
         var filter = _this3.filters[x];
         filter.options.forEach(function (option) {

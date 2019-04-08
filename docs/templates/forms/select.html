@@ -1,9 +1,12 @@
-<div class="group--form group--form-{{type}}" ng-class="getClasses()">
+<div class="group--select" ng-class="getClasses()">
 	<label for="{{field}}" class="form__label">
 		<span ng-bind="title"></span><sup ng-if="required">✽</sup>
 	</label>
-	<select name="{{field}}" class="form__control" ng-model="ngModel" ng-options="{{getOptions()}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange()" ng-focus="focus = true" ng-blur="focus = false">
-		<option value="" disabled selected hidden>{{placeholder}}</option>
-	</select>
+	<div class="group--input">
+		<select name="{{field}}" class="form__control form__control--select" ng-model="ngModel" ng-options="{{getOptions()}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange()" ng-focus="onFocus()" ng-blur="onBlur()">
+			<option value="" disabled selected hidden>{{placeholder}}</option>
+		</select>
+		<svg><use xlink:href="#caret-down"></use></svg>
+	</div>
 	<control-messages></control-messages>
 </div>

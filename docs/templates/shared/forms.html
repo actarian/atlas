@@ -21,7 +21,7 @@
 			<span ng-bind="title"></span><sup ng-if="required">✽</sup>
 			<span ng-bind="ngModel.name"></span>
 		</label>
-		<input type="{{getType()}}" name="{{field}}" class="form__control" file-model="ngModel" ng-model="ngModel" validate="file" ng-model-options="options" placeholder="{{placeholder}}" ng-required="required" on-busy="onBusy()" on-complete="onComplete()" accept="{{accept}}" maxsize="{{maxsize}}" ng-focus="focus = true" ng-blur="focus = false">
+		<input type="{{getType()}}" name="{{field}}" class="form__control" file-model="ngModel" ng-model="ngModel" validate="file" ng-model-options="options" placeholder="{{placeholder}}" ng-required="required" on-busy="onBusy()" on-complete="onComplete()" accept="{{accept}}" maxsize="{{maxsize}}" ng-focus="onFocus()" ng-blur="onBlur()">
 		<control-messages></control-messages>
 	</div>
 </script>
@@ -47,7 +47,7 @@
 		<label for="{{field}}" class="form__label">
 			<span ng-bind="title"></span><sup ng-if="required">✽</sup>
 		</label>
-		<select name="{{field}}" class="form__control" ng-model="ngModel" ng-options="{{getOptions()}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange()" ng-focus="focus = true" ng-blur="focus = false">
+		<select name="{{field}}" class="form__control" ng-model="ngModel" ng-options="{{getOptions()}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange()" ng-focus="onFocus()" ng-blur="onBlur()">
 			<option value="" disabled selected hidden>{{placeholder}}</option>
 		</select>
 		<control-messages></control-messages>
@@ -60,7 +60,7 @@
 			<span ng-bind="title"></span><sup ng-if="required">✽</sup>
 		</label>
 		<div class="input-group">
-			<input type="{{getType()}}" name="{{field}}" class="{{class || 'form__control'}}" ng-model="ngModel" ng-model-options="options" placeholder="{{placeholder}}" ng-minlength="minLength" ng-maxlength="maxLength" min="{{min}}" max="{{max}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange" ng-focus="focus = true" ng-blur="focus = false">
+			<input type="{{getType()}}" name="{{field}}" class="{{class || 'form__control'}}" ng-model="ngModel" ng-model-options="options" placeholder="{{placeholder}}" ng-minlength="minLength" ng-maxlength="maxLength" min="{{min}}" max="{{max}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange" ng-focus="onFocus()" ng-blur="onBlur()">
 			<span class="input-group-addon" ng-if="type == 'password' && ngModel">
 				<span class="icon-eye" ng-click="toggleVisibility()"></span>
 			</span>
@@ -71,16 +71,16 @@
 <!-- messages -->
 <script type="text/ng-template" id="templates/forms/messages.html">
 	<span ng-messages="getMessages()" role="alert">
-		<span ng-message="required" class="label-error animated flash">obbligatorio</span>
-		<span ng-message="minlength" class="label-error animated flash" ng-if="type == 'password'">almeno 6 caratteri</span>
-		<span ng-message="email" class="label-error animated flash" ng-if="type == 'email'">valore non corretto</span>
-		<span ng-message="date" class="label-error animated flash" ng-if="type == 'date'">formato non corretto</span>
-		<span ng-message="min" class="label-error animated flash" ng-if="type == 'date'">intervallo non corretto</span>
-		<span ng-message="max" class="label-error animated flash" ng-if="type == 'date'">intervallo non corretto</span>
+		<span ng-message="required" class="label-error animated flash">required</span>
+		<span ng-message="minlength" class="label-error animated flash" ng-if="type == 'password'">at least 6 characters</span>
+		<span ng-message="email" class="label-error animated flash" ng-if="type == 'email'">invalid value</span>
+		<span ng-message="date" class="label-error animated flash" ng-if="type == 'date'">invalid format</span>
+		<span ng-message="min" class="label-error animated flash" ng-if="type == 'date'">invalid interval</span>
+		<span ng-message="max" class="label-error animated flash" ng-if="type == 'date'">invalid interval</span>
+		<span ng-message="match" class="label-error animated flash" ng-if="match">values does not match</span>
+		<span ng-message="positive" class="label-error animated flash" ng-if="validate == 'number' || validate == 'range'">only positive values allowed</span>
+		<span ng-message="number" class="label-error animated flash" ng-if="validate == 'number' || validate == 'range'">only numerical values allowed</span>
 		<span ng-message="maxsize" class="label-error animated flash" ng-if="type == 'file'">dimensione massima superata</span>
 		<span ng-message="accept" class="label-error animated flash" ng-if="type == 'file'">estensione non consentita</span>
-		<span ng-message="positive" class="label-error animated flash" ng-if="validate == 'number' || validate == 'range'">solo valori positivi</span>
-		<span ng-message="number" class="label-error animated flash" ng-if="validate == 'number' || validate == 'range'">solo valori numerici</span>
-		<span ng-message="match" class="label-error animated flash" ng-if="match">non corrispondente</span>
 	</span>
 </script>

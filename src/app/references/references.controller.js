@@ -42,7 +42,7 @@ class ReferencesCtrl {
 	applyFilters() {
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
 		let filteredReferences = this.references.slice();
-		console.log(filteredReferences);
+		// console.log(filteredReferences);
 		if (filters.length) {
 			filteredReferences = filteredReferences.filter(reference => {
 				let has = true;
@@ -62,7 +62,7 @@ class ReferencesCtrl {
 	}
 
 	updateFilterStates(references) {
-		console.log('updateFilterStates', references);
+		// console.log('updateFilterStates', references);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			filter.options.forEach(option => {

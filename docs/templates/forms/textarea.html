@@ -1,0 +1,7 @@
+<div class="group--textarea" ng-class="getClasses()">
+	<label for="{{field}}" class="form__label" ng-if="title != 'untitled'">
+		<span ng-bind="title"></span><sup ng-if="required">✽</sup>
+	</label>
+	<textarea type="{{getType()}}" name="{{field}}" class="{{class || 'form__control'}}" rows="4" ng-model="ngModel" ng-model-options="options" placeholder="{{placeholder}}" ng-minlength="minLength" ng-maxlength="maxLength" min="{{min}}" max="{{max}}" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange" ng-focus="onFocus()" ng-blur="onBlur()"></textarea>
+	<control-messages></control-messages>
+</div>

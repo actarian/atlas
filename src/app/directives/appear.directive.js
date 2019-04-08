@@ -23,7 +23,8 @@ export default class AppearDirective {
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
 		element.to = '';
 		const subscription = this.appear$(element, attributes).subscribe((intersection) => {
-			if (intersection.y > 0.05) {
+			if (intersection.y > -0.05) {
+				subscription.unsubscribe();
 				if (element.to !== '') {
 					return;
 				}
@@ -33,9 +34,13 @@ export default class AppearDirective {
 				const timeout = index * 50;
 				// const timeout = 100 * element.index;
 				// console.log(x, y, timeout, node);
-				element.to = setTimeout(() => {
+				if (index > 0) {
+					element.to = setTimeout(() => {
+						node.classList.add('appeared');
+					}, timeout); // (i - firstVisibleIndex));
+				} else {
 					node.classList.add('appeared');
-				}, timeout); // (i - firstVisibleIndex));
+				}
 			} else {
 				/*
 				if (element.to !== '') {
@@ -55,7 +60,7 @@ export default class AppearDirective {
 
 	appear$(element, attributes) {
 		const node = element[0];
-		return this.domService.scrollAndRect$().pipe(
+		return this.domService.rafAndRect$().pipe(
 			map(datas => {
 				const scrollTop = datas[0];
 				const windowRect = datas[1];

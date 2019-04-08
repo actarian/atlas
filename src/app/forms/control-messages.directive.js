@@ -11,7 +11,9 @@ export default class ControlMessagesDirective {
 		};
 	}
 
-	link(scope, element, attributes, controller) {}
+	link(scope, element, attributes, model) {
+
+	}
 
 	static factory() {
 		return new ControlMessagesDirective();

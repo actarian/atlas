@@ -1,13 +1,10 @@
-<input type="hidden" name="{{field}}" ng-model="ngModel" ng-required="required" />
-<div class="form-check group--form group--form-{{type}}" ng-class="getClasses()">
-	<label for="{{field}}" class="form__label">
-		<span ng-bind-html="placeholder"></span><sup ng-if="required">✽</sup>
-	</label>
-	<control-messages></control-messages>
-	<div class="input-group" ng-repeat="item in source">
-		<label class="form-check-label">
-			<input type="radio" class="form-check-input" ng-model="$parent.ngModel" name="input-{{field}}" ng-value="item.id" />
-			{{item.name}}
+<div class="group--checkbox" ng-class="getClasses()">
+	<div class="group--input">
+		<label class="form__label">
+			<input type="{{getType()}}" name="{{field}}" class="form__checkbox" ng-model="ngModel" ng-true-value="true" ng-false-value="false" ng-required="required" ng-disabled="disabled" ng-readonly="readonly" ng-change="onChange" ng-focus="onFocus()" ng-blur="onBlur()">
+			<span ng-bind="title"></span>
 		</label>
+		<ng-transclude></ng-transclude>
+		<sup ng-if="required">✽ required</sup>
 	</div>
 </div>

@@ -61,7 +61,7 @@ export default class HasDropdownDirective {
 		};
 		scope.$watch('hasDropdown', onShowHide);
 		scope.$on('onNavigationTransitionIn', () => {
-			console.log('onNavigationTransitionIn');
+			// console.log('onNavigationTransitionIn');
 			scope.hasDropdown = null;
 			onShowHide();
 			if (consumer) {

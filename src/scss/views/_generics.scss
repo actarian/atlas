@@ -1,12 +1,8 @@
 .section--generic {
 	padding: 130px 0;
-
 }
 
 .section--generic-intro {
-	font-size: 18px;
-	line-height: 32px;
-	font-weight: $font-light;
 
 	.title {
 		font-size: 24px;
@@ -17,6 +13,9 @@
 	}
 
 	.abstract {
+		font-size: 18px;
+		line-height: 32px;
+		font-weight: $font-light;
 		margin-bottom: 60px;
 
 		p {
