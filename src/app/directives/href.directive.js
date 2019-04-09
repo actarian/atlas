@@ -23,6 +23,12 @@ export default class HrefDirective {
 			if (absolute && domain !== currentDomain) {
 				return;
 			}
+			// Se c'è un cambio di mercato, facciamo ricaricare la pagina
+			const market = this.getMarket(href);
+			const currentMarket = this.getMarket(window.location.href);
+			if (currentMarket !== null && market !== currentMarket) {
+				return;
+			}
 			if (window.location.href.indexOf(href) !== -1) {
 				node.classList.add('active');
 			} else {
@@ -56,6 +62,12 @@ export default class HrefDirective {
 		const domainRegexp = /([[a-zA-Z0-9-_]+\.]*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11})/;
 		const matches = text.match(domainRegexp);
 		return matches && matches.length > 1 ? matches[1] : null;
+	}
+
+	getMarket(text) {
+		const marketRegexp = /(^|[^\/])\/([^\/]+)/;
+		const matches = text.match(marketRegexp);
+		return matches && matches.length > 2 ? matches[2] : null;
 	}
 
 	static factory() {

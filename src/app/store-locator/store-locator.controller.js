@@ -1,4 +1,4 @@
-﻿/* jshint esversion: 6 */
+/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 let GOOGLE_MAPS = null;
@@ -13,10 +13,10 @@ class StoreLocatorCtrl {
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
-		this.domService = DomService;
+		this.domService = DomService; 
 		this.apiService = ApiService;
 		this.model = {};
-		this.apiKey = window.apiKey || 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M';
+		this.apiKey = window.apiKey || 'AIzaSyC9ZjpjjpaaDRZYkK5sjeyJahSUzKckgOM';
 		this.busyFind = false;
 		this.busyLocation = false;
 

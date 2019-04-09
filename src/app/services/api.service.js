@@ -12,9 +12,12 @@ export default class ApiService {
 				},
 			},
 			storeLocator: {
+				all: function all() {
+					return $http.get('api/store/json');
+				},
 				position: function(position) {
 					return $http.get('data/store-locator.json', position);
-				},
+				}
 			},
 		};
 		Object.assign(this, api);
