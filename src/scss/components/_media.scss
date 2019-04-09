@@ -14,14 +14,16 @@
 		transition: all 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
 	}
 
-	.btn--wishlist {
+	.btn--pinterest {
 		display: block;
 		position: absolute;
-		right: 20px;
+		left: 20px;
 		bottom: 20px;
 		opacity: 0;
 
-		.icon--wishlist {
+		.icon--pinterest {
+			width: 24px;
+			height: 24px;
 			fill: $foreground-negative;
 		}
 
@@ -35,7 +37,41 @@
 
 	}
 
+	.btn--wishlist {
+		display: block;
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+		opacity: 0;
+
+		.icon--wishlist {
+			width: 25px;
+			height: 20px;
+			fill: $foreground-negative;
+		}
+
+		&.added {
+			opacity: 1;
+
+			.icon--wishlist {
+				fill: $primary;
+			}
+		}
+
+	}
+
+	/*
 	.group--gallery & {
+		.btn--pinterest {
+			left: 0;
+			bottom: -55px;
+			opacity: 1;
+
+			.icon--pinterest {
+				fill: $primary;
+			}
+		}
+
 		.btn--wishlist {
 			right: 0;
 			bottom: -55px;
@@ -46,6 +82,7 @@
 			}
 		}
 	}
+	*/
 
 	ng-transclude {
 		display: block;
@@ -62,12 +99,22 @@
 			opacity: 1;
 		}
 
+		.btn--pinterest {
+			opacity: 1;
+		}
+
 		.btn--wishlist {
 			opacity: 1;
 		}
 	}
 
 	.section--negative & {
+		.btn--pinterest {
+			.icon--pinterest {
+				fill: $foreground-negative;
+			}
+		}
+
 		.btn--wishlist {
 			.icon--wishlist {
 				fill: $foreground-negative;

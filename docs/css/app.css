@@ -2180,7 +2180,30 @@ control-messages {
 */
 [media],
 [video] {
-  cursor: pointer; }
+  cursor: pointer;
+  /*
+	.group--gallery & {
+		.btn--pinterest {
+			left: 0;
+			bottom: -55px;
+			opacity: 1;
+
+			.icon--pinterest {
+				fill: $primary;
+			}
+		}
+
+		.btn--wishlist {
+			right: 0;
+			bottom: -55px;
+			opacity: 1;
+
+			.icon--wishlist {
+				fill: $primary;
+			}
+		}
+	}
+	*/ }
   [media] .overlay,
   [video] .overlay {
     display: block;
@@ -2193,6 +2216,24 @@ control-messages {
     opacity: 0;
     -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
     transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
+  [media] .btn--pinterest,
+  [video] .btn--pinterest {
+    display: block;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    opacity: 0; }
+    [media] .btn--pinterest .icon--pinterest,
+    [video] .btn--pinterest .icon--pinterest {
+      width: 24px;
+      height: 24px;
+      fill: var(--color-foreground-negative); }
+    [media] .btn--pinterest.added,
+    [video] .btn--pinterest.added {
+      opacity: 1; }
+      [media] .btn--pinterest.added .icon--wishlist,
+      [video] .btn--pinterest.added .icon--wishlist {
+        fill: var(--color-primary); }
   [media] .btn--wishlist,
   [video] .btn--wishlist {
     display: block;
@@ -2202,6 +2243,8 @@ control-messages {
     opacity: 0; }
     [media] .btn--wishlist .icon--wishlist,
     [video] .btn--wishlist .icon--wishlist {
+      width: 25px;
+      height: 20px;
       fill: var(--color-foreground-negative); }
     [media] .btn--wishlist.added,
     [video] .btn--wishlist.added {
@@ -2209,14 +2252,6 @@ control-messages {
       [media] .btn--wishlist.added .icon--wishlist,
       [video] .btn--wishlist.added .icon--wishlist {
         fill: var(--color-primary); }
-  .group--gallery [media] .btn--wishlist, .group--gallery
-  [video] .btn--wishlist {
-    right: 0;
-    bottom: -55px;
-    opacity: 1; }
-    .group--gallery [media] .btn--wishlist .icon--wishlist, .group--gallery
-    [video] .btn--wishlist .icon--wishlist {
-      fill: var(--color-primary); }
   [media] ng-transclude,
   [video] ng-transclude {
     display: block;
@@ -2230,9 +2265,15 @@ control-messages {
   [media]:hover .overlay,
   [video]:hover .overlay {
     opacity: 1; }
+  [media]:hover .btn--pinterest,
+  [video]:hover .btn--pinterest {
+    opacity: 1; }
   [media]:hover .btn--wishlist,
   [video]:hover .btn--wishlist {
     opacity: 1; }
+  .section--negative [media] .btn--pinterest .icon--pinterest, .section--negative
+  [video] .btn--pinterest .icon--pinterest {
+    fill: var(--color-foreground-negative); }
   .section--negative [media] .btn--wishlist .icon--wishlist, .section--negative
   [video] .btn--wishlist .icon--wishlist {
     fill: var(--color-foreground-negative); }

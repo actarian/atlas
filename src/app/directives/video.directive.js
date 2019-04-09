@@ -22,7 +22,13 @@ export default class VideoDirective {
 	</svg>
 	<svg class="icon icon--play" ng-if="!playing"><use xlink:href="#play"></use></svg>
 	<svg class="icon icon--play" ng-if="playing"><use xlink:href="#pause"></use></svg>
-</div><wishlist item="item"></wishlist>`;
+</div><div class="btn btn--pinterest" ng-click="onPin()" ng-if="onPin">
+<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
+</div>
+<div class="btn btn--wishlist" ng-class="{ added: item.added }" ng-click="onWishlist()">
+<svg class="icon icon--wishlist" ng-if="!item.added"><use xlink:href="#wishlist"></use></svg>
+<svg class="icon icon--wishlist" ng-if="item.added"><use xlink:href="#wishlist-added"></use></svg>
+</div>`;
 		this.scope = {
 			item: '=?video',
 		};
@@ -31,6 +37,18 @@ export default class VideoDirective {
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		const video = node.querySelector('video');
+		if (video) {
+			const pageTitle = document.title;
+			scope.onPin = () => {
+				const pin = {
+					url: window.location.href,
+					media: video.poster,
+					description: video.title || pageTitle,
+				};
+				// console.log('VideoDirective.onPin', pin);
+				PinUtils.pinOne(pin);
+			};
+		}
 		const progress = node.querySelector('.icon--play-progress path');
 		scope.item = scope.item || {};
 		scope.onOverlay = () => {
