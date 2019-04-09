@@ -1,6 +1,8 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import { FRAGMENT_SHADER } from "../shared/shader";
+
 export default class GlslCanvasDirective {
 
 	constructor(
@@ -12,7 +14,8 @@ export default class GlslCanvasDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		const canvas = new GlslCanvas(node);
+		const canvas = new GlslCanvas(node, { fragmentString: FRAGMENT_SHADER });
+		// const canvas = new GlslCanvas(node);
 		canvas.setTexture('u_texture', attributes.glslCanvas, { repeat: true });
 		canvas.setUniform('u_pow', 1.0);
 		canvas.setUniform('u_top', 0.0);

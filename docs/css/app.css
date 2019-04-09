@@ -4394,7 +4394,7 @@ page-transition {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  min-height: calc(100vh - 36px);
+  height: calc(100vh - 36px);
   padding-top: 100px;
   background: var(--color-background-header); }
   .section--store-locator .icon--atlas {

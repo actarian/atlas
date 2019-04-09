@@ -1,6 +1,10 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+
+const SHOW_INFO_WINDOW = false;
 let GOOGLE_MAPS = null;
 
 class StoreLocatorCtrl {
@@ -13,29 +17,47 @@ class StoreLocatorCtrl {
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
-		this.domService = DomService; 
+		this.domService = DomService;
 		this.apiService = ApiService;
 		this.model = {};
 		this.apiKey = window.apiKey || 'AIzaSyC9ZjpjjpaaDRZYkK5sjeyJahSUzKckgOM';
 		this.busyFind = false;
 		this.busyLocation = false;
-
+		this.visibleStores = [];
+		this.mapCenter$ = new Subject();
 		//
 		// When the window has finished loading create our google map below
 		if (GOOGLE_MAPS !== null) {
 			this.initMap();
-		}
-		if (google.maps.Map) {
-			GOOGLE_MAPS = google.maps;
-			this.initMap();
 		} else {
+			window.onGoogleMapsLoaded = () => {
+				GOOGLE_MAPS = google.maps;
+				this.initMap();
+			};
+			const script = document.createElement('script');
+			script.setAttribute('type', 'text/javascript');
+			script.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&callback=onGoogleMapsLoaded`);
+			(document.getElementsByTagName('head')[0] || document.documentElement).appendChild(script);
+			/*
 			google.maps.event.addDomListener(window, 'load', () => {
 				GOOGLE_MAPS = google.maps;
 				this.initMap();
 			});
+			*/
 		}
 		//
-
+		this.unsubscribe = new Subject();
+		this.mapCenter$.pipe(
+			debounceTime(1000),
+			takeUntil(this.unsubscribe)
+		).subscribe(position => {
+			this.findNearStores(this.stores, position);
+		});
+		$scope.$on('destroy', () => {
+			console.log('destroy');
+			this.unsubscribe.next();
+			this.unsubscribe.complete();
+		});
 	}
 
 	initMap() {
@@ -58,6 +80,10 @@ class StoreLocatorCtrl {
 		}
 		// Create the Google Map using our element and options defined above
 		var map = new google.maps.Map(mapElement, mapOptions);
+		map.addListener('dragend', () => {
+			const position = map.getCenter();
+			this.mapCenter$.next(position);
+		});
 		this.$timeout(() => {
 			this.map = map;
 		});
@@ -90,25 +116,21 @@ class StoreLocatorCtrl {
 	}
 
 	addMarkers(stores) {
-		const bounds = new google.maps.LatLngBounds();
-		stores.forEach((store) => {
-			store.distance = this.calculateDistance(store.latitude, store.longitude, this.position.lat(), this.position.lng(), 'K');
+		const markers = stores.map((store) => {
 			const position = new google.maps.LatLng(store.latitude, store.longitude);
-			bounds.extend(position);
 			var marker = new google.maps.Marker({
 				position: position,
-				map: this.map,
-				icon: './img/icons/favicon-32x32.png',
+				// map: this.map,
+				icon: store.importante ? './img/store-locator/store-primary.png' : './img/store-locator/store-secondary.png',
 				title: store.name,
 			});
-
-			/*
-			marker.addListener('click', () => {
-				console.log(marker);
-				// infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
-				// infowindow.open(map, marker);
+			marker.addListener('mouseover', () => {
+				this.setMarkerWindow(marker.position, store.name);
 			});
-			*/
+			marker.addListener('mouseout', () => {
+				this.setMarkerWindow(null);
+			});
+			return marker;
 
 			/*
 			function panTo(e) {
@@ -123,9 +145,15 @@ class StoreLocatorCtrl {
 			node.addEventListener('mouseover', panTo);
 			*/
 		});
-		if (stores.length) {
-			this.map.fitBounds(bounds);
-		}
+		const markerCluster = new MarkerClusterer(this.map, markers, {
+			imagePath: 'img/store-locator/cluster-',
+		});
+		const styles = markerCluster.getStyles();
+		styles.forEach(style => style.textColor = '#ffffff');
+		markerCluster.setStyles(styles);
+		// console.log('StoreLocatorCtrl.searchPosition', position, stores);
+		this.markers = markers;
+		this.markerCluster = markerCluster;
 	}
 
 	getGeolocation(map) {
@@ -151,15 +179,66 @@ class StoreLocatorCtrl {
 		}
 	}
 
+	loadStoresByPosition(position) {
+		return this.apiService.storeLocator.position(position).then(success => {
+			const stores = success.data;
+			this.stores = stores;
+			// console.log('StoreLocatorCtrl.loadStoresByPosition', position, stores);
+			this.addMarkers(stores);
+		});
+	}
+
+	loadAllStores() {
+		if (this.stores) {
+			return Promise.resolve(this.stores);
+		}
+		return this.apiService.storeLocator.all().then(success => {
+			const stores = success.data;
+			stores.forEach(store => store.distance = this.calculateDistance(store.latitude, store.longitude, this.position.lat(), this.position.lng(), 'K'));
+			this.addMarkers(stores);
+			this.stores = stores;
+			return stores;
+		});
+	}
+
+	fitBounds(stores) {
+		if (stores.length) {
+			const bounds = new google.maps.LatLngBounds();
+			stores.forEach((store) => {
+				const position = new google.maps.LatLng(store.latitude, store.longitude);
+				bounds.extend(position);
+			});
+			this.map.fitBounds(bounds);
+			console.log('fitBounds');
+		}
+	}
+
+	findNearStores(stores, position) {
+		if (stores) {
+			stores = stores.slice();
+			stores.sort((a, b) => {
+				const da = this.calculateDistance(a.latitude, a.longitude, position.lat(), position.lng(), 'K');
+				const db = this.calculateDistance(b.latitude, b.longitude, position.lat(), position.lng(), 'K');
+				return da * (a.importante ? 0.5 : 1) - db * (b.importante ? 0.5 : 1);
+			});
+			const visibleStores = stores.slice(0, 50);
+			this.$timeout(() => {
+				this.visibleStores = visibleStores;
+			}, 1);
+			// console.log('findNearStores', visibleStores);
+			return visibleStores;
+		}
+	}
+
 	searchPosition(position) {
 		this.position = position;
 		this.map.setCenter(position);
 		this.setInfoWindow(position, 1);
-		return this.apiService.storeLocator.position(position).then(success => {
-			const stores = success.data;
-			this.stores = stores;
-			// console.log('StoreLocatorCtrl.searchPosition', position, stores);
-			this.addMarkers(stores);
+		return this.loadAllStores().then(stores => {
+			const visibleStores = this.findNearStores(stores, position);
+			if (visibleStores) {
+				this.fitBounds(visibleStores);
+			}
 		});
 	}
 
@@ -184,7 +263,7 @@ class StoreLocatorCtrl {
 			} else {
 				this.$timeout(() => {
 					const message = 'Geocode was not successful for the following reason: ' + status;
-					console.log('StoreLocatorCtrl.onSubmit.error', message);
+					// console.log('StoreLocatorCtrl.onSubmit.error', message);
 					this.error = { message };
 					this.busyFind = false;
 				});
@@ -193,20 +272,38 @@ class StoreLocatorCtrl {
 	}
 
 	setInfoWindow(position, mode) {
-		const infoWindow = this.infoWindow || new google.maps.InfoWindow();
-		this.infoWindow = infoWindow;
-		infoWindow.setPosition(position);
-		switch (mode) {
-			case 1:
-				infoWindow.setContent('Current location');
-				break;
-			case 2:
-				infoWindow.setContent('Error: The Geolocation service failed.');
-				break;
-			default:
-				infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
+		if (SHOW_INFO_WINDOW) {
+			const infoWindow = this.infoWindow || new google.maps.InfoWindow();
+			this.infoWindow = infoWindow;
+			infoWindow.setPosition(position);
+			switch (mode) {
+				case 1:
+					infoWindow.setContent('Current location');
+					break;
+				case 2:
+					infoWindow.setContent('Error: The Geolocation service failed.');
+					break;
+				default:
+					infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
+			}
+			infoWindow.open(this.map);
 		}
-		infoWindow.open(this.map);
+	}
+
+	setMarkerWindow(position, message) {
+		if (position) {
+			const markerWindow = this.markerWindow || new google.maps.InfoWindow({
+				pixelOffset: new google.maps.Size(0, -35)
+			});
+			this.markerWindow = markerWindow;
+			markerWindow.setPosition(position);
+			markerWindow.setContent(message);
+			markerWindow.open(this.map);
+		} else {
+			if (this.markerWindow) {
+				this.markerWindow.close();
+			}
+		}
 	}
 
 }

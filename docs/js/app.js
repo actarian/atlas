@@ -15526,7 +15526,7 @@ app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/lazy-script.directive":208,"./directives/lazy.directive":209,"./directives/media.directive":210,"./directives/parallax.directive":211,"./directives/scroll.directive":212,"./directives/sticky.directive":213,"./directives/swiper.directive":214,"./directives/video.directive":215,"./directives/wishlist.directive":216,"./faq/faq.controller":217,"./filters/image-with-features.filter":218,"./filters/notIn.filter":219,"./filters/trusted.filter":220,"./forms/control-messages.directive":221,"./forms/control.directive":222,"./forms/validate.directive":223,"./references/references.controller":224,"./root.controller":225,"./services/api.service":226,"./services/dom.service":227,"./shared/state":229,"./store-locator/store-locator.controller":230}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/lazy-script.directive":208,"./directives/lazy.directive":209,"./directives/media.directive":210,"./directives/parallax.directive":211,"./directives/scroll.directive":212,"./directives/sticky.directive":213,"./directives/swiper.directive":214,"./directives/video.directive":215,"./directives/wishlist.directive":216,"./faq/faq.controller":217,"./filters/image-with-features.filter":218,"./filters/notIn.filter":219,"./filters/trusted.filter":220,"./forms/control-messages.directive":221,"./forms/control.directive":222,"./forms/validate.directive":223,"./references/references.controller":224,"./root.controller":225,"./services/api.service":226,"./services/dom.service":227,"./shared/state":230,"./store-locator/store-locator.controller":231}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16021,15 +16021,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _shader = require("../shared/shader");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var GlslCanvasDirective =
 /*#__PURE__*/
 function () {
@@ -16044,7 +16043,10 @@ function () {
     key: "link",
     value: function link(scope, element, attributes, controller) {
       var node = element[0];
-      var canvas = new GlslCanvas(node);
+      var canvas = new GlslCanvas(node, {
+        fragmentString: _shader.FRAGMENT_SHADER
+      }); // const canvas = new GlslCanvas(node);
+
       canvas.setTexture('u_texture', attributes.glslCanvas, {
         repeat: true
       });
@@ -16126,7 +16128,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{}],205:[function(require,module,exports){
+},{"../shared/shader":229}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16377,6 +16379,18 @@ function () {
         var currentDomain = _this.getDomain(window.location.href);
 
         if (absolute && domain !== currentDomain) {
+          window.location.href = href;
+          return;
+        } // Se c'è un cambio di mercato, facciamo ricaricare la pagina
+
+
+        var market = _this.getMarket(href);
+
+        var currentMarket = _this.getMarket(window.location.href); // console.log('onNavigationShouldFetch', currentMarket, market);
+
+
+        if (currentMarket !== null && market !== currentMarket) {
+          window.location.href = href;
           return;
         }
 
@@ -16422,6 +16436,13 @@ function () {
       var domainRegexp = /([[a-zA-Z0-9-_]+\.]*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11})/;
       var matches = text.match(domainRegexp);
       return matches && matches.length > 1 ? matches[1] : null;
+    }
+  }, {
+    key: "getMarket",
+    value: function getMarket(text) {
+      var marketRegexp = /(^|[^\/])\/([^\/]+)/;
+      var matches = text.match(marketRegexp);
+      return matches && matches.length > 2 ? matches[2] : null;
     }
   }], [{
     key: "factory",
@@ -18664,6 +18685,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* jshint esversion: 6 */
 
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
+// const API_HREF = 'https://atlasconcorde.wslabs.it';
 var ApiService =
 /*#__PURE__*/
 function () {
@@ -18679,6 +18701,11 @@ function () {
         }
       },
       storeLocator: {
+        all: function all() {
+          // return $http.get(API_HREF + '/api/store/json');
+          // return $http.get('/api/store/json');
+          return $http.get('data/store-locator.json');
+        },
         position: function position(_position) {
           return $http.get('data/store-locator.json', _position);
         }
@@ -19067,6 +19094,20 @@ exports.default = Rect;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.FRAGMENT_SHADER = void 0;
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
+exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
+
+},{}],230:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = exports.State = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19256,7 +19297,7 @@ function () {
 exports.default = StateService;
 StateService.factory.$inject = ['$timeout', '$rootScope'];
 
-},{}],230:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19264,15 +19305,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _rxjs = require("rxjs");
+
+var _operators = require("rxjs/operators");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var SHOW_INFO_WINDOW = false;
 var GOOGLE_MAPS = null;
 
 var StoreLocatorCtrl =
@@ -19288,26 +19331,46 @@ function () {
     this.domService = DomService;
     this.apiService = ApiService;
     this.model = {};
-    this.apiKey = window.apiKey || 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M';
+    this.apiKey = window.apiKey || 'AIzaSyC9ZjpjjpaaDRZYkK5sjeyJahSUzKckgOM';
     this.busyFind = false;
-    this.busyLocation = false; //
+    this.busyLocation = false;
+    this.visibleStores = [];
+    this.mapCenter$ = new _rxjs.Subject(); //
     // When the window has finished loading create our google map below
 
     if (GOOGLE_MAPS !== null) {
       this.initMap();
-    }
-
-    if (google.maps.Map) {
-      GOOGLE_MAPS = google.maps;
-      this.initMap();
     } else {
-      google.maps.event.addDomListener(window, 'load', function () {
+      window.onGoogleMapsLoaded = function () {
         GOOGLE_MAPS = google.maps;
 
         _this.initMap();
+      };
+
+      var script = document.createElement('script');
+      script.setAttribute('type', 'text/javascript');
+      script.setAttribute('src', "https://maps.googleapis.com/maps/api/js?key=".concat(this.apiKey, "&callback=onGoogleMapsLoaded"));
+      (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(script);
+      /*
+      google.maps.event.addDomListener(window, 'load', () => {
+      	GOOGLE_MAPS = google.maps;
+      	this.initMap();
       });
+      */
     } //
 
+
+    this.unsubscribe = new _rxjs.Subject();
+    this.mapCenter$.pipe((0, _operators.debounceTime)(1000), (0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (position) {
+      _this.findNearStores(_this.stores, position);
+    });
+    $scope.$on('destroy', function () {
+      console.log('destroy');
+
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
+    });
   }
 
   _createClass(StoreLocatorCtrl, [{
@@ -19395,6 +19458,11 @@ function () {
 
 
       var map = new google.maps.Map(mapElement, mapOptions);
+      map.addListener('dragend', function () {
+        var position = map.getCenter();
+
+        _this2.mapCenter$.next(position);
+      });
       this.$timeout(function () {
         _this2.map = map;
       });
@@ -19436,25 +19504,21 @@ function () {
     value: function addMarkers(stores) {
       var _this3 = this;
 
-      var bounds = new google.maps.LatLngBounds();
-      stores.forEach(function (store) {
-        store.distance = _this3.calculateDistance(store.latitude, store.longitude, _this3.position.lat(), _this3.position.lng(), 'K');
+      var markers = stores.map(function (store) {
         var position = new google.maps.LatLng(store.latitude, store.longitude);
-        bounds.extend(position);
         var marker = new google.maps.Marker({
           position: position,
-          map: _this3.map,
-          icon: './img/icons/favicon-32x32.png',
+          // map: this.map,
+          icon: store.importante ? './img/store-locator/store-primary.png' : './img/store-locator/store-secondary.png',
           title: store.name
         });
-        /*
-        marker.addListener('click', () => {
-        	console.log(marker);
-        	// infowindow.setContent('<strong>' + node.querySelector('.title').innerHTML + '</strong>');
-        	// infowindow.open(map, marker);
+        marker.addListener('mouseover', function () {
+          _this3.setMarkerWindow(marker.position, store.name);
         });
-        */
-
+        marker.addListener('mouseout', function () {
+          _this3.setMarkerWindow(null);
+        });
+        return marker;
         /*
         function panTo(e) {
         	if (current !== marker) {
@@ -19468,10 +19532,17 @@ function () {
         node.addEventListener('mouseover', panTo);
         */
       });
+      var markerCluster = new MarkerClusterer(this.map, markers, {
+        imagePath: 'img/store-locator/cluster-'
+      });
+      var styles = markerCluster.getStyles();
+      styles.forEach(function (style) {
+        return style.textColor = '#ffffff';
+      });
+      markerCluster.setStyles(styles); // console.log('StoreLocatorCtrl.searchPosition', position, stores);
 
-      if (stores.length) {
-        this.map.fitBounds(bounds);
-      }
+      this.markers = markers;
+      this.markerCluster = markerCluster;
     }
   }, {
     key: "getGeolocation",
@@ -19510,18 +19581,87 @@ function () {
       }
     }
   }, {
+    key: "loadStoresByPosition",
+    value: function loadStoresByPosition(position) {
+      var _this5 = this;
+
+      return this.apiService.storeLocator.position(position).then(function (success) {
+        var stores = success.data;
+        _this5.stores = stores; // console.log('StoreLocatorCtrl.loadStoresByPosition', position, stores);
+
+        _this5.addMarkers(stores);
+      });
+    }
+  }, {
+    key: "loadAllStores",
+    value: function loadAllStores() {
+      var _this6 = this;
+
+      if (this.stores) {
+        return Promise.resolve(this.stores);
+      }
+
+      return this.apiService.storeLocator.all().then(function (success) {
+        var stores = success.data;
+        stores.forEach(function (store) {
+          return store.distance = _this6.calculateDistance(store.latitude, store.longitude, _this6.position.lat(), _this6.position.lng(), 'K');
+        });
+
+        _this6.addMarkers(stores);
+
+        _this6.stores = stores;
+        return stores;
+      });
+    }
+  }, {
+    key: "fitBounds",
+    value: function fitBounds(stores) {
+      if (stores.length) {
+        var bounds = new google.maps.LatLngBounds();
+        stores.forEach(function (store) {
+          var position = new google.maps.LatLng(store.latitude, store.longitude);
+          bounds.extend(position);
+        });
+        this.map.fitBounds(bounds);
+        console.log('fitBounds');
+      }
+    }
+  }, {
+    key: "findNearStores",
+    value: function findNearStores(stores, position) {
+      var _this7 = this;
+
+      if (stores) {
+        stores = stores.slice();
+        stores.sort(function (a, b) {
+          var da = _this7.calculateDistance(a.latitude, a.longitude, position.lat(), position.lng(), 'K');
+
+          var db = _this7.calculateDistance(b.latitude, b.longitude, position.lat(), position.lng(), 'K');
+
+          return da * (a.importante ? 0.5 : 1) - db * (b.importante ? 0.5 : 1);
+        });
+        var visibleStores = stores.slice(0, 50);
+        this.$timeout(function () {
+          _this7.visibleStores = visibleStores;
+        }, 1); // console.log('findNearStores', visibleStores);
+
+        return visibleStores;
+      }
+    }
+  }, {
     key: "searchPosition",
     value: function searchPosition(position) {
-      var _this5 = this;
+      var _this8 = this;
 
       this.position = position;
       this.map.setCenter(position);
       this.setInfoWindow(position, 1);
-      return this.apiService.storeLocator.position(position).then(function (success) {
-        var stores = success.data;
-        _this5.stores = stores; // console.log('StoreLocatorCtrl.searchPosition', position, stores);
+      return this.loadAllStores().then(function (stores) {
+        var visibleStores = _this8.findNearStores(stores, position);
 
-        _this5.addMarkers(stores);
+        if (visibleStores) {
+          _this8.fitBounds(visibleStores);
+        }
       });
     }
   }, {
@@ -19534,7 +19674,7 @@ function () {
   }, {
     key: "onSubmit",
     value: function onSubmit() {
-      var _this6 = this;
+      var _this9 = this;
 
       this.error = null;
       this.busyFind = true;
@@ -19543,23 +19683,23 @@ function () {
       geocoder.geocode({
         address: this.model.address
       }, function (results, status) {
-        _this6.model = {};
+        _this9.model = {};
 
         if (status == 'OK') {
           var position = results[0].geometry.location; // console.log('location', location);
           // const position = new google.maps.LatLng(location);
 
-          _this6.searchPosition(position).finally(function () {
-            return _this6.busyFind = false;
+          _this9.searchPosition(position).finally(function () {
+            return _this9.busyFind = false;
           });
         } else {
-          _this6.$timeout(function () {
-            var message = 'Geocode was not successful for the following reason: ' + status;
-            console.log('StoreLocatorCtrl.onSubmit.error', message);
-            _this6.error = {
+          _this9.$timeout(function () {
+            var message = 'Geocode was not successful for the following reason: ' + status; // console.log('StoreLocatorCtrl.onSubmit.error', message);
+
+            _this9.error = {
               message: message
             };
-            _this6.busyFind = false;
+            _this9.busyFind = false;
           });
         }
       });
@@ -19567,24 +19707,43 @@ function () {
   }, {
     key: "setInfoWindow",
     value: function setInfoWindow(position, mode) {
-      var infoWindow = this.infoWindow || new google.maps.InfoWindow();
-      this.infoWindow = infoWindow;
-      infoWindow.setPosition(position);
+      if (SHOW_INFO_WINDOW) {
+        var infoWindow = this.infoWindow || new google.maps.InfoWindow();
+        this.infoWindow = infoWindow;
+        infoWindow.setPosition(position);
 
-      switch (mode) {
-        case 1:
-          infoWindow.setContent('Current location');
-          break;
+        switch (mode) {
+          case 1:
+            infoWindow.setContent('Current location');
+            break;
 
-        case 2:
-          infoWindow.setContent('Error: The Geolocation service failed.');
-          break;
+          case 2:
+            infoWindow.setContent('Error: The Geolocation service failed.');
+            break;
 
-        default:
-          infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
+          default:
+            infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
+        }
+
+        infoWindow.open(this.map);
       }
-
-      infoWindow.open(this.map);
+    }
+  }, {
+    key: "setMarkerWindow",
+    value: function setMarkerWindow(position, message) {
+      if (position) {
+        var markerWindow = this.markerWindow || new google.maps.InfoWindow({
+          pixelOffset: new google.maps.Size(0, -35)
+        });
+        this.markerWindow = markerWindow;
+        markerWindow.setPosition(position);
+        markerWindow.setContent(message);
+        markerWindow.open(this.map);
+      } else {
+        if (this.markerWindow) {
+          this.markerWindow.close();
+        }
+      }
     }
   }]);
 
@@ -19595,5 +19754,5 @@ StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = StoreLocatorCtrl;
 exports.default = _default;
 
-},{}]},{},[198]);
+},{"rxjs":1,"rxjs/operators":197}]},{},[198]);
 //# sourceMappingURL=app.js.map

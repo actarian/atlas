@@ -21,12 +21,15 @@ export default class HrefDirective {
 			const domain = this.getDomain(href);
 			const currentDomain = this.getDomain(window.location.href);
 			if (absolute && domain !== currentDomain) {
+				window.location.href = href;
 				return;
 			}
 			// Se c'è un cambio di mercato, facciamo ricaricare la pagina
 			const market = this.getMarket(href);
 			const currentMarket = this.getMarket(window.location.href);
+			// console.log('onNavigationShouldFetch', currentMarket, market);
 			if (currentMarket !== null && market !== currentMarket) {
+				window.location.href = href;
 				return;
 			}
 			if (window.location.href.indexOf(href) !== -1) {

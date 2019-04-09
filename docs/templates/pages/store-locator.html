@@ -8,7 +8,7 @@
 			<img lazy data-src="img/store-locator/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
 		</div>
 		<div class="background" ng-if="root.webglEnabled">
-			<canvas glsl-canvas="img/store-locator/hero.jpg" class="glsl-canvas" data-fragment-url="shaders/hero.txt"></canvas>
+			<canvas glsl-canvas="img/store-locator/hero.jpg" class="glsl-canvas"></canvas>
 		</div>
 		<div class="aspect">
 			<div class="container">
@@ -60,7 +60,7 @@
 				<div class="legend"><svg class="icon icon--atlas icon--atlas--secondary"><use xlink:href="#atlas"></use></svg> <span>100m<sup>2</sup> exposition area</span></div>
 			</div>
 			<div class="listing listing--stores">
-				<div class="listing__item" ng-click="locator.panTo(item)" appear ng-repeat="item in locator.stores">
+				<div class="listing__item" ng-click="locator.panTo(item)" appear ng-repeat="item in locator.visibleStores">
 					<div class="title"><span ng-bind="item.name"></span> <svg class="icon icon--atlas" ng-class="{ 'icon--atlas--secondary' : item.importante !== 1 }"><use xlink:href="#atlas"></use></svg></div>
 					<div class="group group--info">
 						<div class="address">
