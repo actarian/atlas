@@ -9,13 +9,15 @@ import GlslCanvasDirective from './directives/glsl-canvas.directive';
 import HasDropdownDirective from './directives/has-dropdown.directive';
 import HilightDirective from './directives/hilight.directive';
 import HrefDirective from './directives/href.directive';
+import { LastItemDirective } from './directives/last-item.directive';
 import LazyScriptDirective from './directives/lazy-script.directive';
 import LazyDirective from './directives/lazy.directive';
 import MediaDirective from './directives/media.directive';
+import { MuuriDirective } from './directives/muuri.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
-import { SwiperGalleryDirective, SwiperHeroDirective, SwiperSlideItemDirective, SwiperTileDirective } from './directives/swiper.directive';
+import { SwiperGalleryDirective, SwiperHeroDirective, SwiperTileDirective } from './directives/swiper.directive';
 import VideoDirective from './directives/video.directive';
 import WishlistDirective from './directives/wishlist.directive';
 import FaqCtrl from './faq/faq.controller';
@@ -51,17 +53,18 @@ app.directive('appear', AppearDirective.factory)
 	.directive('hasDropdown', HasDropdownDirective.factory)
 	.directive('hilight', HilightDirective.factory)
 	.directive('href', HrefDirective.factory)
-	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
+	.directive('lastItem', LastItemDirective.factory)
 	.directive('lazy', LazyDirective.factory)
 	.directive('lazyScript', LazyScriptDirective.factory)
 	.directive('media', MediaDirective.factory)
+	.directive('muuri', MuuriDirective.factory)
 	.directive('parallax', ParallaxDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
+	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
-	.directive('swiperSlideItem', SwiperSlideItemDirective.factory)
 	.directive('validate', ValidateDirective.factory)
 	.directive('video', VideoDirective.factory)
 	.directive('wishlist', WishlistDirective.factory);

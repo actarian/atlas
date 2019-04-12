@@ -21,7 +21,7 @@ class RootCtrl {
 
 	onInit(brand) {
 		this.brand = brand;
-		this.webglEnabled = true;
+		this.webglEnabled = this.domService.hasWebglSupport();
 		/*
 		this.domService.smoothScroll$('.page').subscribe((top) => {
 			// console.log(top);

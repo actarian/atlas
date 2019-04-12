@@ -28,7 +28,7 @@ export class SwiperDirective {
 	}
 
 	link(scope, element, attributes, controller) {
-		scope.$on('swiperSlideItemLast', (slide) => {
+		scope.$on('lastItem', (slide) => {
 			this.onSwiper(element);
 		});
 		element.on('$destroy', () => {
@@ -193,28 +193,3 @@ export class SwiperTileDirective extends SwiperDirective {
 }
 
 SwiperTileDirective.factory.$inject = [];
-
-export class SwiperSlideItemDirective {
-
-	constructor(
-		$timeout
-	) {
-		this.$timeout = $timeout;
-		this.restrict = 'A';
-	}
-
-	link(scope, element, attributes, controller) {
-		if (scope.$last === true) {
-			this.$timeout(() => {
-				scope.$emit('swiperSlideItemLast', element);
-			});
-		}
-	}
-
-	static factory($timeout) {
-		return new SwiperSlideItemDirective($timeout);
-	}
-
-}
-
-SwiperSlideItemDirective.factory.$inject = ['$timeout'];

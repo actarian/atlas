@@ -69,7 +69,19 @@
 	*/
 }
 
+.picture--square {
+	position: relative;
+	width: 100%;
+	max-width: calc((100vh - 137px) / 1 * 1);
+	margin: 0 auto;
+
+	&>.media {
+		@include aspect-clip(1, 1);
+	}
+}
+
 .picture--vertical {
+	position: relative;
 	width: 100%;
 	max-width: calc((100vh - 137px) / 90 * 68);
 	margin: 0 auto;
@@ -80,6 +92,7 @@
 }
 
 .picture--horizontal {
+	position: relative;
 	width: 100%;
 	max-width: calc((100vh - 137px) / 88 * 153);
 	margin: 0 auto;
@@ -90,6 +103,7 @@
 }
 
 .picture--collection {
+	position: relative;
 	width: 100%;
 	@include aspect-clip(457, 305);
 }

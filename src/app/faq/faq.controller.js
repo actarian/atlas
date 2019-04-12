@@ -23,14 +23,16 @@ class FaqCtrl {
 		this.filteredFaqCategories = this.faqCategories.slice();
 		this.flags = {};
 		this.unsubscribe = new Subject();
-		this.search$().pipe(
-			takeUntil(this.unsubscribe)
-		).subscribe((filteredFaqCategories) => {
-			this.$timeout(() => {
-				this.filteredFaqCategories = [];
+		$scope.$watch('$viewContentLoaded', () => {
+			this.search$().pipe(
+				takeUntil(this.unsubscribe)
+			).subscribe((filteredFaqCategories) => {
 				this.$timeout(() => {
-					this.filteredFaqCategories = filteredFaqCategories;
-				}, 50);
+					this.filteredFaqCategories = [];
+					this.$timeout(() => {
+						this.filteredFaqCategories = filteredFaqCategories;
+					}, 50);
+				});
 			});
 		});
 		$scope.$on('destroy', () => {

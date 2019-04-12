@@ -52,7 +52,7 @@ export default class LazyDirective {
 	}
 
 	lazy$(node) {
-		return this.domService.scrollAndRect$().pipe(
+		return this.domService.rafAndRect$().pipe(
 			map(datas => {
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
