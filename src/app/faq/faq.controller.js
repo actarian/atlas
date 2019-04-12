@@ -1,4 +1,4 @@
-﻿/* jshint esversion: 6 */
+/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 import { fromEvent, Subject } from 'rxjs';
@@ -18,7 +18,7 @@ class FaqCtrl {
 		this.apiService = ApiService;
 		this.faqCategories = window.faqCategories || [];
 		// eliminare!
-		this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
+		//this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
 		//
 		this.filteredFaqCategories = this.faqCategories.slice();
 		this.flags = {};
@@ -97,7 +97,7 @@ class FaqCtrl {
 						let has = false;
 						let items = category.items.filter(item => {
 							const hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
-							const hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
+							const hasAbstract = item.abstr.toLowerCase().indexOf(query) !== -1;
 							item.opened = hasAbstract;
 							this.flags[item.id] = item.opened;
 							has = has || hasTitle || hasAbstract;
