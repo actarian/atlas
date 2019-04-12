@@ -2,8 +2,24 @@
 	"targets": {
 		"browser": {
 			"compile": [{
-				"input": "src/scss/app.scss",
-				"output": "docs/css/app.css",
+				"input": "src/scss/atlas-concorde-cssvars.scss",
+				"output": "docs/css/atlas-concorde-cssvars.css",
+				"minify": false
+			}, {
+				"input": "src/scss/atlas-concorde.scss",
+				"output": "docs/css/atlas-concorde.css",
+				"minify": false
+			}, {
+				"input": "src/scss/atlas-concorde-solution.scss",
+				"output": "docs/css/atlas-concorde-solution.css",
+				"minify": false
+			}, {
+				"input": "src/scss/atlas-concorde-usa.scss",
+				"output": "docs/css/atlas-concorde-usa.css",
+				"minify": false
+			}, {
+				"input": "src/scss/atlas-concorde-russia.scss",
+				"output": "docs/css/atlas-concorde-russia.css",
 				"minify": false
 			}, {
 				"input": "src/app/app.bootstrap.js",
@@ -12,7 +28,7 @@
 			}],
 			"bundle": [{
 				"input": [
-					"node_modules/whatwg/dist/fetch.umd.js"
+					"node_modules/whatwg-fetch/dist/fetch.umd.js"
 				],
 				"output": "docs/js/polyfills.js",
 				"minify": false

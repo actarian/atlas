@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
-// const API_HREF = 'https://atlasconcorde.wslabs.it';
+const API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';
 
 export default class ApiService {
 
@@ -16,13 +16,9 @@ export default class ApiService {
 			},
 			storeLocator: {
 				all: function all() {
-					// return $http.get(API_HREF + '/api/store/json');
-					// return $http.get('/api/store/json');
-					return $http.get('data/store-locator.json');
+					return $http.get(API_HREF + '/api/store/json');
+					// return $http.get('data/store-locator.json');
 				},
-				position: function(position) {
-					return $http.get('data/store-locator.json', position);
-				}
 			},
 		};
 		Object.assign(this, api);

@@ -17528,12 +17528,8 @@ function () {
     this.domService = DomService;
     this.apiService = ApiService;
     this.faqCategories = window.faqCategories || []; // eliminare!
-
-    this.faqCategories.forEach(function (x) {
-      return x.items.forEach(function (i) {
-        return Math.random() > 0.5 ? delete i.url : null;
-      });
-    }); //
+    //this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
+    //
 
     this.filteredFaqCategories = this.faqCategories.slice();
     this.flags = {};
@@ -17635,7 +17631,7 @@ function () {
             var has = false;
             var items = category.items.filter(function (item) {
               var hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
-              var hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
+              var hasAbstract = item.abstr.toLowerCase().indexOf(query) !== -1;
               item.opened = hasAbstract;
               _this2.flags[item.id] = item.opened;
               has = has || hasTitle || hasAbstract;
@@ -18716,7 +18712,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* jshint esversion: 6 */
 
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
-// const API_HREF = 'https://atlasconcorde.wslabs.it';
+var API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';
+
 var ApiService =
 /*#__PURE__*/
 function () {
@@ -18733,12 +18730,7 @@ function () {
       },
       storeLocator: {
         all: function all() {
-          // return $http.get(API_HREF + '/api/store/json');
-          // return $http.get('/api/store/json');
-          return $http.get('data/store-locator.json');
-        },
-        position: function position(_position) {
-          return $http.get('data/store-locator.json', _position);
+          return $http.get(API_HREF + '/api/store/json'); // return $http.get('data/store-locator.json');
         }
       }
     };

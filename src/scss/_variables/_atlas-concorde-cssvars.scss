@@ -1,0 +1,142 @@
+@import 'shared';
+
+body,
+.atlas-concorde {
+	--font-primary: #{$font-primary};
+	--font-secondary: #{$font-secondary};
+	--font-size: #{$font-size};
+	--line-height: #{$line-height};
+	--font-extralight: #{$font-extralight};
+	--font-light: #{$font-light};
+	--font-regular: #{$font-regular};
+	--font-semibold: #{$font-semibold};
+	--font-bold: #{$font-bold};
+	--font-extrabold: #{$font-extrabold};
+	--font-black: #{$font-black};
+	--btn-radius: #{$btn-radius};
+	--card-radius: #{$card-radius};
+	--bullet-size: #{$bullet-size};
+}
+
+@import 'atlas-concorde';
+
+body,
+.atlas-concorde {
+	--background: #{$background};
+	--background-negative: #{$background-negative};
+	--background-secondary: #{$background-secondary};
+	--background-tertiary: #{$background-tertiary};
+	--background-header: #{$background-header};
+	--background-subheader: #{$background-subheader};
+	// --background-quaternary: #{$background-quaternary};
+	// --background-quinary: #{$background-quinary};
+	// --background-senary: #{$background-senary};
+	--foreground: #{$foreground};
+	--foreground-negative: #{$foreground-negative};
+	--foreground-secondary: #{$foreground-secondary};
+	--foreground-footer: #{$foreground-footer};
+	--background-tilesize: #{$background-tilesize};
+	--foreground-tilesize: #{$foreground-tilesize};
+	--border: #{$border};
+	--nav-header: #{$nav-header};
+	--nav-product: #{$nav-product};
+	--nav-product-active: #{$nav-product-active};
+	--primary: #{$primary};
+	--primary-active: #{$primary-active};
+	--store: #{$store};
+	--store-secondary: #{$store-secondary};
+	--facebook: #{$facebook};
+	--google: #{$google};
+}
+
+@import 'atlas-concorde-solution';
+
+.atlas-concorde-solution {
+	--background: #{$background};
+	--background-negative: #{$background-negative};
+	--background-secondary: #{$background-secondary};
+	--background-tertiary: #{$background-tertiary};
+	--background-header: #{$background-header};
+	--background-subheader: #{$background-subheader};
+	// --background-quaternary: #{$background-quaternary};
+	// --background-quinary: #{$background-quinary};
+	// --background-senary: #{$background-senary};
+	--foreground: #{$foreground};
+	--foreground-negative: #{$foreground-negative};
+	--foreground-secondary: #{$foreground-secondary};
+	--foreground-footer: #{$foreground-footer};
+	--background-tilesize: #{$background-tilesize};
+	--foreground-tilesize: #{$foreground-tilesize};
+	--border: #{$border};
+	--nav-header: #{$nav-header};
+	--nav-product: #{$nav-product};
+	--nav-product-active: #{$nav-product-active};
+	--primary: #{$primary};
+	--primary-active: #{$primary-active};
+	--store: #{$store};
+	--store-secondary: #{$store-secondary};
+	--facebook: #{$facebook};
+	--google: #{$google};
+}
+
+@import 'atlas-concorde-usa';
+
+.atlas-concorde-usa {
+	--background: #{$background};
+	--background-negative: #{$background-negative};
+	--background-secondary: #{$background-secondary};
+	--background-tertiary: #{$background-tertiary};
+	--background-header: #{$background-header};
+	--background-subheader: #{$background-subheader};
+	// --background-quaternary: #{$background-quaternary};
+	// --background-quinary: #{$background-quinary};
+	// --background-senary: #{$background-senary};
+	--foreground: #{$foreground};
+	--foreground-negative: #{$foreground-negative};
+	--foreground-secondary: #{$foreground-secondary};
+	--foreground-footer: #{$foreground-footer};
+	--background-tilesize: #{$background-tilesize};
+	--foreground-tilesize: #{$foreground-tilesize};
+	--border: #{$border};
+	--nav-header: #{$nav-header};
+	--nav-product: #{$nav-product};
+	--nav-product-active: #{$nav-product-active};
+	--primary: #{$primary};
+	--primary-active: #{$primary-active};
+	--store: #{$store};
+	--store-secondary: #{$store-secondary};
+	--facebook: #{$facebook};
+	--google: #{$google};
+}
+
+@import 'atlas-concorde-russia';
+
+.atlas-concorde-russia {
+	--background: #{$background};
+	--background-negative: #{$background-negative};
+	--background-secondary: #{$background-secondary};
+	--background-tertiary: #{$background-tertiary};
+	--background-header: #{$background-header};
+	--background-subheader: #{$background-subheader};
+	// --background-quaternary: #{$background-quaternary};
+	// --background-quinary: #{$background-quinary};
+	// --background-senary: #{$background-senary};
+	--foreground: #{$foreground};
+	--foreground-negative: #{$foreground-negative};
+	--foreground-secondary: #{$foreground-secondary};
+	--foreground-footer: #{$foreground-footer};
+	--background-tilesize: #{$background-tilesize};
+	--foreground-tilesize: #{$foreground-tilesize};
+	--border: #{$border};
+	--nav-header: #{$nav-header};
+	--nav-product: #{$nav-product};
+	--nav-product-active: #{$nav-product-active};
+	--primary: #{$primary};
+	--primary-active: #{$primary-active};
+	--store: #{$store};
+	--store-secondary: #{$store-secondary};
+	--facebook: #{$facebook};
+	--google: #{$google};
+}
+
+@import 'cssvars';
