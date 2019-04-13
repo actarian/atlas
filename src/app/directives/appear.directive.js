@@ -5,9 +5,6 @@
 // See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
 // import 'intersection-observer';
 
-import { map } from 'rxjs/operators';
-import Rect from '../shared/rect';
-
 export default class AppearDirective {
 
 	constructor(
@@ -21,36 +18,18 @@ export default class AppearDirective {
 		const node = element[0];
 		const section = this.getSection(node);
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-		element.to = '';
-		const subscription = this.appear$(element, attributes).subscribe((intersection) => {
-			if (intersection.y > -0.05) {
-				subscription.unsubscribe();
-				if (element.to !== '') {
-					return;
-				}
-				const x = intersection.rect.left;
-				const y = 0; // intersection.rect.top;
-				const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
-				const timeout = index * 50;
-				// const timeout = 100 * element.index;
-				// console.log(x, y, timeout, node);
-				if (index > 0) {
-					element.to = setTimeout(() => {
-						node.classList.add('appeared');
-					}, timeout); // (i - firstVisibleIndex));
-				} else {
+		const subscription = this.domService.appear$(node).subscribe(intersection => { // -0.05
+			console.log(intersection.rect.top);
+			const x = intersection.rect.left;
+			const y = 0; // intersection.rect.top;
+			const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
+			const timeout = index * 50;
+			if (index > 0) {
+				setTimeout(() => {
 					node.classList.add('appeared');
-				}
+				}, timeout); // (i - firstVisibleIndex));
 			} else {
-				/*
-				if (element.to !== '') {
-					clearTimeout(element.to);
-					element.to = '';
-				}
-				if (node.classList.contains('appeared')) {
-					node.classList.remove('appeared');
-				}
-				*/
+				node.classList.add('appeared');
 			}
 		});
 		element.on('$destroy', () => {
@@ -58,11 +37,12 @@ export default class AppearDirective {
 		});
 	}
 
+	/*
 	appear$(element, attributes) {
 		const node = element[0];
 		return this.domService.rafAndRect$().pipe(
 			map(datas => {
-				const scrollTop = datas[0];
+				// const scrollTop = datas[0];
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
@@ -71,6 +51,7 @@ export default class AppearDirective {
 			})
 		);
 	}
+	*/
 
 	getSection(node) {
 		let section = node.parentNode;

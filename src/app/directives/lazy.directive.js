@@ -26,13 +26,16 @@ export default class LazyDirective {
 		const node = element[0];
 		node.classList.remove('lazyed');
 		// node.index = INDEX++;
-		element.subscription = this.lazy$(node).subscribe(intersection => {
-			/*
-			if (node.index === 0) {
-				console.log(intersection.y);
-				node.classList.add('debug');
+		// empty picture
+		// image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+		element.subscription = this.domService.appear$(node).subscribe(intersection => {
+			if (!node.classList.contains('lazyed')) {
+				node.classList.add('lazyed');
+				this.onAppearsInViewport(node, scope, attributes);
 			}
-			*/
+		});
+		/*
+		element.subscription = this.lazy$(node).subscribe(intersection => {
 			if (intersection.y > -0.5) {
 				if (!node.classList.contains('lazyed')) {
 					node.classList.add('lazyed');
@@ -44,22 +47,12 @@ export default class LazyDirective {
 				}
 			}
 		});
+		*/
 		element.on('$destroy', () => {
 			if (element.subscription) {
 				element.subscription.unsubscribe();
 			}
 		});
-	}
-
-	lazy$(node) {
-		return this.domService.rafAndRect$().pipe(
-			map(datas => {
-				const windowRect = datas[1];
-				const rect = Rect.fromNode(node);
-				const intersection = rect.intersection(windowRect);
-				return intersection;
-			})
-		);
 	}
 
 	onAppearsInViewport(image, scope, attributes) {
@@ -74,13 +67,15 @@ export default class LazyDirective {
 			}
 		} else if (scope.src) {
 			// console.log(scope.src);
-
+			image.setAttribute('src', scope.src);
+			image.removeAttribute('data-src');
 			// attributes.$set('src', scope.src);
+			/*
 			image.setAttribute('src', null);
 			setTimeout(() => {
 				image.setAttribute('src', scope.src);
 			}, 1);
-			image.removeAttribute('data-src');
+			*/
 			/*
 			const input = scope.src;
 			this.onImagePreload(input, (output) => {
@@ -93,6 +88,17 @@ export default class LazyDirective {
 			image.setStyle('background-image', `url(${scope.backgroundSrc})`);
 			image.removeAttribute('data-background-src');
 		}
+	}
+
+	lazy$(node) {
+		return this.domService.rafAndRect$().pipe(
+			map(datas => {
+				const windowRect = datas[1];
+				const rect = Rect.fromNode(node);
+				const intersection = rect.intersection(windowRect);
+				return intersection;
+			})
+		);
 	}
 
 	onImagePreload(src, callback) {

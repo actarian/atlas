@@ -3,7 +3,7 @@
 
 import { combineLatest, fromEvent, range } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { auditTime, filter, map, shareReplay, startWith } from 'rxjs/operators';
+import { auditTime, filter, first, map, shareReplay, startWith } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
 export default class DomService {
@@ -231,6 +231,26 @@ export default class DomService {
 	  }
 	};
 	*/
+
+	intersection$(node) {
+		return this.rafAndRect$().pipe(
+			map(datas => {
+				// const scrollTop = datas[0];
+				const windowRect = datas[1];
+				const rect = Rect.fromNode(node);
+				const intersection = rect.intersection(windowRect);
+				intersection.rect = rect;
+				return intersection;
+			})
+		);
+	}
+
+	appear$(node, value = 0.0) { // -0.5
+		return this.intersection$(node).pipe(
+			filter(x => x.y > value),
+			first(),
+		);
+	}
 
 	static factory() {
 		return new DomService();

@@ -15748,18 +15748,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _operators = require("rxjs/operators");
-
-var _rect = _interopRequireDefault(require("../shared/rect"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+// Import Polyfills
+// See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
+// import 'intersection-observer';
 var AppearDirective =
 /*#__PURE__*/
 function () {
@@ -15776,60 +15776,43 @@ function () {
       var node = element[0];
       var section = this.getSection(node);
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-      element.to = '';
-      var subscription = this.appear$(element, attributes).subscribe(function (intersection) {
-        if (intersection.y > -0.05) {
-          subscription.unsubscribe();
+      var subscription = this.domService.appear$(node).subscribe(function (intersection) {
+        // -0.05
+        console.log(intersection.rect.top);
+        var x = intersection.rect.left;
+        var y = 0; // intersection.rect.top;
 
-          if (element.to !== '') {
-            return;
-          }
+        var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
+        var timeout = index * 50;
 
-          var x = intersection.rect.left;
-          var y = 0; // intersection.rect.top;
-
-          var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
-          var timeout = index * 50; // const timeout = 100 * element.index;
-          // console.log(x, y, timeout, node);
-
-          if (index > 0) {
-            element.to = setTimeout(function () {
-              node.classList.add('appeared');
-            }, timeout); // (i - firstVisibleIndex));
-          } else {
+        if (index > 0) {
+          setTimeout(function () {
             node.classList.add('appeared');
-          }
+          }, timeout); // (i - firstVisibleIndex));
         } else {
-          /*
-          if (element.to !== '') {
-          	clearTimeout(element.to);
-          	element.to = '';
-          }
-          if (node.classList.contains('appeared')) {
-          	node.classList.remove('appeared');
-          }
-          */
+          node.classList.add('appeared');
         }
       });
       element.on('$destroy', function () {
         subscription.unsubscribe();
       });
     }
-  }, {
-    key: "appear$",
-    value: function appear$(element, attributes) {
-      var node = element[0];
-      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
-        var scrollTop = datas[0];
-        var windowRect = datas[1];
-
-        var rect = _rect.default.fromNode(node);
-
-        var intersection = rect.intersection(windowRect);
-        intersection.rect = rect;
-        return intersection;
-      }));
+    /*
+    appear$(element, attributes) {
+    	const node = element[0];
+    	return this.domService.rafAndRect$().pipe(
+    		map(datas => {
+    			// const scrollTop = datas[0];
+    			const windowRect = datas[1];
+    			const rect = Rect.fromNode(node);
+    			const intersection = rect.intersection(windowRect);
+    			intersection.rect = rect;
+    			return intersection;
+    		})
+    	);
     }
+    */
+
   }, {
     key: "getSection",
     value: function getSection(node) {
@@ -15860,7 +15843,7 @@ function () {
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":230,"rxjs/operators":197}],203:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16622,44 +16605,36 @@ function () {
 
       var node = element[0];
       node.classList.remove('lazyed'); // node.index = INDEX++;
+      // empty picture
+      // image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 
-      element.subscription = this.lazy$(node).subscribe(function (intersection) {
-        /*
-        if (node.index === 0) {
-        	console.log(intersection.y);
-        	node.classList.add('debug');
-        }
-        */
-        if (intersection.y > -0.5) {
-          if (!node.classList.contains('lazyed')) {
-            node.classList.add('lazyed');
+      element.subscription = this.domService.appear$(node).subscribe(function (intersection) {
+        if (!node.classList.contains('lazyed')) {
+          node.classList.add('lazyed');
 
-            _this.onAppearsInViewport(node, scope, attributes);
-
-            setTimeout(function () {
-              element.subscription.unsubscribe();
-              element.subscription = null;
-            }, 1);
-          }
+          _this.onAppearsInViewport(node, scope, attributes);
         }
       });
+      /*
+      element.subscription = this.lazy$(node).subscribe(intersection => {
+      	if (intersection.y > -0.5) {
+      		if (!node.classList.contains('lazyed')) {
+      			node.classList.add('lazyed');
+      			this.onAppearsInViewport(node, scope, attributes);
+      			setTimeout(() => {
+      				element.subscription.unsubscribe();
+      				element.subscription = null;
+      			}, 1);
+      		}
+      	}
+      });
+      */
+
       element.on('$destroy', function () {
         if (element.subscription) {
           element.subscription.unsubscribe();
         }
       });
-    }
-  }, {
-    key: "lazy$",
-    value: function lazy$(node) {
-      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
-        var windowRect = datas[1];
-
-        var rect = _rect.default.fromNode(node);
-
-        var intersection = rect.intersection(windowRect);
-        return intersection;
-      }));
     }
   }, {
     key: "onAppearsInViewport",
@@ -16676,12 +16651,16 @@ function () {
         }
       } else if (scope.src) {
         // console.log(scope.src);
-        // attributes.$set('src', scope.src);
+        image.setAttribute('src', scope.src);
+        image.removeAttribute('data-src'); // attributes.$set('src', scope.src);
+
+        /*
         image.setAttribute('src', null);
-        setTimeout(function () {
-          image.setAttribute('src', scope.src);
+        setTimeout(() => {
+        	image.setAttribute('src', scope.src);
         }, 1);
-        image.removeAttribute('data-src');
+        */
+
         /*
         const input = scope.src;
         this.onImagePreload(input, (output) => {
@@ -16694,6 +16673,18 @@ function () {
         image.setStyle('background-image', "url(".concat(scope.backgroundSrc, ")"));
         image.removeAttribute('data-background-src');
       }
+    }
+  }, {
+    key: "lazy$",
+    value: function lazy$(node) {
+      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+        return intersection;
+      }));
     }
   }, {
     key: "onImagePreload",
@@ -19130,6 +19121,29 @@ function () {
     };
     */
 
+  }, {
+    key: "intersection$",
+    value: function intersection$(node) {
+      return this.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+        // const scrollTop = datas[0];
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+        intersection.rect = rect;
+        return intersection;
+      }));
+    }
+  }, {
+    key: "appear$",
+    value: function appear$(node) {
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.0;
+      // -0.5
+      return this.intersection$(node).pipe((0, _operators.filter)(function (x) {
+        return x.y > value;
+      }), (0, _operators.first)());
+    }
   }, {
     key: "scrollTop",
     get: function get() {
