@@ -1,180 +1,171 @@
-<section class="section section--hero-moodboard section--negative">
-	<div class="background" ng-if="!root.webglEnabled" parallax>
-		<img lazy data-src="img/moodboard/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
-	</div>
-	<div class="background" ng-if="root.webglEnabled">
-		<canvas glsl-canvas="img/moodboard/hero.jpg" class="glsl-canvas"></canvas>
-	</div>
-	<div class="aspect">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 offset-md-2">
-					<div class="category">Be Inspired</div>
-					<div class="title">I’m looking for <b>marble look</b> tiles, with a <b>grey</b> tonality, suitable for <b>residential</b> spaces, matching <b>all</b> typologies and <b>all</b> formats.</div>
-				</div>
-			</div>
+<script type="text/javascript" lazy-script>
+	window.filters = {
+		looks: {
+			label: 'looks',
+			placeholder: 'Any',
+			options: [{
+				label: 'Wood look',
+				value: 21,
+				image: 'img/moodboard/looks/01.jpg',
+			}, {
+				label: 'Marble look',
+				value: 22,
+				image: 'img/moodboard/looks/02.jpg',
+			}, {
+				label: 'Stone look',
+				value: 23,
+				image: 'img/moodboard/looks/03.jpg',
+			}, {
+				label: 'Concrete look',
+				value: 24,
+				image: 'img/moodboard/looks/04.jpg',
+			}, {
+				label: 'Textile look',
+				value: 25,
+				image: 'img/moodboard/looks/05.jpg',
+			}, {
+				label: 'Colour look',
+				value: 26,
+				image: 'img/moodboard/looks/06.jpg',
+			}, {
+				label: '3D',
+				value: 27,
+				image: 'img/moodboard/looks/07.jpg',
+			}]
+		},
+		colors: {
+			label: 'colors',
+			placeholder: 'Any',
+			options: [
+				{ label: 'White', value: 201, image: 'img/moodboard/colors/01.jpg', color: '#ffffff' }, // !!! color non serve
+				{ label: 'Grey', value: 202, image: 'img/moodboard/colors/02.jpg', color: '#ababab' },
+				{ label: 'Black', value: 203, image: 'img/moodboard/colors/03.jpg', color: '#000000' },
+				{ label: 'Ivory', value: 204, image: 'img/moodboard/colors/04.jpg', color: '#efebe0' },
+				{ label: 'Cream', value: 205, image: 'img/moodboard/colors/05.jpg', color: '#e4d5b8' },
+				{ label: 'Beige', value: 206, image: 'img/moodboard/colors/06.jpg', color: '#cdbca7' },
+				{ label: 'Brown', value: 207, image: 'img/moodboard/colors/07.jpg', color: '#64564e' },
+				{ label: 'Golden', value: 208, image: 'img/moodboard/colors/08.jpg', color: '#d1ad8c' },
+				{ label: 'Yellow', value: 209, image: 'img/moodboard/colors/09.jpg', color: '#eee355' },
+				{ label: 'Pink', value: 210, image: 'img/moodboard/colors/10.jpg', color: '#d6aeb2' },
+				{ label: 'Orange', value: 211, image: 'img/moodboard/colors/11.jpg', color: '#eea35f' },
+				{ label: 'Red', value: 212, image: 'img/moodboard/colors/12.jpg', color: '#964343' },
+				{ label: 'Light Blue', value: 213, image: 'img/moodboard/colors/13.jpg', color: '#8bbfd7' },
+				{ label: 'Blue', value: 214, image: 'img/moodboard/colors/14.jpg', color: '#085468' },
+				{ label: 'Green', value: 215, image: 'img/moodboard/colors/15.jpg', color: '#b0cc75' },
+				{ label: 'Purple', value: 216, image: 'img/moodboard/colors/16.jpg', color: '#41255e' }
+			]
+		},
+		spaces: {
+			label: 'spaces',
+			placeholder: 'Any',
+			options: [{
+				label: 'Bathroom',
+				value: 301,
+			}, {
+				label: 'Business',
+				value: 302,
+			}, {
+				label: 'Home',
+				value: 303,
+			}, {
+				label: 'Hospitality',
+				value: 304,
+			}, {
+				label: 'Shop',
+				value: 305,
+			}, {
+				label: 'Wellness',
+				value: 306,
+			}]
+		},
+		typologies: {
+			label: 'typologies',
+			placeholder: 'Any',
+			options: [{
+				label: 'Porcelain tiles',
+				value: 401,
+			}, {
+				label: 'Wall tiles',
+				value: 402,
+			}]
+		},
+		formats: {
+			label: 'formats',
+			placeholder: 'Any',
+			options: [{ label: '8x31.5', value: 501, w: 8, h: 31.5 },
+				{ label: '12.5x25', value: 502, w: 12.5, h: 25 },
+				{ label: '20x20', value: 503, w: 20, h: 20 },
+				{ label: '7.5x60', value: 504, w: 7.5, h: 60 },
+				{ label: '30x30', value: 505, w: 30, h: 30 },
+				{ label: '11x90', value: 506, w: 11, h: 90 },
+				{ label: '20x60', value: 507, w: 20, h: 60 },
+				{ label: '15x90', value: 508, w: 15, h: 90 },
+				{ label: '30.5x56', value: 509, w: 30.5, h: 56 },
+				{ label: '30x60', value: 510, w: 30, h: 60 },
+				{ label: '22.5x90', value: 511, w: 22.5, h: 90 },
+				{ label: '40x60', value: 512, w: 40, h: 60 },
+				{ label: '20x120', value: 513, w: 20, h: 120 },
+				{ label: '18.5x150', value: 514, w: 18.5, h: 150 },
+				{ label: '30.5x91.5', value: 515, w: 30.5, h: 91.5 },
+				{ label: '37.5x75', value: 516, w: 37.5, h: 75 },
+				{ label: '40x80', value: 517, w: 40, h: 80 },
+				{ label: '60x60', value: 518, w: 60, h: 60 },
+				{ label: '30x120', value: 519, w: 30, h: 120 },
+				{ label: '25x150', value: 520, w: 25, h: 150 },
+				{ label: '45x90', value: 521, w: 45, h: 90 },
+				{ label: '40x120', value: 522, w: 40, h: 120 },
+				{ label: '50x110', value: 523, w: 50, h: 110 },
+				{ label: '75x75', value: 524, w: 75, h: 75 },
+				{ label: '60x120', value: 525, w: 60, h: 120 },
+				{ label: '30x240', value: 526, w: 30, h: 240 },
+				{ label: '90x90', value: 527, w: 90, h: 90 },
+				{ label: '75x150', value: 528, w: 75, h: 150 },
+				{ label: '120x120', value: 529, w: 120, h: 120 },
+				{ label: '120x240', value: 530, w: 120, h: 240 },
+				{ label: '120x278', value: 531, w: 120, h: 278 }
+			]
+		}
+	};
+
+</script>
+<div ng-controller="MoodboardCtrl as moodboardCtrl">
+	<section class="section section--hero-moodboard section--negative">
+		<div class="background" ng-if="!root.webglEnabled" parallax>
+			<img lazy data-src="img/moodboard/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
 		</div>
-	</div>
-</section>
-<section class="section--moodboard-results">
-	<section class="section section--moodboard">
-		<div class="container">
-			<div class="listing listing--moodboard" muuri>
-				<div class="listing__item mood--tile">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--square" media>
-							<img lazy data-src="img/moodboard/01.jpg" alt="title" />
-						</div>
-						<div class="btn btn--link">MARVEL Elegant Sable polished</div>
-					</a>
-				</div>
-				<div class="listing__item mood--tile">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--square" media>
-							<img lazy data-src="img/moodboard/02.jpg" alt="title" />
-						</div>
-						<div class="btn btn--link">MARVEL Gris Supreme polished</div>
-					</a>
-				</div>
-				<div class="listing__item mood--horizontal">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--horizontal" media parallax>
-							<img lazy data-src="img/moodboard/03.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--vertical">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--vertical" media parallax>
-							<img lazy data-src="img/moodboard/04.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--card">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--collection" media>
-							<img lazy data-src="img/moodboard/05.jpg" alt="title" />
-						</div>
-						<div class="group group--content">
-							<div class="category">Be Inspired</div>
-							<div class="title">Like marble. But It’s not marble</div>
-							<div class="abstract">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--tile">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--square" media>
-							<img lazy data-src="img/moodboard/06.jpg" alt="title" />
-						</div>
-						<div class="btn btn--link">MARVEL Gris-Calacatta Mosaico Cubes</div>
-					</a>
-				</div>
-				<div class="listing__item mood--horizontal">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--horizontal" media parallax>
-							<img lazy data-src="img/moodboard/07.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--card">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--collection" media>
-							<img lazy data-src="img/moodboard/08.jpg" alt="title" />
-						</div>
-						<div class="group group--content">
-							<div class="category">Contract</div>
-							<div class="title">14.500 square feet of Russian Poetry</div>
-							<div class="abstract">A talk with Dyonis Ottl about the new marble-look interior of Marriott Hotel in Voronezh.</div>
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--vertical">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--vertical" media parallax>
-							<img lazy data-src="img/moodboard/09.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--tile">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--square" media>
-							<img lazy data-src="img/moodboard/01.jpg" alt="title" />
-						</div>
-						<div class="btn btn--link">MARVEL Elegant Sable polished</div>
-					</a>
-				</div>
-				<div class="listing__item mood--tile">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--square" media>
-							<img lazy data-src="img/moodboard/02.jpg" alt="title" />
-						</div>
-						<div class="btn btn--link">MARVEL Gris Supreme polished</div>
-					</a>
-				</div>
-				<div class="listing__item mood--horizontal">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--horizontal" media parallax>
-							<img lazy data-src="img/moodboard/03.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--vertical">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--vertical" media parallax>
-							<img lazy data-src="img/moodboard/04.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--card">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--collection" media>
-							<img lazy data-src="img/moodboard/05.jpg" alt="title" />
-						</div>
-						<div class="group group--content">
-							<div class="category">Be Inspired</div>
-							<div class="title">Like marble. But It’s not marble</div>
-							<div class="abstract">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--tile">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--square" media>
-							<img lazy data-src="img/moodboard/06.jpg" alt="title" />
-						</div>
-						<div class="btn btn--link">MARVEL Gris-Calacatta Mosaico Cubes</div>
-					</a>
-				</div>
-				<div class="listing__item mood--horizontal">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--horizontal" media parallax>
-							<img lazy data-src="img/moodboard/07.jpg" alt="title" />
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--card">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--collection" media>
-							<img lazy data-src="img/moodboard/08.jpg" alt="title" />
-						</div>
-						<div class="group group--content">
-							<div class="category">Contract</div>
-							<div class="title">14.500 square feet of Russian Poetry</div>
-							<div class="abstract">A talk with Dyonis Ottl about the new marble-look interior of Marriott Hotel in Voronezh.</div>
-						</div>
-					</a>
-				</div>
-				<div class="listing__item mood--vertical">
-					<a href="product-project.html" class="listing__content" appear>
-						<div class="picture picture--vertical" media parallax>
-							<img lazy data-src="img/moodboard/09.jpg" alt="title" />
-						</div>
-					</a>
+		<div class="background" ng-if="root.webglEnabled">
+			<canvas glsl-canvas="img/moodboard/hero.jpg" class="glsl-canvas"></canvas>
+		</div>
+		<div class="aspect">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 offset-md-2" ng-if="moodboardCtrl.filters">
+						<div class="category">Be Inspired</div>
+						<div class="title" moodboard-search="moodboardCtrl.filters" model="moodboardCtrl.model">I’m looking for $looks$ tile, with $colors$ tonality, suitable for $spaces$ space, matching $typologies$ typology and $formats$ tile format.</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-</section>
-
+	<ng-include src="'templates/shared/moodboard.html'"></ng-include>
+	<section class="section--moodboard-results">
+		<section class="section section--moodboard">
+			<div class="container" ng-if="moodboardCtrl.items && moodboardCtrl.items.length">
+				<div class="listing listing--moodboard" muuri>
+					<div class="listing__item" ng-class="{
+						'mood--tile': item.type === moodboardCtrl.moodTypes.Tile,
+						'mood--horizontal': item.type === moodboardCtrl.moodTypes.Horizontal,
+						'mood--vertical': item.type === moodboardCtrl.moodTypes.Vertical,
+						'mood--card': item.type === moodboardCtrl.moodTypes.Card
+					}" ng-repeat="item in moodboardCtrl.items track by $index" last-item>
+						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-tile.html'" ng-if="item.type === moodboardCtrl.moodTypes.Tile"></div>
+						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-horizontal.html'" ng-if="item.type === moodboardCtrl.moodTypes.Horizontal"></div>
+						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-vertical.html'" ng-if="item.type === moodboardCtrl.moodTypes.Vertical"></div>
+						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-card.html'" ng-if="item.type === moodboardCtrl.moodTypes.Card"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+</div>
 <ng-include src="'templates/shared/store.html'"></ng-include>

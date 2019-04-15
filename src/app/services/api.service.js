@@ -1,6 +1,8 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import { from } from 'rxjs';
+
 const API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';
 
 export default class ApiService {
@@ -14,8 +16,14 @@ export default class ApiService {
 					return Promise.resolve(item);
 				},
 			},
+			moodboard: {
+				filter: (filters) => {
+					// return $http.post(API_HREF + '/api/moodboard/json', filters);
+					return from($http.get('data/moodboard.json'));
+				},
+			},
 			storeLocator: {
-				all: function all() {
+				all: () => {
 					return $http.get(API_HREF + '/api/store/json');
 					// return $http.get('data/store-locator.json');
 				},

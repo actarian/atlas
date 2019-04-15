@@ -19,7 +19,7 @@ export default class AppearDirective {
 		const section = this.getSection(node);
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
 		const subscription = this.domService.appear$(node).subscribe(intersection => { // -0.05
-			console.log(intersection.rect.top);
+			// console.log(intersection.rect.top);
 			const x = intersection.rect.left;
 			const y = 0; // intersection.rect.top;
 			const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);

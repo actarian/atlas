@@ -1,0 +1,40 @@
+<!-- mood-tile -->
+<script type="text/ng-template" id="templates/moodboard/mood-tile.html">
+	<a class="mood__item" ng-href="{{item.url}}">
+		<div class="picture picture--square" media="item">
+			<img lazy data-src="{{item.image}}" alt="{{item.title}}" />
+		</div>
+		<div class="btn btn--link">
+			<span ng-bind="item.title"></span>
+		</div>
+	</a>
+</script>
+<!-- mood-horizontal -->
+<script type="text/ng-template" id="templates/moodboard/mood-horizontal.html">
+	<a class="mood__item" ng-href="{{item.url}}">
+		<div class="picture picture--horizontal" media="item">
+			<img lazy data-src="{{item.image}}" alt="{{item.title || ''}}" />
+		</div>
+	</a>
+</script>
+<!-- mood-vertical -->
+<script type="text/ng-template" id="templates/moodboard/mood-vertical.html">
+	<a class="mood__item" ng-href="{{item.url}}">
+		<div class="picture picture--vertical" media="item">
+			<img lazy data-src="{{item.image}}" alt="{{item.title || ''}}" />
+		</div>
+	</a>
+</script>
+<!-- mood-card -->
+<script type="text/ng-template" id="templates/moodboard/mood-card.html">
+	<a class="mood__item" ng-href="{{item.url}}">
+		<div class="picture picture--collection" media="item">
+			<img lazy data-src="{{item.image}}" alt="{{item.title || ''}}" />
+		</div>
+		<div class="group group--content">
+			<div class="category" ng-bind="item.category"></div>
+			<div class="title" ng-bind="item.title"></div>
+			<div class="abstract" ng-bind="item.abstract"></div>
+		</div>
+	</a>
+</script>

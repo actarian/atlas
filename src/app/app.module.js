@@ -27,11 +27,17 @@ import { TrustedFilter } from './filters/trusted.filter';
 import ControlMessagesDirective from './forms/control-messages.directive';
 import ControlDirective from './forms/control.directive';
 import ValidateDirective from './forms/validate.directive';
+import MoodboardDropdownDirective from './moodboard/moodboard-dropdown.directive';
+import MoodboardSearchDirective from './moodboard/moodboard-search.directive';
+import MoodboardCtrl from './moodboard/moodboard.controller';
 import ReferencesCtrl from './references/references.controller';
 import RootCtrl from './root.controller';
 import ApiService from './services/api.service';
 import DomService from './services/dom.service';
-import StateService from './shared/state';
+import { CookieService, LocalStorageService, SessionStorageService } from './services/storage.service';
+import WishlistService from './services/wishlist.service';
+import PromiseService from './shared/promise.service';
+import StateService from './shared/state.service';
 import StoreLocatorCtrl from './store-locator/store-locator.controller';
 
 const MODULE_NAME = 'app';
@@ -44,7 +50,12 @@ app.config(['$locationProvider', function($locationProvider) {
 
 app.factory('ApiService', ApiService.factory)
 	.factory('DomService', DomService.factory)
-	.factory('StateService', StateService.factory);
+	.factory('PromiseService', PromiseService.factory)
+	.factory('StateService', StateService.factory)
+	.factory('CookieService', CookieService.factory)
+	.factory('LocalStorageService', LocalStorageService.factory)
+	.factory('SessionStorageService', SessionStorageService.factory)
+	.factory('WishlistService', WishlistService.factory);
 
 app.directive('appear', AppearDirective.factory)
 	.directive('control', ControlDirective.factory)
@@ -57,6 +68,8 @@ app.directive('appear', AppearDirective.factory)
 	.directive('lazy', LazyDirective.factory)
 	.directive('lazyScript', LazyScriptDirective.factory)
 	.directive('media', MediaDirective.factory)
+	.directive('moodboardDropdown', MoodboardDropdownDirective.factory)
+	.directive('moodboardSearch', MoodboardSearchDirective.factory)
 	.directive('muuri', MuuriDirective.factory)
 	.directive('parallax', ParallaxDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
@@ -73,6 +86,7 @@ app.controller('RootCtrl', RootCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
 	.controller('ContactsCtrl', ContactsCtrl)
 	.controller('FaqCtrl', FaqCtrl)
+	.controller('MoodboardCtrl', MoodboardCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)
 	.controller('StoreLocatorCtrl', StoreLocatorCtrl);
 

@@ -43,7 +43,7 @@ export class MuuriDirective {
 
 	onMuuri(element) {
 		if (element.muuri) {
-			element.muuri.update();
+			element.muuri.refreshItems();
 		} else {
 			element.muuri = new Muuri(element[0], {
 				layoutDuration: 400,

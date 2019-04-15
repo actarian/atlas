@@ -5,10 +5,10 @@ export default class VideoDirective {
 
 	constructor(
 		$timeout,
-		ApiService
+		WishlistService
 	) {
 		this.$timeout = $timeout;
-		this.apiService = ApiService;
+		this.wishlistService = WishlistService;
 		this.restrict = 'A';
 		this.transclude = true;
 		this.template = `<div class="media">
@@ -25,9 +25,9 @@ export default class VideoDirective {
 </div><div class="btn btn--pinterest" ng-click="onPin()" ng-if="onPin">
 <svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
 </div>
-<div class="btn btn--wishlist" ng-class="{ added: item.added }" ng-click="onWishlist()">
-<svg class="icon icon--wishlist" ng-if="!item.added"><use xlink:href="#wishlist"></use></svg>
-<svg class="icon icon--wishlist" ng-if="item.added"><use xlink:href="#wishlist-added"></use></svg>
+<div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
+	<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
+	<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
 </div>`;
 		this.scope = {
 			item: '=?video',
@@ -79,6 +79,37 @@ export default class VideoDirective {
 			// console.log(video.currentTime, video.duration);
 			progress.style.strokeDashoffset = video.currentTime / video.duration;
 		};
+		scope.$watch(() => {
+			return this.wishlistService.has(scope.item);
+		}, (current, previous) => {
+			// console.log(current, previous, node);
+			if (scope.wishlistActive !== current) {
+				scope.wishlistActive = current;
+				if (current) {
+					scope.wishlistActivated = true;
+					this.$timeout(() => {
+						scope.wishlistActivated = false;
+					}, 2000);
+				} else {
+					scope.wishlistDeactivated = true;
+					this.$timeout(() => {
+						scope.wishlistDeactivated = false;
+					}, 2000);
+				}
+			}
+		});
+		scope.onClickWishlist = (event) => {
+			this.wishlistService.toggle(scope.item).then(
+				(has) => {
+					console.log('VideoDirective.onClickWishlist', has);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+			event.preventDefault();
+			event.stopPropagation();
+		};
 		if (video) {
 			video.addEventListener('play', onPlay);
 			video.addEventListener('pause', onPause);
@@ -95,10 +126,10 @@ export default class VideoDirective {
 		});
 	}
 
-	static factory($timeout, ApiService) {
-		return new VideoDirective($timeout, ApiService);
+	static factory($timeout, WishlistService) {
+		return new VideoDirective($timeout, WishlistService);
 	}
 
 }
 
-VideoDirective.factory.$inject = ['$timeout', 'ApiService'];
+VideoDirective.factory.$inject = ['$timeout', 'WishlistService'];

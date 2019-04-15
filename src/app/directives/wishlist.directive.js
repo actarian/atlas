@@ -6,7 +6,7 @@ export default class WishlistDirective {
 	constructor(
 		ApiService
 	) {
-		this.apiService = ApiService;
+		this.wishlistService = WishlistService;
 		this.restrict = 'E';
 		this.scope = {
 			item: '=',
@@ -21,17 +21,17 @@ export default class WishlistDirective {
 		const node = element[0];
 		scope.item = scope.item || {};
 		scope.onWishlist = () => {
-			this.apiService.wishlist.toggle(scope.item).then((item) => {
+			this.wishlistService.toggle(scope.item).then((item) => {
 				Object.assign(scope.item, item);
 			}, (error) => console.log(error));
 		};
 		element.on('$destroy', () => {});
 	}
 
-	static factory(ApiService) {
-		return new WishlistDirective(ApiService);
+	static factory(WishlistService) {
+		return new WishlistDirective(WishlistService);
 	}
 
 }
 
-WishlistDirective.factory.$inject = ['ApiService'];
+WishlistDirective.factory.$inject = ['WishlistService'];

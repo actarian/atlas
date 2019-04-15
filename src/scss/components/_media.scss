@@ -27,7 +27,7 @@
 			fill: $foreground-negative;
 		}
 
-		&.added {
+		&.active {
 			opacity: 1;
 
 			.icon--wishlist {
@@ -50,7 +50,7 @@
 			fill: $foreground-negative;
 		}
 
-		&.added {
+		&.active {
 			opacity: 1;
 
 			.icon--wishlist {
@@ -58,6 +58,38 @@
 			}
 		}
 
+		&.activated {
+			animation: activated 350ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+		}
+
+		&.deactivated {
+			animation: deactivated 350ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+		}
+
+	}
+
+	@keyframes activated {
+		0% {
+			opacity: 0;
+			transform: scale(2.0);
+		}
+
+		100% {
+			opacity: 1;
+			transform: scale(1.0);
+		}
+	}
+
+	@keyframes deactivated {
+		0% {
+			opacity: 1;
+			transform: scale(1.0);
+		}
+
+		100% {
+			opacity: 0;
+			transform: scale(1.5);
+		}
 	}
 
 	/*

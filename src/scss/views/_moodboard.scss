@@ -1,6 +1,7 @@
 .section--hero-moodboard {
 	position: relative;
 	background: black;
+	z-index: 10;
 
 	.background {
 		z-index: 0;
@@ -40,7 +41,6 @@
 	}
 
 	@include media-breakpoint-down(sm) {
-
 		.category {
 			margin-bottom: 15px;
 			font-size: 12px;
@@ -52,14 +52,6 @@
 	}
 
 	@include media-breakpoint-down(xs) {
-
-		/*
-		.aspect {
-			width: 100vw;
-			height: 100vh;
-			max-height: 200vw;
-		}
-		*/
 		.aspect {
 			@include aspect-grid(375, 667);
 		}
@@ -112,14 +104,128 @@
 	border-top: 2px solid $border;
 }
 
+.moodboard__dropdown {
+	position: relative;
+	display: inline-block;
+	white-space: nowrap;
+
+	[has-dropdown] {
+		display: inline-block;
+	}
+
+	.dropdown {
+		min-width: 320px;
+		font-size: 16px;
+		top: 100%;
+		z-index: 100000;
+
+		.nav--select {
+			margin: 0;
+			max-height: 408px;
+			overflow-y: auto;
+
+			&::-webkit-scrollbar {
+				width: 6px;
+				border-radius: 3px;
+			}
+
+			&::-webkit-scrollbar-button {
+				display: none;
+			}
+
+			&::-webkit-scrollbar-button:hover {
+				display: none;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: $background-tertiary-dark;
+				box-shadow: none;
+				border-radius: 3px;
+
+				&:hover {
+					background-color: $background-tertiary-dark;
+				}
+			}
+
+			&::-webkit-scrollbar-track {
+				background-color: transparent;
+				border-radius: 3px;
+
+				&:hover {
+					background-color: transparent;
+				}
+			}
+
+		}
+
+		.option {
+			display: flex;
+			align-items: center;
+			padding-left: 40px;
+
+			span {
+				display: block;
+				text-transform: lowercase;
+			}
+		}
+
+		.option--picture {
+			img {
+				display: block;
+				width: 48px;
+				height: 48px;
+				margin-right: 15px;
+				border: 2px solid $background-tertiary;
+				padding: 2px;
+				box-sizing: border-box;
+			}
+		}
+
+		li {
+
+			&.active {
+				.option {
+					span {
+						font-weight: $font-semibold;
+						color: $primary;
+					}
+
+					img {
+						border-color: $primary;
+					}
+				}
+			}
+		}
+
+	}
+}
+
+.moodboard__control,
+.moodboard__value {
+	background: transparent;
+	border: none;
+	font-size: inherit;
+	font-weight: bold;
+	color: white;
+	text-decoration: underline;
+	text-transform: lowercase;
+	height: auto;
+	line-height: 1;
+	padding: 0;
+	margin: 0;
+
+	&::placeholder {
+		color: white;
+		text-decoration: underline;
+	}
+}
+
 $moodboard-gutter: 60px;
 
 [muuri] {
 	position: relative;
-	margin-right: -$moodboard-gutter;
 
 	.listing__item {
-		display: block;
 		position: absolute;
 		top: 10000px;
 		height: auto;
@@ -140,44 +246,42 @@ $moodboard-gutter: 60px;
 		}
 	}
 
-	.listing__item {}
-
 	.listing__content {
 		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		width: 100%;
 		height: 100%;
 	}
 
 }
 
-
 .mood--tile {
-	width: calc(#{100% / 12 * 3} - #{$moodboard-gutter});
-	max-width: 338px;
-
 	.btn {
+		display: inline-block;
+		max-width: 100%;
+		font-size: 14px;
+		text-transform: none;
+		line-height: 18px;
 		margin-top: 20px;
+
+		span {
+			display: inline-block;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			width: 100%;
+		}
 	}
-}
-
-.mood--horizontal {
-	width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
-	max-width: 735px;
-}
-
-.mood--vertical {
-	width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
-	max-width: 735px;
 }
 
 .mood--card {
-	width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
-	max-width: 735px;
-	padding: 8%;
-
+	/*
 	.listing__content {
 		background: $background-tertiary;
 	}
+	*/
 
 	.group--content {
 		padding: 40px;
@@ -207,92 +311,94 @@ $moodboard-gutter: 60px;
 	}
 }
 
-/*
+.mood__item {
+	width: 100%;
+}
 
-.listing--moodboard {
-	display: flex;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-	margin-left: -15px;
-	margin-right: -15px;
-	width: calc(100% + #{$moodboard-gutter});
-	text-align: left;
+.mood--tile {
+	.mood__item {
+		max-width: 330px;
+	}
+}
 
-	&>.listing__item {
-		flex: 0 0 calc(33% - #{$moodboard-gutter});
-		margin-right: $moodboard-gutter;
-		margin-bottom: $moodboard-gutter;
+.mood--horizontal {
+	.mood__item {
+		max-width: 720px;
+	}
+}
+
+.mood--vertical {
+	.mood__item {
+		max-width: 720px;
+	}
+}
+
+.mood--card {
+	.mood__item {
+		max-width: 456px;
+		background: $background-tertiary;
+		box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
 
 		.picture {
-			transition: all ease-in-out 400ms;
-			margin-bottom: 25px;
+			box-shadow: none;
 		}
+	}
+}
 
-		&:not(:hover) {
-			.picture {
-				box-shadow: none;
-			}
-		}
+@include media-breakpoint-down(sm) {
 
-		.look {
-			display: inline-block;
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			font-size: 12px;
-			line-height: 20px;
-			padding: 4px 20px;
-			background: $background;
-		}
+	.mood--tile,
+	.mood--horizontal,
+	.mood--vertical,
+	.mood--card {
+		width: 100%;
+	}
 
-		.title {
-			font-size: 20px;
-			font-weight: $font-semibold;
-			line-height: 1;
-			text-transform: uppercase;
-			margin-bottom: 15px;
-		}
+	.mood--tile {
+		text-align: center;
+	}
+}
 
-		.abstract {
-			font-size: 16px;
-			line-height: 24px;
-			margin-bottom: 15px;
-			min-height: 60px;
-			color: $foreground-secondary;
-		}
+@include media-breakpoint-up(md) {
 
-		.category {
-			font-size: 12px;
-			line-height: 1;
-			text-transform: uppercase;
-			margin-bottom: 10px;
-			color: $foreground-secondary;
-		}
+	[muuri] {
+		margin-right: -$moodboard-gutter;
+	}
 
-		.group--location {
-			display: flex;
-			align-items: center;
-			font-size: 14px;
-			color: $foreground-secondary;
+	.mood--tile {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
 
-			.icon--pin-outline {
-				width: 13px;
-				height: 16px;
-				fill: $foreground;
-				margin-right: 10px;
-			}
+	.mood--horizontal {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
 
-			.city {
-				font-weight: $font-semibold;
-				color: $foreground;
-			}
-		}
+	.mood--vertical {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
 
-		.group--cta {
-			margin: 0;
-		}
+	.mood--card {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
+}
 
+@include media-breakpoint-up(lg) {
+
+	.mood--tile {
+		width: calc(#{100% / 12 * 3} - #{$moodboard-gutter});
+	}
+
+	.mood--horizontal {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
+
+	.mood--vertical {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
+
+	.mood--card {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+		// padding: 0 8%;
 	}
 
 }
-*/

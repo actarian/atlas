@@ -15500,6 +15500,12 @@ var _control = _interopRequireDefault(require("./forms/control.directive"));
 
 var _validate = _interopRequireDefault(require("./forms/validate.directive"));
 
+var _moodboardDropdown = _interopRequireDefault(require("./moodboard/moodboard-dropdown.directive"));
+
+var _moodboardSearch = _interopRequireDefault(require("./moodboard/moodboard-search.directive"));
+
+var _moodboard = _interopRequireDefault(require("./moodboard/moodboard.controller"));
+
 var _references = _interopRequireDefault(require("./references/references.controller"));
 
 var _root = _interopRequireDefault(require("./root.controller"));
@@ -15508,7 +15514,13 @@ var _api = _interopRequireDefault(require("./services/api.service"));
 
 var _dom = _interopRequireDefault(require("./services/dom.service"));
 
-var _state = _interopRequireDefault(require("./shared/state"));
+var _storage = require("./services/storage.service");
+
+var _wishlist2 = _interopRequireDefault(require("./services/wishlist.service"));
+
+var _promise = _interopRequireDefault(require("./shared/promise.service"));
+
+var _state = _interopRequireDefault(require("./shared/state.service"));
 
 var _storeLocator = _interopRequireDefault(require("./store-locator/store-locator.controller"));
 
@@ -15522,15 +15534,15 @@ var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
-app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('StateService', _state.default.factory);
-app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
-app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
+app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
+app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
+app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MoodboardCtrl', _moodboard.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/last-item.directive":208,"./directives/lazy-script.directive":209,"./directives/lazy.directive":210,"./directives/media.directive":211,"./directives/muuri.directive":212,"./directives/parallax.directive":213,"./directives/scroll.directive":214,"./directives/sticky.directive":215,"./directives/swiper.directive":216,"./directives/video.directive":217,"./directives/wishlist.directive":218,"./faq/faq.controller":219,"./filters/image-with-features.filter":220,"./filters/notIn.filter":221,"./filters/trusted.filter":222,"./forms/control-messages.directive":223,"./forms/control.directive":224,"./forms/validate.directive":225,"./references/references.controller":226,"./root.controller":227,"./services/api.service":228,"./services/dom.service":229,"./shared/state":232,"./store-locator/store-locator.controller":233}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/last-item.directive":208,"./directives/lazy-script.directive":209,"./directives/lazy.directive":210,"./directives/media.directive":211,"./directives/muuri.directive":212,"./directives/parallax.directive":213,"./directives/scroll.directive":214,"./directives/sticky.directive":215,"./directives/swiper.directive":216,"./directives/video.directive":217,"./directives/wishlist.directive":218,"./faq/faq.controller":219,"./filters/image-with-features.filter":220,"./filters/notIn.filter":221,"./filters/trusted.filter":222,"./forms/control-messages.directive":223,"./forms/control.directive":224,"./forms/validate.directive":225,"./moodboard/moodboard-dropdown.directive":226,"./moodboard/moodboard-search.directive":227,"./moodboard/moodboard.controller":228,"./references/references.controller":229,"./root.controller":230,"./services/api.service":231,"./services/dom.service":232,"./services/storage.service":233,"./services/wishlist.service":234,"./shared/promise.service":235,"./shared/state.service":238,"./store-locator/store-locator.controller":239}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15778,7 +15790,7 @@ function () {
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
       var subscription = this.domService.appear$(node).subscribe(function (intersection) {
         // -0.05
-        console.log(intersection.rect.top);
+        // console.log(intersection.rect.top);
         var x = intersection.rect.left;
         var y = 0; // intersection.rect.top;
 
@@ -16115,7 +16127,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{"../shared/shader":231}],205:[function(require,module,exports){
+},{"../shared/shader":237}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16717,7 +16729,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":230,"rxjs/operators":197}],211:[function(require,module,exports){
+},{"../shared/rect":236,"rxjs/operators":197}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16737,13 +16749,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var MediaDirective =
 /*#__PURE__*/
 function () {
-  function MediaDirective(ApiService) {
+  function MediaDirective($timeout, WishlistService) {
     _classCallCheck(this, MediaDirective);
 
-    this.apiService = ApiService;
+    this.$timeout = $timeout;
+    this.wishlistService = WishlistService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n\t<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>";
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n\t<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>";
     this.scope = {
       item: '=?media'
     };
@@ -16772,20 +16785,46 @@ function () {
         };
       }
 
-      scope.onWishlist = function () {
-        _this.apiService.wishlist.toggle(scope.item).then(function (item) {
-          Object.assign(scope.item, item);
+      scope.$watch(function () {
+        return _this.wishlistService.has(scope.item);
+      }, function (current, previous) {
+        // console.log(current, previous, node);
+        if (scope.wishlistActive !== current) {
+          scope.wishlistActive = current;
+
+          if (current) {
+            scope.wishlistActivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistActivated = false;
+            }, 2000);
+          } else {
+            scope.wishlistDeactivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistDeactivated = false;
+            }, 2000);
+          }
+        }
+      });
+
+      scope.onClickWishlist = function (event) {
+        _this.wishlistService.toggle(scope.item).then(function (has) {
+          console.log('MediaDirective.onClickWishlist', has);
         }, function (error) {
-          return console.log(error);
+          console.log(error);
         });
+
+        event.preventDefault();
+        event.stopPropagation();
       };
 
       element.on('$destroy', function () {});
     }
   }], [{
     key: "factory",
-    value: function factory(ApiService) {
-      return new MediaDirective(ApiService);
+    value: function factory($timeout, WishlistService) {
+      return new MediaDirective($timeout, WishlistService);
     }
   }]);
 
@@ -16793,7 +16832,7 @@ function () {
 }();
 
 exports.default = MediaDirective;
-MediaDirective.factory.$inject = ['ApiService'];
+MediaDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
 },{}],212:[function(require,module,exports){
 "use strict";
@@ -16862,7 +16901,7 @@ function () {
     key: "onMuuri",
     value: function onMuuri(element) {
       if (element.muuri) {
-        element.muuri.update();
+        element.muuri.refreshItems();
       } else {
         element.muuri = new Muuri(element[0], {
           layoutDuration: 400,
@@ -16989,7 +17028,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":230,"rxjs/operators":197}],214:[function(require,module,exports){
+},{"../shared/rect":236,"rxjs/operators":197}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17148,7 +17187,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":230,"rxjs/operators":197}],216:[function(require,module,exports){
+},{"../shared/rect":236,"rxjs/operators":197}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17443,14 +17482,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var VideoDirective =
 /*#__PURE__*/
 function () {
-  function VideoDirective($timeout, ApiService) {
+  function VideoDirective($timeout, WishlistService) {
     _classCallCheck(this, VideoDirective);
 
     this.$timeout = $timeout;
-    this.apiService = ApiService;
+    this.wishlistService = WishlistService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>";
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>";
     this.scope = {
       item: '=?video'
     };
@@ -17514,6 +17553,40 @@ function () {
         progress.style.strokeDashoffset = video.currentTime / video.duration;
       };
 
+      scope.$watch(function () {
+        return _this.wishlistService.has(scope.item);
+      }, function (current, previous) {
+        // console.log(current, previous, node);
+        if (scope.wishlistActive !== current) {
+          scope.wishlistActive = current;
+
+          if (current) {
+            scope.wishlistActivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistActivated = false;
+            }, 2000);
+          } else {
+            scope.wishlistDeactivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistDeactivated = false;
+            }, 2000);
+          }
+        }
+      });
+
+      scope.onClickWishlist = function (event) {
+        _this.wishlistService.toggle(scope.item).then(function (has) {
+          console.log('VideoDirective.onClickWishlist', has);
+        }, function (error) {
+          console.log(error);
+        });
+
+        event.preventDefault();
+        event.stopPropagation();
+      };
+
       if (video) {
         video.addEventListener('play', onPlay);
         video.addEventListener('pause', onPause);
@@ -17532,8 +17605,8 @@ function () {
     }
   }], [{
     key: "factory",
-    value: function factory($timeout, ApiService) {
-      return new VideoDirective($timeout, ApiService);
+    value: function factory($timeout, WishlistService) {
+      return new VideoDirective($timeout, WishlistService);
     }
   }]);
 
@@ -17541,7 +17614,7 @@ function () {
 }();
 
 exports.default = VideoDirective;
-VideoDirective.factory.$inject = ['$timeout', 'ApiService'];
+VideoDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
 },{}],218:[function(require,module,exports){
 "use strict";
@@ -17566,7 +17639,7 @@ function () {
   function WishlistDirective(ApiService) {
     _classCallCheck(this, WishlistDirective);
 
-    this.apiService = ApiService;
+    this.wishlistService = WishlistService;
     this.restrict = 'E';
     this.scope = {
       item: '='
@@ -17583,7 +17656,7 @@ function () {
       scope.item = scope.item || {};
 
       scope.onWishlist = function () {
-        _this.apiService.wishlist.toggle(scope.item).then(function (item) {
+        _this.wishlistService.toggle(scope.item).then(function (item) {
           Object.assign(scope.item, item);
         }, function (error) {
           return console.log(error);
@@ -17594,8 +17667,8 @@ function () {
     }
   }], [{
     key: "factory",
-    value: function factory(ApiService) {
-      return new WishlistDirective(ApiService);
+    value: function factory(WishlistService) {
+      return new WishlistDirective(WishlistService);
     }
   }]);
 
@@ -17603,7 +17676,7 @@ function () {
 }();
 
 exports.default = WishlistDirective;
-WishlistDirective.factory.$inject = ['ApiService'];
+WishlistDirective.factory.$inject = ['WishlistService'];
 
 },{}],219:[function(require,module,exports){
 "use strict";
@@ -18373,6 +18446,234 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /* jshint esversion: 6 */
 
+/* global window, document, angular, TweenMax, TimelineMax */
+var MoodboardDropdownDirective =
+/*#__PURE__*/
+function () {
+  function MoodboardDropdownDirective($compile) {
+    _classCallCheck(this, MoodboardDropdownDirective);
+
+    this.$compile = $compile;
+    this.restrict = 'A';
+    this.template = "\n<span has-dropdown>\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\">{{filter.placeholder}}</span>\n</span>\n"; // this.require = 'ngModel';
+
+    this.scope = {
+      filter: '=?moodboardDropdown'
+    };
+  }
+
+  _createClass(MoodboardDropdownDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      // console.log('MoodboardDropdownDirective', this.filter);
+      scope.setFilter = function (item, filter) {
+        item = item || filter.options[0];
+        filter.value = item.value;
+        filter.placeholder = item.label;
+
+        if (typeof filter.doFilter === 'function') {
+          filter.doFilter(item, item.value);
+        }
+      };
+
+      scope.removeFilter = function (filter) {
+        _this.setFilter(null, filter);
+      };
+
+      element.on('$destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory($compile) {
+      return new MoodboardDropdownDirective($compile);
+    }
+  }]);
+
+  return MoodboardDropdownDirective;
+}();
+
+exports.default = MoodboardDropdownDirective;
+MoodboardDropdownDirective.factory.$inject = ['$compile'];
+
+},{}],227:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, MoodboardSearch, TweenMax, TimelineMax */
+var MoodboardSearchDirective =
+/*#__PURE__*/
+function () {
+  function MoodboardSearchDirective($compile) {
+    _classCallCheck(this, MoodboardSearchDirective);
+
+    this.$compile = $compile;
+    this.restrict = 'A';
+    this.scope = {
+      filters: '=moodboardSearch',
+      model: '=model'
+    };
+  }
+
+  _createClass(MoodboardSearchDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      scope.filters = scope.filters || {};
+      var node = element[0];
+      var html = node.innerText;
+      var keys = Object.keys(scope.filters);
+      keys.forEach(function (x) {
+        // console.log(x);
+        html = html.replace("$".concat(x, "$"), "<span class=\"moodboard__dropdown ".concat(x, "\" moodboard-dropdown=\"filters.").concat(x, "\"></span>"));
+      }); // console.log('MoodboardSearchDirective', html);
+
+      node.innerHTML = html;
+      this.$compile(element.contents())(scope);
+      element.on('$destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory($compile) {
+      return new MoodboardSearchDirective($compile);
+    }
+  }]);
+
+  return MoodboardSearchDirective;
+}();
+
+exports.default = MoodboardSearchDirective;
+MoodboardSearchDirective.factory.$inject = ['$compile'];
+
+},{}],228:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.MOOD_TYPES = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var MOOD_TYPES = Object.freeze({
+  Tile: 1,
+  Horizontal: 2,
+  Vertical: 3,
+  Card: 4
+});
+exports.MOOD_TYPES = MOOD_TYPES;
+
+var MoodboardCtrl =
+/*#__PURE__*/
+function () {
+  function MoodboardCtrl($scope, $timeout, ApiService) {
+    var _this = this;
+
+    _classCallCheck(this, MoodboardCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.apiService = ApiService;
+    this.filters = window.filters || {};
+    this.moodTypes = MOOD_TYPES;
+    Object.keys(this.filters).forEach(function (x) {
+      var filter = _this.filters[x];
+
+      switch (x) {
+        default:
+          filter.doFilter = function (item, value) {
+            // console.log(item, value);
+            _this.applyFilters(item, value);
+          };
+
+      }
+
+      filter.options.unshift({
+        label: _this.filters[x].placeholder,
+        value: null
+      });
+      filter.value = null;
+    });
+    this.applyFilters();
+  }
+
+  _createClass(MoodboardCtrl, [{
+    key: "applyFilters",
+    value: function applyFilters(item, value) {
+      var _this2 = this;
+
+      // console.log('MoodboardCtrl.applyFilters', this.filters);
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this2.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      this.apiService.moodboard.filter(filters).subscribe(function (success) {
+        var items = success.data;
+        /* FAKE */
+
+        while (items.length < 50) {
+          items = items.concat(items);
+        }
+
+        items.sort(function (a, b) {
+          return Math.random() > 0.5 ? 1 : -1;
+        });
+        /* FAKE */
+
+        _this2.items = [];
+
+        _this2.$timeout(function () {
+          _this2.items = items;
+        }, 50);
+      }, function (error) {
+        return console.log('MoodboardCtrl.applyFilters.error', error);
+      });
+    }
+  }]);
+
+  return MoodboardCtrl;
+}();
+
+MoodboardCtrl.$inject = ['$scope', '$timeout', 'ApiService'];
+var _default = MoodboardCtrl;
+exports.default = _default;
+
+},{}],229:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ReferencesCtrl =
 /*#__PURE__*/
@@ -18501,7 +18802,7 @@ ReferencesCtrl.$inject = ['$scope', '$timeout'];
 var _default = ReferencesCtrl;
 exports.default = _default;
 
-},{}],227:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18805,7 +19106,7 @@ RootCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'DomService',
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],228:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18813,15 +19114,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _rxjs = require("rxjs");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';
 
 var ApiService =
@@ -18836,6 +19136,12 @@ function () {
         toggle: function toggle(item) {
           item.added = !item.added;
           return Promise.resolve(item);
+        }
+      },
+      moodboard: {
+        filter: function filter(filters) {
+          // return $http.post(API_HREF + '/api/moodboard/json', filters);
+          return (0, _rxjs.from)($http.get('data/moodboard.json'));
         }
       },
       storeLocator: {
@@ -18860,7 +19166,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{}],229:[function(require,module,exports){
+},{"rxjs":1}],232:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19177,7 +19483,581 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":230,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],230:[function(require,module,exports){
+},{"../shared/rect":236,"rxjs":1,"rxjs/internal/scheduler/animationFrame":160,"rxjs/operators":197}],233:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SessionStorageService = exports.LocalStorageService = exports.CookieService = void 0;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global angular */
+var TIMEOUT = 5 * 60 * 1000; // five minutes
+
+var CookieService =
+/*#__PURE__*/
+function () {
+  function CookieService(PromiseService) {
+    _classCallCheck(this, CookieService);
+
+    this.promise = PromiseService;
+  }
+
+  _createClass(CookieService, [{
+    key: "delete",
+    value: function _delete(name) {
+      setter(name, '', -1);
+    }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var cookieName = name + "=";
+      var ca = document.cookie.split(';');
+
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1, c.length);
+        }
+
+        if (c.indexOf(cookieName) === 0) {
+          var value = c.substring(cookieName.length, c.length);
+          var model = null;
+
+          try {
+            model = JSON.parse(decodeURIComponent(atob(value)));
+          } catch (e) {
+            console.log('CookieService.get.error parsing', key, e);
+          }
+
+          return model;
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      var _this = this;
+
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var checkCookie = function checkCookie() {
+          if (elapsed > timeout) {
+            promise.reject('timeout');
+          } else {
+            var c = _this.get(name);
+
+            if (c) {
+              promise.resolve(c);
+            } else {
+              elapsed += interval;
+              i = setTimeout(checkCookie, interval);
+            }
+          }
+        };
+
+        checkCookie();
+      });
+    }
+  }, {
+    key: "set",
+    value: function set(name, value, days) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
+            return;
+          }
+
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
+
+            cache.push(value);
+          }
+
+          return value;
+        });
+        this.setter(name, btoa(encodeURIComponent(json)), days);
+      } catch (e) {
+        console.log('CookieService.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "setter",
+    value: function setter(name, value, days) {
+      var expires;
+
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toGMTString();
+      } else {
+        expires = '';
+      }
+
+      document.cookie = name + '=' + value + expires + '; path=/';
+    }
+  }], [{
+    key: "factory",
+    value: function factory(PromiseService) {
+      return new CookieService(PromiseService);
+    }
+  }]);
+
+  return CookieService;
+}();
+
+exports.CookieService = CookieService;
+CookieService.factory.$inject = ['PromiseService'];
+
+var LocalStorageService =
+/*#__PURE__*/
+function () {
+  function LocalStorageService(PromiseService) {
+    _classCallCheck(this, LocalStorageService);
+
+    this.promise = PromiseService;
+  }
+
+  _createClass(LocalStorageService, [{
+    key: "delete",
+    value: function _delete(name) {
+      window.localStorage.removeItem(name);
+    }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return window.localStorage[name] !== undefined;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var value = null;
+
+      if (window.localStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.localStorage[name]);
+        } catch (e) {
+          console.log('LocalStorageService.get.error parsing', name, e);
+        }
+      }
+
+      return value;
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
+            return;
+          }
+
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
+
+            cache.push(value);
+          }
+
+          return value;
+        });
+        window.localStorage.setItem(name, json);
+      } catch (e) {
+        console.log('LocalStorageService.set.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var storageEvent = function storageEvent(e) {
+          if (i) {
+            clearTimeout(i);
+          }
+
+          if (e.originalEvent.key == name) {
+            try {
+              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
+
+              promise.resolve(value);
+            } catch (error) {
+              console.log('LocalStorageService.on.error parsing', name, error);
+              promise.reject('error parsing ' + name);
+            }
+          }
+        };
+
+        angular.element(window).on('storage', storageEvent);
+        i = setTimeout(function () {
+          promise.reject('timeout');
+        }, timeout);
+      });
+    }
+  }], [{
+    key: "isLocalStorageSupported",
+    value: function isLocalStorageSupported() {
+      var supported = false;
+
+      try {
+        supported = 'localStorage' in window && window.localStorage !== null;
+
+        if (supported) {
+          window.localStorage.setItem('test', '1');
+          window.localStorage.removeItem('test');
+        } else {
+          supported = false;
+        }
+      } catch (e) {
+        supported = false;
+      }
+
+      return supported;
+    }
+  }, {
+    key: "factory",
+    value: function factory(PromiseService) {
+      if (LocalStorageService.isLocalStorageSupported()) {
+        return new LocalStorageService(PromiseService);
+      } else {
+        return new CookieService(PromiseService);
+      }
+    }
+  }]);
+
+  return LocalStorageService;
+}();
+
+exports.LocalStorageService = LocalStorageService;
+LocalStorageService.factory.$inject = ['PromiseService'];
+
+var SessionStorageService =
+/*#__PURE__*/
+function () {
+  function SessionStorageService(PromiseService) {
+    _classCallCheck(this, SessionStorageService);
+
+    this.promise = PromiseService;
+  }
+
+  _createClass(SessionStorageService, [{
+    key: "delete",
+    value: function _delete(name) {
+      window.sessionStorage.removeItem(name);
+    }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return window.sessionStorage[name] !== undefined;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var value = null;
+
+      if (window.sessionStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.sessionStorage[name]);
+        } catch (e) {
+          console.log('SessionStorageService.get.error parsing', name, e);
+        }
+      }
+
+      return value;
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
+            return;
+          }
+
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
+
+            cache.push(value);
+          }
+
+          return value;
+        });
+        window.sessionStorage.setItem(name, json);
+      } catch (e) {
+        console.log('SessionStorageService.set.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var storageEvent = function storageEvent(e) {
+          if (i) {
+            clearTimeout(i);
+          }
+
+          if (e.originalEvent.key == name) {
+            try {
+              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
+
+              promise.resolve(value);
+            } catch (error) {
+              console.log('SessionStorageService.on.error parsing', name, error);
+              promise.reject('error parsing ' + name);
+            }
+          }
+        };
+
+        angular.element(window).on('storage', storageEvent);
+        i = setTimeout(function () {
+          promise.reject('timeout');
+        }, timeout);
+      });
+    }
+  }], [{
+    key: "isSessionStorageSupported",
+    value: function isSessionStorageSupported() {
+      var supported = false;
+
+      try {
+        supported = 'sessionStorage' in window && window.sessionStorage !== null;
+
+        if (supported) {
+          window.sessionStorage.setItem('test', '1');
+          window.localsessionStorageStorage.removeItem('test');
+        } else {
+          supported = false;
+        }
+      } catch (e) {
+        supported = false;
+      }
+
+      return supported;
+    }
+  }, {
+    key: "factory",
+    value: function factory(PromiseService) {
+      if (SessionStorageService.isSessionStorageSupported()) {
+        return new SessionStorageService(PromiseService);
+      } else {
+        return new CookieService(PromiseService);
+      }
+    }
+  }]);
+
+  return SessionStorageService;
+}();
+
+exports.SessionStorageService = SessionStorageService;
+SessionStorageService.factory.$inject = ['PromiseService'];
+
+},{}],234:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+var WishlistService =
+/*#__PURE__*/
+function () {
+  function WishlistService(PromiseService, StorageService, ApiService) {
+    _classCallCheck(this, WishlistService);
+
+    this.promise = PromiseService;
+    this.storage = StorageService;
+    this.api = ApiService;
+    console.log('WishlistService', this.storage);
+  }
+
+  _createClass(WishlistService, [{
+    key: "indexOf",
+    value: function indexOf(item) {
+      var index = this.wishlist.reduce(function (p, c, i) {
+        if (p === -1) {
+          return c.id === item.id && c.type === item.type ? i : p;
+        } else {
+          return p;
+        }
+      }, -1);
+      return index;
+    }
+  }, {
+    key: "has",
+    value: function has(item) {
+      return this.indexOf(item) !== -1;
+    }
+  }, {
+    key: "add",
+    value: function add(item) {
+      var _this = this;
+
+      return this.promise.make(function (promise) {
+        var wishlist = _this.wishlist;
+        wishlist.push({
+          id: item.id,
+          type: item.type
+        });
+        _this.wishlist = wishlist;
+        promise.resolve(true);
+      });
+    }
+  }, {
+    key: "remove",
+    value: function remove(item) {
+      var _this2 = this;
+
+      return this.promise.make(function (promise) {
+        var index = _this2.indexOf(item);
+
+        var wishlist = _this2.wishlist;
+        wishlist.splice(index, 1);
+        _this2.wishlist = wishlist;
+        promise.resolve(false);
+      });
+    }
+  }, {
+    key: "toggle",
+    value: function toggle(item) {
+      if (this.has(item)) {
+        return this.remove(item);
+      } else {
+        return this.add(item);
+      }
+    }
+  }, {
+    key: "wishlist",
+    get: function get() {
+      if (!this.wishlist_) {
+        var wishlist = this.storage.get('wishlist');
+        this.wishlist_ = wishlist || [];
+      }
+
+      return this.wishlist_;
+    },
+    set: function set(wishlist) {
+      this.wishlist_ = wishlist || [];
+      this.storage.set('wishlist', this.wishlist_);
+    }
+  }], [{
+    key: "factory",
+    value: function factory(PromiseService, StorageService, ApiService) {
+      return new WishlistService(PromiseService, StorageService, ApiService);
+    }
+  }]);
+
+  return WishlistService;
+}();
+
+exports.default = WishlistService;
+WishlistService.factory.$inject = ['PromiseService', 'LocalStorageService', 'ApiService'];
+
+},{}],235:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global angular */
+var PromiseService =
+/*#__PURE__*/
+function () {
+  function PromiseService($q) {
+    _classCallCheck(this, PromiseService);
+
+    this.$q = $q;
+  }
+
+  _createClass(PromiseService, [{
+    key: "make",
+    value: function make(callback) {
+      if (typeof callback !== 'function') {
+        throw 'promise resolve callback missing';
+      }
+
+      var deferred = this.$q.defer();
+      callback(deferred);
+      return deferred.promise;
+    }
+  }, {
+    key: "all",
+    value: function all(promises) {
+      return this.$q.all(promises);
+    }
+  }], [{
+    key: "factory",
+    value: function factory($q) {
+      return new PromiseService($q);
+    }
+  }]);
+
+  return PromiseService;
+}();
+
+exports.default = PromiseService;
+PromiseService.factory.$inject = ['$q'];
+
+},{}],236:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19319,7 +20199,7 @@ function () {
 
 exports.default = Rect;
 
-},{}],231:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19333,7 +20213,7 @@ exports.FRAGMENT_SHADER = void 0;
 var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
 exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
 
-},{}],232:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19528,7 +20408,7 @@ function () {
 exports.default = StateService;
 StateService.factory.$inject = ['$timeout', '$rootScope'];
 
-},{}],233:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
