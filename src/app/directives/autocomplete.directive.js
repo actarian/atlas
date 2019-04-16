@@ -19,7 +19,12 @@ export default class AutocompleteDirective {
 		this.template = `
 		<div class="dropdown">
 			<ul class="nav nav--select">
-				<li ng-repeat="item in items track by $index" ng-class="{ active: item.value == filter.value, disabled: item.disabled }"><span ng-click="setItem(item)" ng-bind="item.label"></span></li>
+				<li ng-repeat="item in items track by $index" ng-class="{ active: item.value == filter.value, disabled: item.disabled }">
+					<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="setItem(item)">
+						<img ng-src="{{item.image}}" ng-if="item.image" />
+						<span ng-bind="item.label"></span>
+					</span>
+				</li>
 			</ul>
 		</div>
 		<label class="label" ng-bind="filter.label"></label>

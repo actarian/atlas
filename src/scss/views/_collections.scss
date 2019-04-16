@@ -153,43 +153,6 @@
 	}
 }
 
-.nav--select {
-	flex-direction: column;
-	width: 100%;
-	overflow-y: auto;
-	border-top: 1px solid $border;
-	padding-bottom: 10px;
-
-	&>li {
-
-		&>a,
-		&>span {
-			display: block;
-			padding: 10px 20px;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			color: $foreground-secondary;
-		}
-
-		&:hover,
-		&.active {
-
-			&>a,
-			&>span {
-				background: $background-tertiary;
-				color: $foreground;
-			}
-
-		}
-
-		&.disabled {
-			opacity: 0.5;
-			pointer-events: none;
-		}
-	}
-}
-
 .dropdown {
 	position: absolute;
 	width: 100%;

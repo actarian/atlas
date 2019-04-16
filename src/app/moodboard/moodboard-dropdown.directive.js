@@ -31,6 +31,10 @@ export default class MoodboardDropdownDirective {
 
 	link(scope, element, attributes, controller) {
 		// console.log('MoodboardDropdownDirective', this.filter);
+		const filter = scope.filter;
+		if (filter.value) {
+			filter.placeholder = filter.options.find(x => x.value === filter.value).label;
+		}
 		scope.setFilter = (item, filter) => {
 			item = item || filter.options[0];
 			filter.value = item.value;

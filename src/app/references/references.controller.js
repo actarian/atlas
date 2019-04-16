@@ -5,12 +5,21 @@ class ReferencesCtrl {
 
 	constructor(
 		$scope,
-		$timeout
+		$timeout,
+		LocationService
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
+		this.locationService = LocationService;
 		this.filters = window.filters || {};
 		this.references = window.references || [];
+		this.deserializeFilters();
+		this.applyFilters();
+	}
+
+	deserializeFilters() {
+		const locationFilters = this.locationService.deserialize('filters') || {};
+
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -33,13 +42,28 @@ class ReferencesCtrl {
 				label: this.filters[x].placeholder,
 				value: null,
 			});
-			filter.value = null;
+			const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
+			filter.value = selectedOption.value;
+			filter.placeholder = selectedOption.label;
 		});
-		this.filteredReferences = this.references.slice();
-		this.updateFilterStates(this.filteredReferences);
+		return filters;
+	}
+
+	serializeFilters() {
+		const filters = {};
+		Object.keys(this.filters).forEach(x => {
+			const filter = this.filters[x];
+			if (filter.value !== null) {
+				filters[x] = filter.value;
+			}
+		});
+		// console.log('ReferenceCtrl.serializeFilters', filters);
+		this.locationService.serialize('filters', filters);
+		return filters;
 	}
 
 	applyFilters() {
+		this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
 		let filteredReferences = this.references.slice();
 		// console.log(filteredReferences);
@@ -96,6 +120,6 @@ class ReferencesCtrl {
 
 }
 
-ReferencesCtrl.$inject = ['$scope', '$timeout'];
+ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
 export default ReferencesCtrl;

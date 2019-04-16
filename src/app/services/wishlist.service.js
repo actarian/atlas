@@ -29,7 +29,7 @@ export default class WishlistService {
 	indexOf(item) {
 		const index = this.wishlist.reduce((p, c, i) => {
 			if (p === -1) {
-				return c.id === item.id && c.type === item.type ? i : p;
+				return c.id === item.id && c.coId === item.coId ? i : p;
 			} else {
 				return p;
 			}
@@ -44,7 +44,7 @@ export default class WishlistService {
 	add(item) {
 		return this.promise.make((promise) => {
 			const wishlist = this.wishlist;
-			wishlist.push({ id: item.id, type: item.type });
+			wishlist.push({ id: item.id, coId: item.coId });
 			this.wishlist = wishlist;
 			promise.resolve(true);
 		});

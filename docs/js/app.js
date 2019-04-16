@@ -15514,13 +15514,15 @@ var _api = _interopRequireDefault(require("./services/api.service"));
 
 var _dom = _interopRequireDefault(require("./services/dom.service"));
 
-var _storage = require("./services/storage.service");
-
 var _wishlist2 = _interopRequireDefault(require("./services/wishlist.service"));
+
+var _location = _interopRequireDefault(require("./shared/location.service"));
 
 var _promise = _interopRequireDefault(require("./shared/promise.service"));
 
 var _state = _interopRequireDefault(require("./shared/state.service"));
+
+var _storage = require("./shared/storage.service");
 
 var _storeLocator = _interopRequireDefault(require("./store-locator/store-locator.controller"));
 
@@ -15534,7 +15536,7 @@ var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
-app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
+app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
 app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
 app.controller('RootCtrl', _root.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MoodboardCtrl', _moodboard.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
@@ -15542,7 +15544,7 @@ app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/last-item.directive":208,"./directives/lazy-script.directive":209,"./directives/lazy.directive":210,"./directives/media.directive":211,"./directives/muuri.directive":212,"./directives/parallax.directive":213,"./directives/scroll.directive":214,"./directives/sticky.directive":215,"./directives/swiper.directive":216,"./directives/video.directive":217,"./directives/wishlist.directive":218,"./faq/faq.controller":219,"./filters/image-with-features.filter":220,"./filters/notIn.filter":221,"./filters/trusted.filter":222,"./forms/control-messages.directive":223,"./forms/control.directive":224,"./forms/validate.directive":225,"./moodboard/moodboard-dropdown.directive":226,"./moodboard/moodboard-search.directive":227,"./moodboard/moodboard.controller":228,"./references/references.controller":229,"./root.controller":230,"./services/api.service":231,"./services/dom.service":232,"./services/storage.service":233,"./services/wishlist.service":234,"./shared/promise.service":235,"./shared/state.service":238,"./store-locator/store-locator.controller":239}],200:[function(require,module,exports){
+},{"./collections/collections.controller":200,"./contacts/contacts.controller":201,"./directives/appear.directive":202,"./directives/autocomplete.directive":203,"./directives/glsl-canvas.directive":204,"./directives/has-dropdown.directive":205,"./directives/hilight.directive":206,"./directives/href.directive":207,"./directives/last-item.directive":208,"./directives/lazy-script.directive":209,"./directives/lazy.directive":210,"./directives/media.directive":211,"./directives/muuri.directive":212,"./directives/parallax.directive":213,"./directives/scroll.directive":214,"./directives/sticky.directive":215,"./directives/swiper.directive":216,"./directives/video.directive":217,"./directives/wishlist.directive":218,"./faq/faq.controller":219,"./filters/image-with-features.filter":220,"./filters/notIn.filter":221,"./filters/trusted.filter":222,"./forms/control-messages.directive":223,"./forms/control.directive":224,"./forms/validate.directive":225,"./moodboard/moodboard-dropdown.directive":226,"./moodboard/moodboard-search.directive":227,"./moodboard/moodboard.controller":228,"./references/references.controller":229,"./root.controller":230,"./services/api.service":231,"./services/dom.service":232,"./services/wishlist.service":233,"./shared/location.service":234,"./shared/promise.service":235,"./shared/state.service":238,"./shared/storage.service":239,"./store-locator/store-locator.controller":240}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15562,55 +15564,88 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var CollectionsCtrl =
 /*#__PURE__*/
 function () {
-  function CollectionsCtrl($scope, $timeout) {
-    var _this = this;
-
+  function CollectionsCtrl($scope, $timeout, LocationService) {
     _classCallCheck(this, CollectionsCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.locationService = LocationService;
     this.filters = window.filters || {};
     this.brands = window.brands || [];
-    Object.keys(this.filters).forEach(function (x) {
-      var filter = _this.filters[x];
-
-      switch (x) {
-        case 'collections':
-          filter.doFilter = function (item, value) {
-            return item.id === value;
-          };
-
-          break;
-
-        default:
-          filter.doFilter = function (item, value) {
-            return item.features.indexOf(value) !== -1;
-          };
-
-      }
-
-      filter.options.unshift({
-        label: _this.filters[x].placeholder,
-        value: null
-      });
-      filter.value = null;
-    });
-    this.updateFilterStates(this.brands); // console.log(this.filters);
+    this.deserializeFilters();
+    this.applyFilters(); // this.filteredReferences = this.references.slice();
+    // this.updateFilterStates(this.filteredReferences);
+    // console.log(this.filters);
     // console.log(this.brands);
   }
 
   _createClass(CollectionsCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters() {
+      var _this = this;
+
+      var locationFilters = this.locationService.deserialize('filters') || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
+
+        switch (x) {
+          case 'collections':
+            filter.doFilter = function (item, value) {
+              return item.id === value;
+            };
+
+            break;
+
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
+
+        }
+
+        filter.options.unshift({
+          label: filter.placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
+      });
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
+
+      var filters = {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
+
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+        }
+      }); // console.log('CollectionsCtrl.serializeFilters', filters);
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
     key: "applyFilters",
     value: function applyFilters() {
-      var _this2 = this;
+      var _this3 = this;
 
       /*
       const filters = Object.keys(this.filters).map((x) => {
       	return Object.assign({ type: x }, this.filters[x]);
       }).filter(x => x.value !== null);
       */
+      this.serializeFilters();
       var filters = Object.keys(this.filters).map(function (x) {
-        return _this2.filters[x];
+        return _this3.filters[x];
       }).filter(function (x) {
         return x.value !== null;
       });
@@ -15642,22 +15677,22 @@ function () {
 
       this.filteredBrands = [];
       this.$timeout(function () {
-        _this2.filteredBrands = filteredBrands;
+        _this3.filteredBrands = filteredBrands;
 
-        _this2.updateFilterStates(filteredBrands); // delayer for image update
+        _this3.updateFilterStates(filteredBrands); // delayer for image update
 
       }, 50);
     }
   }, {
     key: "updateFilterStates",
     value: function updateFilterStates(brands) {
-      var _this3 = this;
+      var _this4 = this;
 
       var collections = [].concat.apply([], brands.map(function (x) {
         return x.collections;
       }));
       Object.keys(this.filters).forEach(function (x) {
-        var filter = _this3.filters[x];
+        var filter = _this4.filters[x];
         filter.options.forEach(function (option) {
           var has = false;
 
@@ -15695,7 +15730,7 @@ function () {
   return CollectionsCtrl;
 }();
 
-CollectionsCtrl.$inject = ['$scope', '$timeout'];
+CollectionsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = CollectionsCtrl;
 exports.default = _default;
 
@@ -15887,7 +15922,7 @@ function () {
       onSetItem: '=?',
       onRemoveItem: '=?'
     };
-    this.template = "\n\t\t<div class=\"dropdown\">\n\t\t\t<ul class=\"nav nav--select\">\n\t\t\t\t<li ng-repeat=\"item in items track by $index\" ng-class=\"{ active: item.value == filter.value, disabled: item.disabled }\"><span ng-click=\"setItem(item)\" ng-bind=\"item.label\"></span></li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<label class=\"label\" ng-bind=\"filter.label\"></label>\n\t\t<div class=\"control control--select\" ng-class=\"{ selected: filter.value }\">\n\t\t\t<div class=\"input\">\n\t\t\t\t<svg class=\"icon icon--search\" ng-if=\"!filter.value\"><use xlink:href=\"#search\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--close\" ng-if=\"filter.value\" ng-click=\"removeItem()\"><use xlink:href=\"#close\"></use></svg>\n\t\t\t\t<input type=\"text\" class=\"value\" ng-model=\"autocomplete.query\" ng-model-options=\"{ debounce: 200 }\" ng-disabled=\"filter.value\" placeholder=\"{{filter.placeholder}}\" ng-change=\"onChange($event)\" ng-click=\"onClick($event)\"></input>\n\t\t\t\t<svg class=\"icon icon--arrow-down\"><use xlink:href=\"#arrow-down\"></use></svg>\n\t\t\t</div>\n\t\t</div>\n\t\t";
+    this.template = "\n\t\t<div class=\"dropdown\">\n\t\t\t<ul class=\"nav nav--select\">\n\t\t\t\t<li ng-repeat=\"item in items track by $index\" ng-class=\"{ active: item.value == filter.value, disabled: item.disabled }\">\n\t\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setItem(item)\">\n\t\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t\t</span>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<label class=\"label\" ng-bind=\"filter.label\"></label>\n\t\t<div class=\"control control--select\" ng-class=\"{ selected: filter.value }\">\n\t\t\t<div class=\"input\">\n\t\t\t\t<svg class=\"icon icon--search\" ng-if=\"!filter.value\"><use xlink:href=\"#search\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--close\" ng-if=\"filter.value\" ng-click=\"removeItem()\"><use xlink:href=\"#close\"></use></svg>\n\t\t\t\t<input type=\"text\" class=\"value\" ng-model=\"autocomplete.query\" ng-model-options=\"{ debounce: 200 }\" ng-disabled=\"filter.value\" placeholder=\"{{filter.placeholder}}\" ng-change=\"onChange($event)\" ng-click=\"onClick($event)\"></input>\n\t\t\t\t<svg class=\"icon icon--arrow-down\"><use xlink:href=\"#arrow-down\"></use></svg>\n\t\t\t</div>\n\t\t</div>\n\t\t";
   }
 
   _createClass(AutocompleteDirective, [{
@@ -18468,6 +18503,14 @@ function () {
       var _this = this;
 
       // console.log('MoodboardDropdownDirective', this.filter);
+      var filter = scope.filter;
+
+      if (filter.value) {
+        filter.placeholder = filter.options.find(function (x) {
+          return x.value === filter.value;
+        }).label;
+      }
+
       scope.setFilter = function (item, filter) {
         item = item || filter.options[0];
         filter.value = item.value;
@@ -18585,45 +18628,76 @@ exports.MOOD_TYPES = MOOD_TYPES;
 var MoodboardCtrl =
 /*#__PURE__*/
 function () {
-  function MoodboardCtrl($scope, $timeout, ApiService) {
-    var _this = this;
-
+  function MoodboardCtrl($scope, $timeout, LocationService, ApiService) {
     _classCallCheck(this, MoodboardCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.locationService = LocationService;
     this.apiService = ApiService;
     this.filters = window.filters || {};
     this.moodTypes = MOOD_TYPES;
-    Object.keys(this.filters).forEach(function (x) {
-      var filter = _this.filters[x];
-
-      switch (x) {
-        default:
-          filter.doFilter = function (item, value) {
-            // console.log(item, value);
-            _this.applyFilters(item, value);
-          };
-
-      }
-
-      filter.options.unshift({
-        label: _this.filters[x].placeholder,
-        value: null
-      });
-      filter.value = null;
-    });
+    this.deserializeFilters();
     this.applyFilters();
   }
 
   _createClass(MoodboardCtrl, [{
-    key: "applyFilters",
-    value: function applyFilters(item, value) {
+    key: "deserializeFilters",
+    value: function deserializeFilters() {
+      var _this = this;
+
+      var locationFilters = this.locationService.deserialize('filters') || {}; // console.log('MoodboardCtrl.deserializeFilters', filters);
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
+
+        switch (x) {
+          default:
+            filter.doFilter = function (item, value) {
+              // console.log(item, value);
+              _this.applyFilters(item, value);
+            };
+
+        }
+
+        filter.options.unshift({
+          label: filter.placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label; // console.log(x, filters[x], filter.value);
+      });
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
       var _this2 = this;
 
+      var filters = {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
+
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+        }
+      }); // console.log('MoodboardCtrl.serializeFilters', filters);
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(item, value) {
+      var _this3 = this;
+
       // console.log('MoodboardCtrl.applyFilters', this.filters);
+      this.serializeFilters();
       var filters = Object.keys(this.filters).map(function (x) {
-        return _this2.filters[x];
+        return _this3.filters[x];
       }).filter(function (x) {
         return x.value !== null;
       });
@@ -18640,10 +18714,10 @@ function () {
         });
         /* FAKE */
 
-        _this2.items = [];
+        _this3.items = [];
 
-        _this2.$timeout(function () {
-          _this2.items = items;
+        _this3.$timeout(function () {
+          _this3.items = items;
         }, 50);
       }, function (error) {
         return console.log('MoodboardCtrl.applyFilters.error', error);
@@ -18654,7 +18728,7 @@ function () {
   return MoodboardCtrl;
 }();
 
-MoodboardCtrl.$inject = ['$scope', '$timeout', 'ApiService'];
+MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardCtrl;
 exports.default = _default;
 
@@ -18678,57 +18752,86 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var ReferencesCtrl =
 /*#__PURE__*/
 function () {
-  function ReferencesCtrl($scope, $timeout) {
-    var _this = this;
-
+  function ReferencesCtrl($scope, $timeout, LocationService) {
     _classCallCheck(this, ReferencesCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.locationService = LocationService;
     this.filters = window.filters || {};
     this.references = window.references || [];
-    Object.keys(this.filters).forEach(function (x) {
-      var filter = _this.filters[x];
-
-      switch (x) {
-        case 'collections':
-          filter.doFilter = function (item, value) {
-            return item.collections.indexOf(value) !== -1;
-          };
-
-          break;
-
-        case 'countries':
-          filter.doFilter = function (item, value) {
-            return item.countryId === value;
-          };
-
-          break;
-
-        default:
-          filter.doFilter = function (item, value) {
-            return item.features.indexOf(value) !== -1;
-          };
-
-      }
-
-      filter.options.unshift({
-        label: _this.filters[x].placeholder,
-        value: null
-      });
-      filter.value = null;
-    });
-    this.filteredReferences = this.references.slice();
-    this.updateFilterStates(this.filteredReferences);
+    this.deserializeFilters();
+    this.applyFilters();
   }
 
   _createClass(ReferencesCtrl, [{
-    key: "applyFilters",
-    value: function applyFilters() {
+    key: "deserializeFilters",
+    value: function deserializeFilters() {
+      var _this = this;
+
+      var locationFilters = this.locationService.deserialize('filters') || {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
+
+        switch (x) {
+          case 'collections':
+            filter.doFilter = function (item, value) {
+              return item.collections.indexOf(value) !== -1;
+            };
+
+            break;
+
+          case 'countries':
+            filter.doFilter = function (item, value) {
+              return item.countryId === value;
+            };
+
+            break;
+
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
+
+        }
+
+        filter.options.unshift({
+          label: _this.filters[x].placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
+      });
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
       var _this2 = this;
 
+      var filters = {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
+
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+        }
+      }); // console.log('ReferenceCtrl.serializeFilters', filters);
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters() {
+      var _this3 = this;
+
+      this.serializeFilters();
       var filters = Object.keys(this.filters).map(function (x) {
-        return _this2.filters[x];
+        return _this3.filters[x];
       }).filter(function (x) {
         return x.value !== null;
       });
@@ -18747,20 +18850,20 @@ function () {
 
       this.filteredReferences = [];
       this.$timeout(function () {
-        _this2.filteredReferences = filteredReferences;
+        _this3.filteredReferences = filteredReferences;
 
-        _this2.updateFilterStates(filteredReferences); // delayer for image update
+        _this3.updateFilterStates(filteredReferences); // delayer for image update
 
       }, 50);
     }
   }, {
     key: "updateFilterStates",
     value: function updateFilterStates(references) {
-      var _this3 = this;
+      var _this4 = this;
 
       // console.log('updateFilterStates', references);
       Object.keys(this.filters).forEach(function (x) {
-        var filter = _this3.filters[x];
+        var filter = _this4.filters[x];
         filter.options.forEach(function (option) {
           var has = false;
 
@@ -18798,7 +18901,7 @@ function () {
   return ReferencesCtrl;
 }();
 
-ReferencesCtrl.$inject = ['$scope', '$timeout'];
+ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = ReferencesCtrl;
 exports.default = _default;
 
@@ -19489,416 +19592,6 @@ DomService.factory.$inject = [];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SessionStorageService = exports.LocalStorageService = exports.CookieService = void 0;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/* jshint esversion: 6 */
-
-/* global angular */
-var TIMEOUT = 5 * 60 * 1000; // five minutes
-
-var CookieService =
-/*#__PURE__*/
-function () {
-  function CookieService(PromiseService) {
-    _classCallCheck(this, CookieService);
-
-    this.promise = PromiseService;
-  }
-
-  _createClass(CookieService, [{
-    key: "delete",
-    value: function _delete(name) {
-      setter(name, '', -1);
-    }
-  }, {
-    key: "exist",
-    value: function exist(name) {
-      return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
-    }
-  }, {
-    key: "get",
-    value: function get(name) {
-      var cookieName = name + "=";
-      var ca = document.cookie.split(';');
-
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1, c.length);
-        }
-
-        if (c.indexOf(cookieName) === 0) {
-          var value = c.substring(cookieName.length, c.length);
-          var model = null;
-
-          try {
-            model = JSON.parse(decodeURIComponent(atob(value)));
-          } catch (e) {
-            console.log('CookieService.get.error parsing', key, e);
-          }
-
-          return model;
-        }
-      }
-
-      return null;
-    }
-  }, {
-    key: "on",
-    value: function on(name) {
-      var _this = this;
-
-      return this.promise.make(function (promise) {
-        var i,
-            interval = 1000,
-            elapsed = 0,
-            timeout = TIMEOUT;
-
-        var checkCookie = function checkCookie() {
-          if (elapsed > timeout) {
-            promise.reject('timeout');
-          } else {
-            var c = _this.get(name);
-
-            if (c) {
-              promise.resolve(c);
-            } else {
-              elapsed += interval;
-              i = setTimeout(checkCookie, interval);
-            }
-          }
-        };
-
-        checkCookie();
-      });
-    }
-  }, {
-    key: "set",
-    value: function set(name, value, days) {
-      try {
-        var cache = [];
-        var json = JSON.stringify(value, function (key, value) {
-          if (key === 'pool') {
-            return;
-          }
-
-          if (_typeof(value) === 'object' && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-              // Circular reference found, discard key
-              return;
-            }
-
-            cache.push(value);
-          }
-
-          return value;
-        });
-        this.setter(name, btoa(encodeURIComponent(json)), days);
-      } catch (e) {
-        console.log('CookieService.error serializing', name, value, e);
-      }
-    }
-  }, {
-    key: "setter",
-    value: function setter(name, value, days) {
-      var expires;
-
-      if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = '; expires=' + date.toGMTString();
-      } else {
-        expires = '';
-      }
-
-      document.cookie = name + '=' + value + expires + '; path=/';
-    }
-  }], [{
-    key: "factory",
-    value: function factory(PromiseService) {
-      return new CookieService(PromiseService);
-    }
-  }]);
-
-  return CookieService;
-}();
-
-exports.CookieService = CookieService;
-CookieService.factory.$inject = ['PromiseService'];
-
-var LocalStorageService =
-/*#__PURE__*/
-function () {
-  function LocalStorageService(PromiseService) {
-    _classCallCheck(this, LocalStorageService);
-
-    this.promise = PromiseService;
-  }
-
-  _createClass(LocalStorageService, [{
-    key: "delete",
-    value: function _delete(name) {
-      window.localStorage.removeItem(name);
-    }
-  }, {
-    key: "exist",
-    value: function exist(name) {
-      return window.localStorage[name] !== undefined;
-    }
-  }, {
-    key: "get",
-    value: function get(name) {
-      var value = null;
-
-      if (window.localStorage[name] !== undefined) {
-        try {
-          value = JSON.parse(window.localStorage[name]);
-        } catch (e) {
-          console.log('LocalStorageService.get.error parsing', name, e);
-        }
-      }
-
-      return value;
-    }
-  }, {
-    key: "set",
-    value: function set(name, value) {
-      try {
-        var cache = [];
-        var json = JSON.stringify(value, function (key, value) {
-          if (key === 'pool') {
-            return;
-          }
-
-          if (_typeof(value) === 'object' && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-              // Circular reference found, discard key
-              return;
-            }
-
-            cache.push(value);
-          }
-
-          return value;
-        });
-        window.localStorage.setItem(name, json);
-      } catch (e) {
-        console.log('LocalStorageService.set.error serializing', name, value, e);
-      }
-    }
-  }, {
-    key: "on",
-    value: function on(name) {
-      return this.promise.make(function (promise) {
-        var i,
-            interval = 1000,
-            elapsed = 0,
-            timeout = TIMEOUT;
-
-        var storageEvent = function storageEvent(e) {
-          if (i) {
-            clearTimeout(i);
-          }
-
-          if (e.originalEvent.key == name) {
-            try {
-              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
-
-              promise.resolve(value);
-            } catch (error) {
-              console.log('LocalStorageService.on.error parsing', name, error);
-              promise.reject('error parsing ' + name);
-            }
-          }
-        };
-
-        angular.element(window).on('storage', storageEvent);
-        i = setTimeout(function () {
-          promise.reject('timeout');
-        }, timeout);
-      });
-    }
-  }], [{
-    key: "isLocalStorageSupported",
-    value: function isLocalStorageSupported() {
-      var supported = false;
-
-      try {
-        supported = 'localStorage' in window && window.localStorage !== null;
-
-        if (supported) {
-          window.localStorage.setItem('test', '1');
-          window.localStorage.removeItem('test');
-        } else {
-          supported = false;
-        }
-      } catch (e) {
-        supported = false;
-      }
-
-      return supported;
-    }
-  }, {
-    key: "factory",
-    value: function factory(PromiseService) {
-      if (LocalStorageService.isLocalStorageSupported()) {
-        return new LocalStorageService(PromiseService);
-      } else {
-        return new CookieService(PromiseService);
-      }
-    }
-  }]);
-
-  return LocalStorageService;
-}();
-
-exports.LocalStorageService = LocalStorageService;
-LocalStorageService.factory.$inject = ['PromiseService'];
-
-var SessionStorageService =
-/*#__PURE__*/
-function () {
-  function SessionStorageService(PromiseService) {
-    _classCallCheck(this, SessionStorageService);
-
-    this.promise = PromiseService;
-  }
-
-  _createClass(SessionStorageService, [{
-    key: "delete",
-    value: function _delete(name) {
-      window.sessionStorage.removeItem(name);
-    }
-  }, {
-    key: "exist",
-    value: function exist(name) {
-      return window.sessionStorage[name] !== undefined;
-    }
-  }, {
-    key: "get",
-    value: function get(name) {
-      var value = null;
-
-      if (window.sessionStorage[name] !== undefined) {
-        try {
-          value = JSON.parse(window.sessionStorage[name]);
-        } catch (e) {
-          console.log('SessionStorageService.get.error parsing', name, e);
-        }
-      }
-
-      return value;
-    }
-  }, {
-    key: "set",
-    value: function set(name, value) {
-      try {
-        var cache = [];
-        var json = JSON.stringify(value, function (key, value) {
-          if (key === 'pool') {
-            return;
-          }
-
-          if (_typeof(value) === 'object' && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-              // Circular reference found, discard key
-              return;
-            }
-
-            cache.push(value);
-          }
-
-          return value;
-        });
-        window.sessionStorage.setItem(name, json);
-      } catch (e) {
-        console.log('SessionStorageService.set.error serializing', name, value, e);
-      }
-    }
-  }, {
-    key: "on",
-    value: function on(name) {
-      return this.promise.make(function (promise) {
-        var i,
-            interval = 1000,
-            elapsed = 0,
-            timeout = TIMEOUT;
-
-        var storageEvent = function storageEvent(e) {
-          if (i) {
-            clearTimeout(i);
-          }
-
-          if (e.originalEvent.key == name) {
-            try {
-              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
-
-              promise.resolve(value);
-            } catch (error) {
-              console.log('SessionStorageService.on.error parsing', name, error);
-              promise.reject('error parsing ' + name);
-            }
-          }
-        };
-
-        angular.element(window).on('storage', storageEvent);
-        i = setTimeout(function () {
-          promise.reject('timeout');
-        }, timeout);
-      });
-    }
-  }], [{
-    key: "isSessionStorageSupported",
-    value: function isSessionStorageSupported() {
-      var supported = false;
-
-      try {
-        supported = 'sessionStorage' in window && window.sessionStorage !== null;
-
-        if (supported) {
-          window.sessionStorage.setItem('test', '1');
-          window.localsessionStorageStorage.removeItem('test');
-        } else {
-          supported = false;
-        }
-      } catch (e) {
-        supported = false;
-      }
-
-      return supported;
-    }
-  }, {
-    key: "factory",
-    value: function factory(PromiseService) {
-      if (SessionStorageService.isSessionStorageSupported()) {
-        return new SessionStorageService(PromiseService);
-      } else {
-        return new CookieService(PromiseService);
-      }
-    }
-  }]);
-
-  return SessionStorageService;
-}();
-
-exports.SessionStorageService = SessionStorageService;
-SessionStorageService.factory.$inject = ['PromiseService'];
-
-},{}],234:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19925,7 +19618,7 @@ function () {
     value: function indexOf(item) {
       var index = this.wishlist.reduce(function (p, c, i) {
         if (p === -1) {
-          return c.id === item.id && c.type === item.type ? i : p;
+          return c.id === item.id && c.coId === item.coId ? i : p;
         } else {
           return p;
         }
@@ -19946,7 +19639,7 @@ function () {
         var wishlist = _this.wishlist;
         wishlist.push({
           id: item.id,
-          type: item.type
+          coId: item.coId
         });
         _this.wishlist = wishlist;
         promise.resolve(true);
@@ -20001,6 +19694,93 @@ function () {
 
 exports.default = WishlistService;
 WishlistService.factory.$inject = ['PromiseService', 'LocalStorageService', 'ApiService'];
+
+},{}],234:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global angular */
+var LocationService =
+/*#__PURE__*/
+function () {
+  function LocationService($location) {
+    _classCallCheck(this, LocationService);
+
+    this.$location = $location;
+  }
+
+  _createClass(LocationService, [{
+    key: "get",
+    value: function get(key) {
+      return this.$location.search()[key];
+    }
+  }, {
+    key: "set",
+    value: function set(keyOrValue, value) {
+      if (typeof keyOrValue === 'string') {
+        this.$location.search(keyOrValue, value).replace();
+      } else {
+        this.$location.search(keyOrValue).replace();
+      }
+    }
+  }, {
+    key: "deserialize",
+    value: function deserialize(key) {
+      var value = null;
+      var serialized = this.get('q'); // console.log(serialized);
+
+      if (serialized) {
+        var json = window.atob(serialized);
+        value = JSON.parse(json);
+      } // console.log(value);
+
+
+      if (key && value) {
+        value = value[key];
+      }
+
+      return value || null;
+    }
+  }, {
+    key: "serialize",
+    value: function serialize(keyOrValue, value) {
+      var serialized = null;
+      var q = this.deserialize() || {};
+
+      if (typeof keyOrValue === 'string') {
+        q[keyOrValue] = value;
+      } else {
+        q = keyOrValue;
+      }
+
+      var json = JSON.stringify(q);
+      serialized = window.btoa(json);
+      this.set('q', serialized);
+    }
+  }], [{
+    key: "factory",
+    value: function factory($location) {
+      return new LocationService($location);
+    }
+  }]);
+
+  return LocationService;
+}();
+
+exports.default = LocationService;
+LocationService.factory.$inject = ['$location'];
 
 },{}],235:[function(require,module,exports){
 "use strict";
@@ -20409,6 +20189,416 @@ exports.default = StateService;
 StateService.factory.$inject = ['$timeout', '$rootScope'];
 
 },{}],239:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SessionStorageService = exports.LocalStorageService = exports.CookieService = void 0;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global angular */
+var TIMEOUT = 5 * 60 * 1000; // five minutes
+
+var CookieService =
+/*#__PURE__*/
+function () {
+  function CookieService(PromiseService) {
+    _classCallCheck(this, CookieService);
+
+    this.promise = PromiseService;
+  }
+
+  _createClass(CookieService, [{
+    key: "delete",
+    value: function _delete(name) {
+      setter(name, '', -1);
+    }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var cookieName = name + "=";
+      var ca = document.cookie.split(';');
+
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1, c.length);
+        }
+
+        if (c.indexOf(cookieName) === 0) {
+          var value = c.substring(cookieName.length, c.length);
+          var model = null;
+
+          try {
+            model = JSON.parse(decodeURIComponent(atob(value)));
+          } catch (e) {
+            console.log('CookieService.get.error parsing', key, e);
+          }
+
+          return model;
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      var _this = this;
+
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var checkCookie = function checkCookie() {
+          if (elapsed > timeout) {
+            promise.reject('timeout');
+          } else {
+            var c = _this.get(name);
+
+            if (c) {
+              promise.resolve(c);
+            } else {
+              elapsed += interval;
+              i = setTimeout(checkCookie, interval);
+            }
+          }
+        };
+
+        checkCookie();
+      });
+    }
+  }, {
+    key: "set",
+    value: function set(name, value, days) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
+            return;
+          }
+
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
+
+            cache.push(value);
+          }
+
+          return value;
+        });
+        this.setter(name, btoa(encodeURIComponent(json)), days);
+      } catch (e) {
+        console.log('CookieService.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "setter",
+    value: function setter(name, value, days) {
+      var expires;
+
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toGMTString();
+      } else {
+        expires = '';
+      }
+
+      document.cookie = name + '=' + value + expires + '; path=/';
+    }
+  }], [{
+    key: "factory",
+    value: function factory(PromiseService) {
+      return new CookieService(PromiseService);
+    }
+  }]);
+
+  return CookieService;
+}();
+
+exports.CookieService = CookieService;
+CookieService.factory.$inject = ['PromiseService'];
+
+var LocalStorageService =
+/*#__PURE__*/
+function () {
+  function LocalStorageService(PromiseService) {
+    _classCallCheck(this, LocalStorageService);
+
+    this.promise = PromiseService;
+  }
+
+  _createClass(LocalStorageService, [{
+    key: "delete",
+    value: function _delete(name) {
+      window.localStorage.removeItem(name);
+    }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return window.localStorage[name] !== undefined;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var value = null;
+
+      if (window.localStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.localStorage[name]);
+        } catch (e) {
+          console.log('LocalStorageService.get.error parsing', name, e);
+        }
+      }
+
+      return value;
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
+            return;
+          }
+
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
+
+            cache.push(value);
+          }
+
+          return value;
+        });
+        window.localStorage.setItem(name, json);
+      } catch (e) {
+        console.log('LocalStorageService.set.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var storageEvent = function storageEvent(e) {
+          if (i) {
+            clearTimeout(i);
+          }
+
+          if (e.originalEvent.key == name) {
+            try {
+              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
+
+              promise.resolve(value);
+            } catch (error) {
+              console.log('LocalStorageService.on.error parsing', name, error);
+              promise.reject('error parsing ' + name);
+            }
+          }
+        };
+
+        angular.element(window).on('storage', storageEvent);
+        i = setTimeout(function () {
+          promise.reject('timeout');
+        }, timeout);
+      });
+    }
+  }], [{
+    key: "isLocalStorageSupported",
+    value: function isLocalStorageSupported() {
+      var supported = false;
+
+      try {
+        supported = 'localStorage' in window && window.localStorage !== null;
+
+        if (supported) {
+          window.localStorage.setItem('test', '1');
+          window.localStorage.removeItem('test');
+        } else {
+          supported = false;
+        }
+      } catch (e) {
+        supported = false;
+      }
+
+      return supported;
+    }
+  }, {
+    key: "factory",
+    value: function factory(PromiseService) {
+      if (LocalStorageService.isLocalStorageSupported()) {
+        return new LocalStorageService(PromiseService);
+      } else {
+        return new CookieService(PromiseService);
+      }
+    }
+  }]);
+
+  return LocalStorageService;
+}();
+
+exports.LocalStorageService = LocalStorageService;
+LocalStorageService.factory.$inject = ['PromiseService'];
+
+var SessionStorageService =
+/*#__PURE__*/
+function () {
+  function SessionStorageService(PromiseService) {
+    _classCallCheck(this, SessionStorageService);
+
+    this.promise = PromiseService;
+  }
+
+  _createClass(SessionStorageService, [{
+    key: "delete",
+    value: function _delete(name) {
+      window.sessionStorage.removeItem(name);
+    }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return window.sessionStorage[name] !== undefined;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var value = null;
+
+      if (window.sessionStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.sessionStorage[name]);
+        } catch (e) {
+          console.log('SessionStorageService.get.error parsing', name, e);
+        }
+      }
+
+      return value;
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
+            return;
+          }
+
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
+
+            cache.push(value);
+          }
+
+          return value;
+        });
+        window.sessionStorage.setItem(name, json);
+      } catch (e) {
+        console.log('SessionStorageService.set.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var storageEvent = function storageEvent(e) {
+          if (i) {
+            clearTimeout(i);
+          }
+
+          if (e.originalEvent.key == name) {
+            try {
+              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
+
+              promise.resolve(value);
+            } catch (error) {
+              console.log('SessionStorageService.on.error parsing', name, error);
+              promise.reject('error parsing ' + name);
+            }
+          }
+        };
+
+        angular.element(window).on('storage', storageEvent);
+        i = setTimeout(function () {
+          promise.reject('timeout');
+        }, timeout);
+      });
+    }
+  }], [{
+    key: "isSessionStorageSupported",
+    value: function isSessionStorageSupported() {
+      var supported = false;
+
+      try {
+        supported = 'sessionStorage' in window && window.sessionStorage !== null;
+
+        if (supported) {
+          window.sessionStorage.setItem('test', '1');
+          window.localsessionStorageStorage.removeItem('test');
+        } else {
+          supported = false;
+        }
+      } catch (e) {
+        supported = false;
+      }
+
+      return supported;
+    }
+  }, {
+    key: "factory",
+    value: function factory(PromiseService) {
+      if (SessionStorageService.isSessionStorageSupported()) {
+        return new SessionStorageService(PromiseService);
+      } else {
+        return new CookieService(PromiseService);
+      }
+    }
+  }]);
+
+  return SessionStorageService;
+}();
+
+exports.SessionStorageService = SessionStorageService;
+SessionStorageService.factory.$inject = ['PromiseService'];
+
+},{}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

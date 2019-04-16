@@ -13,13 +13,22 @@ class MoodboardCtrl {
 	constructor(
 		$scope,
 		$timeout,
+		LocationService,
 		ApiService
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
+		this.locationService = LocationService;
 		this.apiService = ApiService;
 		this.filters = window.filters || {};
 		this.moodTypes = MOOD_TYPES;
+		this.deserializeFilters();
+		this.applyFilters();
+	}
+
+	deserializeFilters() {
+		const locationFilters = this.locationService.deserialize('filters') || {};
+		// console.log('MoodboardCtrl.deserializeFilters', filters);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -30,16 +39,33 @@ class MoodboardCtrl {
 					};
 			}
 			filter.options.unshift({
-				label: this.filters[x].placeholder,
+				label: filter.placeholder,
 				value: null,
 			});
-			filter.value = null;
+			const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
+			filter.value = selectedOption.value;
+			filter.placeholder = selectedOption.label;
+			// console.log(x, filters[x], filter.value);
 		});
-		this.applyFilters();
+		return filters;
+	}
+
+	serializeFilters() {
+		const filters = {};
+		Object.keys(this.filters).forEach(x => {
+			const filter = this.filters[x];
+			if (filter.value !== null) {
+				filters[x] = filter.value;
+			}
+		});
+		// console.log('MoodboardCtrl.serializeFilters', filters);
+		this.locationService.serialize('filters', filters);
+		return filters;
 	}
 
 	applyFilters(item, value) {
 		// console.log('MoodboardCtrl.applyFilters', this.filters);
+		this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
 		this.apiService.moodboard.filter(filters).subscribe(
 			success => {
@@ -61,6 +87,6 @@ class MoodboardCtrl {
 
 }
 
-MoodboardCtrl.$inject = ['$scope', '$timeout', 'ApiService'];
+MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 
 export default MoodboardCtrl;

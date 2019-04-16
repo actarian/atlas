@@ -34,10 +34,11 @@ import ReferencesCtrl from './references/references.controller';
 import RootCtrl from './root.controller';
 import ApiService from './services/api.service';
 import DomService from './services/dom.service';
-import { CookieService, LocalStorageService, SessionStorageService } from './services/storage.service';
 import WishlistService from './services/wishlist.service';
+import LocationService from './shared/location.service';
 import PromiseService from './shared/promise.service';
 import StateService from './shared/state.service';
+import { CookieService, LocalStorageService, SessionStorageService } from './shared/storage.service';
 import StoreLocatorCtrl from './store-locator/store-locator.controller';
 
 const MODULE_NAME = 'app';
@@ -50,6 +51,7 @@ app.config(['$locationProvider', function($locationProvider) {
 
 app.factory('ApiService', ApiService.factory)
 	.factory('DomService', DomService.factory)
+	.factory('LocationService', LocationService.factory)
 	.factory('PromiseService', PromiseService.factory)
 	.factory('StateService', StateService.factory)
 	.factory('CookieService', CookieService.factory)
