@@ -19,7 +19,6 @@ class ReferencesCtrl {
 
 	deserializeFilters() {
 		const locationFilters = this.locationService.deserialize('filters') || {};
-
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {

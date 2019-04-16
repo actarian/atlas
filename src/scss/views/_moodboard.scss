@@ -323,3 +323,27 @@ $moodboard-gutter: 60px;
 	}
 
 }
+
+
+.loader {
+	text-align: center;
+	font-size: 15px;
+	font-weight: $font-semibold;
+	text-transform: lowercase;
+	color: $primary;
+
+	svg {
+		width: 100px;
+		height: 100px;
+		margin: 0 auto;
+
+		circle:first-child {
+			stroke: $background-tertiary; // #f1d3d9;
+		}
+
+		circle:last-child {
+			stroke: $primary; // #b92442;
+		}
+	}
+
+}

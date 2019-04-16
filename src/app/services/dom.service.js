@@ -232,23 +232,44 @@ export default class DomService {
 	};
 	*/
 
-	intersection$(node) {
+	rafIntersection$(node) {
 		return this.rafAndRect$().pipe(
 			map(datas => {
 				// const scrollTop = datas[0];
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
-				intersection.rect = rect;
-				return intersection;
+				return {
+					scroll: datas[0],
+					windowRect: datas[1],
+					rect: rect,
+					intersection: intersection,
+				};
+			})
+		);
+	}
+
+	scrollIntersection$(node) {
+		return this.scrollAndRect$().pipe(
+			map(datas => {
+				// const scrollTop = datas[0];
+				const windowRect = datas[1];
+				const rect = Rect.fromNode(node);
+				const intersection = rect.intersection(windowRect);
+				return {
+					scroll: datas[0],
+					windowRect: datas[1],
+					rect: rect,
+					intersection: intersection,
+				};
 			})
 		);
 	}
 
 	appear$(node, value = 0.0) { // -0.5
-		return this.intersection$(node).pipe(
-			filter(x => x.y > value),
-			first(),
+		return this.rafIntersection$(node).pipe(
+			filter(x => x.intersection.y > value),
+			first()
 		);
 	}
 

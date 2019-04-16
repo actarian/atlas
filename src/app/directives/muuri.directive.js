@@ -1,35 +1,16 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Muuri, TweenMax, TimelineMax */
 
-const DEFAULT_MUURI_OPTIONS = {
-	slidesPerView: 'auto',
-	spaceBetween: 1,
-	centeredSlides: true,
-	loop: true,
-	loopAdditionalSlides: 100,
-	speed: 600,
-	autoplay: 5000,
-	keyboardControl: true,
-	mousewheelControl: false,
-	onSlideClick: function(muuri) {
-		angular.element(muuri.clickedSlide).scope().clicked(angular.element(muuri.clickedSlide).scope().$index);
-	},
-	pagination: {
-		el: '.muuri-pagination',
-		clickable: true,
-	},
-};
-
 export class MuuriDirective {
 
 	constructor() {
 		this.restrict = 'A';
-		this.options = DEFAULT_MUURI_OPTIONS;
 	}
 
 	link(scope, element, attributes, controller) {
 		scope.$on('lastItem', (slide) => {
-			this.onMuuri(element);
+			// console.log('MuuriDirective.lastItem', slide);
+			this.onMuuri(scope, element, attributes);
 		});
 		element.on('$destroy', () => {
 			if (element.muuri) {
@@ -37,13 +18,23 @@ export class MuuriDirective {
 			}
 		});
 		setTimeout(() => {
-			this.onMuuri(element);
+			this.onMuuri(scope, element, attributes);
 		}, 1);
 	}
 
-	onMuuri(element) {
+	onMuuri(scope, element, attributes) {
 		if (element.muuri) {
-			element.muuri.refreshItems();
+			const node = element[0];
+			// const items = scope.$eval(attributes.muuri);
+			const previousItems = element.muuri.getItems().map(x => x.getElement());
+			// console.log('MuuriDirective.previousItems', previousItems);
+			const items = [...node.querySelectorAll('.listing__item')];
+			// console.log('MuuriDirective.newItems', items);
+			const newItems = items.filter(x => previousItems.indexOf(x) === -1);
+			const removeItems = previousItems.filter(x => items.indexOf(x) === -1);
+			element.muuri.remove(removeItems);
+			element.muuri.add(newItems);
+			// element.muuri.refreshItems(items).layout();
 		} else {
 			element.muuri = new Muuri(element[0], {
 				layoutDuration: 400,

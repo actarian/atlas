@@ -15823,11 +15823,12 @@ function () {
       var node = element[0];
       var section = this.getSection(node);
       element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-      var subscription = this.domService.appear$(node).subscribe(function (intersection) {
+      var subscription = this.domService.appear$(node).subscribe(function (event) {
         // -0.05
-        // console.log(intersection.rect.top);
-        var x = intersection.rect.left;
-        var y = 0; // intersection.rect.top;
+        // console.log(event.rect.top);
+        var rect = event.rect;
+        var x = rect.left;
+        var y = 0; // event.rect.top;
 
         var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
         var timeout = index * 50;
@@ -15844,22 +15845,6 @@ function () {
         subscription.unsubscribe();
       });
     }
-    /*
-    appear$(element, attributes) {
-    	const node = element[0];
-    	return this.domService.rafAndRect$().pipe(
-    		map(datas => {
-    			// const scrollTop = datas[0];
-    			const windowRect = datas[1];
-    			const rect = Rect.fromNode(node);
-    			const intersection = rect.intersection(windowRect);
-    			intersection.rect = rect;
-    			return intersection;
-    		})
-    	);
-    }
-    */
-
   }, {
     key: "getSection",
     value: function getSection(node) {
@@ -16655,7 +16640,7 @@ function () {
       // empty picture
       // image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 
-      element.subscription = this.domService.appear$(node).subscribe(function (intersection) {
+      element.subscription = this.domService.appear$(node).subscribe(function (event) {
         if (!node.classList.contains('lazyed')) {
           node.classList.add('lazyed');
 
@@ -16877,6 +16862,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MuuriDirective = void 0;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -16886,25 +16879,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* jshint esversion: 6 */
 
 /* global window, document, angular, Muuri, TweenMax, TimelineMax */
-var DEFAULT_MUURI_OPTIONS = {
-  slidesPerView: 'auto',
-  spaceBetween: 1,
-  centeredSlides: true,
-  loop: true,
-  loopAdditionalSlides: 100,
-  speed: 600,
-  autoplay: 5000,
-  keyboardControl: true,
-  mousewheelControl: false,
-  onSlideClick: function onSlideClick(muuri) {
-    angular.element(muuri.clickedSlide).scope().clicked(angular.element(muuri.clickedSlide).scope().$index);
-  },
-  pagination: {
-    el: '.muuri-pagination',
-    clickable: true
-  }
-};
-
 var MuuriDirective =
 /*#__PURE__*/
 function () {
@@ -16912,7 +16886,6 @@ function () {
     _classCallCheck(this, MuuriDirective);
 
     this.restrict = 'A';
-    this.options = DEFAULT_MUURI_OPTIONS;
   }
 
   _createClass(MuuriDirective, [{
@@ -16921,7 +16894,8 @@ function () {
       var _this = this;
 
       scope.$on('lastItem', function (slide) {
-        _this.onMuuri(element);
+        // console.log('MuuriDirective.lastItem', slide);
+        _this.onMuuri(scope, element, attributes);
       });
       element.on('$destroy', function () {
         if (element.muuri) {
@@ -16929,14 +16903,30 @@ function () {
         }
       });
       setTimeout(function () {
-        _this.onMuuri(element);
+        _this.onMuuri(scope, element, attributes);
       }, 1);
     }
   }, {
     key: "onMuuri",
-    value: function onMuuri(element) {
+    value: function onMuuri(scope, element, attributes) {
       if (element.muuri) {
-        element.muuri.refreshItems();
+        var node = element[0]; // const items = scope.$eval(attributes.muuri);
+
+        var previousItems = element.muuri.getItems().map(function (x) {
+          return x.getElement();
+        }); // console.log('MuuriDirective.previousItems', previousItems);
+
+        var items = _toConsumableArray(node.querySelectorAll('.listing__item')); // console.log('MuuriDirective.newItems', items);
+
+
+        var newItems = items.filter(function (x) {
+          return previousItems.indexOf(x) === -1;
+        });
+        var removeItems = previousItems.filter(function (x) {
+          return items.indexOf(x) === -1;
+        });
+        element.muuri.remove(removeItems);
+        element.muuri.add(newItems); // element.muuri.refreshItems(items).layout();
       } else {
         element.muuri = new Muuri(element[0], {
           layoutDuration: 400,
@@ -17095,16 +17085,27 @@ function () {
   _createClass(ScrollDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
-      var callback = scope.$eval(attributes.scroll);
-
-      if (typeof callback === 'function') {
-        var subscription = this.domService.scroll$().subscribe(function (event) {
-          return callback(event);
+      if (attributes.scroll !== undefined) {
+        var node = element[0];
+        var subscription = this.domService.scrollIntersection$(node).subscribe(function (event) {
+          scope.$eval(attributes.scroll, {
+            $event: event
+          });
         });
         element.on('$destroy', function () {
           subscription.unsubscribe();
         });
       }
+      /*
+      const callback = scope.$eval(attributes.scroll);
+      if (typeof callback === 'function') {
+      	const subscription = this.domService.scroll$().subscribe(event => callback(event));
+      	element.on('$destroy', () => {
+      		subscription.unsubscribe();
+      	});
+      }
+      */
+
     }
   }], [{
     key: "factory",
@@ -18606,7 +18607,7 @@ MoodboardSearchDirective.factory.$inject = ['$compile'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.MOOD_TYPES = void 0;
+exports.default = exports.ITEMS_PER_PAGE = exports.MOOD_TYPES = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18624,6 +18625,8 @@ var MOOD_TYPES = Object.freeze({
   Card: 4
 });
 exports.MOOD_TYPES = MOOD_TYPES;
+var ITEMS_PER_PAGE = 20;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
 var MoodboardCtrl =
 /*#__PURE__*/
@@ -18705,7 +18708,7 @@ function () {
         var items = success.data;
         /* FAKE */
 
-        while (items.length < 50) {
+        while (items.length < 200) {
           items = items.concat(items);
         }
 
@@ -18715,13 +18718,36 @@ function () {
         /* FAKE */
 
         _this3.items = [];
+        _this3.visibleItems = [];
+        _this3.maxItems = ITEMS_PER_PAGE;
 
         _this3.$timeout(function () {
           _this3.items = items;
+          _this3.visibleItems = items.slice(0, _this3.maxItems);
         }, 50);
       }, function (error) {
         return console.log('MoodboardCtrl.applyFilters.error', error);
       });
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this4 = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy) {
+          this.$timeout(function () {
+            _this4.busy = true;
+
+            _this4.$timeout(function () {
+              _this4.maxItems += ITEMS_PER_PAGE;
+              _this4.visibleItems = _this4.items.slice(0, _this4.maxItems);
+              _this4.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
+      }
     }
   }]);
 
@@ -18950,7 +18976,8 @@ function () {
       */
 
       this.$scope.onScroll = function (event) {
-        var scrolled = event.scrollTop > 40;
+        // console.log(event.scroll, event.intersection);
+        var scrolled = event.scroll.scrollTop > 40;
 
         if (_this.scrolled !== scrolled) {
           _this.$timeout(function () {
@@ -19531,8 +19558,8 @@ function () {
     */
 
   }, {
-    key: "intersection$",
-    value: function intersection$(node) {
+    key: "rafIntersection$",
+    value: function rafIntersection$(node) {
       return this.rafAndRect$().pipe((0, _operators.map)(function (datas) {
         // const scrollTop = datas[0];
         var windowRect = datas[1];
@@ -19540,8 +19567,30 @@ function () {
         var rect = _rect.default.fromNode(node);
 
         var intersection = rect.intersection(windowRect);
-        intersection.rect = rect;
-        return intersection;
+        return {
+          scroll: datas[0],
+          windowRect: datas[1],
+          rect: rect,
+          intersection: intersection
+        };
+      }));
+    }
+  }, {
+    key: "scrollIntersection$",
+    value: function scrollIntersection$(node) {
+      return this.scrollAndRect$().pipe((0, _operators.map)(function (datas) {
+        // const scrollTop = datas[0];
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+        return {
+          scroll: datas[0],
+          windowRect: datas[1],
+          rect: rect,
+          intersection: intersection
+        };
       }));
     }
   }, {
@@ -19549,8 +19598,8 @@ function () {
     value: function appear$(node) {
       var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.0;
       // -0.5
-      return this.intersection$(node).pipe((0, _operators.filter)(function (x) {
-        return x.y > value;
+      return this.rafIntersection$(node).pipe((0, _operators.filter)(function (x) {
+        return x.intersection.y > value;
       }), (0, _operators.first)());
     }
   }, {
@@ -19609,8 +19658,7 @@ function () {
 
     this.promise = PromiseService;
     this.storage = StorageService;
-    this.api = ApiService;
-    console.log('WishlistService', this.storage);
+    this.api = ApiService; // console.log('WishlistService', this.storage);
   }
 
   _createClass(WishlistService, [{

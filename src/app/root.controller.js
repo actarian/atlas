@@ -28,7 +28,8 @@ class RootCtrl {
 		});
 		*/
 		this.$scope.onScroll = (event) => {
-			const scrolled = event.scrollTop > 40;
+			// console.log(event.scroll, event.intersection);
+			const scrolled = event.scroll.scrollTop > 40;
 			if (this.scrolled !== scrolled) {
 				this.$timeout(() => {
 					this.scrolled = scrolled;

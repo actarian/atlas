@@ -14,6 +14,16 @@ export default class ScrollDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		if (attributes.scroll !== undefined) {
+			const node = element[0];
+			const subscription = this.domService.scrollIntersection$(node).subscribe(event => {
+				scope.$eval(attributes.scroll, { $event: event });
+			});
+			element.on('$destroy', () => {
+				subscription.unsubscribe();
+			});
+		}
+		/*
 		const callback = scope.$eval(attributes.scroll);
 		if (typeof callback === 'function') {
 			const subscription = this.domService.scroll$().subscribe(event => callback(event));
@@ -21,6 +31,7 @@ export default class ScrollDirective {
 				subscription.unsubscribe();
 			});
 		}
+		*/
 	}
 
 	static factory(DomService) {

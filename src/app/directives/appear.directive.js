@@ -18,10 +18,11 @@ export default class AppearDirective {
 		const node = element[0];
 		const section = this.getSection(node);
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-		const subscription = this.domService.appear$(node).subscribe(intersection => { // -0.05
-			// console.log(intersection.rect.top);
-			const x = intersection.rect.left;
-			const y = 0; // intersection.rect.top;
+		const subscription = this.domService.appear$(node).subscribe(event => { // -0.05
+			// console.log(event.rect.top);
+			const rect = event.rect;
+			const x = rect.left;
+			const y = 0; // event.rect.top;
 			const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
 			const timeout = index * 50;
 			if (index > 0) {
@@ -36,22 +37,6 @@ export default class AppearDirective {
 			subscription.unsubscribe();
 		});
 	}
-
-	/*
-	appear$(element, attributes) {
-		const node = element[0];
-		return this.domService.rafAndRect$().pipe(
-			map(datas => {
-				// const scrollTop = datas[0];
-				const windowRect = datas[1];
-				const rect = Rect.fromNode(node);
-				const intersection = rect.intersection(windowRect);
-				intersection.rect = rect;
-				return intersection;
-			})
-		);
-	}
-	*/
 
 	getSection(node) {
 		let section = node.parentNode;

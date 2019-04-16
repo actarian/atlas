@@ -8,6 +8,8 @@ export const MOOD_TYPES = Object.freeze({
 	Card: 4
 });
 
+export const ITEMS_PER_PAGE = 20;
+
 class MoodboardCtrl {
 
 	constructor(
@@ -71,18 +73,38 @@ class MoodboardCtrl {
 			success => {
 				let items = success.data;
 				/* FAKE */
-				while (items.length < 50) {
+				while (items.length < 200) {
 					items = items.concat(items);
 				}
 				items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
 				/* FAKE */
 				this.items = [];
+				this.visibleItems = [];
+				this.maxItems = ITEMS_PER_PAGE;
 				this.$timeout(() => {
 					this.items = items;
+					this.visibleItems = items.slice(0, this.maxItems);
 				}, 50);
 			},
 			error => console.log('MoodboardCtrl.applyFilters.error', error)
 		);
+	}
+
+	onScroll(event) {
+		if (event.rect.bottom < event.windowRect.bottom) {
+			// console.log('more!');
+			if (!this.busy) {
+				this.$timeout(() => {
+					this.busy = true;
+					this.$timeout(() => {
+						this.maxItems += ITEMS_PER_PAGE;
+						this.visibleItems = this.items.slice(0, this.maxItems);
+						this.busy = false;
+						// console.log(this.visibleItems.length);
+					}, 1000);
+				}, 0);
+			}
+		}
 	}
 
 }

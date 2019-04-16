@@ -150,19 +150,29 @@
 	<ng-include src="'templates/shared/moodboard.html'"></ng-include>
 	<section class="section--moodboard-results">
 		<section class="section section--moodboard">
-			<div class="container" ng-if="moodboardCtrl.items && moodboardCtrl.items.length">
+			<div class="container" ng-if="moodboardCtrl.visibleItems && moodboardCtrl.visibleItems.length" scroll="moodboardCtrl.onScroll($event)">
 				<div class="listing listing--moodboard" muuri>
 					<div class="listing__item" ng-class="{
 						'mood--tile': item.type === moodboardCtrl.moodTypes.Tile,
 						'mood--horizontal': item.type === moodboardCtrl.moodTypes.Horizontal,
 						'mood--vertical': item.type === moodboardCtrl.moodTypes.Vertical,
 						'mood--card': item.type === moodboardCtrl.moodTypes.Card
-					}" ng-repeat="item in moodboardCtrl.items track by $index" last-item>
+					}" ng-repeat="item in moodboardCtrl.visibleItems track by $index" last-item>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-tile.html'" ng-if="item.type === moodboardCtrl.moodTypes.Tile"></div>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-horizontal.html'" ng-if="item.type === moodboardCtrl.moodTypes.Horizontal"></div>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-vertical.html'" ng-if="item.type === moodboardCtrl.moodTypes.Vertical"></div>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-card.html'" ng-if="item.type === moodboardCtrl.moodTypes.Card"></div>
 					</div>
+				</div>
+				<div class="loader" ng-if="moodboardCtrl.busy">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-ring">
+						<circle cx="50" cy="50" fill="none" r="15" stroke-width="2"></circle>
+						<circle cx="50" cy="50" fill="none" r="15" stroke-width="2" stroke-linecap="square" transform="rotate(502.497 50 50)">
+							<animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;180 50 50;720 50 50" keyTimes="0;0.5;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform>
+							<animate attributeName="stroke-dasharray" calcMode="linear" values="9.42477796076938 84.82300164692441;47.1238898038469 47.123889803846886;9.42477796076938 84.82300164692441" keyTimes="0;0.5;1" dur="2" begin="0s" repeatCount="indefinite"></animate>
+						</circle>
+					</svg>
+					<div>load more</div>
 				</div>
 			</div>
 		</section>

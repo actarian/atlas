@@ -10,7 +10,7 @@ export default class WishlistService {
 		this.promise = PromiseService;
 		this.storage = StorageService;
 		this.api = ApiService;
-		console.log('WishlistService', this.storage);
+		// console.log('WishlistService', this.storage);
 	}
 
 	get wishlist() {

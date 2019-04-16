@@ -28,7 +28,7 @@ export default class LazyDirective {
 		// node.index = INDEX++;
 		// empty picture
 		// image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
-		element.subscription = this.domService.appear$(node).subscribe(intersection => {
+		element.subscription = this.domService.appear$(node).subscribe(event => {
 			if (!node.classList.contains('lazyed')) {
 				node.classList.add('lazyed');
 				this.onAppearsInViewport(node, scope, attributes);
