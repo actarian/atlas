@@ -1,0 +1,204 @@
+<script type="text/javascript" lazy-script>
+	window.filters = {
+		categories: {
+			label: 'Categories',
+			placeholder: 'Top News',
+			options: [{
+				label: 'Collection\'s News',
+				value: 11,
+			}, {
+				label: 'Company\'s News',
+				value: 12,
+			}, {
+				label: 'Events',
+				value: 13,
+			}]
+		},
+		years: {
+			label: 'Filter by year',
+			placeholder: 'all years',
+			options: [{
+				label: '2019',
+				value: 2019,
+			}, {
+				label: '2018',
+				value: 2018,
+			}]
+		}
+	};
+	window.news = [{
+		id: 11,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/01.jpg',
+		category: 'Company',
+		categoryId: 12,
+		title: 'Ceramic excellence is on display at Mosbuild with the latest products from Atlas Concorde',
+		abstract: 'At Mosbuild 2019, scheduled to be held in Moscow on April 2-5, excellent ceramic tiles will take center stage.',
+		year: 2019,
+		date: '2019-03-01'
+	}, {
+		id: 12,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/02.jpg',
+		category: 'Events',
+		categoryId: 13,
+		title: 'Atlas Concorde at KBIS 2019',
+		abstract: 'We’re glad to invite you to KBIS, the North America’s largest trade show dedicated to all aspects of kitchen and bath design.',
+		year: 2019,
+		date: '2019-02-01'
+	}, {
+		id: 13,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/03.jpg',
+		category: 'Collections',
+		categoryId: 11,
+		title: 'Boost',
+		abstract: 'The Boost collection features porcelain floor tiles and white-body wall tiles that redesign the concept of concrete-effect ceramics.',
+		year: 2019,
+		date: '2019-01-01'
+	}, {
+		id: 14,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/01.jpg',
+		category: 'Company',
+		categoryId: 12,
+		title: 'Ceramic excellence is on display at Mosbuild with the latest products from Atlas Concorde',
+		abstract: 'At Mosbuild 2019, scheduled to be held in Moscow on April 2-5, excellent ceramic tiles will take center stage.',
+		year: 2018,
+		date: '2018-03-01'
+	}, {
+		id: 15,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/02.jpg',
+		category: 'Events',
+		categoryId: 13,
+		title: 'Atlas Concorde at KBIS 2019',
+		abstract: 'We’re glad to invite you to KBIS, the North America’s largest trade show dedicated to all aspects of kitchen and bath design.',
+		year: 2018,
+		date: '2018-02-01'
+	}, {
+		id: 16,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/03.jpg',
+		category: 'Collections',
+		categoryId: 11,
+		title: 'Boost',
+		abstract: 'The Boost collection features porcelain floor tiles and white-body wall tiles that redesign the concept of concrete-effect ceramics.',
+		year: 2018,
+		date: '2018-01-01'
+	}, {
+		id: 17,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/01.jpg',
+		category: 'Company',
+		categoryId: 12,
+		title: 'Ceramic excellence is on display at Mosbuild with the latest products from Atlas Concorde',
+		abstract: 'At Mosbuild 2019, scheduled to be held in Moscow on April 2-5, excellent ceramic tiles will take center stage.',
+		year: 2017,
+		date: '2017-03-01'
+	}, {
+		id: 18,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/02.jpg',
+		category: 'Events',
+		categoryId: 13,
+		title: 'Atlas Concorde at KBIS 2019',
+		abstract: 'We’re glad to invite you to KBIS, the North America’s largest trade show dedicated to all aspects of kitchen and bath design.',
+		year: 2017,
+		date: '2017-02-01'
+	}, {
+		id: 19,
+		url: '/atlas/news-detail.html',
+		image: 'img/news/03.jpg',
+		category: 'Collections',
+		categoryId: 11,
+		title: 'Boost',
+		abstract: 'The Boost collection features porcelain floor tiles and white-body wall tiles that redesign the concept of concrete-effect ceramics.',
+		year: 2017,
+		date: '2017-01-01'
+	}];
+
+</script>
+<section class="section section--hero-secondary">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/news/hero.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/news/hero.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 offset-md-2">
+					<div class="category">News</div>
+					<div class="title"><b>Latest News,</b> and stories</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<div ng-controller="NewsCtrl as newsCtrl">
+	<section class="section section--filters" sticky="61">
+		<form class="form form--filters" sticky-content>
+			<button class="btn btn--toggle" ng-class="{ active: newsCtrl.filters.categories.value == item.value, disabled: item.disabled }" ng-click="newsCtrl.setFilter(item, newsCtrl.filters.categories)" ng-repeat="item in newsCtrl.filters.categories.options track by $index"><span ng-bind="item.label"></span></button>
+			<div class="form__group form__group--white" ng-repeat="(key, filter) in newsCtrl.filters track by $index" ng-if="key == 'years'">
+				<div has-dropdown>
+					<div class="dropdown">
+						<ul class="nav nav--select">
+							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
+								<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="newsCtrl.setFilter(item, filter)">
+									<img ng-src="{{item.image}}" ng-if="item.image" />
+									<span ng-bind="item.label"></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<label class="label" ng-bind="filter.label"></label>
+					<div class="control control--select" ng-class="{ selected: filter.value }">
+						<div class="input">
+							<svg class="icon icon--close" ng-if="filter.value" ng-click="newsCtrl.removeFilter(filter)"><use xlink:href="#close"></use></svg>
+							<div class="value" ng-bind="filter.placeholder"></div>
+							<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+	<div class="section--collections-results">
+		<section class="section section--collections">
+			<div class="container">
+				<div class="listing listing--collections" ng-if="!newsCtrl.visibleItems">
+					<a href="news-detail.html" class="listing__item" appear>
+						<div class="picture picture--collection">
+							<img lazy data-src="img/news/01.jpg" alt="title" />
+							<span class="look">Company</span>
+						</div>
+						<div class="title">Ceramic excellence is on display at Mosbuild with the latest products from Atlas Concorde</div>
+						<div class="abstract">At Mosbuild 2019, scheduled to be held in Moscow on April 2-5, excellent ceramic tiles will take center stage.</div>
+					</a>
+				</div>
+				<div class="listing listing--collections" ng-if="newsCtrl.visibleItems && newsCtrl.visibleItems.length" scroll="newsCtrl.onScroll($event)">
+					<a href="news-detail.html" class="listing__item" appear ng-repeat="item in newsCtrl.visibleItems track by $index">
+						<div class="picture picture--collection">
+							<img lazy data-src="{{item.image}}" alt="title" />
+							<span class="look" ng-bind="item.category"></span>
+						</div>
+						<div class="title" ng-bind="item.title"></div>
+						<div class="abstract" ng-bind="item.abstract"></div>
+					</a>
+					<div class="loader" ng-if="newsCtrl.busy">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-ring">
+							<circle cx="50" cy="50" fill="none" r="15" stroke-width="2"></circle>
+							<circle cx="50" cy="50" fill="none" r="15" stroke-width="2" stroke-linecap="square" transform="rotate(502.497 50 50)">
+								<animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;180 50 50;720 50 50" keyTimes="0;0.5;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform>
+								<animate attributeName="stroke-dasharray" calcMode="linear" values="9.42477796076938 84.82300164692441;47.1238898038469 47.123889803846886;9.42477796076938 84.82300164692441" keyTimes="0;0.5;1" dur="2" begin="0s" repeatCount="indefinite"></animate>
+							</circle>
+						</svg>
+						<div>load more</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

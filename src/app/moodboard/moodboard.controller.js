@@ -93,7 +93,7 @@ class MoodboardCtrl {
 	onScroll(event) {
 		if (event.rect.bottom < event.windowRect.bottom) {
 			// console.log('more!');
-			if (!this.busy) {
+			if (!this.busy && this.maxItems < this.filteredItems.length) {
 				this.$timeout(() => {
 					this.busy = true;
 					this.$timeout(() => {

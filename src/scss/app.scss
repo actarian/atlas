@@ -8,6 +8,7 @@
 @import 'components/grid';
 @import 'components/navs';
 @import 'components/forms';
+@import 'components/loaders';
 @import 'components/media';
 @import 'components/pictures';
 @import 'components/swiper';
@@ -22,13 +23,14 @@
 @import 'views/breadcrumb';
 @import 'views/hero';
 @import 'views/sections.scss';
+@import 'views/advanced-search';
 @import 'views/collections';
-@import 'views/moodboard';
 @import 'views/faqs';
-@import 'views/generics.scss';
-@import 'views/store-locator';
-@import 'views/product';
 @import 'views/features';
+@import 'views/generics.scss';
+@import 'views/moodboard';
+@import 'views/product';
+@import 'views/store-locator';
 
 @import 'components/responsive';
 

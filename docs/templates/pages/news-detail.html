@@ -1,0 +1,193 @@
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/news-detail/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/news-detail/hero.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 offset-md-2">
+					<div class="category">News</div>
+					<div class="title">Showroom open day Cersaie 2017</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--generic">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-2 col--primary">
+				<section class="section section--generic-intro">
+					<div class="title">For Cersaie 2017, Atlas Concorde opened the doors of its Fiorano Modenese headquarters for its traditional Open Day with the participation of numerous national and international partners from more than 50 countries.</div>
+					<div class="abstract">
+						<p>The event was also an opportunity to inaugurate <b>the new showroom pavilion</b> that, together with the showroom, completes the company’s exhibition space. The new pavilion, which is architecturally inspired by winter gardens, is connected by a short path to the indoor showroom, crossing the outdoor area and arriving at the new structure, surrounded by greenery and destined for the presentation of the latest Atlas Concorde products.</p>
+						<p>During the evening, guests were taken on a dynamic, engaging tour, surrounded by contemporary and multi-faceted interior design projects, concluding the evening with music, entertainment, and <b>an exclusive gala dinner</b>. The Open Day was an opportunity to spend time together in a context that demonstrates the potential of porcelain floors and wall tiles rich in formats, colors, and finishes, suitable for designing interior and exterior spaces with perfect stylistic continuity.</p>
+					</div>
+				</section>
+			</div>
+			<div class="col-md-3 offset-md-1 col--secondary">
+				<!--
+				<div class="group group--generic-info" appear>
+					<div class="title"><svg class="icon icon--pin-outline"><use xlink:href="#pin-outline"></use></svg>Where</div>
+					<div class="description"><b>Santa Margherita Ligure</b>, Italy</div>
+					<div class="title"><svg class="icon icon--project"><use xlink:href="#project"></use></svg>Project by</div>
+					<div class="description">Architetto <b>Elena Capurro</b></div>
+				</div>
+				-->
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--gallery">
+	<div class="swiper-container" swiper-gallery>
+		<div class="swiper-wrapper">
+			<div class="swiper-slide"><img src="img/news-detail/gallery-01.jpg?height=780&mode=crop" alt="title" /></div>
+			<div class="swiper-slide"><img src="img/news-detail/gallery-02.jpg?height=780&mode=crop" alt="title" /></div>
+			<div class="swiper-slide"><img src="img/news-detail/gallery-03.jpg?height=780&mode=crop" alt="title" /></div>
+		</div>
+		<!-- pagination -->
+		<div class="swiper-pagination swiper-pagination-white"></div>
+		<!-- navigation -->
+		<!--
+		<div class="swiper-button-prev swiper-button-white"></div>
+		<div class="swiper-button-next swiper-button-white"></div>
+		-->
+	</div>
+</section>
+<!-- @if category collection ? -->
+<!--
+<section class="section--collections-results border-bottom">
+	<section class="section section--collections">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-4" appear>
+					<div class="category">Inside the project</div>
+					<div class="title">The leading collections</div>
+				</div>
+			</div>
+			<div class="listing listing--collections">
+				<a href="product-project.html" class="listing__item" appear>
+					<div class="picture picture--collection">
+						<img lazy data-src="img/collections/01.jpg" alt="title" />
+						<span class="look">marble look</span>
+					</div>
+					<div class="title">Marvel Edge</div>
+					<div class="abstract">The contemporary feel of timeless marble-look tiles.</div>
+					<div class="group group--tiles">
+						<div class="category">Porcelain tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/06.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/07.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/08.jpg" />
+						</div>
+					</div>
+					<div class="group group--tiles">
+						<div class="category">Wall tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+						</div>
+					</div>
+				</a>
+				<a href="product-project.html" class="listing__item" appear>
+					<div class="picture picture--collection">
+						<img lazy data-src="img/collections/02.jpg" alt="title" />
+						<span class="look">concrete look</span>
+					</div>
+					<div class="title">Boost</div>
+					<div class="abstract">The new soul of the concrete effect: industrial style becomes sophisticated elegance.</div>
+					<div class="group group--tiles">
+						<div class="category">Porcelain tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/09.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/10.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/11.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/12.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/13.jpg" />
+						</div>
+					</div>
+					<div class="group group--tiles">
+						<div class="category">Wall tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/09.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/10.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/11.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/12.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/14.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/15.jpg" />
+						</div>
+					</div>
+				</a>
+				<a href="product-project.html" class="listing__item" appear>
+					<div class="picture picture--collection">
+						<img lazy data-src="img/collections/03.jpg" alt="title" />
+						<span class="look">stone look</span>
+					</div>
+					<div class="title">Klif</div>
+					<div class="abstract">The decisive character of the stone effect in a porcelain tile inspired by nature.</div>
+					<div class="group group--tiles">
+						<div class="category">Porcelain tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/16.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/17.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/19.jpg" />
+						</div>
+					</div>
+					<div class="group group--tiles">
+						<div class="category">Wall tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/16.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/17.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
+						</div>
+					</div>
+				</a>
+				<a href="product-project.html" class="listing__item" appear>
+					<div class="picture picture--collection">
+						<img lazy data-src="img/collections/01.jpg" alt="title" />
+						<span class="look">marble look</span>
+					</div>
+					<div class="title">Marvel Edge</div>
+					<div class="abstract">The contemporary feel of timeless marble-look tiles.</div>
+					<div class="group group--tiles">
+						<div class="category">Porcelain tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/06.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/07.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/08.jpg" />
+						</div>
+					</div>
+					<div class="group group--tiles">
+						<div class="category">Wall tiles</div>
+						<div calss="tiles">
+							<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+							<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</section>
+</section>
+-->
+<ng-include src="'templates/shared/beinspired.html'"></ng-include>

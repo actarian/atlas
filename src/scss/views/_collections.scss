@@ -41,8 +41,6 @@
 	color: $nav-product;
 	transition: ease-in-out 350ms;
 	transition-property: background-color, color, border, opacity;
-	background: $primary-active;
-	color: $nav-product-active;
 
 	&>span {
 		display: inline-block;
@@ -61,6 +59,14 @@
 		}
 	}
 
+	&,
+	&:link,
+	&:active,
+	&:visited {
+		background: $primary-active;
+		color: $nav-product-active;
+	}
+
 	&:hover,
 	&.active {
 		background: $primary-active;
@@ -74,12 +80,66 @@
 	}
 }
 
+.btn--toggle {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 80px;
+	z-index: 1;
+	font-size: 15px;
+	font-weight: 400;
+	text-transform: uppercase;
+	transition: ease-in-out 350ms;
+	transition-property: background-color, color, border, opacity;
+
+	&>span {
+		display: inline-block;
+		position: relative;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -4px;
+			width: 100%;
+			height: 2px;
+			background: $nav-product-active;
+			transform: scale(0, 1);
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&,
+	&:link,
+	&:active,
+	&:visited {
+		background: $background-tertiary;
+		color: $foreground-secondary;
+	}
+
+	&:hover,
+	&.active {
+		background: $primary-active;
+		color: $nav-product-active;
+	}
+
+	&:hover {
+		&>span {
+			&:after {
+				transform: scale(1, 1);
+			}
+		}
+	}
+}
+
 .form--filters {
 	display: flex;
 	background: $background-tertiary;
 
 	&>.form__group,
-	&>.btn--filter {
+	&>.btn--filter,
+	&>.btn--toggle {
 		position: relative;
 		flex: 1 1 20%;
 	}
@@ -93,6 +153,10 @@
 			flex: 1 1 340px;
 			min-width: 340px;
 		}
+	}
+
+	&>.form__group--white {
+		background: $background;
 	}
 
 	.label {
@@ -213,8 +277,12 @@ $collection-gutter: 70px;
 	display: flex;
 	justify-content: flex-start;
 	flex-wrap: wrap;
+	/*
 	margin-left: -15px;
 	margin-right: -15px;
+	*/
+	margin-left: 0;
+	margin-right: -$collection-gutter;
 	width: calc(100% + #{$collection-gutter});
 	text-align: left;
 

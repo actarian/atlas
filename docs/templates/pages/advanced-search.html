@@ -1,0 +1,343 @@
+<script type="text/javascript" lazy-script>
+	window.filters = [
+		{
+			id: 100,
+			key: 'brand',
+			label: 'Brand',
+			options: [{
+				label: 'Atlas Concorde',
+				value: 101
+			}, {
+				label: 'Atlas Concorde Solution',
+				value: 102
+			}]
+		}, {
+			id: 200,
+			key: 'application',
+			label: 'Application',
+			options: [{
+				label: 'Floor tiles Indoor',
+				value: 201
+			}, {
+				label: 'Floor tiles Outdoor',
+				value: 202
+			}, {
+				label: 'Floor tiles Outdoor 20mm',
+				value: 203
+			}, {
+				label: 'Wall tiles Indoor',
+				value: 204
+			}, {
+				label: 'Wall tiles Outdoor',
+				value: 205
+			}]
+		}, {
+			id: 300,
+			key: 'look',
+			label: 'Look',
+			options: [{
+				label: 'Wood look',
+				value: 301,
+				image: 'img/advanced-search/looks/01.jpg',
+			}, {
+				label: 'Marble look',
+				value: 302,
+				image: 'img/advanced-search/looks/02.jpg',
+			}, {
+				label: 'Stone look',
+				value: 303,
+				image: 'img/advanced-search/looks/03.jpg',
+			}, {
+				label: 'Concrete look',
+				value: 304,
+				image: 'img/advanced-search/looks/04.jpg',
+			}, {
+				label: 'Textile look',
+				value: 305,
+				image: 'img/advanced-search/looks/05.jpg',
+			}, {
+				label: 'Colour look',
+				value: 306,
+				image: 'img/advanced-search/looks/06.jpg',
+			}, {
+				label: '3D',
+				value: 307,
+				image: 'img/advanced-search/looks/07.jpg',
+			}]
+		}, {
+			id: 400,
+			key: 'finish',
+			label: 'Finish',
+			options: [{
+				label: 'Grip',
+				value: 401
+			}, {
+				label: 'Honed',
+				value: 402
+			}, {
+				label: 'Matt',
+				value: 403
+			}, {
+				label: 'Polished',
+				value: 404
+			}, {
+				label: 'Shiny',
+				value: 405
+			}, {
+				label: 'Textured',
+				value: 406
+			}]
+		}, {
+			id: 500,
+			key: 'color',
+			label: 'Color',
+			options: [
+				{ label: 'White', value: 501, image: 'img/advanced-search/colors/01.jpg', color: '#ffffff' }, // !!! color non serve
+				{ label: 'Grey', value: 502, image: 'img/advanced-search/colors/02.jpg', color: '#ababab' },
+				{ label: 'Black', value: 503, image: 'img/advanced-search/colors/03.jpg', color: '#000000' },
+				{ label: 'Ivory', value: 504, image: 'img/advanced-search/colors/04.jpg', color: '#efebe0' },
+				{ label: 'Cream', value: 505, image: 'img/advanced-search/colors/05.jpg', color: '#e4d5b8' },
+				{ label: 'Beige', value: 506, image: 'img/advanced-search/colors/06.jpg', color: '#cdbca7' },
+				{ label: 'Brown', value: 507, image: 'img/advanced-search/colors/07.jpg', color: '#64564e' },
+				{ label: 'Golden', value: 508, image: 'img/advanced-search/colors/08.jpg', color: '#d1ad8c' },
+				{ label: 'Yellow', value: 509, image: 'img/advanced-search/colors/09.jpg', color: '#eee355' },
+				{ label: 'Pink', value: 510, image: 'img/advanced-search/colors/10.jpg', color: '#d6aeb2' },
+				{ label: 'Orange', value: 511, image: 'img/advanced-search/colors/11.jpg', color: '#eea35f' },
+				{ label: 'Red', value: 512, image: 'img/advanced-search/colors/12.jpg', color: '#964343' },
+				{ label: 'Light Blue', value: 513, image: 'img/advanced-search/colors/13.jpg', color: '#8bbfd7' },
+				{ label: 'Blue', value: 514, image: 'img/advanced-search/colors/14.jpg', color: '#085468' },
+				{ label: 'Green', value: 515, image: 'img/advanced-search/colors/15.jpg', color: '#b0cc75' },
+				{ label: 'Purple', value: 516, image: 'img/advanced-search/colors/16.jpg', color: '#41255e' }
+			]
+		}, {
+			id: 600,
+			key: 'vshade',
+			label: 'VShade',
+			options: [{
+				label: 'V1',
+				value: 601
+			}, {
+				label: 'V2',
+				value: 602
+			}, {
+				label: 'V3',
+				value: 603
+			}]
+		}, {
+			id: 700,
+			key: 'size',
+			label: 'Size',
+			options: [
+				{ label: '8x31.5', value: 701, w: 8, h: 31.5 },
+				{ label: '12.5x25', value: 702, w: 12.5, h: 25 },
+				{ label: '20x20', value: 703, w: 20, h: 20 },
+				{ label: '7.5x60', value: 704, w: 7.5, h: 60 },
+				{ label: '30x30', value: 705, w: 30, h: 30 },
+				{ label: '11x90', value: 706, w: 11, h: 90 },
+				{ label: '20x60', value: 707, w: 20, h: 60 },
+				{ label: '15x90', value: 708, w: 15, h: 90 },
+				{ label: '30.5x56', value: 709, w: 30.5, h: 56 },
+				{ label: '30x60', value: 710, w: 30, h: 60 },
+				{ label: '22.5x90', value: 711, w: 22.5, h: 90 },
+				{ label: '40x60', value: 712, w: 40, h: 60 },
+				{ label: '20x120', value: 713, w: 20, h: 120 },
+				{ label: '18.5x150', value: 714, w: 18.5, h: 150 },
+				{ label: '30.5x91.5', value: 715, w: 30.5, h: 91.5 },
+				{ label: '37.5x75', value: 716, w: 37.5, h: 75 },
+				{ label: '40x80', value: 717, w: 40, h: 80 },
+				{ label: '60x60', value: 718, w: 60, h: 60 },
+				{ label: '30x120', value: 719, w: 30, h: 120 },
+				{ label: '25x150', value: 720, w: 25, h: 150 },
+				{ label: '45x90', value: 721, w: 45, h: 90 },
+				{ label: '40x120', value: 722, w: 40, h: 120 },
+				{ label: '50x110', value: 723, w: 50, h: 110 },
+				{ label: '75x75', value: 724, w: 75, h: 75 },
+				{ label: '60x120', value: 725, w: 60, h: 120 },
+				{ label: '30x240', value: 726, w: 30, h: 240 },
+				{ label: '90x90', value: 727, w: 90, h: 90 },
+				{ label: '75x150', value: 728, w: 75, h: 150 },
+				{ label: '120x120', value: 729, w: 120, h: 120 },
+				{ label: '120x240', value: 730, w: 120, h: 240 },
+				{ label: '120x278', value: 731, w: 120, h: 278 }
+			]
+		}, {
+			id: 800,
+			key: 'destination',
+			label: 'Destination of Use',
+			options: [{
+				label: 'Light Traffic',
+				value: 801
+			}, {
+				label: 'Medium Traffic',
+				value: 802
+			}, {
+				label: 'Heavy Traffic',
+				value: 803
+			}, {
+				label: 'Extreme Heavy Traffic',
+				value: 804
+			}]
+		}, {
+			id: 900,
+			key: 'din51130',
+			label: 'DIN 51130',
+			options: [{
+				label: 'R9',
+				value: 901
+			}, {
+				label: 'R10',
+				value: 902
+			}, {
+				label: 'R11',
+				value: 903
+			}, {
+				label: 'R12',
+				value: 904
+			}]
+		}, {
+			id: 1000,
+			key: 'din51097',
+			label: 'DIN 51097',
+			options: [{
+				label: 'A',
+				value: 1001
+			}, {
+				label: 'A+B',
+				value: 1001
+			}, {
+				label: 'A+B+C',
+				value: 1001
+			}]
+		}, {
+			id: 1100,
+			key: 'dcof',
+			label: 'DCOF',
+			options: [{
+				label: '< 0,42 Wet',
+				value: 1101
+			}, {
+				label: '> 0,42 Wet',
+				value: 1102
+			}]
+		}, {
+			id: 1200,
+			key: 'spanishPendulum',
+			label: 'Metodo del pendolo spagnolo',
+			options: [{
+				label: 'Class 1',
+				value: 1201
+			}, {
+				label: 'Class 1',
+				value: 1202
+			}, {
+				label: 'Class 1',
+				value: 1203
+			}]
+		}, {
+			id: 1300,
+			key: 'australianPendulum',
+			label: 'Metodo del pendolo spagnolo',
+			options: [{
+				label: 'P1',
+				value: 1301
+			}, {
+				label: 'P2',
+				value: 1302
+			}, {
+				label: 'P3',
+				value: 1303
+			}, {
+				label: 'P4',
+				value: 1304
+			}, {
+				label: 'P5',
+				value: 1305
+			}]
+		}
+	];
+
+</script>
+
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/advanced-search/hero.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/advanced-search/hero.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 offset-md-2">
+					<div class="category">Find your product</div>
+					<div class="title"><b>Impressive solutions</b>, superb inspirations.</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section--advanced-search" ng-controller="AdvancedSearchCtrl as searchCtrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col--primary">
+				<div class="group group--search-filters">
+					<ul class="nav nav--selected-filters" ng-if="searchCtrl.selectedFilters.length">
+						<li ng-repeat="filter in searchCtrl.selectedFilters track by $index">
+							<div class="nav__item" ng-click="searchCtrl.removeFilter(filter)">
+								<svg class="icon icon--remove"><use xlink:href="#remove"></use></svg> <span>{{filter.placeholder}}</span>
+							</div>
+							<div class="nav__item nav__item--clear" ng-click="searchCtrl.removeAll()" ng-if="$index == 0 && searchCtrl.selectedFilters.length > 1">
+								<span>Clear all</span> <svg class="icon icon--remove" ng-click="searchCtrl.removeFilter(filter)"><use xlink:href="#remove"></use></svg>
+							</div>
+						</li>
+					</ul>
+					<ul class="nav nav--search-filters">
+						<li ng-repeat="filter in searchCtrl.filters track by $index" has-dropdown>
+							<div class="nav__item">
+								<svg class="icon icon--plus"><use xlink:href="#plus"></use></svg>
+								<svg class="icon icon--minus"><use xlink:href="#minus"></use></svg>
+								<span>{{filter.label}}</span>
+							</div>
+							<div class="dropdown">
+								<ul class="nav nav--select">
+									<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
+										<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="searchCtrl.setFilter(item, filter)">
+											<img ng-src="{{item.image}}" ng-if="item.image" />
+											<span ng-bind="item.label"></span>
+										</span>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-12 col--secondary" ng-if="searchCtrl.visibleItems && searchCtrl.visibleItems.length" scroll="searchCtrl.onScroll($event)">
+				<div class="listing listing--advanced-search">
+					<div class="listing__item" ng-repeat="item in searchCtrl.visibleItems track by $index" appear>
+						<div class="picture" media>
+							<img lazy data-src="{{item.tile.image}}" alt="{{item.collection.name}} {{item.tile.name}}" />
+						</div>
+						<div class="title">{{item.collection.name}} {{item.tile.name}}</div>
+						<div class="group group--cta">
+							<a ng-href="{{minimal.url}}" class="btn btn--category" ng-repeat="minimal in item.minimals track by $index"><span>{{minimal.size.name}} {{minimal.finish.name}}</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="loader" ng-if="searchCtrl.busy">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-ring">
+							<circle cx="50" cy="50" fill="none" r="15" stroke-width="2"></circle>
+							<circle cx="50" cy="50" fill="none" r="15" stroke-width="2" stroke-linecap="square" transform="rotate(502.497 50 50)">
+								<animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;180 50 50;720 50 50" keyTimes="0;0.5;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform>
+								<animate attributeName="stroke-dasharray" calcMode="linear" values="9.42477796076938 84.82300164692441;47.1238898038469 47.123889803846886;9.42477796076938 84.82300164692441" keyTimes="0;0.5;1" dur="2" begin="0s" repeatCount="indefinite"></animate>
+							</circle>
+						</svg>
+					<div>load more</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<ng-include src="'templates/shared/store.html'"></ng-include>

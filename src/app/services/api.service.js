@@ -10,6 +10,12 @@ export default class ApiService {
 	constructor($http) {
 		this.http = $http;
 		const api = {
+			advancedSearch: {
+				get: () => {
+					return from($http.get('data/advanced-search.json'));
+					// return from($http.get(API_HREF + '/api/advanced-search/json'));
+				},
+			},
 			wishlist: {
 				toggle: (item) => {
 					item.added = !item.added;

@@ -1,6 +1,7 @@
 ﻿/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import AdvancedSearchCtrl from './advanced-search/advanced-search.controller';
 import CollectionsCtrl from './collections/collections.controller';
 import ContactsCtrl from './contacts/contacts.controller';
 import AppearDirective from './directives/appear.directive';
@@ -30,6 +31,7 @@ import ValidateDirective from './forms/validate.directive';
 import MoodboardDropdownDirective from './moodboard/moodboard-dropdown.directive';
 import MoodboardSearchDirective from './moodboard/moodboard-search.directive';
 import MoodboardCtrl from './moodboard/moodboard.controller';
+import NewsCtrl from './news/news.controller';
 import ReferencesCtrl from './references/references.controller';
 import RootCtrl from './root.controller';
 import ApiService from './services/api.service';
@@ -85,10 +87,12 @@ app.directive('appear', AppearDirective.factory)
 	.directive('wishlist', WishlistDirective.factory);
 
 app.controller('RootCtrl', RootCtrl)
+	.controller('AdvancedSearchCtrl', AdvancedSearchCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
 	.controller('ContactsCtrl', ContactsCtrl)
 	.controller('FaqCtrl', FaqCtrl)
 	.controller('MoodboardCtrl', MoodboardCtrl)
+	.controller('NewsCtrl', NewsCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)
 	.controller('StoreLocatorCtrl', StoreLocatorCtrl);
 
