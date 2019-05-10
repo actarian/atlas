@@ -6,8 +6,10 @@
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	flex-wrap: wrap;
 
 	&>li {
+		margin-right: 20px;
 
 		&>a,
 		&>span {
@@ -37,9 +39,11 @@
 		}
 	}
 
+	/*
 	&>li+li {
 		margin-left: 20px;
 	}
+	*/
 
 	@include media-breakpoint-down(lg) {}
 

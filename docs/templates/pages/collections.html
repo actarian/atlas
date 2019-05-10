@@ -341,7 +341,7 @@
 	</div>
 </section>
 <div ng-controller="CollectionsCtrl as collectionsCtrl">
-	<section class="section section--filters" sticky="61">
+	<section class="section section--filters" ng-class="{ opened: root.menuProductOpened }" sticky="61">
 		<form class="form form--filters" sticky-content>
 			<div class="form__group" ng-repeat="(key, filter) in collectionsCtrl.filters track by $index">
 				<div select-with-autocomplete="filter" handler="collectionsCtrl" ng-if="key == 'collections'"></div>
@@ -378,6 +378,10 @@
 			</div>
 			-->
 		</form>
+		<button type="button" class="btn btn--project hidden-sm-up" ng-click="root.menuProductOpened = !root.menuProductOpened">
+			<span ng-if="!root.menuProductOpened">Filter</span>
+			<svg class="icon icon--close" ng-if="root.menuProductOpened"><use xlink:href="#close"></use></svg>
+		</button>
 	</section>
 	<div class="section--collections-results" ng-if="!collectionsCtrl.filteredBrands">
 		<section class="section section--collections atlas-concorde">

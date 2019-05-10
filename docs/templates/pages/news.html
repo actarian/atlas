@@ -138,7 +138,7 @@
 	</div>
 </section>
 <div ng-controller="NewsCtrl as newsCtrl">
-	<section class="section section--filters" sticky="61">
+	<section class="section section--filters" ng-class="{ opened: root.menuProductOpened }" sticky="61">
 		<form class="form form--filters" sticky-content>
 			<button class="btn btn--toggle" ng-class="{ active: newsCtrl.filters.categories.value == item.value, disabled: item.disabled }" ng-click="newsCtrl.setFilter(item, newsCtrl.filters.categories)" ng-repeat="item in newsCtrl.filters.categories.options track by $index"><span ng-bind="item.label"></span></button>
 			<div class="form__group form__group--white" ng-repeat="(key, filter) in newsCtrl.filters track by $index" ng-if="key == 'years'">
@@ -164,6 +164,10 @@
 				</div>
 			</div>
 		</form>
+		<button type="button" class="btn btn--project hidden-sm-up" ng-click="root.menuProductOpened = !root.menuProductOpened">
+			<span ng-if="!root.menuProductOpened">Filter</span>
+			<svg class="icon icon--close" ng-if="root.menuProductOpened"><use xlink:href="#close"></use></svg>
+		</button>
 	</section>
 	<div class="section--collections-results">
 		<section class="section section--collections">

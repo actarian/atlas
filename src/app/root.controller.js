@@ -45,6 +45,8 @@ class RootCtrl {
 	initCustomNavigation() {
 		this.$scope.$on('onNavigationShouldFetch', (scope, { title, href }) => {
 			console.log('onNavigationShouldFetch', title, href);
+			this.menuOpened = false;
+			this.menuProductOpened = false;
 			// window.location.assign(href);
 			// return;
 			/*
@@ -61,6 +63,7 @@ class RootCtrl {
 			const wrapper = document.querySelector('[data-router-wrapper]');
 			const wrapperElement = angular.element(wrapper);
 			const from = document.querySelector('[data-router-view]');
+			const headerMenu = document.querySelector('.header__menu');
 			const fromElement = angular.element(from);
 			const transitionOut = (from, done) => {
 				TweenMax.to(from, 0.35, {

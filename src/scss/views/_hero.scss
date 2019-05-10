@@ -55,43 +55,18 @@
 	.title {
 		font-size: 9vw;
 		line-height: 0.9;
-		font-weight: 400;
+		font-weight: $font-regular;
 		margin-bottom: 2vw;
-		color: $foreground-negative;
 		text-align: center;
+		color: $foreground-negative;
 	}
 
 	.abstract {
 		font-size: 1.9vw;
-		font-weight: 300;
+		font-weight: $font-light;
 		text-transform: uppercase;
+		text-align: center;
 		color: $foreground-negative;
-	}
-
-	@include media-breakpoint-down(sm) {
-		.title {
-			font-size: 60px;
-			text-align: center;
-		}
-
-		.abstract {
-			font-size: 16px;
-			text-align: center;
-		}
-	}
-
-	@include media-breakpoint-down(xs) {
-
-		/*
-		.aspect {
-			width: 100vw;
-			height: 100vh;
-			max-height: 200vw;
-		}
-		*/
-		.aspect {
-			@include aspect-grid(375, 667);
-		}
 	}
 
 	@include media-breakpoint-up(sm) {
@@ -107,6 +82,29 @@
 
 		.abstract {
 			font-size: 26px;
+		}
+	}
+
+	@include media-breakpoint-down(sm) {
+		.title {
+			font-size: 60px;
+			font-weight: $font-semibold;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+
+		.aspect {
+			@include aspect-grid(375, 667);
+		}
+
+		.title {
+			font-size: 48px;
+			font-weight: $font-semibold;
+		}
+
+		.abstract {
+			font-size: 16px;
 		}
 	}
 
@@ -139,7 +137,7 @@
 	.category {
 		margin-bottom: 30px;
 		font-size: 14px;
-		font-weight: 600;
+		font-weight: $font-semibold;
 		text-transform: uppercase;
 		color: $foreground-negative;
 	}
@@ -147,7 +145,7 @@
 	.title {
 		font-size: 5.2vw;
 		line-height: 1.1;
-		font-weight: 300;
+		font-weight: $font-light;
 		color: $foreground-negative;
 
 		b {

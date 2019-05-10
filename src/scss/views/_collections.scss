@@ -1,30 +1,115 @@
 .section--filters {
-	z-index: 100;
-	min-height: 97px;
-
-	&.sticky {
-		[sticky-content] {
-			position: fixed;
-			width: 100%;
-			top: 62px;
-			transition: box-shadow ease-in-out 350ms;
-			box-shadow: 0 20px 20px -10px rgba(0, 0, 0, 0.15);
-		}
-	}
-
 	.dropdown {
 		.nav--select {
 			margin-top: 95px;
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
-		display: none;
+	@include media-breakpoint-up(sm) {
+		z-index: 100;
+		min-height: 97px;
+
+		&.sticky {
+			[sticky-content] {
+				position: fixed;
+				width: 100%;
+				top: 62px;
+				transition: box-shadow ease-in-out 350ms;
+				box-shadow: 0 20px 20px -10px rgba(0, 0, 0, 0.15);
+			}
+		}
 	}
 
 	@include media-breakpoint-down(md) {
 		min-height: 100px;
 	}
+
+	@include media-breakpoint-down(xs) {
+		position: fixed;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		bottom: 0;
+		width: 100%;
+		height: calc(100vh - 60px);
+		min-height: 50px;
+		z-index: 100;
+		background: $background-tertiary;
+		transition: all ease-in-out 350ms;
+
+		/*
+		.form--filters {
+			display: none;
+		}
+		*/
+
+
+		.form--filters {
+			display: block;
+			overflow-x: hidden;
+			overflow-y: auto;
+			transition: all ease-in-out 350ms;
+			max-height: calc(100% - 50px);
+			height: calc(100% - 50px);
+			box-shadow: none;
+			position: relative;
+			top: 0;
+
+			&>.form__group {
+				background: white;
+				margin-bottom: 10px;
+			}
+
+			&>.btn--toggle {
+				width: 100%;
+				flex: 1 1 100%;
+			}
+		}
+
+		[has-dropdown],
+		[select-with-autocomplete] {
+			display: flex;
+			flex-direction: column;
+
+			.dropdown {
+				overflow: visible;
+				order: 1;
+			}
+		}
+
+		&:not(.opened) {
+			height: 50px;
+
+			.form--filters {
+				// display: none;
+				max-height: 0;
+			}
+		}
+
+		.nav--select {
+			max-height: 10000px;
+			width: calc(100% + 60px);
+			margin-left: -30px;
+			margin-right: -30px;
+		}
+
+		.dropdown {
+			display: none;
+		}
+
+		.opened>.dropdown {
+			display: block;
+			position: relative;
+			max-height: 10000px;
+			box-shadow: none;
+
+			.nav--select {
+				margin-top: 0;
+			}
+		}
+
+	}
+
 }
 
 .btn--filter {
@@ -35,7 +120,7 @@
 	min-height: 80px;
 	z-index: 1;
 	font-size: 15px;
-	font-weight: 400;
+	font-weight: $font-regular;
 	text-transform: uppercase;
 	background: $background-tertiary;
 	color: $nav-product;
@@ -88,7 +173,7 @@
 	min-height: 80px;
 	z-index: 1;
 	font-size: 15px;
-	font-weight: 400;
+	font-weight: $font-regular;
 	text-transform: uppercase;
 	transition: ease-in-out 350ms;
 	transition-property: background-color, color, border, opacity;
@@ -228,7 +313,6 @@
 }
 
 .section--collections {
-	padding-top: 120px;
 	padding-bottom: 60px;
 	text-align: center;
 
@@ -246,10 +330,27 @@
 	}
 
 	.title {
-		font-size: 42px;
-		line-height: 50px;
-		margin-bottom: 90px;
 		color: $foreground;
+	}
+
+	@include media-breakpoint-up(sm) {
+		padding-top: 120px;
+
+		.title {
+			font-size: 42px;
+			line-height: 50px;
+			margin-bottom: 90px;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		padding-top: 80px;
+
+		.title {
+			font-size: 36px;
+			line-height: 1.2;
+			margin-bottom: 40px;
+		}
 	}
 }
 
@@ -257,19 +358,6 @@
 	border-top: 2px solid $border;
 }
 
-.section--filters {
-	z-index: 100;
-
-	&.sticky {
-		[sticky-content] {
-			position: fixed;
-			width: 100%;
-			top: 62px;
-			transition: box-shadow ease-in-out 350ms;
-			box-shadow: 0 20px 20px -10px rgba(0, 0, 0, 0.15);
-		}
-	}
-}
 
 $collection-gutter: 70px;
 
@@ -287,7 +375,6 @@ $collection-gutter: 70px;
 	text-align: left;
 
 	&>.listing__item {
-		flex: 0 0 calc(33% - #{$collection-gutter});
 		margin-right: $collection-gutter;
 		margin-bottom: $collection-gutter;
 
@@ -358,6 +445,23 @@ $collection-gutter: 70px;
 
 		.group--cta {
 			margin: 0;
+		}
+
+		@include media-breakpoint-up(md) {
+			flex: 0 0 calc(33% - #{$collection-gutter});
+		}
+
+		@include media-breakpoint-down(sm) {
+			flex: 0 0 calc(50% - #{$collection-gutter});
+		}
+
+		@include media-breakpoint-down(xs) {
+			flex: 0 0 calc(100% - #{$collection-gutter});
+
+			.title {
+				font-size: 16px;
+			}
+
 		}
 
 	}

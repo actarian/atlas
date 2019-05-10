@@ -23,6 +23,7 @@ class MoodboardCtrl {
 		this.locationService = LocationService;
 		this.apiService = ApiService;
 		this.filters = window.filters || {};
+		this.filteredItems = [];
 		this.moodTypes = MOOD_TYPES;
 		this.deserializeFilters();
 		this.applyFilters();
@@ -78,11 +79,11 @@ class MoodboardCtrl {
 				}
 				items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
 				/* FAKE */
-				this.items = [];
+				this.filteredItems = [];
 				this.visibleItems = [];
 				this.maxItems = ITEMS_PER_PAGE;
 				this.$timeout(() => {
-					this.items = items;
+					this.filteredItems = items;
 					this.visibleItems = items.slice(0, this.maxItems);
 				}, 50);
 			},
@@ -98,7 +99,7 @@ class MoodboardCtrl {
 					this.busy = true;
 					this.$timeout(() => {
 						this.maxItems += ITEMS_PER_PAGE;
-						this.visibleItems = this.items.slice(0, this.maxItems);
+						this.visibleItems = this.filteredItems.slice(0, this.maxItems);
 						this.busy = false;
 						// console.log(this.visibleItems.length);
 					}, 1000);

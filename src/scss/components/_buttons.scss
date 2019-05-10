@@ -85,6 +85,13 @@ button,
 		height: 14px;
 		margin-right: 10px;
 	}
+
+	@include media-breakpoint-down(xs) {
+		justify-content: flex-start;
+		align-items: center;
+		text-align: left;
+		line-height: 1.2;
+	}
 }
 
 %btn--link {
@@ -376,10 +383,6 @@ button,
 		transition: opacity ease-in-out 350ms;
 	}
 
-	.icon--play-progress-background {
-		opacity: 0.2;
-	}
-
 	.icon--play {
 		display: block;
 		position: absolute;
@@ -398,6 +401,10 @@ button,
 		.icon--play-progress {
 			opacity: 1;
 		}
+	}
+
+	.icon--play-progress-background {
+		opacity: 0.2;
 	}
 
 	@include media-breakpoint-down(md) {
@@ -421,7 +428,6 @@ button,
 			height: 100px;
 		}
 
-
 		.icon--play {
 			width: 20px;
 			height: 20px;
@@ -429,15 +435,22 @@ button,
 			margin-top: -9px;
 		}
 
+		.icon--play-progress-background {
+			opacity: 0.5;
+		}
+
 	}
 
 }
 
 .btn--menu {
-	background: transparent;
+	position: relative;
 	padding: 10px;
+	background: transparent;
+	z-index: 1;
 
-	.icon--menu {
+	.icon--menu,
+	.icon--close {
 		fill: $foreground-negative;
 		stroke: none;
 		width: 26px;
@@ -447,7 +460,7 @@ button,
 
 .btn--secondary {
 	font-size: 15px;
-	font-weight: 300;
+	font-weight: $font-regular;
 	text-transform: uppercase;
 	border: 2px solid $primary;
 	padding: 10px 15px;
@@ -506,6 +519,38 @@ button,
 			}
 		}
 	}
+}
+
+.btn--project {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 50px;
+	font-size: 16px;
+	border-top: 2px solid $border;
+
+	&,
+	&:link,
+	&:focus,
+	&:active {
+		color: $primary;
+	}
+
+	svg {
+		fill: $primary;
+		width: 14px;
+		height: 14px;
+	}
+
+	&:hover {
+		background: $primary;
+		color: white;
+
+		svg {
+			fill: white;
+		}
+	}
+
 }
 
 .btn--position {

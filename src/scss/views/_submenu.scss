@@ -1,25 +1,48 @@
 .section--submenu {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: auto;
 	max-height: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
-	background: $background-subheader;
+	height: auto;
 	color: white;
-	box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.7);
-	// transition: 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
-	// transition-property: max-height;
-
-	&>.container {
-		margin-top: 200px;
-		margin-bottom: 50px;
-	}
 
 	img {
 		width: 100%;
+	}
+
+	@include media-breakpoint-up(sm) {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		max-height: 0;
+		overflow-x: hidden;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		background: $background-subheader;
+
+		box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.7);
+		// transition: 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
+		// transition-property: max-height;
+
+		&>.container {
+			margin-top: 200px;
+			margin-bottom: 50px;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		overflow: hidden;
+		background: $background-header;
+
+		&>.container {
+			padding: 40px 0 0 0;
+
+			&>.row {
+				margin: 0;
+
+				&>div {
+					padding: 0;
+				}
+			}
+		}
 	}
 }
 
@@ -35,7 +58,6 @@
 
 .submenu__item {
 	display: block;
-	margin: 0 20px 20px 20px;
 	cursor: pointer;
 	transition: none;
 
@@ -59,7 +81,7 @@
 		position: relative;
 		display: inline-block;
 		font-size: 16px;
-		font-weight: 600;
+		font-weight: $font-semibold;
 		margin: 15px 0 20px 0;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -91,15 +113,28 @@
 		}
 	}
 
+	@include media-breakpoint-up(sm) {
+		margin: 0 20px 20px 20px;
+	}
+
+	@include media-breakpoint-down(xs) {
+
+		.picture,
+		.abstract {
+			display: none;
+		}
+
+		.title {
+			margin: 0 0 20px 30px;
+		}
+	}
 }
 
 .submenu__item--lg {
-
 	.picture--horizontal {
 		@include aspect-clip(650, 450);
 		margin-bottom: 10px;
 	}
-
 }
 
 .listing--submenu {

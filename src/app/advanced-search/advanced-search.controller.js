@@ -18,6 +18,7 @@ class AdvancedSearchCtrl {
 		this.locationService = LocationService;
 		this.apiService = ApiService;
 		this.items = [];
+		this.filteredItems = [];
 		this.filters = window.filters || [];
 		this.selectedFilters = [];
 		this.deserializeFilters();

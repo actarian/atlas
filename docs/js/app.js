@@ -15459,6 +15459,7 @@ function () {
     this.locationService = LocationService;
     this.apiService = ApiService;
     this.items = [];
+    this.filteredItems = [];
     this.filters = window.filters || [];
     this.selectedFilters = [];
     this.deserializeFilters(); // !!!
@@ -16088,11 +16089,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var ContactsCtrl =
 /*#__PURE__*/
 function () {
-  function ContactsCtrl($scope, $timeout, StateService) {
+  function ContactsCtrl($scope, $timeout, $http, StateService) {
     _classCallCheck(this, ContactsCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.$http = $http;
     this.data = window.data || {};
     this.model = {};
     this.state = StateService.getState();
@@ -16107,9 +16109,16 @@ function () {
       console.log('ContactsCtrl.onSubmit', this.model);
 
       if (this.state.busy()) {
-        this.$timeout(function () {
+        this.$http.post('/WS/wsForms.asmx/SaveForm', this.model).then(function (success) {}, function (error) {
+          _this.error = error;
+        }).finally(function () {
           _this.state.ready();
+        });
+        /*
+        this.$timeout(() => {
+        	this.state.ready();
         }, 2000);
+        */
       }
     }
   }]);
@@ -16117,7 +16126,7 @@ function () {
   return ContactsCtrl;
 }();
 
-ContactsCtrl.$inject = ['$scope', '$timeout', 'StateService'];
+ContactsCtrl.$inject = ['$scope', '$timeout', '$http', 'StateService'];
 var _default = ContactsCtrl;
 exports.default = _default;
 
@@ -18973,6 +18982,7 @@ function () {
     this.locationService = LocationService;
     this.apiService = ApiService;
     this.filters = window.filters || {};
+    this.filteredItems = [];
     this.moodTypes = MOOD_TYPES;
     this.deserializeFilters();
     this.applyFilters();
@@ -19051,12 +19061,12 @@ function () {
         });
         /* FAKE */
 
-        _this3.items = [];
+        _this3.filteredItems = [];
         _this3.visibleItems = [];
         _this3.maxItems = ITEMS_PER_PAGE;
 
         _this3.$timeout(function () {
-          _this3.items = items;
+          _this3.filteredItems = items;
           _this3.visibleItems = items.slice(0, _this3.maxItems);
         }, 50);
       }, function (error) {
@@ -19076,7 +19086,7 @@ function () {
 
             _this4.$timeout(function () {
               _this4.maxItems += ITEMS_PER_PAGE;
-              _this4.visibleItems = _this4.items.slice(0, _this4.maxItems);
+              _this4.visibleItems = _this4.filteredItems.slice(0, _this4.maxItems);
               _this4.busy = false; // console.log(this.visibleItems.length);
             }, 1000);
           }, 0);
@@ -19122,7 +19132,8 @@ function () {
     this.$timeout = $timeout;
     this.locationService = LocationService;
     this.filters = window.filters || {};
-    this.news = window.news || []; // !!! FAKE
+    this.news = window.news || [];
+    this.filteredItems = []; // !!! FAKE
 
     while (this.news.length < 100) {
       this.news = this.news.concat(this.news);
@@ -19532,7 +19543,9 @@ function () {
       this.$scope.$on('onNavigationShouldFetch', function (scope, _ref) {
         var title = _ref.title,
             href = _ref.href;
-        console.log('onNavigationShouldFetch', title, href); // window.location.assign(href);
+        console.log('onNavigationShouldFetch', title, href);
+        _this2.menuOpened = false;
+        _this2.menuProductOpened = false; // window.location.assign(href);
         // return;
 
         /*
@@ -19552,6 +19565,7 @@ function () {
         var wrapper = document.querySelector('[data-router-wrapper]');
         var wrapperElement = angular.element(wrapper);
         var from = document.querySelector('[data-router-view]');
+        var headerMenu = document.querySelector('.header__menu');
         var fromElement = angular.element(from);
 
         var transitionOut = function transitionOut(from, done) {

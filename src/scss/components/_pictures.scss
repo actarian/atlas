@@ -100,6 +100,14 @@
 	&>.media {
 		@include aspect-clip(153, 88);
 	}
+
+	.section--full &:not([video]) {
+		@include media-breakpoint-down(xs) {
+			&>.media {
+				@include aspect-clip(37, 61);
+			}
+		}
+	}
 }
 
 .picture--collection {

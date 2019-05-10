@@ -20,6 +20,12 @@
 		<img lazy data-src="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop" alt="title" />
 	</div>
 	-->
+	<div class="background" parallax>
+		<video muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop">
+			<source src="img/product/marvel/living.mp4" type="video/mp4">
+		</video>
+	</div>
+	<!--
 	<div class="background" ng-if="!root.webglEnabled" parallax>
 		<video muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop">
 			<source src="img/product/marvel/living.mp4" type="video/mp4">
@@ -28,6 +34,7 @@
 	<div class="background" ng-if="root.webglEnabled">
 		<canvas glsl-canvas="img/product/marvel/living.mp4" with-video class="glsl-canvas"></canvas>
 	</div>
+	-->
 	<div class="aspect">
 		<div class="container">
 			<div class="title">Marvel Edge</div>
@@ -57,9 +64,10 @@
 					<img lazy data-src="img/product/marvel/01.jpg" alt="title" />
 				</div>
 				<div class="group group--cta" appear>
-					<a href="product-gallery-detail.html" class="btn btn--gallery"><svg class="icon icon--gallery">
-							<use xlink:href="#gallery"></use>
-						</svg> <span>view our <b>Living Gallery</b></span></a>
+					<a href="product-gallery-detail.html" class="btn btn--gallery">
+						<svg class="icon icon--gallery"><use xlink:href="#gallery"></use></svg>
+						<span>view our <b>Living Gallery</b></span>
+					</a>
 				</div>
 			</div>
 			<div class="col-md-7 offset-md-2">
@@ -67,9 +75,10 @@
 					<img lazy data-src="img/product/marvel/02.jpg" alt="title" />
 				</div>
 				<div class="group group--cta" appear>
-					<a href="product-gallery-detail.html" class="btn btn--gallery"><svg class="icon icon--gallery">
-							<use xlink:href="#gallery"></use>
-						</svg> <span>view our <b>Restaurant Gallery</b></span></a>
+					<a href="product-gallery-detail.html" class="btn btn--gallery">
+						<svg class="icon icon--gallery"><use xlink:href="#gallery"></use></svg>
+						<span>view our <b>Restaurant Gallery</b></span>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -97,7 +106,7 @@
 		<img lazy data-src="img/product/marvel/background-texture.jpg" />
 	</div>
 	<div class="container">
-		<div class="picture picture--horizontal" media="{ id: 2002, coId: 101 }" parallax appear>
+		<div class="picture picture--horizontal" video="{ id: 2002, coId: 101 }" parallax appear>
 			<!-- <img lazy data-src="img/product/marvel/03.jpg" alt="title" />-->
 			<video muted playsinline poster="img/product/marvel/03.jpg">
 				<source src="img/product/marvel/lobby.mp4" type="video/mp4">
@@ -181,7 +190,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-7">
-				<div class="picture picture--vertical" media="{ id: 2003, coId: 101 }" parallax appear>
+				<div class="picture picture--vertical" video="{ id: 2003, coId: 101 }" parallax appear>
 					<!-- <img lazy data-src="img/product/marvel/07.jpg" alt="title" />-->
 					<video muted playsinline poster="img/product/marvel/07.jpg">
 						<source src="img/product/marvel/showroom.mp4" type="video/mp4">
@@ -194,7 +203,7 @@
 				</div>
 			</div>
 			<div class="col-md-7 offset-md-2">
-				<div class="picture picture--vertical" media="{ id: 2004, coId: 101 }" parallax appear>
+				<div class="picture picture--vertical" video="{ id: 2004, coId: 101 }" parallax appear>
 					<!-- <img lazy data-src="img/product/marvel/08.jpg" alt="title" />-->
 					<video muted playsinline poster="img/product/marvel/08.jpg">
 						<source src="img/product/marvel/bathroom.mp4" type="video/mp4">

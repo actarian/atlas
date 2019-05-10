@@ -15,6 +15,7 @@ class NewsCtrl {
 		this.locationService = LocationService;
 		this.filters = window.filters || {};
 		this.news = window.news || [];
+		this.filteredItems = [];
 		// !!! FAKE
 		while (this.news.length < 100) {
 			this.news = this.news.concat(this.news);

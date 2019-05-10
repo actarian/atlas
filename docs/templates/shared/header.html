@@ -30,26 +30,54 @@
 					</li>
 					<li><a href="#" ng-click="root.webglEnabled = !root.webglEnabled"><svg class="icon icon--search"><use xlink:href="#search"></use></svg></a></li>
 				</ul>
-				<button type="button" class="btn btn--menu hidden-sm-up"><svg class="icon icon--menu"><use xlink:href="#menu"></use></svg></button>
+				<button type="button" class="btn btn--menu hidden-sm-up" ng-click="root.menuOpened = !root.menuOpened">
+					<svg class="icon icon--menu" ng-if="!root.menuOpened"><use xlink:href="#menu"></use></svg>
+					<svg class="icon icon--close" ng-if="root.menuOpened"><use xlink:href="#close"></use></svg>
+				</button>
 			</div>
 		</div>
 	</div>
-	<div class="menu menu--secondary hidden-xs-down">
-		<div class="container">
-			<div class="group">
-				<ul class="nav nav--secondary">
-					<li><a href="store-locator.html">Store locator</a></li>
-					<li><a href="#">Company</a></li>
-					<li><a href="contacts.html">Contacts</a></li>
-					<li><a href="news.html">News</a></li>
-				</ul>
-			</div>
-			<div class="group">
-				<ul class="nav nav--secondary">
-					<li><a href="faq.html">Faq</a></li>
-					<li><a href="#">Wishlist <svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg></a></li>
-					<li><a href="#">International / English <svg class="icon icon--angle-down"><use xlink:href="#angle-down"></use></svg></a></li>
-				</ul>
+	<div class="header__menu" ng-class="{ opened: root.menuOpened }">
+		<div class="menu menu--secondary" ng-class="{ 'hidden-xs-down': !root.menuOpened }">
+			<div class="container">
+				<div class="group hidden-sm-up">
+					<ul class="nav nav--primary">
+						<li has-dropdown has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
+							<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+							<ng-include src="'templates/shared/submenu-collections.html'"></ng-include>
+						</li>
+						<li has-dropdown has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
+							<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+							<ng-include src="'templates/shared/submenu-collections-usa.html'"></ng-include>
+						</li>
+						<li has-dropdown has-dropdown-consumer="root">
+							<span>Be Inspired</span>
+							<ng-include src="'templates/shared/submenu-beinspired.html'"></ng-include>
+						</li>
+						<li has-dropdown has-dropdown-consumer="root">
+							<span>Projects</span>
+							<ng-include src="'templates/shared/submenu-projects.html'"></ng-include>
+						</li>
+					</ul>
+				</div>
+				<div class="group">
+					<ul class="nav nav--secondary">
+						<li><a href="store-locator.html">Store locator</a></li>
+						<li><a href="#">Company</a></li>
+						<li><a href="contacts.html">Contacts</a></li>
+						<li><a href="news.html">News</a></li>
+					</ul>
+				</div>
+				<div class="group">
+					<ul class="nav nav--secondary">
+						<li><a href="faq.html">Faq</a></li>
+						<li><a href="#">Wishlist <svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg></a></li>
+						<li><a href="#">International / English <svg class="icon icon--angle-down"><use xlink:href="#angle-down"></use></svg></a></li>
+					</ul>
+				</div>
+				<div class="group group--search hidden-sm-up">
+					<svg class="icon icon--search"><use xlink:href="#search"></use></svg> <input class="control--search" placeholder="I’m looking for...">
+				</div>
 			</div>
 		</div>
 	</div>

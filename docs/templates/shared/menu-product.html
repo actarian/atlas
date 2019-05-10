@@ -1,4 +1,4 @@
-<section class="section section--product" sticky="61">
+<section class="section section--product" ng-class="{ opened: root.menuProductOpened }" sticky="61">
 	<div class="menu menu--product" sticky-content>
 		<ul class="nav nav--product">
 			<li><a href="product-project.html">The Project</a></li>
@@ -12,4 +12,8 @@
 			<li><a href="#">Trim Tiles</a></li>
 		</ul>
 	</div>
+	<button type="button" class="btn btn--project hidden-sm-up" ng-click="root.menuProductOpened = !root.menuProductOpened">
+		<span ng-if="!root.menuProductOpened">MARVEL EDGE / The Project</span>
+		<svg class="icon icon--close" ng-if="root.menuProductOpened"><use xlink:href="#close"></use></svg>
+	</button>
 </section>

@@ -8,8 +8,6 @@
 }
 
 .nav--product {
-	display: flex;
-	justify-content: flex-start;
 	width: 100%;
 	background: $background-tertiary;
 
@@ -40,7 +38,10 @@
 		}
 	}
 
-	@include media-breakpoint-down(lg) {}
+	@include media-breakpoint-up(sm) {
+		display: flex;
+		justify-content: flex-start;
+	}
 
 	@include media-breakpoint-down(md) {
 		/*
@@ -67,10 +68,41 @@
 			}
 		}
 	}
+
+	@include media-breakpoint-down(xs) {
+		display: block;
+
+		&>li {
+
+			&>a,
+			&>span {
+				font-weight: $font-bold;
+				text-transform: uppercase;
+				color: $primary;
+			}
+		}
+	}
+}
+
+.menu {
+	display: flex;
+	flex: 1 0 100%;
+
+	&>.container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 }
 
 .menu--product {
 	background: $background-tertiary;
+
+	@include media-breakpoint-down(xs) {
+		display: flex;
+		align-items: center;
+		flex: 0 0 calc(100% - 60px);
+	}
 }
 
 .nav--select {
@@ -88,7 +120,6 @@
 		&>.option {
 			display: flex;
 			align-items: center;
-			padding: 10px 20px 10px 40px;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
@@ -169,6 +200,26 @@
 
 		&:hover {
 			background-color: transparent;
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		&>li {
+			&>.option {
+				padding: 10px 20px 10px 40px;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		&>li {
+			&>.option {
+				padding: 10px 0 10px 28px;
+
+				span {
+					font-size: 18px;
+				}
+			}
 		}
 	}
 
