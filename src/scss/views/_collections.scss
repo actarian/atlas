@@ -43,7 +43,6 @@
 		}
 		*/
 
-
 		.form--filters {
 			display: block;
 			overflow-x: hidden;
@@ -60,6 +59,8 @@
 				margin-bottom: 10px;
 			}
 
+			&>.form__group,
+			&>.btn--filter,
 			&>.btn--toggle {
 				width: 100%;
 				flex: 1 1 100%;

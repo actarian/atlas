@@ -70,25 +70,28 @@ class MoodboardCtrl {
 		// console.log('MoodboardCtrl.applyFilters', this.filters);
 		this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		this.apiService.moodboard.filter(filters).subscribe(
-			success => {
-				let items = success.data;
-				/* FAKE */
-				while (items.length < 200) {
-					items = items.concat(items);
-				}
-				items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-				/* FAKE */
-				this.filteredItems = [];
-				this.visibleItems = [];
-				this.maxItems = ITEMS_PER_PAGE;
-				this.$timeout(() => {
-					this.filteredItems = items;
-					this.visibleItems = items.slice(0, this.maxItems);
-				}, 50);
-			},
-			error => console.log('MoodboardCtrl.applyFilters.error', error)
-		);
+		console.log(filters);
+		if (filters.length) {
+			this.apiService.moodboard.filter(filters).subscribe(
+				success => {
+					let items = success.data;
+					/* FAKE */
+					while (items.length < 200) {
+						items = items.concat(items);
+					}
+					items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
+					/* FAKE */
+					this.filteredItems = [];
+					this.visibleItems = [];
+					this.maxItems = ITEMS_PER_PAGE;
+					this.$timeout(() => {
+						this.filteredItems = items;
+						this.visibleItems = items.slice(0, this.maxItems);
+					}, 50);
+				},
+				error => console.log('MoodboardCtrl.applyFilters.error', error)
+			);
+		}
 	}
 
 	onScroll(event) {

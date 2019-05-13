@@ -146,11 +146,14 @@
 				</div>
 			</div>
 		</div>
+		<div class="result__indicator" ng-if="moodboardCtrl.visibleItems && moodboardCtrl.visibleItems.length">
+			<svg><use xlink:href="#result-indicator"></use></svg>
+		</div>
 	</section>
 	<ng-include src="'templates/shared/moodboard.html'"></ng-include>
 	<section class="section--moodboard-results">
-		<section class="section section--moodboard">
-			<div class="container" ng-if="moodboardCtrl.visibleItems && moodboardCtrl.visibleItems.length" scroll="moodboardCtrl.onScroll($event)">
+		<section class="section section--moodboard" ng-if="moodboardCtrl.visibleItems && moodboardCtrl.visibleItems.length">
+			<div class="container" scroll="moodboardCtrl.onScroll($event)">
 				<div class="listing listing--moodboard" muuri>
 					<div class="listing__item" ng-class="{
 						'mood--tile': item.type === moodboardCtrl.moodTypes.Tile,

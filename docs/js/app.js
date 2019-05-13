@@ -18834,7 +18834,7 @@ function () {
 
     this.$compile = $compile;
     this.restrict = 'A';
-    this.template = "\n<span has-dropdown>\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\">{{filter.placeholder}}</span>\n</span>\n"; // this.require = 'ngModel';
+    this.template = "\n<span has-dropdown>\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\" ng-class=\"{ active: filter.value }\">\n\t\t<span class=\"moodboard__underline\"></span>\n\t\t<span class=\"moodboard__text\">{{filter.placeholder}}</span>\n\t</span>\n</span>\n"; // this.require = 'ngModel';
 
     this.scope = {
       filter: '=?moodboardDropdown'
@@ -18892,6 +18892,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -18918,18 +18926,106 @@ function () {
   _createClass(MoodboardSearchDirective, [{
     key: "link",
     value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
       scope.filters = scope.filters || {};
       var node = element[0];
       var html = node.innerText;
       var keys = Object.keys(scope.filters);
       keys.forEach(function (x) {
         // console.log(x);
-        html = html.replace("$".concat(x, "$"), "<span class=\"moodboard__dropdown ".concat(x, "\" moodboard-dropdown=\"filters.").concat(x, "\"></span>"));
+        html = html.replace("$".concat(x, "$"), "<span class=\"moodboard__dropdown ".concat(x, "\" moodboard-dropdown=\"filters.").concat(x, "\" ng-click=\"animateOff()\"></span>"));
       }); // console.log('MoodboardSearchDirective', html);
 
       node.innerHTML = html;
       this.$compile(element.contents())(scope);
+      var hasFilter = Object.keys(scope.filters).map(function (x) {
+        return scope.filters[x];
+      }).find(function (x) {
+        return x.value !== null;
+      }) !== undefined;
+
+      if (!hasFilter) {
+        this.animateUnderlines(node);
+      }
+
+      scope.animateOff = function () {
+        _this.animateOff(node);
+      };
+
       element.on('$destroy', function () {});
+    }
+  }, {
+    key: "animateUnderlines",
+    value: function animateUnderlines(node) {
+      this.animated = true;
+
+      var values = _toConsumableArray(node.querySelectorAll('.moodboard__underline'));
+
+      values.forEach(function (x) {
+        TweenMax.set(x, {
+          transformOrigin: '0 50%',
+          scaleX: 0
+        });
+      });
+      var i = -1;
+
+      var animate = function animate() {
+        i++;
+        i = i % values.length;
+        var u = values[i];
+        TweenMax.set(u, {
+          transformOrigin: '0 50%',
+          scaleX: 0
+        });
+        TweenMax.to(u, 0.50, {
+          scaleX: 1,
+          transformOrigin: '0 50%',
+          delay: 0,
+          ease: Power3.easeInOut,
+          overwrite: 'all',
+          onComplete: function onComplete() {
+            TweenMax.set(u, {
+              transformOrigin: '100% 50%',
+              scaleX: 1
+            });
+            TweenMax.to(u, 0.50, {
+              scaleX: 0,
+              transformOrigin: '100% 50%',
+              delay: 1.0,
+              ease: Power3.easeInOut,
+              overwrite: 'all',
+              onComplete: function onComplete() {
+                animate();
+              }
+            });
+          }
+        });
+      };
+
+      animate();
+    }
+  }, {
+    key: "animateOff",
+    value: function animateOff(node) {
+      if (this.animated) {
+        this.animated = false;
+        console.log('animateOff'); // TweenMax.killAll();
+
+        var values = _toConsumableArray(node.querySelectorAll('.moodboard__underline'));
+
+        TweenMax.set(values, {
+          transformOrigin: '0 50%',
+          scaleX: 0
+        });
+        TweenMax.to(values, 0.50, {
+          scaleX: 1,
+          transformOrigin: '0 50%',
+          delay: 0,
+          ease: Power3.easeInOut,
+          overwrite: 'all'
+        });
+      }
     }
   }], [{
     key: "factory",
@@ -19048,30 +19144,34 @@ function () {
       }).filter(function (x) {
         return x.value !== null;
       });
-      this.apiService.moodboard.filter(filters).subscribe(function (success) {
-        var items = success.data;
-        /* FAKE */
+      console.log(filters);
 
-        while (items.length < 200) {
-          items = items.concat(items);
-        }
+      if (filters.length) {
+        this.apiService.moodboard.filter(filters).subscribe(function (success) {
+          var items = success.data;
+          /* FAKE */
 
-        items.sort(function (a, b) {
-          return Math.random() > 0.5 ? 1 : -1;
+          while (items.length < 200) {
+            items = items.concat(items);
+          }
+
+          items.sort(function (a, b) {
+            return Math.random() > 0.5 ? 1 : -1;
+          });
+          /* FAKE */
+
+          _this3.filteredItems = [];
+          _this3.visibleItems = [];
+          _this3.maxItems = ITEMS_PER_PAGE;
+
+          _this3.$timeout(function () {
+            _this3.filteredItems = items;
+            _this3.visibleItems = items.slice(0, _this3.maxItems);
+          }, 50);
+        }, function (error) {
+          return console.log('MoodboardCtrl.applyFilters.error', error);
         });
-        /* FAKE */
-
-        _this3.filteredItems = [];
-        _this3.visibleItems = [];
-        _this3.maxItems = ITEMS_PER_PAGE;
-
-        _this3.$timeout(function () {
-          _this3.filteredItems = items;
-          _this3.visibleItems = items.slice(0, _this3.maxItems);
-        }, 50);
-      }, function (error) {
-        return console.log('MoodboardCtrl.applyFilters.error', error);
-      });
+      }
     }
   }, {
     key: "onScroll",

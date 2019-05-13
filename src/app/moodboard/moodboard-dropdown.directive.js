@@ -20,7 +20,10 @@ export default class MoodboardDropdownDirective {
 			</li>
 		</ul>
 	</span>
-	<span class="moodboard__value">{{filter.placeholder}}</span>
+	<span class="moodboard__value" ng-class="{ active: filter.value }">
+		<span class="moodboard__underline"></span>
+		<span class="moodboard__text">{{filter.placeholder}}</span>
+	</span>
 </span>
 `;
 		// this.require = 'ngModel';
