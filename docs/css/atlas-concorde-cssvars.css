@@ -5476,21 +5476,10 @@ page-transition {
       line-height: 1.3; } }
   @media (max-width: 859.98px) {
     .section--hero-moodboard .aspect {
-      display: grid;
-      /*
-	&::before {
-		content: url("data:image/svg+xml,%3Csvg viewBox='0 0 375 667' xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E");
-	}
-	*/ }
-      .section--hero-moodboard .aspect:before,
-      .section--hero-moodboard .aspect > img,
-      .section--hero-moodboard .aspect > video,
-      .section--hero-moodboard .aspect > * {
-        grid-area: 1 / 1 / 2 / 2; }
-      .section--hero-moodboard .aspect:before {
-        content: '';
-        display: block;
-        padding-top: calc(667 / 375 * 100%); }
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      height: 100vh; }
     .section--hero-moodboard .title {
       font-size: 8vw;
       line-height: 1.3; } }

@@ -88,7 +88,9 @@ $value-disabled: #c1c0be;
 
 	@include media-breakpoint-down(xs) {
 		.aspect {
-			@include aspect-grid(375, 667);
+			// @include aspect-grid(375, 667);
+			display: flex;
+			height: 100vh;
 		}
 
 		.title {
