@@ -187,7 +187,6 @@
 	text-align: left;
 
 	&>.listing__item {
-		display: block;
 		margin-right: 30px;
 		margin-bottom: 55px;
 		cursor: pointer;
@@ -250,6 +249,9 @@
 
 	@include media-breakpoint-up(sm) {
 
+		display: flex;
+		flex-wrap: wrap;
+
 		.aspect--150x75 {
 			margin-right: 30%;
 		}
@@ -264,5 +266,10 @@
 
 	@include media-breakpoint-down(xs) {
 		display: block;
+
+		&>.listing__item {
+			display: block;
+		}
+
 	}
 }

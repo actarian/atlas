@@ -1,6 +1,8 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+const USE_HIGHWAY = true;
+
 export default class HrefDirective {
 
 	constructor() {
@@ -9,6 +11,10 @@ export default class HrefDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
+		if (USE_HIGHWAY) {
+			scope.$emit('onHrefNode', node);
+			return;
+		}
 		if (node.nodeName.toLowerCase() === 'link') {
 			return;
 		}

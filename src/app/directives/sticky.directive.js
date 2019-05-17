@@ -7,16 +7,20 @@ import Rect from '../shared/rect';
 export default class StickyDirective {
 
 	constructor(
+		$timeout,
 		DomService
 	) {
+		this.$timeout = $timeout;
 		this.domService = DomService;
 		this.restrict = 'A';
 	}
 
 	link(scope, element, attributes, controller) {
-		const subscription = this.scroll$(element, attributes).subscribe();
-		element.on('$destroy', () => {
-			subscription.unsubscribe();
+		this.$timeout(() => {
+			const subscription = this.scroll$(element, attributes).subscribe();
+			element.on('$destroy', () => {
+				subscription.unsubscribe();
+			});
 		});
 	}
 
@@ -68,10 +72,10 @@ export default class StickyDirective {
 		);
 	}
 
-	static factory(DomService) {
-		return new StickyDirective(DomService);
+	static factory($timeout, DomService) {
+		return new StickyDirective($timeout, DomService);
 	}
 
 }
 
-StickyDirective.factory.$inject = ['DomService'];
+StickyDirective.factory.$inject = ['$timeout', 'DomService'];

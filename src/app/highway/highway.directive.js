@@ -1,6 +1,9 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 import Highway from '@dogstudio/highway';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import CustomRenderer from './custom-renderer';
 import PageTransition from './page-transition';
 // Import Quicklink
 // See: https://github.com/GoogleChromeLabs/quicklink
@@ -9,77 +12,65 @@ import PageTransition from './page-transition';
 export default class HighwayDirective {
 
 	constructor(
-		$timeout,
+		$compile,
+		$timeout
 	) {
-		this.$timeout = $timeout,
-			this.restrict = 'A';
+		this.$compile = $compile;
+		this.$timeout = $timeout;
+		this.restrict = 'A';
+		this.link$ = new Subject();
+	}
+
+	onLink$() {
+		return this.link$.pipe(
+			debounceTime(50)
+		);
 	}
 
 	link(scope, element, attributes, controller) {
-		this.$timeout(() => {
-			const H = new Highway.Core({
-				transitions: {
-					default: PageTransition,
+		CustomRenderer.$compile = this.$compile;
+		CustomRenderer.$timeout = this.$timeout;
+		CustomRenderer.scope = scope;
+		const H = new Highway.Core({
+			renderers: {
+				view: CustomRenderer,
+			},
+			transitions: {
+				view: PageTransition,
+			}
+		});
+		this.H = H;
+		scope.$on('onHrefNode', ($scope, node) => {
+			this.link$.next();
+		});
+		const subscription = this.onLink$().subscribe(x => {
+			const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
+			H.links = links;
+			H.attach(links);
+			links.forEach(x => {
+				x.classList.remove('active');
+				if (x.href === location.href) {
+					x.classList.add('active');
 				}
 			});
-			H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
-				H.detach(H.links);
-				console.log('NAVIGATE_IN', location);
-				this.$timeout(() => {
-					const element = angular.element(to.view);
-					const scope = element.scope();
-					this.$compile(element.contents())(scope);
-					this.$timeout(() => {
-						// console.log(scope, element, element.contents());
-						const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
-						H.links = links;
-						H.attach(links);
-						links.forEach(x => {
-							x.classList.remove('active');
-							if (x.href === location.href) {
-								x.classList.add('active');
-							}
-						});
-						/*
-						// link prefetch
-						Quicklink({
-							el: to.view
-						});
-						*/
-					}, 200);
-				});
-			});
-			/*
-			H.on('NAVIGATE_END', ({ from, to, trigger, location }) => {
-				setTimeout(() => {
-					document.querySelector('.view').scrollIntoView({
-						behavior: 'smooth',
-						block: 'start',
-						inline: 'start'
-					});
-					if (window.scroll) {
-						window.scroll({
-							top: 0,
-							left: 0,
-							behavior: 'smooth'
-						});
-					} else {
-						window.scrollTo(0, 0);
-					}
-				}, 200);
-			});
-			*/
-		}, 200);
+		});
+		const properties = H.cache.get(H.location.href);
+		properties.view = scope.$root.firstView;
+		H.cache.set(H.location.href, properties);
+		H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
+			// console.log('NAVIGATE_IN');
+			H.detach(H.links);
+		});
 		element.on('$destroy', () => {
-			// !!!
 			// H.destroy();
+			subscription.unsubscribe();
 		});
 	}
 
-	static factory($timeout) {
-		return new HighwayDirective($timeout);
+	static factory($compile, $timeout) {
+		return new HighwayDirective($compile, $timeout);
 	}
 
 }
 
-HighwayDirective.factory.$inject = ['$timeout'];
+HighwayDirective.factory.$inject = ['$compile', '$timeout'];

@@ -19,6 +19,7 @@ import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperGalleryDirective, SwiperHeroDirective, SwiperTileDirective } from './directives/swiper.directive';
+import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
 import WishlistDirective from './directives/wishlist.directive';
 import FaqCtrl from './faq/faq.controller';
@@ -28,6 +29,7 @@ import { TrustedFilter } from './filters/trusted.filter';
 import ControlMessagesDirective from './forms/control-messages.directive';
 import ControlDirective from './forms/control.directive';
 import ValidateDirective from './forms/validate.directive';
+import HighwayDirective from './highway/highway.directive';
 import MoodboardDropdownDirective from './moodboard/moodboard-dropdown.directive';
 import MoodboardSearchDirective from './moodboard/moodboard-search.directive';
 import MoodboardCtrl from './moodboard/moodboard.controller';
@@ -66,6 +68,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('controlMessages', ControlMessagesDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
 	.directive('hasDropdown', HasDropdownDirective.factory)
+	.directive('highway', HighwayDirective.factory)
 	.directive('hilight', HilightDirective.factory)
 	.directive('href', HrefDirective.factory)
 	.directive('lastItem', LastItemDirective.factory)
@@ -82,6 +85,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
+	.directive('transition', TransitionDirective.factory)
 	.directive('validate', ValidateDirective.factory)
 	.directive('video', VideoDirective.factory)
 	.directive('wishlist', WishlistDirective.factory);
@@ -101,5 +105,10 @@ app.filter('imageWithFeatures', [ImageWithFeatures])
 	.filter('trusted', ['$sce', TrustedFilter]);
 
 // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
+
+app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {
+	$rootScope.firstView = document.querySelector('.view').cloneNode(true);
+	// console.log('$rootScope.firstView', $rootScope.firstView);
+}]);
 
 export default MODULE_NAME;

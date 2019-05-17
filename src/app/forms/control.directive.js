@@ -126,6 +126,7 @@ export default class ControlDirective {
 		scope.onBlur = () => {
 			scope.focus = false;
 			// console.log('ControlDirective.onBlur', scope.focus);
+			this.scrollToError();
 		};
 		scope.getClasses = () => {
 			const field = this.$parse(scope.form + '.' + scope.field)(scope.$parent);
@@ -137,6 +138,12 @@ export default class ControlDirective {
 				const empty = !field.$viewValue;
 				if (error) {
 					this.onError(element);
+					if (scope.error !== error) {
+						scope.error = error;
+						this.scrollToError();
+					}
+				} else {
+					scope.error = false;
 				}
 				return { focus, success, error, empty };
 			}
@@ -149,15 +156,23 @@ export default class ControlDirective {
 		scope.toggleVisibility = () => {
 			scope.visible = !scope.visible;
 		};
+		scope.$on('onInvalid', () => {
+			this.scrollToError();
+		});
 	}
 
 	onError(element) {
-		errorElements.push(element);
-		if (to) {
-			clearTimeout(to);
+		if (errorElements.indexOf(element) === -1) {
+			errorElements.push(element);
 		}
-		to = setTimeout(() => {
-			if (errorElements.length) {
+	}
+
+	scrollToError() {
+		if (errorElements.length) {
+			if (to) {
+				clearTimeout(to);
+			}
+			to = setTimeout(() => {
 				const top = errorElements.reduce((previous, current, index, array) => {
 					const node = current[0];
 					return Math.min(previous, node.getBoundingClientRect().top);
@@ -167,9 +182,9 @@ export default class ControlDirective {
 					left: 0,
 					behavior: 'smooth'
 				});
-			}
-			errorElements = [];
-		}, 100);
+				errorElements = [];
+			}, 100);
+		}
 	}
 
 	link(scope, element, attributes, controller) {}

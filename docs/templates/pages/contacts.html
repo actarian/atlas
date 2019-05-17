@@ -157,6 +157,7 @@
 			{ id: 140, name: 'Venezuela' },
 			{ id: 141, name: 'Yemen' }
 		],
+		provinces: [],
 	}
 
 </script>
@@ -194,7 +195,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 offset-md-4">
-				<form name="c.form" role="form" novalidate autocomplete="off" ng-submit="c.form.$valid && c.onSubmit()" ng-keyup="$event.keyCode == 13 && c.form.$valid && c.onSubmit()">
+				<form name="c.form" role="form" novalidate autocomplete="off" ng-submit="c.form.$valid ? c.onSubmit() : c.onInvalid()" ng-keyup="$event.keyCode == 13 && c.form.$valid && c.onSubmit()">
 					<div class="group group--form" ng-if="c.state.isReady">
 						<div class="row">
 							<div class="col-md-8">
@@ -219,7 +220,10 @@
 								<div title="Company" placeholder="company" form="c.form" control="text" ng-model="c.model.company"></div>
 							</div>
 							<div class="col-md-8">
-								<div title="Country" placeholder="select a country" form="c.form" control="select" source="c.data.countries" ng-model="c.model.country" number="true" required="true"></div>
+								<div title="Country" placeholder="select a country" form="c.form" control="select" source="c.data.countries" ng-model="c.model.country" on-change="c.setProvinces()" number="true" required="true"></div>
+							</div>
+							<div class="col-md-8" ng-if="c.provinces.length">
+								<div title="Country" placeholder="select a country" form="c.form" control="select" source="c.provinces" ng-model="c.model.province" number="true" required="true"></div>
 							</div>
 						</div>
 						<div title="Message" placeholder="message" form="c.form" control="textarea" ng-model="c.model.message"></div>

@@ -2,32 +2,34 @@
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 import Highway from '@dogstudio/highway';
-import TweenLite from 'gsap';
 
 export default class PageTransition extends Highway.Transition {
 	in ({ from, to, done }) {
-		// TweenLite.set(to, { position: 'fixed', zIndex: 10000, top: 0, width: '100%', opacity: 0 });
-		TweenLite.set(to, { opacity: 0, minHeight: from.offsetHeight });
-		from.remove();
+		// console.log('PageTransition.in');
+		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
 		window.scrollTo(0, 0);
-		TweenLite.to(to, 0.35, {
+		from.remove();
+		TweenMax.to(to, 0.6, {
 			opacity: 1,
-			delay: 0.5,
+			delay: 0.250,
 			overwrite: 'all',
 			onComplete: () => {
-				TweenLite.set(to, { minHeight: 0 });
-				done();
+				setTimeout(() => {
+					TweenMax.set(to, { minHeight: 0 });
+					done();
+				}, 50);
 			}
 		});
 	}
 	out({ from, done }) {
-		TweenLite.to(from, 0.35, {
+		// console.log('PageTransition.out');
+		TweenMax.to(from, 0.6, {
 			opacity: 0,
+			delay: 0,
 			overwrite: 'all',
 			onComplete: () => {
-				done();
+				setTimeout(done, 500);
 			}
 		});
-		// done();
 	}
 }

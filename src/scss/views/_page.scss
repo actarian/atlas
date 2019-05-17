@@ -12,14 +12,16 @@
 		background: $background;
 		min-height: 100vh;
 		opacity: 0;
-		transition: all ease-in-out 350ms;
+		// transition: all ease-in-out 350ms;
 	}
 
+	/*
 	.init & {
 		.view {
 			opacity: 1;
 		}
 	}
+	*/
 
 	@include media-breakpoint-down(xs) {
 		padding: 0;

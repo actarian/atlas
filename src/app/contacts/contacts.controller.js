@@ -5,17 +5,29 @@ class ContactsCtrl {
 
 	constructor(
 		$scope,
+		$location,
 		$timeout,
 		$http,
 		StateService
 	) {
 		this.$scope = $scope;
+		this.$location = $location;
 		this.$timeout = $timeout;
 		this.$http = $http;
 		this.data = window.data || {};
+		this.provinces = [];
 		this.model = {};
+		if (this.$location.search() && this.$location.search().email) {
+			this.model.email = this.$location.search().email;
+		}
 		this.state = StateService.getState();
 		this.state.ready();
+	}
+
+	setProvinces() {
+		this.$timeout(() => {
+			this.provinces = this.data.provinces.filter(x => x.countryId === this.model.country);
+		});
 	}
 
 	onSubmit() {
@@ -39,8 +51,12 @@ class ContactsCtrl {
 		}
 	}
 
+	onInvalid() {
+		this.$scope.$broadcast('onInvalid');
+	}
+
 }
 
-ContactsCtrl.$inject = ['$scope', '$timeout', '$http', 'StateService'];
+ContactsCtrl.$inject = ['$scope', '$location', '$timeout', '$http', 'StateService'];
 
 export default ContactsCtrl;
