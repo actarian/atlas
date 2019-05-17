@@ -41,10 +41,17 @@
 
 		&:not(.opened) {
 			height: 50px;
+			transform: translateY(100%);
 
 			.menu--product {
 				// display: none;
 				max-height: 0;
+			}
+		}
+
+		.scrolled-up & {
+			&:not(.opened) {
+				transform: translateY(0);
 			}
 		}
 	}

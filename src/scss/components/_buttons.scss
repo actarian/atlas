@@ -543,11 +543,15 @@ button,
 	}
 
 	&:hover {
+		color: $primary;
+		/*
 		background: $primary;
 		color: white;
+		*/
 
 		svg {
-			fill: white;
+			// fill: white;
+			fill: $primary;
 		}
 	}
 

@@ -24,11 +24,12 @@ class RootCtrl {
 		});
 		*/
 		this.$scope.onScroll = (event) => {
-			// console.log(event.scroll, event.intersection);
+			// console.log(event.scroll.direction, event.intersection);
 			const scrolled = event.scroll.scrollTop > 40;
-			if (this.scrolled !== scrolled) {
+			if (this.scrolled !== scrolled || this.direction !== event.scroll.direction) {
 				this.$timeout(() => {
 					this.scrolled = scrolled;
+					this.direction = event.scroll.direction;
 				});
 			}
 		};
@@ -48,6 +49,12 @@ class RootCtrl {
 		classes[this.brand] = true;
 		if (this.init) {
 			classes.init = true;
+		}
+		if (this.direction === -1) {
+			classes['scrolled-up'] = true;
+		}
+		if (this.direction === 1) {
+			classes['scrolled-down'] = true;
 		}
 		return classes;
 	}

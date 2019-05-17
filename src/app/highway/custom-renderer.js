@@ -9,30 +9,31 @@ export default class CustomRenderer extends Highway.Renderer {
 
 	// This method in the renderer is run when the data-router-view is added to the DOM Tree.
 	onEnter() {
-		// console.log('onEnter');
+		console.log('onEnter');
 		if (!first) {
-			const $compile = CustomRenderer.$compile;
-			const $timeout = CustomRenderer.$timeout;
 			const scope = CustomRenderer.scope;
-			const view = [...document.querySelectorAll('.view')].pop();
-			const element = angular.element(view);
-			const $scope = element.scope();
-			$compile(element.contents())($scope);
+			const $timeout = CustomRenderer.$timeout;
 			$timeout(() => {
-				scope.menuOpened = false;
-				scope.menuProductOpened = false;
+				scope.root.menuOpened = false;
+				scope.root.menuProductOpened = false;
+				const $compile = CustomRenderer.$compile;
+				const view = [...document.querySelectorAll('.view')].pop();
+				console.log(view.innerHTML);
+				const element = angular.element(view);
+				const $scope = element.scope();
+				$compile(element.contents())($scope);
 			});
 		}
 	}
 
 	// This method in the renderer is run when transition to hide the data-router-view is called.
 	onLeave() {
-		// console.log('onLeave');
+		console.log('onLeave');
 	}
 
 	// This method in the renderer is run when the transition to display the data-router-view is done.
 	onEnterCompleted() {
-		// console.log('onEnterCompleted');
+		console.log('onEnterCompleted');
 		if (first) {
 			first = false;
 		}
@@ -40,6 +41,14 @@ export default class CustomRenderer extends Highway.Renderer {
 
 	// This method in the renderer is run when the data-router-view is removed from the DOM Tree.
 	onLeaveCompleted() {
-		// console.log('onLeaveCompleted');
+		console.log('onLeaveCompleted');
+		/*
+		const $timeout = CustomRenderer.$timeout;
+		const scope = CustomRenderer.scope;
+		$timeout(() => {
+			scope.root.menuOpened = false;
+			scope.root.menuProductOpened = false;
+		});
+		*/
 	}
 }

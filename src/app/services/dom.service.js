@@ -127,6 +127,7 @@ export default class DomService {
 
 	scroll$() {
 		const target = window;
+		let previousTop = DomService.getScrollTop(target);
 		const event = {
 			/*
 			top: target.offsetTop || 0,
@@ -134,8 +135,9 @@ export default class DomService {
 			width: target.offsetWidth || target.innerWidth,
 			height: target.offsetHeight || target.innerHeight,
 			*/
-			scrollTop: DomService.getScrollTop(target),
+			scrollTop: previousTop,
 			scrollLeft: DomService.getScrollLeft(target),
+			direction: 0,
 			originalEvent: null,
 		};
 		return fromEvent(target, 'scroll').pipe(
@@ -149,6 +151,9 @@ export default class DomService {
 				*/
 				event.scrollTop = DomService.getScrollTop(target);
 				event.scrollLeft = DomService.getScrollLeft(target);
+				const diff = event.scrollTop - previousTop;
+				event.direction = diff / Math.abs(diff);
+				previousTop = event.scrollTop;
 				event.originalEvent = originalEvent;
 				return event;
 			}),

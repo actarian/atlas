@@ -5,7 +5,7 @@ import Highway from '@dogstudio/highway';
 
 export default class PageTransition extends Highway.Transition {
 	in ({ from, to, done }) {
-		// console.log('PageTransition.in');
+		console.log('PageTransition.in');
 		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
 		window.scrollTo(0, 0);
 		from.remove();
@@ -22,10 +22,24 @@ export default class PageTransition extends Highway.Transition {
 		});
 	}
 	out({ from, done }) {
-		// console.log('PageTransition.out');
+		console.log('PageTransition.out');
+		const headerMenu = document.querySelector('.header__menu');
+		if (headerMenu) {
+			headerMenu.classList.remove('opened');
+			/*
+			TweenMax.to(headerMenu, 0.3, {
+				maxHeight: 0,
+				delay: 0,
+				onComplete: () => {
+					TweenMax.set(headerMenu, { clearProps: 'all' });
+					// headerMenu.classList.remove('opened');
+				}
+			});
+			*/
+		}
 		TweenMax.to(from, 0.6, {
 			opacity: 0,
-			delay: 0,
+			delay: 0.150,
 			overwrite: 'all',
 			onComplete: () => {
 				setTimeout(done, 500);

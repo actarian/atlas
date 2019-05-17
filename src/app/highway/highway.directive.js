@@ -44,6 +44,8 @@ export default class HighwayDirective {
 			this.link$.next();
 		});
 		const subscription = this.onLink$().subscribe(x => {
+			console.log('onLinks$');
+			H.detach(H.links);
 			const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
 			H.links = links;
 			H.attach(links);

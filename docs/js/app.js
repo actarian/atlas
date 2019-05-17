@@ -24784,33 +24784,37 @@ function (_Highway$Renderer) {
     key: "onEnter",
     // This method in the renderer is run when the data-router-view is added to the DOM Tree.
     value: function onEnter() {
-      // console.log('onEnter');
+      console.log('onEnter');
+
       if (!first) {
-        var $compile = CustomRenderer.$compile;
-        var $timeout = CustomRenderer.$timeout;
         var scope = CustomRenderer.scope;
-
-        var view = _toConsumableArray(document.querySelectorAll('.view')).pop();
-
-        var element = angular.element(view);
-        var $scope = element.scope();
-        $compile(element.contents())($scope);
+        var $timeout = CustomRenderer.$timeout;
         $timeout(function () {
-          scope.menuOpened = false;
-          scope.menuProductOpened = false;
+          scope.root.menuOpened = false;
+          scope.root.menuProductOpened = false;
+          var $compile = CustomRenderer.$compile;
+
+          var view = _toConsumableArray(document.querySelectorAll('.view')).pop();
+
+          console.log(view.innerHTML);
+          var element = angular.element(view);
+          var $scope = element.scope();
+          $compile(element.contents())($scope);
         });
       }
     } // This method in the renderer is run when transition to hide the data-router-view is called.
 
   }, {
     key: "onLeave",
-    value: function onLeave() {} // console.log('onLeave');
-    // This method in the renderer is run when the transition to display the data-router-view is done.
+    value: function onLeave() {
+      console.log('onLeave');
+    } // This method in the renderer is run when the transition to display the data-router-view is done.
 
   }, {
     key: "onEnterCompleted",
     value: function onEnterCompleted() {
-      // console.log('onEnterCompleted');
+      console.log('onEnterCompleted');
+
       if (first) {
         first = false;
       }
@@ -24818,7 +24822,16 @@ function (_Highway$Renderer) {
 
   }, {
     key: "onLeaveCompleted",
-    value: function onLeaveCompleted() {// console.log('onLeaveCompleted');
+    value: function onLeaveCompleted() {
+      console.log('onLeaveCompleted');
+      /*
+      const $timeout = CustomRenderer.$timeout;
+      const scope = CustomRenderer.scope;
+      $timeout(() => {
+      	scope.root.menuOpened = false;
+      	scope.root.menuProductOpened = false;
+      });
+      */
     }
   }]);
 
@@ -24894,6 +24907,8 @@ function () {
         _this.link$.next();
       });
       var subscription = this.onLink$().subscribe(function (x) {
+        console.log('onLinks$');
+        H.detach(H.links);
         var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
         H.links = links;
         H.attach(links);
@@ -24980,7 +24995,7 @@ function (_Highway$Transition) {
       var from = _ref.from,
           to = _ref.to,
           done = _ref.done;
-      // console.log('PageTransition.in');
+      console.log('PageTransition.in');
       TweenMax.set(to, {
         opacity: 0,
         minHeight: from.offsetHeight
@@ -25006,10 +25021,26 @@ function (_Highway$Transition) {
     value: function out(_ref2) {
       var from = _ref2.from,
           done = _ref2.done;
-      // console.log('PageTransition.out');
+      console.log('PageTransition.out');
+      var headerMenu = document.querySelector('.header__menu');
+
+      if (headerMenu) {
+        headerMenu.classList.remove('opened');
+        /*
+        TweenMax.to(headerMenu, 0.3, {
+        	maxHeight: 0,
+        	delay: 0,
+        	onComplete: () => {
+        		TweenMax.set(headerMenu, { clearProps: 'all' });
+        		// headerMenu.classList.remove('opened');
+        	}
+        });
+        */
+      }
+
       TweenMax.to(from, 0.6, {
         opacity: 0,
-        delay: 0,
+        delay: 0.150,
         overwrite: 'all',
         onComplete: function onComplete() {
           setTimeout(done, 500);
@@ -25832,12 +25863,13 @@ function () {
       */
 
       this.$scope.onScroll = function (event) {
-        // console.log(event.scroll, event.intersection);
+        // console.log(event.scroll.direction, event.intersection);
         var scrolled = event.scroll.scrollTop > 40;
 
-        if (_this.scrolled !== scrolled) {
+        if (_this.scrolled !== scrolled || _this.direction !== event.scroll.direction) {
           _this.$timeout(function () {
             _this.scrolled = scrolled;
+            _this.direction = event.scroll.direction;
           });
         }
       };
@@ -25860,6 +25892,14 @@ function () {
 
       if (this.init) {
         classes.init = true;
+      }
+
+      if (this.direction === -1) {
+        classes['scrolled-up'] = true;
+      }
+
+      if (this.direction === 1) {
+        classes['scrolled-down'] = true;
       }
 
       return classes;
@@ -26198,6 +26238,7 @@ function () {
     key: "scroll$",
     value: function scroll$() {
       var target = window;
+      var previousTop = DomService.getScrollTop(target);
       var event = {
         /*
         top: target.offsetTop || 0,
@@ -26205,8 +26246,9 @@ function () {
         width: target.offsetWidth || target.innerWidth,
         height: target.offsetHeight || target.innerHeight,
         */
-        scrollTop: DomService.getScrollTop(target),
+        scrollTop: previousTop,
         scrollLeft: DomService.getScrollLeft(target),
+        direction: 0,
         originalEvent: null
       };
       return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.auditTime)(33), // 30 fps
@@ -26219,6 +26261,9 @@ function () {
         */
         event.scrollTop = DomService.getScrollTop(target);
         event.scrollLeft = DomService.getScrollLeft(target);
+        var diff = event.scrollTop - previousTop;
+        event.direction = diff / Math.abs(diff);
+        previousTop = event.scrollTop;
         event.originalEvent = originalEvent;
         return event;
       }), (0, _operators.startWith)(event), (0, _operators.shareReplay)());
