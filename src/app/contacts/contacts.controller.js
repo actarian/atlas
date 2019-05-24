@@ -15,7 +15,6 @@ class ContactsCtrl {
 		this.$timeout = $timeout;
 		this.$http = $http;
 		this.data = window.data || {};
-		this.provinces = [];
 		this.model = {};
 		if (this.$location.search() && this.$location.search().email) {
 			this.model.email = this.$location.search().email;
@@ -26,7 +25,7 @@ class ContactsCtrl {
 
 	setProvinces() {
 		this.$timeout(() => {
-			this.provinces = this.data.provinces.filter(x => x.countryId === this.model.country);
+			this.provinces = this.data.provinces.filter(x => x.idstato === this.model.country);
 		});
 	}
 

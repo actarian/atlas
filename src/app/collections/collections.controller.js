@@ -1,4 +1,4 @@
-﻿/* jshint esversion: 6 */
+/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 class CollectionsCtrl {
@@ -13,16 +13,17 @@ class CollectionsCtrl {
 		this.locationService = LocationService;
 		this.filters = window.filters || {};
 		this.brands = window.brands || [];
-		this.deserializeFilters();
-		this.applyFilters();
+		this.initialFilters = window.initialFilters || null;
+		this.deserializeFilters(this.initialFilters);
+		this.applyFilters(false);
 		// this.filteredReferences = this.references.slice();
 		// this.updateFilterStates(this.filteredReferences);
 		// console.log(this.filters);
 		// console.log(this.brands);
 	}
 
-	deserializeFilters() {
-		const locationFilters = this.locationService.deserialize('filters') || {};
+	deserializeFilters(initialFilter) {
+		const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
 		// console.log('CollectionsCtrl.deserializeFilters', filters);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
@@ -49,25 +50,30 @@ class CollectionsCtrl {
 	}
 
 	serializeFilters() {
-		const filters = {};
+		let filters = {};
+		let any = false;
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			if (filter.value !== null) {
 				filters[x] = filter.value;
+				any = true;
 			}
 		});
+		if (!any) {
+			filters = this.initialFilters ? {} : null;
+		}
 		// console.log('CollectionsCtrl.serializeFilters', filters);
 		this.locationService.serialize('filters', filters);
 		return filters;
 	}
 
-	applyFilters() {
+	applyFilters(serialize) {
 		/*
 		const filters = Object.keys(this.filters).map((x) => {
 			return Object.assign({ type: x }, this.filters[x]);
 		}).filter(x => x.value !== null);
 		*/
-		this.serializeFilters();
+		if (serialize !== false) this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
 		const filteredBrands = filters.length ? [] : this.brands;
 		if (filters.length) {

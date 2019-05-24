@@ -28,7 +28,7 @@ export default class LazyDirective {
 		// node.index = INDEX++;
 		// empty picture
 		// image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
-		element.subscription = this.domService.appear$(node).subscribe(event => {
+		element.subscription = this.domService.appear$(node).subscribe(event => {			
 			if (!node.classList.contains('lazyed')) {
 				node.classList.add('lazyed');
 				this.onAppearsInViewport(node, scope, attributes);
@@ -55,6 +55,25 @@ export default class LazyDirective {
 		});
 	}
 
+	resized(image, src) {
+		var splitted = src.split('/std/');
+
+		if (splitted.length > 1) {
+			//Contenuto Thron
+
+			if (splitted[1].match(/^0x0\//)) {
+				// se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
+				src = splitted[0] + '/std/' + image.width.toString() + 'x' + image.height.toString() + splitted[1].substr(3);
+
+				src += src.indexOf('?') >= 0 ? '&' : '?';
+
+				src += 'scalemode=centered';
+			}
+		}
+
+		return src;
+	}
+
 	onAppearsInViewport(image, scope, attributes) {
 		if (scope.srcset) {
 			// attributes.$set('srcset', scope.srcset);
@@ -62,12 +81,12 @@ export default class LazyDirective {
 			image.removeAttribute('data-srcset');
 			if (scope.src) {
 				// attributes.$set('src', scope.src);
-				image.setAttribute('src', scope.src);
+				image.setAttribute('src', this.resized(image, scope.src));
 				image.removeAttribute('data-src');
 			}
 		} else if (scope.src) {
 			// console.log(scope.src);
-			image.setAttribute('src', scope.src);
+			image.setAttribute('src', this.resized(image, scope.src));
 			image.removeAttribute('data-src');
 			// attributes.$set('src', scope.src);
 			/*
@@ -85,7 +104,7 @@ export default class LazyDirective {
 			});
 			*/
 		} else if (scope.backgroundSrc) {
-			image.setStyle('background-image', `url(${scope.backgroundSrc})`);
+			image.setStyle('background-image', `url(${this.resized(image, scope.backgroundSrc)})`);
 			image.removeAttribute('data-background-src');
 		}
 	}
