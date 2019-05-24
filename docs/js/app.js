@@ -27518,6 +27518,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var ZOOM_LEVEL = 12;
 var SHOW_INFO_WINDOW = false;
 var GOOGLE_MAPS = null;
 
@@ -27767,6 +27768,8 @@ function () {
           });
 
           _this4.map.setCenter(position);
+
+          _this4.map.setZoom(ZOOM_LEVEL);
         }, function () {
           _this4.setInfoWindow(position, 2);
 
@@ -27857,20 +27860,23 @@ function () {
 
       this.position = position;
       this.map.setCenter(position);
+      this.map.setZoom(ZOOM_LEVEL);
       this.setInfoWindow(position, 1);
       return this.loadAllStores().then(function (stores) {
         var visibleStores = _this8.findNearStores(stores, position);
-
+        /*
         if (visibleStores) {
-          _this8.fitBounds(visibleStores);
+        	this.fitBounds(visibleStores);
         }
+        */
+
       });
     }
   }, {
     key: "panTo",
     value: function panTo(store) {
       var position = new google.maps.LatLng(store.latitude, store.longitude);
-      this.map.setZoom(10);
+      this.map.setZoom(ZOOM_LEVEL);
       this.map.panTo(position);
     }
   }, {

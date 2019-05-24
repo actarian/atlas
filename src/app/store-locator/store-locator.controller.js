@@ -4,6 +4,7 @@
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+const ZOOM_LEVEL = 12;
 const SHOW_INFO_WINDOW = false;
 let GOOGLE_MAPS = null;
 
@@ -168,6 +169,7 @@ class StoreLocatorCtrl {
 				this.setInfoWindow(position, 1);
 				this.searchPosition(position).finally(() => this.busyLocation = false);
 				this.map.setCenter(position);
+				this.map.setZoom(ZOOM_LEVEL);
 			}, () => {
 				this.setInfoWindow(position, 2);
 				this.searchPosition(position).finally(() => this.busyLocation = false);
@@ -233,18 +235,21 @@ class StoreLocatorCtrl {
 	searchPosition(position) {
 		this.position = position;
 		this.map.setCenter(position);
+		this.map.setZoom(ZOOM_LEVEL);
 		this.setInfoWindow(position, 1);
 		return this.loadAllStores().then(stores => {
 			const visibleStores = this.findNearStores(stores, position);
+			/*
 			if (visibleStores) {
 				this.fitBounds(visibleStores);
 			}
+			*/
 		});
 	}
 
 	panTo(store) {
 		const position = new google.maps.LatLng(store.latitude, store.longitude);
-		this.map.setZoom(10);
+		this.map.setZoom(ZOOM_LEVEL);
 		this.map.panTo(position);
 	}
 
