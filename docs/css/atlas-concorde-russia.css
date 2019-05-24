@@ -2689,7 +2689,7 @@ canvas {
   margin: 40px 0;
   text-align: center; }
   @media (min-width: 860px) {
-    .group--cta .btn {
+    .group--cta .btn:not(:last-child) {
       margin-right: 15px; } }
   @media (max-width: 859.98px) {
     .group--cta {
@@ -4536,8 +4536,9 @@ page-transition {
           display: block;
           display: block;
           line-height: 1.2; }
+          .listing--advanced-search > .listing__item .group--cta .btn--category:not(:last-child) {
+            margin-right: 15px; }
           .listing--advanced-search > .listing__item .group--cta .btn--category {
-            margin-right: 15px;
             margin-top: 10px; }
           .listing--advanced-search > .listing__item .group--cta > .btn + .btn {
             margin-top: 10px; } }
@@ -6474,7 +6475,7 @@ page-transition {
         margin-bottom: 40px; }
       .section--store .group--cta {
         display: block; }
-        .section--store .group--cta > .btn {
+        .section--store .group--cta > .btn:not(:last-child) {
           margin-right: 15px; }
         .section--store .group--cta > .btn + .btn {
           margin-top: 0; }
@@ -6727,8 +6728,7 @@ page-transition {
   background: #ad8464; }
   .section--store-locator .icon--atlas {
     width: 22px;
-    height: 22px;
-    margin: 0 10px; }
+    height: 22px; }
   .section--store-locator .form {
     border-top: 2px solid #ebe6dd;
     border-bottom: 2px solid #ebe6dd; }
@@ -6746,10 +6746,6 @@ page-transition {
         font-size: 1.5rem; }
 
 .section--map {
-  width: 60%;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 60%;
-          flex: 0 0 60%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -6782,10 +6778,6 @@ page-transition {
     text-align: center; }
 
 .section--stores {
-  width: 40%;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 40%;
-          flex: 0 0 40%;
   -webkit-box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);
           box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);
   background: #f8f5f0;
@@ -6883,7 +6875,7 @@ page-transition {
       -ms-flex-align: center;
           align-items: center;
   height: 40px;
-  padding: 0 40px;
+  padding: 0 30px;
   border-bottom: 2px solid #ebe6dd; }
   .group--legend .category {
     font-size: 12px;
@@ -6905,12 +6897,14 @@ page-transition {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
+  .group--legend .icon--atlas {
+    margin: 0 10px 0 0; }
   .group--legend svg {
     width: 40px;
     height: 40px; }
 
 .listing--stores > .listing__item {
-  padding: 40px; }
+  padding: 30px; }
 
 .listing--stores > .listing__item + .listing__item {
   border-top: 2px solid #ebe6dd; }
@@ -6922,8 +6916,11 @@ page-transition {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600; }
+
+.listing--stores .icon--atlas {
+  margin: 0 0 0 10px; }
 
 .listing--stores svg {
   width: 40px;
@@ -6932,7 +6929,8 @@ page-transition {
 .listing--stores .group--info {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  font-size: 14px; }
   .listing--stores .group--info .address {
     -webkit-box-flex: 1;
         -ms-flex: 1 0 auto;
@@ -6945,6 +6943,8 @@ page-transition {
 .listing--stores .group--cta {
   text-align: left;
   margin: 10px 0 0 0; }
+  .listing--stores .group--cta .btn {
+    font-size: 13px; }
 
 .icon--atlas {
   fill: #b92442; }
@@ -6959,15 +6959,15 @@ page-transition {
         -ms-flex-direction: row;
             flex-direction: row; }
   .section--map {
-    width: 60%;
+    width: 70%;
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 60%;
-            flex: 0 0 60%; }
+        -ms-flex: 0 0 70%;
+            flex: 0 0 70%; }
   .section--stores {
-    width: 40%;
+    width: 30%;
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 40%;
-            flex: 0 0 40%; } }
+        -ms-flex: 0 0 30%;
+            flex: 0 0 30%; } }
 
 @media (max-width: 859.98px) {
   .section--store-locator {
@@ -7016,6 +7016,10 @@ page-transition {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%; }
+  .group--legend {
+    display: block;
+    height: auto;
+    padding: 10px 30px; }
   .listing--stores > .listing__item {
     padding: 30px; }
   .listing--stores .title {
@@ -7026,7 +7030,7 @@ page-transition {
         -ms-flex-pack: justify;
             justify-content: space-between;
     line-height: 1.2;
-    margin-bottom: 10px; }
+    margin-bottom: 0px; }
     .listing--stores .title .icon--atlas {
       -webkit-box-flex: 0;
           -ms-flex: 0 0 30px;

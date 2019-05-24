@@ -121,7 +121,6 @@
 	.icon--atlas {
 		width: 22px;
 		height: 22px;
-		margin: 0 10px;
 	}
 
 	.form {
@@ -144,8 +143,6 @@
 }
 
 .section--map {
-	width: 60%;
-	flex: 0 0 60%;
 	display: flex;
 	flex-direction: column;
 
@@ -179,8 +176,6 @@
 }
 
 .section--stores {
-	width: 40%;
-	flex: 0 0 40%;
 	box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);
 	background: $background-tertiary;
 	overflow-x: hidden;
@@ -264,7 +259,7 @@
 	white-space: nowrap;
 	align-items: center;
 	height: 40px;
-	padding: 0 40px;
+	padding: 0 30px;
 	border-bottom: 2px solid $border;
 
 	.category {
@@ -283,6 +278,10 @@
 		flex: 0 0 auto;
 	}
 
+	.icon--atlas {
+		margin: 0 10px 0 0;
+	}
+
 	svg {
 		width: 40px;
 		height: 40px;
@@ -291,7 +290,7 @@
 
 .listing--stores {
 	&>.listing__item {
-		padding: 40px;
+		padding: 30px;
 	}
 
 	&>.listing__item+.listing__item {
@@ -301,8 +300,12 @@
 	.title {
 		display: flex;
 		align-items: center;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: $font-semibold;
+	}
+
+	.icon--atlas {
+		margin: 0 0 0 10px;
 	}
 
 	svg {
@@ -312,6 +315,7 @@
 
 	.group--info {
 		display: flex;
+		font-size: 14px;
 
 		.address {
 			flex: 1 0 auto;
@@ -325,6 +329,10 @@
 	.group--cta {
 		text-align: left;
 		margin: 10px 0 0 0;
+
+		.btn {
+			font-size: 13px;
+		}
 	}
 }
 
@@ -342,13 +350,13 @@
 	}
 
 	.section--map {
-		width: 60%;
-		flex: 0 0 60%;
+		width: 70%;
+		flex: 0 0 70%;
 	}
 
 	.section--stores {
-		width: 40%;
-		flex: 0 0 40%;
+		width: 30%;
+		flex: 0 0 30%;
 	}
 }
 
@@ -406,6 +414,12 @@
 		flex: 0 0 100%;
 	}
 
+	.group--legend {
+		display: block;
+		height: auto;
+		padding: 10px 30px;
+	}
+
 	.listing--stores {
 		&>.listing__item {
 			padding: 30px;
@@ -415,7 +429,7 @@
 			align-items: flex-start;
 			justify-content: space-between;
 			line-height: 1.2;
-			margin-bottom: 10px;
+			margin-bottom: 0px;
 
 			.icon--atlas {
 				flex: 0 0 30px;

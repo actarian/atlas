@@ -771,7 +771,7 @@
 		.group--cta {
 			display: block;
 
-			&>.btn {
+			&>.btn:not(:last-child) {
 				margin-right: 15px;
 			}
 

@@ -21119,7 +21119,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.ITEMS_PER_PAGE = void 0;
 
-var _rxjs = require("rxjs");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21127,6 +21133,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+//import { of } from "rxjs";
 var ITEMS_PER_PAGE = 20;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
@@ -21134,76 +21144,75 @@ var AdvancedSearchCtrl =
 /*#__PURE__*/
 function () {
   function AdvancedSearchCtrl($scope, $timeout, LocationService, ApiService) {
-    var _this = this;
-
     _classCallCheck(this, AdvancedSearchCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
-    this.apiService = ApiService;
-    this.items = [];
+    this.apiService = ApiService; //this.items = [];
+
     this.filteredItems = [];
     this.filters = window.filters || [];
     this.selectedFilters = [];
-    this.deserializeFilters(); // !!!
-
-    this.apiService.advancedSearch.get().subscribe( // this.fakeSearch$().subscribe(
-    function (success) {
-      var items = success.data;
-      _this.items = items;
-
-      _this.applyFilters();
-    });
+    this.items = window.items || [];
+    this.initialFilters = window.initialFilters || null;
+    this.deserializeFilters(this.initialFilters);
+    this.applyFilters(false); // !!!
+    //this.apiService.advancedSearch.get().subscribe(
+    //	// this.fakeSearch$().subscribe(
+    //	success => {
+    //		let items = success.data;
+    //		this.items = items;
+    //		this.applyFilters();
+    //	}
+    //);
   }
 
   _createClass(AdvancedSearchCtrl, [{
     key: "deserializeFilters",
     value: function deserializeFilters() {
-      var _this2 = this;
-
-      var locationFilters = this.locationService.deserialize('filters') || {}; // console.log('AdvancedSearchCtrl.deserializeFilters', filters);
+      var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('AdvancedSearchCtrl.deserializeFilters', filters);
 
       this.filters.forEach(function (filter) {
-        switch (filter.key) {
-          case 'finish':
-            filter.doFilter = function (item, value) {
-              var has = false;
+        //if (filter.type === 'minimal') {
+        //	filter.doFilter = (item, value) => {
+        //		let has = false;
+        //		(item.minimals || [item]).forEach(x => {
+        //			has = has || x.features.indexOf(value) !== -1;
+        //		});
+        //		return has;
+        //	};
+        //} else {
+        filter.doFilter = function (item, value) {
+          return item.features.indexOf(value) !== -1;
+        }; //}
+        //switch (filter.key) {
+        //	case 'finish':
+        //		filter.doFilter = (item, value) => {
+        //			let has = false;
+        //			const size = this.filters.find(x => x.key == 'size' && x.value !== null);
+        //			item.minimals.forEach(x => {
+        //				has = has || (x.finish.id === value && (!size || x.size.id === size.value));
+        //			});
+        //			return has;
+        //		};
+        //		break;
+        //	case 'size':
+        //		filter.doFilter = (item, value) => {
+        //			let has = false;
+        //			const finish = this.filters.find(x => x.key == 'finish' && x.value !== null);
+        //			item.minimals.forEach(x => {
+        //				has = has || (x.size.id === value && (!finish || x.finish.id === finish.value));
+        //			});
+        //			return has;
+        //		};
+        //		break;
+        //	default:
+        //		filter.doFilter = (item, value) => {
+        //			return item.features.indexOf(value) !== -1;
+        //		};
+        //}
 
-              var size = _this2.filters.find(function (x) {
-                return x.key == 'size' && x.value !== null;
-              });
-
-              item.minimals.forEach(function (x) {
-                has = has || x.finish.id === value && (!size || x.size.id === size.value);
-              });
-              return has;
-            };
-
-            break;
-
-          case 'size':
-            filter.doFilter = function (item, value) {
-              var has = false;
-
-              var finish = _this2.filters.find(function (x) {
-                return x.key == 'finish' && x.value !== null;
-              });
-
-              item.minimals.forEach(function (x) {
-                has = has || x.size.id === value && (!finish || x.finish.id === finish.value);
-              });
-              return has;
-            };
-
-            break;
-
-          default:
-            filter.doFilter = function (item, value) {
-              return item.features.indexOf(value) !== -1;
-            };
-
-        }
         /*
         filter.options.unshift({
         	label: filter.placeholder,
@@ -21225,55 +21234,61 @@ function () {
         } // console.log(x, filters[x], filter.value);
 
       });
-      return filters;
+      return this.filters;
     }
   }, {
     key: "serializeFilters",
     value: function serializeFilters() {
       var filters = {};
+      var any = false;
       this.filters.forEach(function (filter) {
         if (filter.value !== null) {
           filters[filter.key] = filter.value;
+          any = true;
         }
-      }); // console.log('AdvancedSearchCtrl.serializeFilters', filters);
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('AdvancedSearchCtrl.serializeFilters', filters);
+
 
       this.locationService.serialize('filters', filters);
       return filters;
     }
   }, {
     key: "applyFilters",
-    value: function applyFilters(item, value) {
-      var _this3 = this;
+    value: function applyFilters(serialize) {
+      var _this = this;
 
       // console.log('AdvancedSearchCtrl.applyFilters', this.filters);
-      this.serializeFilters();
+      if (serialize !== false) this.serializeFilters();
       var selectedFilters = this.filters.filter(function (x) {
         return x.value !== null;
-      });
-      var finishFilter = this.filters.find(function (x) {
-        return x.key == 'finish' && x.value !== null;
-      });
-      var sizeFilter = this.filters.find(function (x) {
-        return x.key == 'size' && x.value !== null;
-      });
+      }); //const finishFilter = this.filters.find(x => x.key == 'finish' && x.value !== null);
+      //const sizeFilter = this.filters.find(x => x.key == 'size' && x.value !== null);
+
       var filteredItems;
 
       if (selectedFilters.length) {
-        filteredItems = this.items.filter(function (item) {
-          var has = true;
-          selectedFilters.forEach(function (filter) {
-            has = has && filter.doFilter(item, filter.value);
-          });
-          return has;
-        }).map(function (x) {
+        filteredItems = this.items.map(function (x) {
+          // duplico i prodotti e minimal
           var item = Object.assign({}, x);
-          item.minimals = item.minimals.filter(function (x) {
-            var has = true;
-            has = has && (!finishFilter || x.finish.id === finishFilter.value) && (!sizeFilter || x.size.id === sizeFilter.value);
-            return has;
-          });
+          item.minimals = _toConsumableArray(x.minimals);
           return item;
-        });
+        }).filter(function (item) {
+          // filtro tutti i minimal con tutti i filtri contemporeamente
+          selectedFilters.forEach(function (filter) {
+            item.minimals = item.minimals.filter(function (minimal) {
+              return filter.doFilter(minimal, filter.value);
+            });
+          });
+          return item.minimals.length > 0;
+        }); //item.minimals = item.minimals.filter(x => {
+        //	let has = true;
+        //	has = has && (!finishFilter || x.finish.id === finishFilter.value) && (!sizeFilter || x.size.id === sizeFilter.value);
+        //	return has;
+        //});
       } else {
         filteredItems = this.items.slice();
       }
@@ -21283,28 +21298,72 @@ function () {
       this.visibleItems = [];
       this.maxItems = ITEMS_PER_PAGE;
       this.$timeout(function () {
-        _this3.filteredItems = filteredItems;
-        _this3.visibleItems = filteredItems.slice(0, _this3.maxItems);
+        _this.filteredItems = filteredItems;
+        _this.visibleItems = filteredItems.slice(0, _this.maxItems);
 
-        _this3.updateFilterStates(filteredItems);
+        _this.updateFilterStates(filteredItems);
       }, 50);
     }
   }, {
     key: "updateFilterStates",
     value: function updateFilterStates(brands) {
-      var _this4 = this;
+      var _this2 = this;
 
       this.filters.forEach(function (filter) {
         filter.options.forEach(function (option) {
           var has = false;
 
           if (option.value) {
-            var i = 0;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
 
-            while (i < _this4.filteredItems.length && !has) {
-              var item = _this4.filteredItems[i];
-              has = filter.doFilter(item, option.value);
-              i++;
+            try {
+              for (var _iterator = _this2.filteredItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var item = _step.value;
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+
+                try {
+                  for (var _iterator2 = item.minimals[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var minimal = _step2.value;
+
+                    if (filter.doFilter(minimal, option.value)) {
+                      has = true;
+                      break;
+                    }
+                  }
+                } catch (err) {
+                  _didIteratorError2 = true;
+                  _iteratorError2 = err;
+                } finally {
+                  try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                      _iterator2.return();
+                    }
+                  } finally {
+                    if (_didIteratorError2) {
+                      throw _iteratorError2;
+                    }
+                  }
+                }
+
+                if (has) break;
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
             }
           } else {
             has = true;
@@ -21340,99 +21399,78 @@ function () {
   }, {
     key: "onScroll",
     value: function onScroll(event) {
-      var _this5 = this;
+      var _this3 = this;
 
       if (event.rect.bottom < event.windowRect.bottom) {
         // console.log('more!');
         if (!this.busy && this.maxItems < this.filteredItems.length) {
           this.$timeout(function () {
-            _this5.busy = true;
+            _this3.busy = true;
 
-            _this5.$timeout(function () {
-              _this5.maxItems += ITEMS_PER_PAGE;
-              _this5.visibleItems = _this5.filteredItems.slice(0, _this5.maxItems);
-              _this5.busy = false; // console.log(this.visibleItems.length);
+            _this3.$timeout(function () {
+              _this3.maxItems += ITEMS_PER_PAGE;
+              _this3.visibleItems = _this3.filteredItems.slice(0, _this3.maxItems);
+              _this3.busy = false; // console.log(this.visibleItems.length);
             }, 1000);
           }, 0);
         }
       }
-    }
-  }, {
-    key: "fakeSearch$",
-    value: function fakeSearch$() {
-      var _this6 = this;
+    } //fakeSearch$(count = 2000) {
+    //	const items = [];
+    //	const collections = ['Marvel Dream', 'Marvel Edge', 'Boost'];
+    //	const tiles = ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Agata Azul', 'Gold Onyx', 'Red Luxury', 'Gris Clair'];
+    //	const finishes = this.filters.find(x => x.key === 'finish').options;
+    //	const sizes = this.filters.find(x => x.key === 'size').options;
+    //	let UID = 1;
+    //	while (items.length < count) {
+    //		const collectionIndex = Math.floor(Math.random() * collections.length);
+    //		const collectionName = collections[collectionIndex];
+    //		const tileIndex = Math.floor(Math.random() * tiles.length);
+    //		const tileName = tiles[tileIndex];
+    //		const tileImage = `img/advanced-search/tile-0${tileIndex+1}.jpg`;
+    //		const minimals = [];
+    //		const count = 1 + Math.floor(Math.random() * 15);
+    //		while (minimals.length < count) {
+    //			const finish = finishes[Math.floor(Math.random() * finishes.length)];
+    //			const size = sizes[Math.floor(Math.random() * sizes.length)];
+    //			minimals.push({
+    //				id: minimals.length + 1,
+    //				url: '#',
+    //				finish: {
+    //					id: finish.value,
+    //					name: finish.label
+    //				},
+    //				size: {
+    //					id: size.value,
+    //					name: size.label
+    //				},
+    //			});
+    //		}
+    //		const features = [];
+    //		this.filters.forEach(filter => {
+    //			if (filter.key !== 'finish' && filter.key !== 'size') {
+    //				features.push(filter.options[Math.floor(Math.random() * filter.options.length)].value);
+    //			}
+    //		});
+    //		items.push({
+    //			id: UID++,
+    //			collection: {
+    //				id: collectionIndex + 1,
+    //				name: collectionName,
+    //			},
+    //			tile: {
+    //				id: tileIndex + 1,
+    //				name: tileName,
+    //				image: tileImage
+    //			},
+    //			minimals,
+    //			features,
+    //		});
+    //	}
+    //	// console.log(JSON.stringify(items));
+    //	return of({ data: items });
+    //}
 
-      var count = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2000;
-      var items = [];
-      var collections = ['Marvel Dream', 'Marvel Edge', 'Boost'];
-      var tiles = ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Agata Azul', 'Gold Onyx', 'Red Luxury', 'Gris Clair'];
-      var finishes = this.filters.find(function (x) {
-        return x.key === 'finish';
-      }).options;
-      var sizes = this.filters.find(function (x) {
-        return x.key === 'size';
-      }).options;
-      var UID = 1;
-
-      var _loop = function _loop() {
-        var collectionIndex = Math.floor(Math.random() * collections.length);
-        var collectionName = collections[collectionIndex];
-        var tileIndex = Math.floor(Math.random() * tiles.length);
-        var tileName = tiles[tileIndex];
-        var tileImage = "img/advanced-search/tile-0".concat(tileIndex + 1, ".jpg");
-        var minimals = [];
-        var count = 1 + Math.floor(Math.random() * 15);
-
-        while (minimals.length < count) {
-          var finish = finishes[Math.floor(Math.random() * finishes.length)];
-          var size = sizes[Math.floor(Math.random() * sizes.length)];
-          minimals.push({
-            id: minimals.length + 1,
-            url: '#',
-            finish: {
-              id: finish.value,
-              name: finish.label
-            },
-            size: {
-              id: size.value,
-              name: size.label
-            }
-          });
-        }
-
-        var features = [];
-
-        _this6.filters.forEach(function (filter) {
-          if (filter.key !== 'finish' && filter.key !== 'size') {
-            features.push(filter.options[Math.floor(Math.random() * filter.options.length)].value);
-          }
-        });
-
-        items.push({
-          id: UID++,
-          collection: {
-            id: collectionIndex + 1,
-            name: collectionName
-          },
-          tile: {
-            id: tileIndex + 1,
-            name: tileName,
-            image: tileImage
-          },
-          minimals: minimals,
-          features: features
-        });
-      };
-
-      while (items.length < count) {
-        _loop();
-      } // console.log(JSON.stringify(items));
-
-
-      return (0, _rxjs.of)({
-        data: items
-      });
-    }
   }]);
 
   return AdvancedSearchCtrl;
@@ -21442,7 +21480,7 @@ AdvancedSearchCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiServi
 var _default = AdvancedSearchCtrl;
 exports.default = _default;
 
-},{"rxjs":2}],200:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 "use strict";
 
 var _appModule = _interopRequireDefault(require("./app.module.js"));
@@ -21598,8 +21636,9 @@ function () {
     this.locationService = LocationService;
     this.filters = window.filters || {};
     this.brands = window.brands || [];
-    this.deserializeFilters();
-    this.applyFilters(); // this.filteredReferences = this.references.slice();
+    this.initialFilters = window.initialFilters || null;
+    this.deserializeFilters(this.initialFilters);
+    this.applyFilters(false); // this.filteredReferences = this.references.slice();
     // this.updateFilterStates(this.filteredReferences);
     // console.log(this.filters);
     // console.log(this.brands);
@@ -21607,10 +21646,10 @@ function () {
 
   _createClass(CollectionsCtrl, [{
     key: "deserializeFilters",
-    value: function deserializeFilters() {
+    value: function deserializeFilters(initialFilter) {
       var _this = this;
 
-      var locationFilters = this.locationService.deserialize('filters') || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
 
       Object.keys(this.filters).forEach(function (x) {
         var filter = _this.filters[x];
@@ -21648,20 +21687,27 @@ function () {
       var _this2 = this;
 
       var filters = {};
+      var any = false;
       Object.keys(this.filters).forEach(function (x) {
         var filter = _this2.filters[x];
 
         if (filter.value !== null) {
           filters[x] = filter.value;
+          any = true;
         }
-      }); // console.log('CollectionsCtrl.serializeFilters', filters);
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('CollectionsCtrl.serializeFilters', filters);
+
 
       this.locationService.serialize('filters', filters);
       return filters;
     }
   }, {
     key: "applyFilters",
-    value: function applyFilters() {
+    value: function applyFilters(serialize) {
       var _this3 = this;
 
       /*
@@ -21669,7 +21715,7 @@ function () {
       	return Object.assign({ type: x }, this.filters[x]);
       }).filter(x => x.value !== null);
       */
-      this.serializeFilters();
+      if (serialize !== false) this.serializeFilters();
       var filters = Object.keys(this.filters).map(function (x) {
         return _this3.filters[x];
       }).filter(function (x) {
@@ -21788,7 +21834,6 @@ function () {
     this.$timeout = $timeout;
     this.$http = $http;
     this.data = window.data || {};
-    this.provinces = [];
     this.model = {};
 
     if (this.$location.search() && this.$location.search().email) {
@@ -21806,7 +21851,7 @@ function () {
 
       this.$timeout(function () {
         _this.provinces = _this.data.provinces.filter(function (x) {
-          return x.countryId === _this.model.country;
+          return x.idstato === _this.model.country;
         });
       });
     }
@@ -22733,6 +22778,23 @@ function () {
       });
     }
   }, {
+    key: "resized",
+    value: function resized(image, src) {
+      var splitted = src.split('/std/');
+
+      if (splitted.length > 1) {
+        //Contenuto Thron
+        if (splitted[1].match(/^0x0\//)) {
+          // se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
+          src = splitted[0] + '/std/' + image.width.toString() + 'x' + image.height.toString() + splitted[1].substr(3);
+          src += src.indexOf('?') >= 0 ? '&' : '?';
+          src += 'scalemode=centered';
+        }
+      }
+
+      return src;
+    }
+  }, {
     key: "onAppearsInViewport",
     value: function onAppearsInViewport(image, scope, attributes) {
       if (scope.srcset) {
@@ -22742,12 +22804,12 @@ function () {
 
         if (scope.src) {
           // attributes.$set('src', scope.src);
-          image.setAttribute('src', scope.src);
+          image.setAttribute('src', this.resized(image, scope.src));
           image.removeAttribute('data-src');
         }
       } else if (scope.src) {
         // console.log(scope.src);
-        image.setAttribute('src', scope.src);
+        image.setAttribute('src', this.resized(image, scope.src));
         image.removeAttribute('data-src'); // attributes.$set('src', scope.src);
 
         /*
@@ -22766,7 +22828,7 @@ function () {
         });
         */
       } else if (scope.backgroundSrc) {
-        image.setStyle('background-image', "url(".concat(scope.backgroundSrc, ")"));
+        image.setStyle('background-image', "url(".concat(this.resized(image, scope.backgroundSrc), ")"));
         image.removeAttribute('data-background-src');
       }
     }

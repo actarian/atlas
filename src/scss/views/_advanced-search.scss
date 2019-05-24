@@ -249,8 +249,11 @@
 				display: block;
 				line-height: 1.2;
 
-				.btn--category {
+				.btn--category:not(:last-child) {
 					margin-right: 15px;
+				}
+
+				.btn--category {
 					margin-top: 10px;
 				}
 
