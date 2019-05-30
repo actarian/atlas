@@ -36,18 +36,29 @@ export class SwiperDirective {
 				element.swiper.destroy();
 			}
 		});
-		setTimeout(() => {
+		scope.$watch('$viewContentLoaded', () => {
+			// console.log('viewContentLoaded');
 			this.onSwiper(element);
-		}, 1);
+		});
 	}
 
 	onSwiper(element) {
+		/*
+		if (element.swiper) {
+			element.swiper.destroy(true, true);
+		}
+		element.swiper = new Swiper(element, this.options);
+		element.addClass('swiper-init');
+		*/
 		if (element.swiper) {
 			element.swiper.update();
 		} else {
 			element.swiper = new Swiper(element, this.options);
 			element.addClass('swiper-init');
 		}
+		setTimeout(() => {
+			[...document.querySelectorAll('.swiper-pagination-bullet:first-child')].forEach(x => x.click());
+		}, 100);
 	}
 
 	static factory() {
@@ -64,8 +75,12 @@ export class SwiperGalleryDirective extends SwiperDirective {
 		super();
 		this.options = {
 			slidesPerView: 'auto',
-			spaceBetween: 1,
 			centeredSlides: true,
+			/*
+			observer: true,
+			observeParents: true,
+			*/
+			spaceBetween: 1,
 			loop: true,
 			loopAdditionalSlides: 100,
 			speed: 600,
@@ -79,7 +94,7 @@ export class SwiperGalleryDirective extends SwiperDirective {
 				el: '.swiper-pagination',
 				clickable: true,
 			},
-		}
+		};
 	}
 
 	static factory() {

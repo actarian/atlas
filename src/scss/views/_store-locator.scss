@@ -173,6 +173,28 @@
 		text-align: center;
 	}
 
+	.marker__content {
+		.title {
+			font-size: 19px;
+			font-weight: 500;
+			margin-bottom: 5px;
+		}
+
+		.group--info {
+			font-size: 15px;
+			line-height: 1.5;
+		}
+
+		.group--cta {
+			margin: 10px 0;
+			font-size: 0;
+		}
+	}
+
+	.gm-style .gm-style-iw-c {
+		border-radius: 0;
+	}
+
 }
 
 .section--stores {
@@ -453,5 +475,4 @@
 			}
 		}
 	}
-
 }

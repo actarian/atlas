@@ -4,7 +4,7 @@
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
-const ZOOM_LEVEL = 12;
+const ZOOM_LEVEL = 13;
 const SHOW_INFO_WINDOW = false;
 let GOOGLE_MAPS = null;
 
@@ -119,20 +119,40 @@ class StoreLocatorCtrl {
 	addMarkers(stores) {
 		const markers = stores.map((store) => {
 			const position = new google.maps.LatLng(store.latitude, store.longitude);
-			var marker = new google.maps.Marker({
+			const content = `<div class="marker__content">
+				<div class="title"><span>${store.name}</span></div>
+				<div class="group group--info">
+					<div class="address">
+						${store.address}<br>
+						${store.zip} ${store.city} ${store.cod_provincia} ${store.stato_IT}<br>
+						<span ng-if="store.tel">${store.tel}<br></span>
+						<span ng-if="store.email"><a ng-href="mailto:${store.email}">${store.email}</a></span>
+					</div>
+					<div class="distance">At approx. <b>${Math.floor(store.distance)} km</b></div>
+				</div>
+				<div class="group group--cta">
+					<a href="${store.webSite}" target="_blank" class="btn btn--link" ng-if="store.webSite"><span>More info</span></a>
+					<a href="https://www.google.it/maps/dir/${this.position.lat()},${this.position.lng()}/${store.name}/@${store.latitude},${store.longitude}/" target="_blank" class="btn btn--link"><span>How to reach the store</span></a>
+				</div>
+			</div>`;
+			const marker = new google.maps.Marker({
 				position: position,
 				// map: this.map,
 				icon: store.importante ? './img/store-locator/store-primary.png' : './img/store-locator/store-secondary.png',
 				title: store.name,
+				store: store,
+				content: content,
 			});
-			marker.addListener('mouseover', () => {
-				this.setMarkerWindow(marker.position, store.name);
+			marker.addListener('click', () => {
+				this.setMarkerWindow(marker.position, content);
+				this.scrollToStore(store);
 			});
+			/*
 			marker.addListener('mouseout', () => {
 				this.setMarkerWindow(null);
 			});
+			*/
 			return marker;
-
 			/*
 			function panTo(e) {
 				if (current !== marker) {
@@ -251,6 +271,8 @@ class StoreLocatorCtrl {
 		const position = new google.maps.LatLng(store.latitude, store.longitude);
 		this.map.setZoom(ZOOM_LEVEL);
 		this.map.panTo(position);
+		const marker = this.markers.find(x => x.store === store);
+		this.setMarkerWindow(marker.position, marker.content);
 	}
 
 	onSubmit() {
@@ -295,20 +317,27 @@ class StoreLocatorCtrl {
 		}
 	}
 
-	setMarkerWindow(position, message) {
+	setMarkerWindow(position, content) {
 		if (position) {
 			const markerWindow = this.markerWindow || new google.maps.InfoWindow({
 				pixelOffset: new google.maps.Size(0, -35)
 			});
 			this.markerWindow = markerWindow;
 			markerWindow.setPosition(position);
-			markerWindow.setContent(message);
+			markerWindow.setContent(content);
 			markerWindow.open(this.map);
 		} else {
 			if (this.markerWindow) {
 				this.markerWindow.close();
 			}
 		}
+	}
+
+	scrollToStore(store) {
+		const storesNode = document.querySelector('.section--stores');
+		const storeNode = document.querySelector(`#store-${store.id_SF}`);
+		// console.log(storesNode, storeNode);
+		storesNode.scrollTo(0, storeNode.offsetTop);
 	}
 
 }

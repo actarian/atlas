@@ -2632,7 +2632,7 @@ canvas {
 .picture--square {
   position: relative;
   width: 100%;
-  max-width: calc((100vh - 137px) / 1 * 1);
+  max-width: calc((100vh - 280px) / 1 * 1);
   margin: 0 auto; }
   .picture--square > .media {
     position: relative;
@@ -2654,7 +2654,7 @@ canvas {
 .picture--vertical {
   position: relative;
   width: 100%;
-  max-width: calc((100vh - 137px) / 90 * 68);
+  max-width: calc((100vh - 280px) / 90 * 68);
   margin: 0 auto; }
   .picture--vertical > .media {
     position: relative;
@@ -2676,7 +2676,7 @@ canvas {
 .picture--horizontal {
   position: relative;
   width: 100%;
-  max-width: calc((100vh - 137px) / 88 * 153);
+  max-width: calc((100vh - 280px) / 88 * 153);
   margin: 0 auto; }
   .picture--horizontal > .media {
     position: relative;
@@ -6897,6 +6897,18 @@ page-transition {
     padding: 10px;
     font-size: 0.8rem;
     text-align: center; }
+  .section--map .marker__content .title {
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 5px; }
+  .section--map .marker__content .group--info {
+    font-size: 15px;
+    line-height: 1.5; }
+  .section--map .marker__content .group--cta {
+    margin: 10px 0;
+    font-size: 0; }
+  .section--map .gm-style .gm-style-iw-c {
+    border-radius: 0; }
 
 .section--stores {
   -webkit-box-shadow: -25px 0 30px -5px rgba(0, 0, 0, 0.2);

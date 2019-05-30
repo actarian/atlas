@@ -37,7 +37,7 @@
 		"muuri": "^0.7.1",
 		"promise-polyfill": "^8.1.0",
 		"rxjs": "~6.4.0",
-		"swiper": "~4.4.2",
+		"swiper": "~4.5.0",
 		"whatwg-fetch": "~3.0.0"
 	},
 	"devDependencies": {

@@ -60,7 +60,7 @@
 				<div class="legend"><svg class="icon icon--atlas icon--atlas--secondary"><use xlink:href="#atlas"></use></svg> <span>100m<sup>2</sup> exposition area</span></div>
 			</div>
 			<div class="listing listing--stores">
-				<div class="listing__item" ng-click="locator.panTo(item)" appear ng-repeat="item in locator.visibleStores">
+				<div class="listing__item" id="store-{{item.id_SF}}" ng-click="locator.panTo(item)" appear ng-repeat="item in locator.visibleStores">
 					<div class="title"><span ng-bind="item.name"></span> <svg class="icon icon--atlas" ng-class="{ 'icon--atlas--secondary' : item.importante !== 1 }"><use xlink:href="#atlas"></use></svg></div>
 					<div class="group group--info">
 						<div class="address">

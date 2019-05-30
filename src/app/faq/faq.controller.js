@@ -36,7 +36,7 @@ class FaqCtrl {
 			});
 		});
 		$scope.$on('destroy', () => {
-			console.log('destroy');
+			// console.log('destroy');
 			this.unsubscribe.next();
 			this.unsubscribe.complete();
 		});
@@ -99,7 +99,7 @@ class FaqCtrl {
 						let has = false;
 						let items = category.items.filter(item => {
 							const hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
-							const hasAbstract = item.abstr.toLowerCase().indexOf(query) !== -1;
+							const hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
 							item.opened = hasAbstract;
 							this.flags[item.id] = item.opened;
 							has = has || hasTitle || hasAbstract;

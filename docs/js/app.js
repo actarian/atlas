@@ -22786,9 +22786,17 @@ function () {
         //Contenuto Thron
         if (splitted[1].match(/^0x0\//)) {
           // se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
-          src = splitted[0] + '/std/' + image.width.toString() + 'x' + image.height.toString() + splitted[1].substr(3);
-          src += src.indexOf('?') >= 0 ? '&' : '?';
-          src += 'scalemode=centered';
+          src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
+
+          if (!src.match(/[&?]scalemode=?/)) {
+            src += src.indexOf('?') >= 0 ? '&' : '?';
+            src += 'scalemode=centered';
+          }
+
+          if (window.devicePixelRatio > 1) {
+            src += src.indexOf('?') >= 0 ? '&' : '?';
+            src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
+          }
         }
       }
 
@@ -23375,6 +23383,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -23426,19 +23442,33 @@ function () {
           element.swiper.destroy();
         }
       });
-      setTimeout(function () {
+      scope.$watch('$viewContentLoaded', function () {
+        // console.log('viewContentLoaded');
         _this.onSwiper(element);
-      }, 1);
+      });
     }
   }, {
     key: "onSwiper",
     value: function onSwiper(element) {
+      /*
+      if (element.swiper) {
+      	element.swiper.destroy(true, true);
+      }
+      element.swiper = new Swiper(element, this.options);
+      element.addClass('swiper-init');
+      */
       if (element.swiper) {
         element.swiper.update();
       } else {
         element.swiper = new Swiper(element, this.options);
         element.addClass('swiper-init');
       }
+
+      setTimeout(function () {
+        _toConsumableArray(document.querySelectorAll('.swiper-pagination-bullet:first-child')).forEach(function (x) {
+          return x.click();
+        });
+      }, 100);
     }
   }], [{
     key: "factory",
@@ -23466,8 +23496,13 @@ function (_SwiperDirective) {
     _this2 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperGalleryDirective).call(this));
     _this2.options = {
       slidesPerView: 'auto',
-      spaceBetween: 1,
       centeredSlides: true,
+
+      /*
+      observer: true,
+      observeParents: true,
+      */
+      spaceBetween: 1,
       loop: true,
       loopAdditionalSlides: 100,
       speed: 600,
@@ -24070,8 +24105,7 @@ function () {
       });
     });
     $scope.$on('destroy', function () {
-      console.log('destroy');
-
+      // console.log('destroy');
       _this.unsubscribe.next();
 
       _this.unsubscribe.complete();
@@ -24157,7 +24191,7 @@ function () {
             var has = false;
             var items = category.items.filter(function (item) {
               var hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
-              var hasAbstract = item.abstr.toLowerCase().indexOf(query) !== -1;
+              var hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
               item.opened = hasAbstract;
               _this2.flags[item.id] = item.opened;
               has = has || hasTitle || hasAbstract;
@@ -24846,8 +24880,7 @@ function (_Highway$Renderer) {
     key: "onEnter",
     // This method in the renderer is run when the data-router-view is added to the DOM Tree.
     value: function onEnter() {
-      console.log('onEnter');
-
+      // console.log('onEnter');
       if (!first) {
         var scope = CustomRenderer.scope;
         var $timeout = CustomRenderer.$timeout;
@@ -24856,9 +24889,9 @@ function (_Highway$Renderer) {
           scope.root.menuProductOpened = false;
           var $compile = CustomRenderer.$compile;
 
-          var view = _toConsumableArray(document.querySelectorAll('.view')).pop();
+          var view = _toConsumableArray(document.querySelectorAll('.view')).pop(); // console.log(view.innerHTML);
 
-          console.log(view.innerHTML);
+
           var element = angular.element(view);
           var $scope = element.scope();
           $compile(element.contents())($scope);
@@ -24868,15 +24901,13 @@ function (_Highway$Renderer) {
 
   }, {
     key: "onLeave",
-    value: function onLeave() {
-      console.log('onLeave');
-    } // This method in the renderer is run when the transition to display the data-router-view is done.
+    value: function onLeave() {} // console.log('onLeave');
+    // This method in the renderer is run when the transition to display the data-router-view is done.
 
   }, {
     key: "onEnterCompleted",
     value: function onEnterCompleted() {
-      console.log('onEnterCompleted');
-
+      // console.log('onEnterCompleted');
       if (first) {
         first = false;
       }
@@ -24884,8 +24915,8 @@ function (_Highway$Renderer) {
 
   }, {
     key: "onLeaveCompleted",
-    value: function onLeaveCompleted() {
-      console.log('onLeaveCompleted');
+    value: function onLeaveCompleted() {// console.log('onLeaveCompleted');
+
       /*
       const $timeout = CustomRenderer.$timeout;
       const scope = CustomRenderer.scope;
@@ -24969,7 +25000,7 @@ function () {
         _this.link$.next();
       });
       var subscription = this.onLink$().subscribe(function (x) {
-        console.log('onLinks$');
+        // console.log('onLinks$');
         H.detach(H.links);
         var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
         H.links = links;
@@ -25057,7 +25088,7 @@ function (_Highway$Transition) {
       var from = _ref.from,
           to = _ref.to,
           done = _ref.done;
-      console.log('PageTransition.in');
+      // console.log('PageTransition.in');
       TweenMax.set(to, {
         opacity: 0,
         minHeight: from.offsetHeight
@@ -25083,7 +25114,7 @@ function (_Highway$Transition) {
     value: function out(_ref2) {
       var from = _ref2.from,
           done = _ref2.done;
-      console.log('PageTransition.out');
+      // console.log('PageTransition.out');
       var headerMenu = document.querySelector('.header__menu');
 
       if (headerMenu) {
@@ -25917,7 +25948,8 @@ function () {
       var _this = this;
 
       this.brand = brand;
-      this.webglEnabled = this.domService.hasWebglSupport();
+      this.webglEnabled = false; // this.domService.hasWebglSupport();
+
       /*
       this.domService.smoothScroll$('.page').subscribe((top) => {
       	// console.log(top);
@@ -27518,7 +27550,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var ZOOM_LEVEL = 12;
+var ZOOM_LEVEL = 13;
 var SHOW_INFO_WINDOW = false;
 var GOOGLE_MAPS = null;
 
@@ -27709,18 +27741,26 @@ function () {
 
       var markers = stores.map(function (store) {
         var position = new google.maps.LatLng(store.latitude, store.longitude);
+        var content = "<div class=\"marker__content\">\n\t\t\t\t<div class=\"title\"><span>".concat(store.name, "</span></div>\n\t\t\t\t<div class=\"group group--info\">\n\t\t\t\t\t<div class=\"address\">\n\t\t\t\t\t\t").concat(store.address, "<br>\n\t\t\t\t\t\t").concat(store.zip, " ").concat(store.city, " ").concat(store.cod_provincia, " ").concat(store.stato_IT, "<br>\n\t\t\t\t\t\t<span ng-if=\"store.tel\">").concat(store.tel, "<br></span>\n\t\t\t\t\t\t<span ng-if=\"store.email\"><a ng-href=\"mailto:").concat(store.email, "\">").concat(store.email, "</a></span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"distance\">At approx. <b>").concat(Math.floor(store.distance), " km</b></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"group group--cta\">\n\t\t\t\t\t<a href=\"").concat(store.webSite, "\" target=\"_blank\" class=\"btn btn--link\" ng-if=\"store.webSite\"><span>More info</span></a>\n\t\t\t\t\t<a href=\"https://www.google.it/maps/dir/").concat(_this3.position.lat(), ",").concat(_this3.position.lng(), "/").concat(store.name, "/@").concat(store.latitude, ",").concat(store.longitude, "/\" target=\"_blank\" class=\"btn btn--link\"><span>How to reach the store</span></a>\n\t\t\t\t</div>\n\t\t\t</div>");
         var marker = new google.maps.Marker({
           position: position,
           // map: this.map,
           icon: store.importante ? './img/store-locator/store-primary.png' : './img/store-locator/store-secondary.png',
-          title: store.name
+          title: store.name,
+          store: store,
+          content: content
         });
-        marker.addListener('mouseover', function () {
-          _this3.setMarkerWindow(marker.position, store.name);
+        marker.addListener('click', function () {
+          _this3.setMarkerWindow(marker.position, content);
+
+          _this3.scrollToStore(store);
         });
-        marker.addListener('mouseout', function () {
-          _this3.setMarkerWindow(null);
+        /*
+        marker.addListener('mouseout', () => {
+        	this.setMarkerWindow(null);
         });
+        */
+
         return marker;
         /*
         function panTo(e) {
@@ -27878,6 +27918,10 @@ function () {
       var position = new google.maps.LatLng(store.latitude, store.longitude);
       this.map.setZoom(ZOOM_LEVEL);
       this.map.panTo(position);
+      var marker = this.markers.find(function (x) {
+        return x.store === store;
+      });
+      this.setMarkerWindow(marker.position, marker.content);
     }
   }, {
     key: "onSubmit",
@@ -27938,20 +27982,28 @@ function () {
     }
   }, {
     key: "setMarkerWindow",
-    value: function setMarkerWindow(position, message) {
+    value: function setMarkerWindow(position, content) {
       if (position) {
         var markerWindow = this.markerWindow || new google.maps.InfoWindow({
           pixelOffset: new google.maps.Size(0, -35)
         });
         this.markerWindow = markerWindow;
         markerWindow.setPosition(position);
-        markerWindow.setContent(message);
+        markerWindow.setContent(content);
         markerWindow.open(this.map);
       } else {
         if (this.markerWindow) {
           this.markerWindow.close();
         }
       }
+    }
+  }, {
+    key: "scrollToStore",
+    value: function scrollToStore(store) {
+      var storesNode = document.querySelector('.section--stores');
+      var storeNode = document.querySelector("#store-".concat(store.id_SF)); // console.log(storesNode, storeNode);
+
+      storesNode.scrollTo(0, storeNode.offsetTop);
     }
   }]);
 
