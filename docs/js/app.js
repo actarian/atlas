@@ -21559,6 +21559,8 @@ var _validate = _interopRequireDefault(require("./forms/validate.directive"));
 
 var _highway = _interopRequireDefault(require("./highway/highway.directive"));
 
+var _magazine = _interopRequireDefault(require("./magazine/magazine.controller"));
+
 var _moodboardDropdown = _interopRequireDefault(require("./moodboard/moodboard-dropdown.directive"));
 
 var _moodboardSearch = _interopRequireDefault(require("./moodboard/moodboard-search.directive"));
@@ -21599,7 +21601,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
 app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('transition', _transition.default.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
-app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MoodboardCtrl', _moodboard.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
+app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $rootScope) {
@@ -21608,7 +21610,7 @@ app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $ro
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/transition.directive":219,"./directives/video.directive":220,"./directives/wishlist.directive":221,"./faq/faq.controller":222,"./filters/image-with-features.filter":223,"./filters/notIn.filter":224,"./filters/trusted.filter":225,"./forms/control-messages.directive":226,"./forms/control.directive":227,"./forms/validate.directive":228,"./highway/highway.directive":230,"./moodboard/moodboard-dropdown.directive":232,"./moodboard/moodboard-search.directive":233,"./moodboard/moodboard.controller":234,"./news/news.controller":235,"./references/references.controller":236,"./root.controller":237,"./services/api.service":238,"./services/dom.service":239,"./services/wishlist.service":240,"./shared/location.service":241,"./shared/promise.service":242,"./shared/state.service":245,"./shared/storage.service":246,"./store-locator/store-locator.controller":247}],202:[function(require,module,exports){
+},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/transition.directive":219,"./directives/video.directive":220,"./directives/wishlist.directive":221,"./faq/faq.controller":222,"./filters/image-with-features.filter":223,"./filters/notIn.filter":224,"./filters/trusted.filter":225,"./forms/control-messages.directive":226,"./forms/control.directive":227,"./forms/validate.directive":228,"./highway/highway.directive":230,"./magazine/magazine.controller":232,"./moodboard/moodboard-dropdown.directive":233,"./moodboard/moodboard-search.directive":234,"./moodboard/moodboard.controller":235,"./news/news.controller":236,"./references/references.controller":237,"./root.controller":238,"./services/api.service":239,"./services/dom.service":240,"./services/wishlist.service":241,"./shared/location.service":242,"./shared/promise.service":243,"./shared/state.service":246,"./shared/storage.service":247,"./store-locator/store-locator.controller":248}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22249,7 +22251,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{"../shared/shader":244}],207:[function(require,module,exports){
+},{"../shared/shader":245}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22883,7 +22885,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":243,"rxjs/operators":198}],213:[function(require,module,exports){
+},{"../shared/rect":244,"rxjs/operators":198}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23187,7 +23189,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":243,"rxjs/operators":198}],216:[function(require,module,exports){
+},{"../shared/rect":244,"rxjs/operators":198}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23363,7 +23365,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"../shared/rect":243,"rxjs/operators":198}],218:[function(require,module,exports){
+},{"../shared/rect":244,"rxjs/operators":198}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23382,14 +23384,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23463,12 +23457,12 @@ function () {
         element.swiper = new Swiper(element, this.options);
         element.addClass('swiper-init');
       }
+      /*
+      setTimeout(() => {
+      	[...document.querySelectorAll('.swiper-pagination-bullet:first-child')].forEach(x => x.click());
+      }, 1000);
+      */
 
-      setTimeout(function () {
-        _toConsumableArray(document.querySelectorAll('.swiper-pagination-bullet:first-child')).forEach(function (x) {
-          return x.click();
-        });
-      }, 100);
     }
   }], [{
     key: "factory",
@@ -23495,16 +23489,15 @@ function (_SwiperDirective) {
 
     _this2 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperGalleryDirective).call(this));
     _this2.options = {
-      slidesPerView: 'auto',
-      centeredSlides: true,
-
       /*
       observer: true,
       observeParents: true,
       */
-      spaceBetween: 1,
       loop: true,
       loopAdditionalSlides: 100,
+      slidesPerView: 'auto',
+      centeredSlides: true,
+      spaceBetween: 1,
       speed: 600,
       autoplay: 5000,
       keyboardControl: true,
@@ -25153,6 +25146,75 @@ exports.default = PageTransition;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = exports.ITEMS_PER_PAGE = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+
+/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+var ITEMS_PER_PAGE = 9;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
+
+var MagazineCtrl =
+/*#__PURE__*/
+function () {
+  function MagazineCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, MagazineCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.locationService = LocationService;
+    this.magazine = window.magazine || []; // !!! FAKE
+
+    while (this.magazine.length < 100) {
+      this.magazine = this.magazine.concat(this.magazine);
+    } // !!! FAKE
+
+
+    this.maxItems = 0;
+    this.visibleItems = [];
+  }
+
+  _createClass(MagazineCtrl, [{
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.magazine.length) {
+          this.$timeout(function () {
+            _this.busy = true;
+
+            _this.$timeout(function () {
+              _this.maxItems += ITEMS_PER_PAGE;
+              _this.visibleItems = _this.magazine.slice(0, _this.maxItems);
+              _this.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
+      }
+    }
+  }]);
+
+  return MagazineCtrl;
+}();
+
+MagazineCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
+var _default = MagazineCtrl;
+exports.default = _default;
+
+},{}],233:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25222,7 +25284,7 @@ function () {
 exports.default = MoodboardDropdownDirective;
 MoodboardDropdownDirective.factory.$inject = ['$compile'];
 
-},{}],233:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25378,7 +25440,7 @@ function () {
 exports.default = MoodboardSearchDirective;
 MoodboardSearchDirective.factory.$inject = ['$compile'];
 
-},{}],234:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25540,7 +25602,7 @@ MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardCtrl;
 exports.default = _default;
 
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25740,7 +25802,7 @@ NewsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = NewsCtrl;
 exports.default = _default;
 
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25913,7 +25975,7 @@ ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = ReferencesCtrl;
 exports.default = _default;
 
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26112,7 +26174,7 @@ RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],238:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26177,7 +26239,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{"rxjs":2}],239:[function(require,module,exports){
+},{"rxjs":2}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26521,7 +26583,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":243,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],240:[function(require,module,exports){
+},{"../shared/rect":244,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],241:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26629,7 +26691,7 @@ function () {
 exports.default = WishlistService;
 WishlistService.factory.$inject = ['PromiseService', 'LocalStorageService', 'ApiService'];
 
-},{}],241:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26716,7 +26778,7 @@ function () {
 exports.default = LocationService;
 LocationService.factory.$inject = ['$location'];
 
-},{}],242:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26771,7 +26833,7 @@ function () {
 exports.default = PromiseService;
 PromiseService.factory.$inject = ['$q'];
 
-},{}],243:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26913,7 +26975,7 @@ function () {
 
 exports.default = Rect;
 
-},{}],244:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26927,7 +26989,7 @@ exports.FRAGMENT_SHADER = void 0;
 var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
 exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
 
-},{}],245:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27122,7 +27184,7 @@ function () {
 exports.default = StateService;
 StateService.factory.$inject = ['$timeout', '$rootScope'];
 
-},{}],246:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27532,7 +27594,7 @@ function () {
 exports.SessionStorageService = SessionStorageService;
 SessionStorageService.factory.$inject = ['PromiseService'];
 
-},{}],247:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

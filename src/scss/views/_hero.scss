@@ -112,7 +112,25 @@
 
 .section--hero-secondary {
 	position: relative;
-	background: black;
+
+	padding-top: 60px;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 90px;
+		background: $background-header;
+	}
+
+	&.section--negative {
+		padding-top: 0;
+
+		&:before {
+			display: none;
+		}
+	}
 
 	.background {
 		z-index: 0;
@@ -139,14 +157,14 @@
 		font-size: 14px;
 		font-weight: $font-semibold;
 		text-transform: uppercase;
-		color: $foreground-negative;
+		color: $foreground;
 	}
 
 	.title {
 		font-size: 5.2vw;
 		line-height: 1.1;
 		font-weight: $font-light;
-		color: $foreground-negative;
+		color: $foreground;
 
 		b {
 			font-weight: $font-semibold;
@@ -190,6 +208,16 @@
 			font-size: 100px;
 		}
 	}
+}
 
+.section--negative {
+	background: black;
 
+	&,
+	.category,
+	.title,
+	.abstract,
+	.description {
+		color: $foreground-negative;
+	}
 }

@@ -56,9 +56,11 @@ export class SwiperDirective {
 			element.swiper = new Swiper(element, this.options);
 			element.addClass('swiper-init');
 		}
+		/*
 		setTimeout(() => {
 			[...document.querySelectorAll('.swiper-pagination-bullet:first-child')].forEach(x => x.click());
-		}, 100);
+		}, 1000);
+		*/
 	}
 
 	static factory() {
@@ -74,15 +76,15 @@ export class SwiperGalleryDirective extends SwiperDirective {
 	constructor() {
 		super();
 		this.options = {
-			slidesPerView: 'auto',
-			centeredSlides: true,
 			/*
 			observer: true,
 			observeParents: true,
 			*/
-			spaceBetween: 1,
 			loop: true,
 			loopAdditionalSlides: 100,
+			slidesPerView: 'auto',
+			centeredSlides: true,
+			spaceBetween: 1,
 			speed: 600,
 			autoplay: 5000,
 			keyboardControl: true,

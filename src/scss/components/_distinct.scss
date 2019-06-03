@@ -1,0 +1,60 @@
+.section--distinct {
+	background: $background-tertiary;
+
+	@include media-breakpoint-up(sm) {
+		padding-top: 130px;
+	}
+
+	@include media-breakpoint-down(xs) {
+		padding-top: 60px;
+	}
+}
+
+.section--distinct+.section--distinct {
+	padding-top: 0;
+}
+
+.section--distinct-02 {
+	text-align: center;
+	padding-top: 140px;
+	padding-bottom: 80px;
+	background: $background-tertiary;
+
+	.background {
+		height: 100%;
+	}
+
+	.group--cta {
+		margin-bottom: 0;
+	}
+
+	@include media-breakpoint-up(sm) {
+		.title {
+			font-size: 20px;
+			line-height: 1.4;
+			font-weight: $font-semibold;
+			text-transform: uppercase;
+			margin-bottom: 5px;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		.picture {
+			margin-left: -30px;
+			margin-right: -30px;
+			width: calc(100% + 60px);
+		}
+
+		.title {
+			font-size: 18px;
+			line-height: 1.2;
+			font-weight: $font-semibold;
+			text-transform: uppercase;
+			margin-bottom: 5px;
+		}
+	}
+}
+
+.section--distinct-02+.section--distinct-02 {
+	padding-top: 0;
+}

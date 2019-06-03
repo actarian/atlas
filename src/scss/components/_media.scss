@@ -138,6 +138,10 @@
 		.btn--wishlist {
 			opacity: 1;
 		}
+
+		.category {
+			transform: translateY(100%);
+		}
 	}
 
 	.section--negative & {

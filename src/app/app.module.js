@@ -30,6 +30,7 @@ import ControlMessagesDirective from './forms/control-messages.directive';
 import ControlDirective from './forms/control.directive';
 import ValidateDirective from './forms/validate.directive';
 import HighwayDirective from './highway/highway.directive';
+import MagazineCtrl from './magazine/magazine.controller';
 import MoodboardDropdownDirective from './moodboard/moodboard-dropdown.directive';
 import MoodboardSearchDirective from './moodboard/moodboard-search.directive';
 import MoodboardCtrl from './moodboard/moodboard.controller';
@@ -95,6 +96,7 @@ app.controller('RootCtrl', RootCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
 	.controller('ContactsCtrl', ContactsCtrl)
 	.controller('FaqCtrl', FaqCtrl)
+	.controller('MagazineCtrl', MagazineCtrl)
 	.controller('MoodboardCtrl', MoodboardCtrl)
 	.controller('NewsCtrl', NewsCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)

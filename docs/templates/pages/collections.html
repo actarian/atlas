@@ -322,7 +322,7 @@
 	}];
 
 </script>
-<section class="section section--hero-secondary">
+<section class="section section--hero-secondary section--negative">
 	<div class="background" ng-if="!root.webglEnabled" parallax>
 		<img lazy data-src="img/collections/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
 	</div>
@@ -399,9 +399,9 @@
 				</div>
 				<div class="listing listing--collections">
 					<a href="product-project.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/collections/01.jpg" alt="title" />
-							<span class="look">marble look</span>
+							<span class="category">marble look</span>
 						</div>
 						<div class="title">Marvel Edge</div>
 						<div class="abstract">The contemporary feel of timeless marble-look tiles.</div>
@@ -430,9 +430,9 @@
 						</div>
 					</a>
 					<a href="product-project.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/collections/02.jpg" alt="title" />
-							<span class="look">concrete look</span>
+							<span class="category">concrete look</span>
 						</div>
 						<div class="title">Boost</div>
 						<div class="abstract">The new soul of the concrete effect: industrial style becomes sophisticated elegance.</div>
@@ -459,9 +459,9 @@
 						</div>
 					</a>
 					<a href="product-project.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/collections/03.jpg" alt="title" />
-							<span class="look">stone look</span>
+							<span class="category">stone look</span>
 						</div>
 						<div class="title">Klif</div>
 						<div class="abstract">The decisive character of the stone effect in a porcelain tile inspired by nature.</div>
@@ -496,9 +496,9 @@
 				</div>
 				<div class="listing listing--collections">
 					<a href="product-project.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/collections/01.jpg" alt="title" />
-							<span class="look">concrete look</span>
+							<span class="category">concrete look</span>
 						</div>
 						<div class="title">Realm</div>
 						<div class="abstract">A marked impact and neutral colors, for a contemporary taste.</div>
@@ -513,9 +513,9 @@
 						</div>
 					</a>
 					<a href="product-project.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/collections/02.jpg" alt="title" />
-							<span class="look">stone look</span>
+							<span class="category">stone look</span>
 						</div>
 						<div class="title">Block Next</div>
 						<div class="abstract">A touch of authenticity that also interprets the warmest and most welcoming moods.</div>
@@ -530,9 +530,9 @@
 						</div>
 					</a>
 					<a href="product-project.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/collections/03.jpg" alt="title" />
-							<span class="look">stone look</span>
+							<span class="category">stone look</span>
 						</div>
 						<div class="title">Peak Floor</div>
 						<div class="abstract">Perfect for making the most of any residential and commercial space, even outdoors.</div>
@@ -563,9 +563,9 @@
 				</div>
 				<div class="listing listing--collections">
 					<a href="product-project.html" class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="{{collection.images | imageWithFeatures : [collectionsCtrl.filters.typologies.value] }}" alt="title" />
-							<span class="look" ng-bind="collection.look"></span>
+							<span class="category" ng-bind="collection.look"></span>
 						</div>
 						<div class="title" ng-bind="collection.title"></div>
 						<div class="abstract" ng-bind="collection.abstract"></div>

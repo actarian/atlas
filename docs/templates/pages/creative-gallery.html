@@ -214,7 +214,7 @@
 	}];
 
 </script>
-<section class="section section--hero-secondary">
+<section class="section section--hero-secondary section--negative">
 	<div class="background" ng-if="!root.webglEnabled" parallax>
 		<img lazy data-src="img/creative-gallery/hero.jpg?width=1920&height=670&mode=crop" alt="title" />
 	</div>
@@ -275,9 +275,9 @@
 				</div>
 				<div class="listing listing--collections" ng-if="!referencesCtrl.filteredReferences">
 					<a href="creative-gallery-detail.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/creative-gallery/01.jpg" alt="title" />
-							<span class="look">Hospitality</span>
+							<span class="category">Hospitality</span>
 						</div>
 						<div class="title">Mediterraneo emotional hotel & spa</div>
 						<div class="abstract">Atlas Concorde has contributed to the décor of the spaces, by supplying marble effect porcelain tiles for the floors and walls of all bathrooms.</div>
@@ -288,9 +288,9 @@
 				</div>
 				<div class="listing listing--collections" ng-if="referencesCtrl.filteredReferences">
 					<a href="creative-gallery-detail.html" class="listing__item" appear ng-repeat="item in referencesCtrl.filteredReferences track by $index">
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="{{item.image}}" alt="title" />
-							<span class="look" ng-bind="item.category"></span>
+							<span class="category" ng-bind="item.category"></span>
 						</div>
 						<div class="title" ng-bind="item.title"></div>
 						<div class="abstract" ng-bind="item.abstract"></div>

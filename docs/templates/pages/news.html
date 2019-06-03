@@ -119,7 +119,7 @@
 	}];
 
 </script>
-<section class="section section--hero-secondary">
+<section class="section section--hero-secondary section--negative">
 	<div class="background" ng-if="!root.webglEnabled" parallax>
 		<img lazy data-src="img/news/hero.jpg?width=1920&height=670&mode=crop" alt="title" />
 	</div>
@@ -174,9 +174,9 @@
 			<div class="container">
 				<div class="listing listing--collections" ng-if="!newsCtrl.visibleItems">
 					<a href="news-detail.html" class="listing__item" appear>
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="img/news/01.jpg" alt="title" />
-							<span class="look">Company</span>
+							<span class="category">Company</span>
 						</div>
 						<div class="title">Ceramic excellence is on display at Mosbuild with the latest products from Atlas Concorde</div>
 						<div class="abstract">At Mosbuild 2019, scheduled to be held in Moscow on April 2-5, excellent ceramic tiles will take center stage.</div>
@@ -184,9 +184,9 @@
 				</div>
 				<div class="listing listing--collections" ng-if="newsCtrl.visibleItems && newsCtrl.visibleItems.length" scroll="newsCtrl.onScroll($event)">
 					<a href="news-detail.html" class="listing__item" appear ng-repeat="item in newsCtrl.visibleItems track by $index">
-						<div class="picture picture--collection">
+						<div class="picture picture--with-category">
 							<img lazy data-src="{{item.image}}" alt="title" />
-							<span class="look" ng-bind="item.category"></span>
+							<span class="category" ng-bind="item.category"></span>
 						</div>
 						<div class="title" ng-bind="item.title"></div>
 						<div class="abstract" ng-bind="item.abstract"></div>

@@ -40,7 +40,8 @@
 	}
 }
 
-.section--picture-text {
+.section--picture-text,
+.section--text-picture {
 	padding-top: 120px;
 	padding-bottom: 100px;
 
@@ -82,6 +83,28 @@
 
 	.picture--vertical {
 		max-width: 100%;
+	}
+
+	&.text--primary {
+		padding-top: 140px;
+		padding-bottom: 140px;
+
+		.title {
+			font-size: 60px;
+			line-height: 1.1;
+			font-weight: $font-semibold;
+			color: $foreground;
+			margin-bottom: 40px;
+		}
+
+		.abstract {
+			font-size: 40px;
+			line-height: 1.1;
+			font-weight: $font-regular;
+			color: $foreground;
+			margin-bottom: 40px;
+		}
+
 	}
 }
 
