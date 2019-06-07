@@ -211,7 +211,9 @@
 }
 
 .section--negative {
-	background: black;
+	&:not(.section--full) {
+		background: black;
+	}
 
 	&,
 	.category,

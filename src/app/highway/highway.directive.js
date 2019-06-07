@@ -3,6 +3,7 @@
 import Highway from '@dogstudio/highway';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import GtmService from '../gtm/gtm.service';
 import CustomRenderer from './custom-renderer';
 import PageTransition from './page-transition';
 // Import Quicklink
@@ -31,6 +32,10 @@ export default class HighwayDirective {
 		CustomRenderer.$compile = this.$compile;
 		CustomRenderer.$timeout = this.$timeout;
 		CustomRenderer.scope = scope;
+		/*
+		Highway.Core.prototype.pushState_ = Highway.Core.prototype.pushState;
+		Highway.Core.prototype.pushState = () => {};
+		*/
 		const H = new Highway.Core({
 			renderers: {
 				view: CustomRenderer,
@@ -40,6 +45,7 @@ export default class HighwayDirective {
 			}
 		});
 		this.H = H;
+		CustomRenderer.H = H;
 		scope.$on('onHrefNode', ($scope, node) => {
 			this.link$.next();
 		});
@@ -63,10 +69,24 @@ export default class HighwayDirective {
 			// console.log('NAVIGATE_IN');
 			H.detach(H.links);
 		});
+		/*
+		H.on('NAVIGATE_END', ({ to, trigger, location }) => {
+			console.log(document.title);
+			// H.pushState_();
+		});
+		*/
 		element.on('$destroy', () => {
 			// H.destroy();
 			subscription.unsubscribe();
 		});
+		/*
+		const pushState = history.pushState;
+		history.pushState = (...args) => {
+			console.log('pushState', args, document.title);
+			return pushState.apply(history, args);
+		};
+		*/
+		GtmService.pageView();
 	}
 
 	static factory($compile, $timeout) {
@@ -76,3 +96,7 @@ export default class HighwayDirective {
 }
 
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
+
+/*
+
+*/

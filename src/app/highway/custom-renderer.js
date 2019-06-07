@@ -2,10 +2,21 @@
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 import Highway from '@dogstudio/highway';
+import GtmService from '../gtm/gtm.service';
 
 let first = true;
 
 export default class CustomRenderer extends Highway.Renderer {
+
+	update() {
+		// Now we update all the informations in the DOM we need!
+		// We update the title
+		document.title = this.properties.page.title;
+		// console.log('CustomRenderer.update', this.properties);
+		// CustomRenderer.H.pushState_();
+		console.log(document.innerHTML, this.properties.page.innerHTML);
+		GtmService.pageView();
+	}
 
 	// This method in the renderer is run when the data-router-view is added to the DOM Tree.
 	onEnter() {

@@ -2604,37 +2604,6 @@ canvas {
         -o-object-fit: cover;
            object-fit: cover; } }
 
-.picture--with-category {
-  position: relative;
-  width: 100%;
-  position: relative;
-  width: 100%;
-  padding-top: 66.73961%;
-  overflow: hidden; }
-  .picture--with-category img,
-  .picture--with-category video,
-  .picture--with-category canvas,
-  .picture--with-category ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .picture--with-category .category {
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    bottom: -1px;
-    font-size: 12px;
-    line-height: 22px;
-    padding: 4px 20px;
-    margin: 0;
-    background: #ffffff;
-    -webkit-transition: all ease-out 250ms;
-    transition: all ease-out 250ms; }
-
 [parallax] {
   overflow: hidden; }
 
@@ -4325,14 +4294,15 @@ page-transition {
     .section--hero-secondary .title {
       font-size: 100px; } }
 
-.section--negative {
+.section--negative:not(.section--full) {
   background: black; }
-  .section--negative,
-  .section--negative .category,
-  .section--negative .title,
-  .section--negative .abstract,
-  .section--negative .description {
-    color: #ffffff; }
+
+.section--negative,
+.section--negative .category,
+.section--negative .title,
+.section--negative .abstract,
+.section--negative .description {
+  color: #ffffff; }
 
 /*
 .section--intro-centered {
@@ -4988,7 +4958,16 @@ page-transition {
   text-align: left; }
   .listing--collections > .listing__item {
     margin-right: 70px;
-    margin-bottom: 70px; }
+    margin-bottom: 70px;
+    /*
+		.category {
+			font-size: 12px;
+			line-height: 1;
+			text-transform: uppercase;
+			// margin-bottom: 10px;
+			color: $foreground-secondary;
+		}
+		*/ }
     .listing--collections > .listing__item .picture {
       -webkit-transition: all ease-in-out 400ms;
       transition: all ease-in-out 400ms;
@@ -5007,12 +4986,6 @@ page-transition {
       line-height: 24px;
       margin-bottom: 15px;
       min-height: 60px;
-      color: #4e5256; }
-    .listing--collections > .listing__item .category {
-      font-size: 12px;
-      line-height: 1;
-      text-transform: uppercase;
-      margin-bottom: 10px;
       color: #4e5256; }
     .listing--collections > .listing__item .group--location {
       display: -webkit-box;
@@ -7235,6 +7208,38 @@ page-transition {
       -webkit-box-ordinal-group: 2;
           -ms-flex-order: 1;
               order: 1; } }
+
+.picture--with-category {
+  position: relative;
+  width: 100%;
+  position: relative;
+  width: 100%;
+  padding-top: 66.73961%;
+  overflow: hidden; }
+  .picture--with-category img,
+  .picture--with-category video,
+  .picture--with-category canvas,
+  .picture--with-category ng-transclude {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover; }
+  .picture--with-category > .category {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    font-size: 12px;
+    line-height: 22px;
+    padding: 4px 20px;
+    margin: 0;
+    background: #ffffff;
+    -webkit-transition: all ease-out 250ms;
+    transition: all ease-out 250ms;
+    text-transform: none; }
 
 @media (max-width: 859.98px) {
   .hidden-xs-down {

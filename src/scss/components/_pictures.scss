@@ -126,25 +126,6 @@ $diff: 280px;
 	}
 }
 
-.picture--with-category {
-	position: relative;
-	width: 100%;
-	@include aspect-clip(457, 305);
-
-	.category {
-		display: inline-block;
-		position: absolute;
-		right: 0;
-		bottom: -1px;
-		font-size: 12px;
-		line-height: 22px;
-		padding: 4px 20px;
-		margin: 0;
-		background: $background;
-		transition: all ease-out 250ms;
-	}
-}
-
 [parallax] {
 	overflow: hidden;
 }
