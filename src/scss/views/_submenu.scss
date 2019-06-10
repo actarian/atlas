@@ -1,6 +1,6 @@
 .section--submenu {
-	max-height: 0;
-	height: auto;
+	height: 0;
+	// height: auto;
 	color: white;
 
 	img {
@@ -12,13 +12,13 @@
 		top: 0;
 		left: 0;
 		width: 100vw;
-		max-height: 0;
+		// max-height: 0;
 		overflow-x: hidden;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		background: $background-subheader;
 
-		box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.7);
+		// box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.7);
 		// transition: 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
 		// transition-property: max-height;
 

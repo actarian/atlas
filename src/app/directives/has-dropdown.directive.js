@@ -14,45 +14,49 @@ export default class HasDropdownDirective {
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		const uid = HasDropdownDirective.dropDownUid++;
-		node.initialFocus = null;
+		let opened = null;
 		const consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null;
 		// scope.hasDropdown = null;
 		const onClick = (event) => {
-			// console.log(event);
-			const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
-			if (clickedInside) {
-				node.initialFocus = true;
+			if (opened === null) {
+				opened = true;
+				addDocumentListeners();
 				if (consumer) {
 					const dropdown = node.querySelector('[dropdown]');
+					consumer.onDroppedIn(dropdown);
+					/*
 					if (scope.hasDropdown === uid) {
-						consumer.onDroppedOut(dropdown);
+						// consumer.onDroppedOut(dropdown);
 					} else {
 						consumer.onDroppedIn(dropdown);
 					}
 					// console.log(consumer, dropdown);
+					*/
 				}
 				this.$timeout(() => {
+					scope.hasDropdown = uid;
+					/*
 					if (scope.hasDropdown === uid) {
-						scope.hasDropdown = null;
+						// scope.hasDropdown = null;
 					} else {
 						scope.hasDropdown = uid;
 					}
-				});
-			} else if (node.initialFocus !== null) {
-				node.initialFocus = false;
-				if (consumer) {
-					const dropdown = node.querySelector('[dropdown]');
-					consumer.onDroppedOut(dropdown);
-					// console.log(consumer, dropdown);
-				}
-				this.$timeout(() => {
-					if (scope.hasDropdown === uid) {
-						scope.hasDropdown = null;
-					}
+					*/
 				});
 			}
 		};
+		const onDocumentClick = (event) => {
+			const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+			if (!clickedInside) {
+				closeDropdown();
+			}
+		};
 		const onShowHide = (value) => {
+			/*
+			if (uid === 4) {
+				console.log('onShowHide', scope.hasDropdown, uid);
+			}
+			*/
 			if (scope.hasDropdown === uid) {
 				node.classList.add('opened');
 			} else {
@@ -60,25 +64,40 @@ export default class HasDropdownDirective {
 			}
 		};
 		scope.$watch('hasDropdown', onShowHide);
-		scope.$on('onNavigationTransitionIn', () => {
-			// console.log('onNavigationTransitionIn');
-			scope.hasDropdown = null;
-			onShowHide();
-			if (consumer) {
-				const dropdown = node.querySelector('[dropdown]');
-				consumer.onDroppedOut(dropdown);
-				// console.log(consumer, dropdown);
+		const closeDropdown = () => {
+			if (opened !== null) {
+				removeDocumentListeners();
+				this.$timeout(() => {
+					opened = null;
+					if (consumer) {
+						const dropdown = node.querySelector('[dropdown]');
+						consumer.onDroppedOut(dropdown);
+						// console.log(consumer, dropdown);
+					}
+					if (scope.hasDropdown === uid) {
+						scope.hasDropdown = null;
+					}
+				});
 			}
-		});
+		};
+		scope.$on('onNavigateOut', closeDropdown);
+		scope.$on('onNavigationTransitionIn', closeDropdown);
 		const addListeners = () => {
-			document.addEventListener('click', onClick);
+			node.addEventListener('click', onClick);
+		};
+		const addDocumentListeners = () => {
+			document.addEventListener('click', onDocumentClick);
 		};
 		const removeListeners = () => {
-			document.removeEventListener('click', onClick);
+			node.removeEventListener('click', onClick);
+		};
+		const removeDocumentListeners = () => {
+			document.removeEventListener('click', onDocumentClick);
 		};
 		addListeners();
 		element.on('$destroy', () => {
 			removeListeners();
+			removeDocumentListeners();
 		});
 	}
 

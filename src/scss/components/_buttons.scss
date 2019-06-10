@@ -36,6 +36,53 @@ button,
 	margin: 0 5px;
 }
 
+.btn--discover {
+	display: inline-block;
+
+	span {
+		display: inline-block;
+		padding: 15px 50px;
+		text-transform: uppercase;
+		font-size: 13px;
+		font-weight: $font-semibold;
+		color: $primary;
+		border: 2px solid $primary;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		span {
+			color: $primary;
+			border-color: $primary;
+		}
+	}
+
+	.section--negative & {
+		span {
+			color: $foreground-negative;
+			border-color: $foreground-negative;
+		}
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			span {
+				color: $foreground-negative;
+				border-color: $foreground-negative;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		display: block;
+	}
+}
+
 .btn--gallery {
 	display: inline-flex;
 	justify-content: flex-start;

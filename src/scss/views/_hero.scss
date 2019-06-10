@@ -1,6 +1,6 @@
 @import '../mixins';
 
-.section--hero {
+%section--hero {
 	position: relative;
 	background: black;
 
@@ -110,9 +110,35 @@
 
 }
 
+.section--hero {
+	@extend %section--hero;
+}
+
+.section--hero-home {
+	@extend %section--hero;
+
+	.swiper-container {
+		position: relative;
+		height: auto;
+	}
+
+	.swiper-slide {
+		height: auto;
+	}
+
+	.container {
+		align-items: center;
+		justify-content: flex-end;
+		padding-bottom: 0;
+	}
+
+	.margin--cta {
+		padding: 40px 0 50px 0;
+	}
+}
+
 .section--hero-secondary {
 	position: relative;
-
 	padding-top: 60px;
 
 	&:before {
@@ -211,8 +237,9 @@
 }
 
 .section--negative {
+
 	&:not(.section--full) {
-		background: black;
+		background: $background-header;
 	}
 
 	&,

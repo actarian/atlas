@@ -49,6 +49,19 @@ export default class LocationService {
 		this.set('q', serialized);
 	}
 
+	getSerialization(keyOrValue, value) {
+		let serialized = null;
+		let q = {};
+		if (typeof keyOrValue === 'string') {
+			q[keyOrValue] = value;
+		} else {
+			q = keyOrValue;
+		}
+		const json = JSON.stringify(q);
+		serialized = window.btoa(json);
+		return serialized;
+	}
+
 	static factory($location) {
 		return new LocationService($location);
 	}

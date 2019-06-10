@@ -13,6 +13,7 @@ export default class GlslCanvasDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		console.log('GlslCanvasDirective.link');
 		const node = element[0];
 		const canvas = new GlslCanvas(node, { fragmentString: FRAGMENT_SHADER });
 		// const canvas = new GlslCanvas(node);

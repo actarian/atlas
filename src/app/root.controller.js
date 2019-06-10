@@ -79,12 +79,27 @@ class RootCtrl {
 	}
 
 	onDroppedOut(node) {
+		console.log('onDroppedOut', node);
 		if (node) {
-			TweenMax.set(node, { maxHeight: 0 });
-			return Promise.resolve();
+			if (this.droppinIn) {
+				TweenMax.set(node, { height: 0 });
+				return Promise.resolve();
+			} else {
+				TweenMax.set(node, { overflow: 'hidden' });
+				TweenMax.to(node, 0.6, {
+					height: 0,
+					ease: Expo.easeOut,
+					overwrite: 'all',
+					onComplete: () => {
+						delete node.style.overflow;
+						return Promise.resolve();
+					}
+				});
+			}
 		} else {
 			return Promise.resolve();
 		}
+		/*
 		return new Promise((resolve, reject) => {
 			if (node) {
 				const items = [].slice.call(node.querySelectorAll('.submenu__item'));
@@ -107,29 +122,41 @@ class RootCtrl {
 				resolve();
 			}
 		});
+		*/
 	}
 
 	onDroppedIn(node) {
+		console.log('onDroppedIn', node);
 		return new Promise((resolve, reject) => {
+			this.droppinIn = true;
 			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
 			TweenMax.set(items, { opacity: 0 });
-			TweenMax.set(node, { maxHeight: 0 });
-			TweenMax.to(node, 0.3, {
-				maxHeight: '100vh',
+			TweenMax.set(node, { height: 'auto' });
+			const mh = node.offsetHeight;
+			TweenMax.set(node, { height: 0, overflow: 'hidden' });
+			TweenMax.to(node, 0.8, {
+				height: mh,
 				ease: Expo.easeOut,
 				delay: 0.0,
 				overwrite: 'all',
 				onComplete: () => {
-					TweenMax.staggerTo(items, 0.35, {
-						opacity: 1,
-						stagger: 0.07,
-						delay: 0.0,
-						onComplete: () => {
-
-						}
-					});
+					delete node.style.overflow;
+					// TweenMax.set(node, { clearProps: 'all' });
+					if (items.length === 0) {
+						this.droppinIn = false;
+					}
 				}
 			});
+			if (items.length) {
+				TweenMax.staggerTo(items, 0.35, {
+					opacity: 1,
+					stagger: 0.07,
+					delay: 0.5,
+					onComplete: () => {
+						this.droppinIn = false;
+					}
+				});
+			}
 		});
 	}
 

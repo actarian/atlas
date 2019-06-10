@@ -78,16 +78,21 @@
 					<img lazy data-src="img/magazine/05.jpg" alt="title" />
 					<span class="category">Trend</span>
 				</div>
-				<div class="title">Like marble. But It’s not marble</div>
-				<div class="description">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
+
+				<div class="content">
+					<div class="title">Like marble. But It’s not marble</div>
+					<div class="description">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
+				</div>
 			</a>
 			<a href="magazine-detail.html" class="listing__item beinspired__item" appear>
 				<div class="picture picture--with-category" media="{ id: 1035, coId: 101 }" parallax>
 					<img lazy data-src="img/magazine/06.jpg" alt="title" />
 					<span class="category">Collections</span>
 				</div>
-				<div class="title">Marvel Wall, the highest ceramic expression of marble for charming and prestigious architectures</div>
-				<div class="description">Intense and brilliant wall tiles inspired by marble of eternal charm.</div>
+				<div class="content">
+					<div class="title">Marvel Wall, the highest ceramic expression of marble for charming and prestigious architectures</div>
+					<div class="description">Intense and brilliant wall tiles inspired by marble of eternal charm.</div>
+				</div>
 			</a>
 			<!-- return first 12 articles - next articles will be loaded via json -->
 		</div>
@@ -102,24 +107,30 @@
 					<img lazy data-src="img/magazine/04.jpg" alt="title" />
 					<span class="category">Contract</span>
 				</div>
-				<div class="title">14.500 square feet of Russian Poetry</div>
-				<div class="description">A talk with Dyonis Ottl about the new marble-look interior of Marriott Hotel in Voronezh.</div>
+				<div class="content">
+					<div class="title">14.500 square feet of Russian Poetry</div>
+					<div class="description">A talk with Dyonis Ottl about the new marble-look interior of Marriott Hotel in Voronezh.</div>
+				</div>
 			</a>
 			<a href="magazine-detail.html" class="listing__item beinspired__item" appear>
 				<div class="picture picture--with-category" media="{ id: 1034, coId: 101 }" parallax>
 					<img lazy data-src="img/magazine/05.jpg" alt="title" />
 					<span class="category">Be inspired</span>
 				</div>
-				<div class="title">Like marble. But It’s not marble</div>
-				<div class="description">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
+				<div class="content">
+					<div class="title">Like marble. But It’s not marble</div>
+					<div class="description">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
+				</div>
 			</a>
 			<a href="magazine-detail.html" class="listing__item beinspired__item" appear>
 				<div class="picture picture--with-category" media="{ id: 1035, coId: 101 }" parallax>
 					<img lazy data-src="img/magazine/06.jpg" alt="title" />
 					<span class="category">Collections</span>
 				</div>
-				<div class="title">Marvel Wall, the highest ceramic expression of marble for charming and prestigious architectures</div>
-				<div class="description">Intense and brilliant wall tiles inspired by marble of eternal charm.</div>
+				<div class="content">
+					<div class="title">Marvel Wall, the highest ceramic expression of marble for charming and prestigious architectures</div>
+					<div class="description">Intense and brilliant wall tiles inspired by marble of eternal charm.</div>
+				</div>
 			</a>
 			<!-- return first 12 articles - next articles will be loaded via json -->
 		</div>
@@ -129,8 +140,10 @@
 					<img lazy data-src="{{item.image}}" alt="title" />
 					<span class="category" ng-bind="item.category"></span>
 				</div>
-				<div class="title" ng-bind="item.title"></div>
-				<div class="abstract" ng-bind="item.abstract"></div>
+				<div class="content">
+					<div class="title" ng-bind="item.title"></div>
+					<div class="abstract" ng-bind="item.abstract"></div>
+				</div>
 			</a>
 			<div class="loader" ng-if="magazineCtrl.busy">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-ring">

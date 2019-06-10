@@ -33,6 +33,7 @@ import HighwayDirective from './highway/highway.directive';
 import MagazineCtrl from './magazine/magazine.controller';
 import MoodboardDropdownDirective from './moodboard/moodboard-dropdown.directive';
 import MoodboardSearchDirective from './moodboard/moodboard-search.directive';
+import MoodboardSectionCtrl from './moodboard/moodboard-section.controller';
 import MoodboardCtrl from './moodboard/moodboard.controller';
 import NewsCtrl from './news/news.controller';
 import ReferencesCtrl from './references/references.controller';
@@ -98,6 +99,7 @@ app.controller('RootCtrl', RootCtrl)
 	.controller('FaqCtrl', FaqCtrl)
 	.controller('MagazineCtrl', MagazineCtrl)
 	.controller('MoodboardCtrl', MoodboardCtrl)
+	.controller('MoodboardSectionCtrl', MoodboardSectionCtrl)
 	.controller('NewsCtrl', NewsCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)
 	.controller('StoreLocatorCtrl', StoreLocatorCtrl);

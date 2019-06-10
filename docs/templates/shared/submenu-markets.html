@@ -1,0 +1,51 @@
+<section class="section section--submenu section--negative" dropdown>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4">
+				<div class="markets">
+					<div class="world">
+						<img src="img/markets/world.png" title="World map" ng-if="!root.market">
+						<img src="img/markets/world-international.png" title="World map International" ng-if="root.market == 1">
+						<img src="img/markets/world-usa.png" title="World map Usa" ng-if="root.market == 2">
+						<img src="img/markets/world-russia.png" title="World map Russia" ng-if="root.market == 3">
+					</div>
+					<ul class="nav nav--markets">
+						<li ng-class="{ active: root.market == 1 }">
+							<span ng-click="root.market = 1">International</span>
+							<div class="sub" ng-if="root.market == 1" appear>
+								<div class="title">Select your Language</div>
+								<ul class="nav nav--markets__secondary">
+									<li><a href="/atlas/it/"><span>Italiano</span></a></li>
+									<li><a href="/atlas/en/"><span></span>English</span></a></li>
+									<li><a href="/atlas/fr/"><span></span>Français</span></a></li>
+									<li><a href="/atlas/de/"><span></span>Deutsch</span></a></li>
+									<li><a href="/atlas/es/"><span></span>Español</span></a></li>
+									<li><a href="/atlas/ru/"><span></span>Pусский</span></a></li>
+								</ul>
+							</div>
+						</li>
+						<li ng-class="{ active: root.market == 2 }">
+							<span ng-click="root.market = 2">Usa</span>
+							<div class="sub" ng-if="root.market == 2" appear>
+								<div class="title">Select your Language</div>
+								<ul class="nav nav--markets__secondary">
+									<li><a href="/atlas/en-us/"><span></span>English</span></a></li>
+								</ul>
+							</div>
+						</li>
+						<li ng-class="{ active: root.market == 3 }">
+							<span ng-click="root.market = 3">Russia</span>
+							<div class="sub" ng-if="root.market == 3" appear>
+								<div class="title">Select your Language</div>
+								<ul class="nav nav--markets__secondary">
+									<li><a href="/atlas/ru-ru/"><span></span>Pусский</span></a></li>
+									<li><a href="/atlas/en-ru/"><span></span>English</span></a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -257,7 +257,6 @@
 }
 
 .section--text-02 {
-
 	.title {
 		color: $foreground;
 		margin-bottom: 30px;
@@ -277,7 +276,6 @@
 		.abstract {
 			margin-top: 80px;
 		}
-
 	}
 
 	@include media-breakpoint-down(xs) {
@@ -292,7 +290,6 @@
 		.abstract {
 			margin-top: 0;
 		}
-
 	}
 }
 
@@ -744,13 +741,20 @@
 }
 
 .section--store {
-	border-top: 2px solid $border;
+
+	&:not(.section--distinct) {
+		border-top: 2px solid $border;
+	}
 
 	.title {
 		color: $foreground;
 	}
 
 	.abstract {
+		margin-bottom: 40px;
+	}
+
+	.description {
 		margin-bottom: 40px;
 	}
 
@@ -772,6 +776,10 @@
 	@include media-breakpoint-up(sm) {
 		padding: 50px 0;
 
+		&.section--distinct {
+			padding: 120px 0;
+		}
+
 		.title {
 			font-size: 42px;
 			line-height: 50px;
@@ -781,6 +789,10 @@
 
 	@include media-breakpoint-down(xs) {
 		padding: 50px 0 0 0;
+
+		&.section--distinct {
+			padding: 60px 0;
+		}
 
 		.title {
 			font-size: 36px;

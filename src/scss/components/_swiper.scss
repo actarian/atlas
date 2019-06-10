@@ -9,7 +9,7 @@
 }
 
 .swiper-wrapper {
-	padding-bottom: 50px;
+	padding-bottom: 0;
 }
 
 .swiper-container-horizontal {
@@ -28,6 +28,18 @@
 		cursor: pointer;
 	}
 
+}
+
+.swiper-pagination-bullets {
+
+	&,
+	.swiper-container-horizontal>& {
+		position: relative;
+		bottom: 0;
+		padding: 0;
+		height: 60px;
+		background: white;
+	}
 }
 
 .swiper-pagination-bullets {

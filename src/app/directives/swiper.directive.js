@@ -158,12 +158,10 @@ export class SwiperHeroDirective extends SwiperDirective {
 					*/
 				},
 			},
-			/*
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
 			},
-			*/
 			/*
 			navigation: {
 				nextEl: '.swiper-button-next',

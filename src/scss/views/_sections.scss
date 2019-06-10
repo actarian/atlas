@@ -49,9 +49,16 @@
 		align-items: center;
 	}
 
+	.category {
+		font-size: 14px;
+		line-height: 32px;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+	}
+
 	.title {
 		font-size: 32px;
-		font-weight: $font-extralight;
+		font-weight: $font-light;
 		line-height: 50px;
 		margin-bottom: 40px;
 		color: $foreground;
@@ -75,6 +82,10 @@
 	.group--cta {
 		margin: 40px 0 0 0;
 		text-align: left;
+	}
+
+	.group--content {
+		margin-top: 40px;
 	}
 
 	.group--content+.group--content {

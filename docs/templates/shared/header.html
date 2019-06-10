@@ -74,7 +74,10 @@
 					<ul class="nav nav--secondary">
 						<li><a href="faq.html">Faq</a></li>
 						<li><a href="#">Wishlist <svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg></a></li>
-						<li><a href="#">International / English <svg class="icon icon--angle-down"><use xlink:href="#angle-down"></use></svg></a></li>
+						<li has-dropdown has-dropdown-consumer="root">
+							<span>International / English <svg class="icon icon--angle-down"><use xlink:href="#angle-down"></use></svg></span>
+							<ng-include src="'templates/shared/submenu-markets.html'"></ng-include>
+						</li>
 					</ul>
 				</div>
 				<!--

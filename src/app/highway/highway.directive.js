@@ -65,6 +65,9 @@ export default class HighwayDirective {
 		const properties = H.cache.get(H.location.href);
 		properties.view = scope.$root.firstView;
 		H.cache.set(H.location.href, properties);
+		H.on('NAVIGATE_OUT', ({ to, trigger, location }) => {
+			scope.$broadcast('onNavigateOut', location);
+		});
 		H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
 			// console.log('NAVIGATE_IN');
 			H.detach(H.links);

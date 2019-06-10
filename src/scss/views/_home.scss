@@ -1,0 +1,75 @@
+.section--beinspired-home {
+	text-align: center;
+
+	.category {
+		font-size: 14px;
+		line-height: 32px;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+	}
+
+	.title {
+		color: $foreground;
+	}
+
+	.abstract {
+		line-height: 32px;
+		font-weight: $font-light;
+
+		p {
+			margin-bottom: 10px;
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		padding-top: 120px;
+		padding-bottom: 120px;
+
+		.title {
+			font-size: 42px;
+			line-height: 50px;
+			margin-bottom: 90px;
+		}
+
+		.abstract {
+			font-size: 18px;
+			margin-bottom: 50px;
+		}
+	}
+
+	@include media-breakpoint-down(md) {
+		padding-top: 80px;
+		padding-bottom: 80px;
+
+		.title {
+			font-size: 36px;
+			line-height: 1.2;
+			margin-bottom: 40px;
+		}
+
+		.abstract {
+			font-size: 16px;
+			margin-bottom: 50px;
+		}
+	}
+
+	.beinspired__item {
+		background: white;
+		padding: 0;
+		display: block;
+		transition: all ease-in-out 350ms;
+
+		.picture {
+			margin: 0;
+			box-shadow: none;
+		}
+
+		.content {
+			padding: 40px;
+		}
+
+		&:hover {
+			box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
+		}
+	}
+}

@@ -25,6 +25,10 @@ export default class AppearDirective {
 			const y = 0; // event.rect.top;
 			const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
 			const timeout = index * 50;
+			setTimeout(() => {
+				node.classList.add('appeared');
+			}, timeout); // (i - firstVisibleIndex));
+			/*
 			if (index > 0) {
 				setTimeout(() => {
 					node.classList.add('appeared');
@@ -32,6 +36,7 @@ export default class AppearDirective {
 			} else {
 				node.classList.add('appeared');
 			}
+			*/
 		});
 		element.on('$destroy', () => {
 			subscription.unsubscribe();
