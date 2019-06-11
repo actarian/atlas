@@ -179,6 +179,40 @@ export class SwiperHeroDirective extends SwiperDirective {
 
 SwiperHeroDirective.factory.$inject = [];
 
+export class SwiperProjectsDirective extends SwiperDirective {
+
+	constructor() {
+		super();
+		this.options = {
+			speed: 600,
+			// parallax: true,
+			// autoplay: 5000,
+			// loop: true,
+			spaceBetween: 0,
+			keyboardControl: true,
+			mousewheelControl: false,
+			onSlideClick: function(swiper) {
+				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+			},
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+		};
+	}
+
+	static factory() {
+		return new SwiperProjectsDirective();
+	}
+
+}
+
+SwiperProjectsDirective.factory.$inject = [];
+
 export class SwiperTileDirective extends SwiperDirective {
 
 	constructor() {

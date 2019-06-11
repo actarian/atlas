@@ -18,7 +18,7 @@ import { MuuriDirective } from './directives/muuri.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
-import { SwiperGalleryDirective, SwiperHeroDirective, SwiperTileDirective } from './directives/swiper.directive';
+import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective } from './directives/swiper.directive';
 import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
 import WishlistDirective from './directives/wishlist.directive';
@@ -86,6 +86,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
+	.directive('swiperProjects', SwiperProjectsDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
 	.directive('transition', TransitionDirective.factory)
 	.directive('validate', ValidateDirective.factory)

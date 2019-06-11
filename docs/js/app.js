@@ -21602,7 +21602,7 @@ app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
-app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('transition', _transition.default.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
+app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('transition', _transition.default.factory).directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('wishlist', _wishlist.default.factory);
 app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
@@ -23402,7 +23402,7 @@ StickyDirective.factory.$inject = ['$timeout', 'DomService'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SwiperTileDirective = exports.SwiperHeroDirective = exports.SwiperGalleryDirective = exports.SwiperDirective = void 0;
+exports.SwiperTileDirective = exports.SwiperProjectsDirective = exports.SwiperHeroDirective = exports.SwiperGalleryDirective = exports.SwiperDirective = void 0;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -23643,18 +23643,65 @@ function (_SwiperDirective2) {
 exports.SwiperHeroDirective = SwiperHeroDirective;
 SwiperHeroDirective.factory.$inject = [];
 
-var SwiperTileDirective =
+var SwiperProjectsDirective =
 /*#__PURE__*/
 function (_SwiperDirective3) {
-  _inherits(SwiperTileDirective, _SwiperDirective3);
+  _inherits(SwiperProjectsDirective, _SwiperDirective3);
+
+  function SwiperProjectsDirective() {
+    var _this4;
+
+    _classCallCheck(this, SwiperProjectsDirective);
+
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperProjectsDirective).call(this));
+    _this4.options = {
+      speed: 600,
+      // parallax: true,
+      // autoplay: 5000,
+      // loop: true,
+      spaceBetween: 0,
+      keyboardControl: true,
+      mousewheelControl: false,
+      onSlideClick: function onSlideClick(swiper) {
+        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      }
+    };
+    return _this4;
+  }
+
+  _createClass(SwiperProjectsDirective, null, [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperProjectsDirective();
+    }
+  }]);
+
+  return SwiperProjectsDirective;
+}(SwiperDirective);
+
+exports.SwiperProjectsDirective = SwiperProjectsDirective;
+SwiperProjectsDirective.factory.$inject = [];
+
+var SwiperTileDirective =
+/*#__PURE__*/
+function (_SwiperDirective4) {
+  _inherits(SwiperTileDirective, _SwiperDirective4);
 
   function SwiperTileDirective() {
-    var _this4;
+    var _this5;
 
     _classCallCheck(this, SwiperTileDirective);
 
-    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperTileDirective).call(this));
-    _this4.options = {
+    _this5 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperTileDirective).call(this));
+    _this5.options = {
       speed: 600,
       parallax: true,
       autoplay: 5000,
@@ -23670,7 +23717,7 @@ function (_SwiperDirective3) {
         clickable: true
       }
     };
-    return _this4;
+    return _this5;
   }
 
   _createClass(SwiperTileDirective, null, [{
