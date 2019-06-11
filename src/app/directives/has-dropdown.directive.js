@@ -17,7 +17,36 @@ export default class HasDropdownDirective {
 		let opened = null;
 		const consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null;
 		// scope.hasDropdown = null;
+		// console.log(attributes.hasDropdown);
+		const trigger = attributes.hasDropdown !== '' ? node.querySelector(attributes.hasDropdown) : node;
 		const onClick = (event) => {
+			// console.log(trigger, node, attributes.hasDropdown);
+			if (opened === null) {
+				openDropdown();
+			} else if (trigger !== node) {
+				closeDropdown();
+			}
+		};
+		const onDocumentClick = (event) => {
+			const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+			if (!clickedInside) {
+				closeDropdown();
+			}
+		};
+		const onShowHide = (value) => {
+			/*
+			if (uid === 4) {
+				console.log('onShowHide', scope.hasDropdown, uid);
+			}
+			*/
+			if (scope.hasDropdown === uid) {
+				node.classList.add('opened');
+			} else {
+				node.classList.remove('opened');
+			}
+		};
+		scope.$watch('hasDropdown', onShowHide);
+		const openDropdown = () => {
 			if (opened === null) {
 				opened = true;
 				addDocumentListeners();
@@ -45,25 +74,6 @@ export default class HasDropdownDirective {
 				});
 			}
 		};
-		const onDocumentClick = (event) => {
-			const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
-			if (!clickedInside) {
-				closeDropdown();
-			}
-		};
-		const onShowHide = (value) => {
-			/*
-			if (uid === 4) {
-				console.log('onShowHide', scope.hasDropdown, uid);
-			}
-			*/
-			if (scope.hasDropdown === uid) {
-				node.classList.add('opened');
-			} else {
-				node.classList.remove('opened');
-			}
-		};
-		scope.$watch('hasDropdown', onShowHide);
 		const closeDropdown = () => {
 			if (opened !== null) {
 				removeDocumentListeners();
@@ -83,13 +93,13 @@ export default class HasDropdownDirective {
 		scope.$on('onNavigateOut', closeDropdown);
 		scope.$on('onNavigationTransitionIn', closeDropdown);
 		const addListeners = () => {
-			node.addEventListener('click', onClick);
+			trigger.addEventListener('click', onClick);
 		};
 		const addDocumentListeners = () => {
 			document.addEventListener('click', onDocumentClick);
 		};
 		const removeListeners = () => {
-			node.removeEventListener('click', onClick);
+			trigger.removeEventListener('click', onClick);
 		};
 		const removeDocumentListeners = () => {
 			document.removeEventListener('click', onDocumentClick);

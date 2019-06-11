@@ -4572,8 +4572,6 @@ page-transition {
 			transform: translateX(-50%) translateY(-50%);
 		}
 		*/ }
-  .section--hero .aspect, .section--hero-home .aspect {
-    pointer-events: none; }
   .section--hero .container, .section--hero-home .container {
     position: relative;
     display: -webkit-box;
@@ -4659,6 +4657,9 @@ page-transition {
       font-weight: var(--font-semibold); }
     .section--hero .abstract, .section--hero-home .abstract {
       font-size: 16px; } }
+
+.section--hero .aspect {
+  pointer-events: none; }
 
 .section--hero-home .swiper-container {
   position: relative;

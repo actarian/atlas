@@ -3,7 +3,7 @@
 
 import { combineLatest, fromEvent, range } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { auditTime, filter, first, map, shareReplay, startWith } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, first, map, shareReplay, startWith } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
 export default class DomService {
@@ -275,6 +275,13 @@ export default class DomService {
 		return this.rafIntersection$(node).pipe(
 			filter(x => x.intersection.y > value),
 			first()
+		);
+	}
+
+	visibility$(node, value = 0.0) {
+		return this.rafIntersection$(node).pipe(
+			map(x => x.intersection.y > 0.5),
+			distinctUntilChanged()
 		);
 	}
 

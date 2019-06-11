@@ -79,7 +79,7 @@ class RootCtrl {
 	}
 
 	onDroppedOut(node) {
-		console.log('onDroppedOut', node);
+		// console.log('onDroppedOut', node);
 		if (node) {
 			if (this.droppinIn) {
 				TweenMax.set(node, { height: 0 });
@@ -126,7 +126,7 @@ class RootCtrl {
 	}
 
 	onDroppedIn(node) {
-		console.log('onDroppedIn', node);
+		// console.log('onDroppedIn', node);
 		return new Promise((resolve, reject) => {
 			this.droppinIn = true;
 			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
@@ -141,6 +141,7 @@ class RootCtrl {
 				overwrite: 'all',
 				onComplete: () => {
 					delete node.style.overflow;
+					TweenMax.set(node, { height: 'auto' });
 					// TweenMax.set(node, { clearProps: 'all' });
 					if (items.length === 0) {
 						this.droppinIn = false;

@@ -14,7 +14,7 @@ export default class CustomRenderer extends Highway.Renderer {
 		document.title = this.properties.page.title;
 		// console.log('CustomRenderer.update', this.properties);
 		// CustomRenderer.H.pushState_();
-		console.log(document.innerHTML, this.properties.page.innerHTML);
+		// console.log(document.innerHTML, this.properties.page.innerHTML);
 		GtmService.pageView();
 	}
 
