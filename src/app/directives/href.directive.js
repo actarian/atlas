@@ -12,58 +12,66 @@ export default class HrefDirective {
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		if (USE_HIGHWAY) {
-			scope.$emit('onHrefNode', node);
-			return;
-		}
-		if (node.nodeName.toLowerCase() === 'link') {
-			return;
-		}
-		if (attributes.target === '_blank') {
-			return;
-		}
-		const onClick = (event) => {
-			const href = attributes.href;
-			const absolute = /^(http:|https:|\/\/)/.test(href);
-			const domain = this.getDomain(href);
-			const currentDomain = this.getDomain(window.location.href);
-			if (absolute && domain !== currentDomain) {
-				window.location.href = href;
-				return;
-			}
-			// Se c'è un cambio di mercato, facciamo ricaricare la pagina
-			const market = this.getMarket(href);
-			const currentMarket = this.getMarket(window.location.href);
-			// console.log('onNavigationShouldFetch', currentMarket, market);
-			if (currentMarket !== null && market !== currentMarket) {
-				window.location.href = href;
-				return;
-			}
-			if (window.location.href.indexOf(href) !== -1) {
-				node.classList.add('active');
+			if (attributes.routerDisabled === undefined) {
+				scope.$emit('onHrefNode', node);
 			} else {
-				node.classList.remove('active');
+				// console.log(attributes.routerDisabled, node);
+				node.addEventListener('click', () => {
+					window.location.href = attributes.href;
+				});
 			}
-			event.preventDefault();
-			event.stopImmediatePropagation();
-			if (href === '#') {
+			return;
+		} else {
+			if (node.nodeName.toLowerCase() === 'link') {
 				return;
 			}
-			const title = node.innerText;
-			scope.$emit('onNavigationShouldFetch', { title, href });
-		};
-		node.addEventListener('click', onClick);
-		/*
-		scope.$on('onNavigationEnded', function($scope, $href) {
-			if (href === $href) {
-				node.classList.add('active');
-			} else {
-				node.classList.remove('active');
+			if (attributes.target === '_blank') {
+				return;
 			}
-		});
-		*/
-		element.on('$destroy', () => {
-			node.removeEventListener('click', onClick);
-		});
+			const onClick = (event) => {
+				const href = attributes.href;
+				const absolute = /^(http:|https:|\/\/)/.test(href);
+				const domain = this.getDomain(href);
+				const currentDomain = this.getDomain(window.location.href);
+				if (absolute && domain !== currentDomain) {
+					window.location.href = href;
+					return;
+				}
+				// Se c'è un cambio di mercato, facciamo ricaricare la pagina
+				const market = this.getMarket(href);
+				const currentMarket = this.getMarket(window.location.href);
+				// console.log('onNavigationShouldFetch', currentMarket, market);
+				if (currentMarket !== null && market !== currentMarket) {
+					window.location.href = href;
+					return;
+				}
+				if (window.location.href.indexOf(href) !== -1) {
+					node.classList.add('active');
+				} else {
+					node.classList.remove('active');
+				}
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				if (href === '#') {
+					return;
+				}
+				const title = node.innerText;
+				scope.$emit('onNavigationShouldFetch', { title, href });
+			};
+			node.addEventListener('click', onClick);
+			/*
+			scope.$on('onNavigationEnded', function($scope, $href) {
+				if (href === $href) {
+					node.classList.add('active');
+				} else {
+					node.classList.remove('active');
+				}
+			});
+			*/
+			element.on('$destroy', () => {
+				node.removeEventListener('click', onClick);
+			});
+		}
 		return;
 	}
 

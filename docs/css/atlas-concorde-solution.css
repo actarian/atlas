@@ -4795,6 +4795,20 @@ page-transition {
     .section--picture-text .abstract p,
     .section--text-picture .abstract p {
       margin-bottom: 10px; }
+  .section--picture-text .title,
+  .section--text-picture .title {
+    font-size: 55px;
+    line-height: 1.1;
+    font-weight: 600;
+    color: #0f3252;
+    margin-bottom: 35px; }
+  .section--picture-text .abstract,
+  .section--text-picture .abstract {
+    font-size: 38px;
+    line-height: 1.1;
+    font-weight: 400;
+    color: #0f3252;
+    margin-bottom: 40px; }
   .section--picture-text .group--cta,
   .section--text-picture .group--cta {
     margin: 40px 0 0 0;
@@ -4814,14 +4828,14 @@ page-transition {
     padding-bottom: 140px; }
     .section--picture-text.text--primary .title,
     .section--text-picture.text--primary .title {
-      font-size: 60px;
+      font-size: 55px;
       line-height: 1.1;
       font-weight: 600;
       color: #0f3252;
-      margin-bottom: 40px; }
+      margin-bottom: 35px; }
     .section--picture-text.text--primary .abstract,
     .section--text-picture.text--primary .abstract {
-      font-size: 40px;
+      font-size: 38px;
       line-height: 1.1;
       font-weight: 400;
       color: #0f3252;

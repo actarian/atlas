@@ -55,12 +55,14 @@ export default class HighwayDirective {
 			const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
 			H.links = links;
 			H.attach(links);
+			/*
 			links.forEach(x => {
 				x.classList.remove('active');
 				if (x.href === location.href) {
 					x.classList.add('active');
 				}
 			});
+			*/
 		});
 		const properties = H.cache.get(H.location.href);
 		properties.view = scope.$root.firstView;
@@ -99,7 +101,3 @@ export default class HighwayDirective {
 }
 
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
-
-/*
-
-*/
