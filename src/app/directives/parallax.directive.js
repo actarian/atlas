@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
-import { filter, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
 export default class ParallaxDirective {
@@ -33,28 +33,34 @@ export default class ParallaxDirective {
 		}
 	}
 
+	units(value, decimals = 4) {
+		const pow = Math.pow(10, decimals) / 10;
+		return Math.round(value * pow) / pow;
+	}
+
 	parallax$(node, parallax) {
 		return this.domService.rafAndRect$().pipe(
 			map(datas => {
 				const windowRect = datas[1];
-				const direction = 1; // i % 2 === 0 ? 1 : -1;
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
 				if (intersection.y > 0) {
-					const y = Math.min(1, Math.max(-1, intersection.center.y));
-					const s = (100 + parallax * 2) / 100;
-					const p = (-50 + (y * parallax * direction)); // .toFixed(3);
-					return { s: s, p: p };
+					return intersection.center.y; // Math.min(1, Math.max(-1, intersection.center.y));
 				} else {
 					return null;
 				}
 			}),
-			filter(x => x !== null),
-			/*
-			distinctUntilChanged((a, b) => {
-				return a.p !== b.p;
-			}),
-			*/
+			filter(y => y !== null),
+			distinctUntilChanged(),
+			map(y => {
+				const direction = 1; // i % 2 === 0 ? 1 : -1;
+				const s = (100 + parallax * 2) / 100;
+				const p = (-50 + (y * parallax * direction)); // .toFixed(3);
+				// const y = Math.min(1, Math.max(-1, intersection.center.y));
+				// const s = (100 + parallax * 2) / 100;
+				// const p = (-50 + (y * parallax * direction)); // .toFixed(3);
+				return { s: this.units(s), p: this.units(p) };
+			})
 		);
 	}
 

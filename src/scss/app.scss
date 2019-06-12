@@ -43,7 +43,7 @@
 	width: 100%;
 	@include aspect-clip(457, 305);
 
-	&>.category {
+	.category {
 		display: inline-block;
 		position: absolute;
 		right: 0;

@@ -23,23 +23,23 @@ export default class LazyDirective {
 	}
 
 	link(scope, element, attributes, controller) {
-		const node = element[0];
-		node.classList.remove('lazyed');
-		// node.index = INDEX++;
+		const image = element[0];
+		image.classList.remove('lazying', 'lazyed');
+		// image.index = INDEX++;
 		// empty picture
 		// image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
-		element.subscription = this.domService.appear$(node).subscribe(event => {			
-			if (!node.classList.contains('lazyed')) {
-				node.classList.add('lazyed');
-				this.onAppearsInViewport(node, scope, attributes);
+		element.subscription = this.domService.appear$(image).subscribe(event => {
+			if (!image.classList.contains('lazying')) {
+				image.classList.add('lazying');
+				this.onAppearsInViewport(image, scope, attributes);
 			}
 		});
 		/*
-		element.subscription = this.lazy$(node).subscribe(intersection => {
+		element.subscription = this.lazy$(image).subscribe(intersection => {
 			if (intersection.y > -0.5) {
-				if (!node.classList.contains('lazyed')) {
-					node.classList.add('lazyed');
-					this.onAppearsInViewport(node, scope, attributes);
+				if (!image.classList.contains('lazyed')) {
+					image.classList.add('lazyed');
+					this.onAppearsInViewport(image, scope, attributes);
 					setTimeout(() => {
 						element.subscription.unsubscribe();
 						element.subscription = null;
@@ -55,30 +55,23 @@ export default class LazyDirective {
 		});
 	}
 
-	resized(image, src) {
-		var splitted = src.split('/std/');
-
+	getThronSrc(image, src) {
+		const splitted = src.split('/std/');
 		if (splitted.length > 1) {
-			//Contenuto Thron
-
+			// Contenuto Thron
 			if (splitted[1].match(/^0x0\//)) {
 				// se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
 				src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
-
 				if (!src.match(/[&?]scalemode=?/)) {
-					src += src.indexOf('?') >= 0 ? '&' : '?';
-
+					src += src.indexOf('?') !== -1 ? '&' : '?';
 					src += 'scalemode=centered';
 				}
-
 				if (window.devicePixelRatio > 1) {
-					src += src.indexOf('?') >= 0 ? '&' : '?';
-
+					src += src.indexOf('?') !== -1 ? '&' : '?';
 					src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
 				}
 			}
 		}
-
 		return src;
 	}
 
@@ -89,31 +82,24 @@ export default class LazyDirective {
 			image.removeAttribute('data-srcset');
 			if (scope.src) {
 				// attributes.$set('src', scope.src);
-				image.setAttribute('src', this.resized(image, scope.src));
+				image.setAttribute('src', this.getThronSrc(image, scope.src));
 				image.removeAttribute('data-src');
 			}
+			image.classList.remove('lazying');
+			image.classList.add('lazyed');
 		} else if (scope.src) {
-			// console.log(scope.src);
-			image.setAttribute('src', this.resized(image, scope.src));
 			image.removeAttribute('data-src');
-			// attributes.$set('src', scope.src);
-			/*
-			image.setAttribute('src', null);
-			setTimeout(() => {
-				image.setAttribute('src', scope.src);
-			}, 1);
-			*/
-			/*
-			const input = scope.src;
-			this.onImagePreload(input, (output) => {
-				image.setAttribute('src', output);
-				image.removeAttribute('data-src');
-				image.classList.add('ready');
+			const src = this.getThronSrc(image, scope.src);
+			this.onImagePreload(src, () => {
+				image.setAttribute('src', src);
+				image.classList.remove('lazying');
+				image.classList.add('lazyed');
 			});
-			*/
 		} else if (scope.backgroundSrc) {
-			image.setStyle('background-image', `url(${this.resized(image, scope.backgroundSrc)})`);
+			image.setStyle('background-image', `url(${this.getThronSrc(image, scope.backgroundSrc)})`);
 			image.removeAttribute('data-background-src');
+			image.classList.remove('lazying');
+			image.classList.add('lazyed');
 		}
 	}
 
@@ -132,7 +118,9 @@ export default class LazyDirective {
 		const img = new Image();
 		img.onload = () => {
 			if (typeof callback === 'function') {
+				// setTimeout(() => {
 				callback(img.src);
+				// }, 500);
 			}
 		};
 		img.onerror = function(e) {

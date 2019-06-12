@@ -22800,24 +22800,24 @@ function () {
     value: function link(scope, element, attributes, controller) {
       var _this = this;
 
-      var node = element[0];
-      node.classList.remove('lazyed'); // node.index = INDEX++;
+      var image = element[0];
+      image.classList.remove('lazying', 'lazyed'); // image.index = INDEX++;
       // empty picture
       // image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 
-      element.subscription = this.domService.appear$(node).subscribe(function (event) {
-        if (!node.classList.contains('lazyed')) {
-          node.classList.add('lazyed');
+      element.subscription = this.domService.appear$(image).subscribe(function (event) {
+        if (!image.classList.contains('lazying')) {
+          image.classList.add('lazying');
 
-          _this.onAppearsInViewport(node, scope, attributes);
+          _this.onAppearsInViewport(image, scope, attributes);
         }
       });
       /*
-      element.subscription = this.lazy$(node).subscribe(intersection => {
+      element.subscription = this.lazy$(image).subscribe(intersection => {
       	if (intersection.y > -0.5) {
-      		if (!node.classList.contains('lazyed')) {
-      			node.classList.add('lazyed');
-      			this.onAppearsInViewport(node, scope, attributes);
+      		if (!image.classList.contains('lazyed')) {
+      			image.classList.add('lazyed');
+      			this.onAppearsInViewport(image, scope, attributes);
       			setTimeout(() => {
       				element.subscription.unsubscribe();
       				element.subscription = null;
@@ -22834,23 +22834,23 @@ function () {
       });
     }
   }, {
-    key: "resized",
-    value: function resized(image, src) {
+    key: "getThronSrc",
+    value: function getThronSrc(image, src) {
       var splitted = src.split('/std/');
 
       if (splitted.length > 1) {
-        //Contenuto Thron
+        // Contenuto Thron
         if (splitted[1].match(/^0x0\//)) {
           // se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
           src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
 
           if (!src.match(/[&?]scalemode=?/)) {
-            src += src.indexOf('?') >= 0 ? '&' : '?';
+            src += src.indexOf('?') !== -1 ? '&' : '?';
             src += 'scalemode=centered';
           }
 
           if (window.devicePixelRatio > 1) {
-            src += src.indexOf('?') >= 0 ? '&' : '?';
+            src += src.indexOf('?') !== -1 ? '&' : '?';
             src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
           }
         }
@@ -22868,32 +22868,25 @@ function () {
 
         if (scope.src) {
           // attributes.$set('src', scope.src);
-          image.setAttribute('src', this.resized(image, scope.src));
+          image.setAttribute('src', this.getThronSrc(image, scope.src));
           image.removeAttribute('data-src');
         }
+
+        image.classList.remove('lazying');
+        image.classList.add('lazyed');
       } else if (scope.src) {
-        // console.log(scope.src);
-        image.setAttribute('src', this.resized(image, scope.src));
-        image.removeAttribute('data-src'); // attributes.$set('src', scope.src);
-
-        /*
-        image.setAttribute('src', null);
-        setTimeout(() => {
-        	image.setAttribute('src', scope.src);
-        }, 1);
-        */
-
-        /*
-        const input = scope.src;
-        this.onImagePreload(input, (output) => {
-        	image.setAttribute('src', output);
-        	image.removeAttribute('data-src');
-        	image.classList.add('ready');
+        image.removeAttribute('data-src');
+        var src = this.getThronSrc(image, scope.src);
+        this.onImagePreload(src, function () {
+          image.setAttribute('src', src);
+          image.classList.remove('lazying');
+          image.classList.add('lazyed');
         });
-        */
       } else if (scope.backgroundSrc) {
-        image.setStyle('background-image', "url(".concat(this.resized(image, scope.backgroundSrc), ")"));
+        image.setStyle('background-image', "url(".concat(this.getThronSrc(image, scope.backgroundSrc), ")"));
         image.removeAttribute('data-background-src');
+        image.classList.remove('lazying');
+        image.classList.add('lazyed');
       }
     }
   }, {
@@ -22915,7 +22908,8 @@ function () {
 
       img.onload = function () {
         if (typeof callback === 'function') {
-          callback(img.src);
+          // setTimeout(() => {
+          callback(img.src); // }, 500);
         }
       };
 
@@ -23198,37 +23192,45 @@ function () {
       }
     }
   }, {
+    key: "units",
+    value: function units(value) {
+      var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 4;
+      var pow = Math.pow(10, decimals) / 10;
+      return Math.round(value * pow) / pow;
+    }
+  }, {
     key: "parallax$",
     value: function parallax$(node, parallax) {
+      var _this = this;
+
       return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
         var windowRect = datas[1];
-        var direction = 1; // i % 2 === 0 ? 1 : -1;
 
         var rect = _rect.default.fromNode(node);
 
         var intersection = rect.intersection(windowRect);
 
         if (intersection.y > 0) {
-          var y = Math.min(1, Math.max(-1, intersection.center.y));
-          var s = (100 + parallax * 2) / 100;
-          var p = -50 + y * parallax * direction; // .toFixed(3);
-
-          return {
-            s: s,
-            p: p
-          };
+          return intersection.center.y; // Math.min(1, Math.max(-1, intersection.center.y));
         } else {
           return null;
         }
-      }), (0, _operators.filter)(function (x) {
-        return x !== null;
-      })
-      /*
-      distinctUntilChanged((a, b) => {
-      	return a.p !== b.p;
-      }),
-      */
-      );
+      }), (0, _operators.filter)(function (y) {
+        return y !== null;
+      }), (0, _operators.distinctUntilChanged)(), (0, _operators.map)(function (y) {
+        var direction = 1; // i % 2 === 0 ? 1 : -1;
+
+        var s = (100 + parallax * 2) / 100;
+        var p = -50 + y * parallax * direction; // .toFixed(3);
+        // const y = Math.min(1, Math.max(-1, intersection.center.y));
+        // const s = (100 + parallax * 2) / 100;
+        // const p = (-50 + (y * parallax * direction)); // .toFixed(3);
+
+        return {
+          s: _this.units(s),
+          p: _this.units(p)
+        };
+      }));
     }
   }], [{
     key: "factory",
@@ -27026,8 +27028,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -27106,8 +27106,8 @@ function () {
         var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
         var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
         var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
-        x = (_readOnlyError("x"), Math.min(1, x));
-        y = (_readOnlyError("y"), Math.min(1, y));
+        x = Math.min(1, x);
+        y = Math.min(1, y);
         return {
           x: x,
           y: y,

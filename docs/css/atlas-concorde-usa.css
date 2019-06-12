@@ -2467,6 +2467,21 @@ canvas {
 	}
 }
 */
+[lazy] {
+  /*
+	background: $background-tertiary;
+	.background & {
+		background: $background-negative;
+	}
+	*/
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity ease-in-out 350ms;
+  transition: opacity ease-in-out 350ms; }
+  [lazy].lazyed {
+    visibility: visible;
+    opacity: 1; }
+
 .background,
 .picture {
   background: #f3f7fa; }
@@ -4662,6 +4677,10 @@ page-transition {
       font-size: 100px; } }
 
 .section--negative:not(.section--full) {
+  background: #7f9cae; }
+
+.section--negative .background,
+.section--negative .picture {
   background: #7f9cae; }
 
 .section--negative,
@@ -7702,7 +7721,7 @@ page-transition {
     height: 100%;
     -o-object-fit: cover;
        object-fit: cover; }
-  .picture--with-category > .category {
+  .picture--with-category .category {
     display: inline-block;
     position: absolute;
     right: 0;

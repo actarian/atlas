@@ -182,3 +182,20 @@ canvas {
 	}
 }
 */
+
+[lazy] {
+	/*
+	background: $background-tertiary;
+	.background & {
+		background: $background-negative;
+	}
+	*/
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity ease-in-out 350ms;
+
+	&.lazyed {
+		visibility: visible;
+		opacity: 1;
+	}
+}
