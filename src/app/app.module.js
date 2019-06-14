@@ -23,6 +23,7 @@ import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, S
 import VideoDirective from './directives/video.directive';
 import VisibilityDirective from './directives/visibility.directive';
 import WishlistDirective from './directives/wishlist.directive';
+import ZoomableDirective from './directives/zoomable.directive';
 import FaqCtrl from './faq/faq.controller';
 import { ImageWithFeatures } from './filters/image-with-features.filter';
 import { NotInFilter } from './filters/notIn.filter';
@@ -93,7 +94,8 @@ app.directive('appear', AppearDirective.factory)
 	.directive('validate', ValidateDirective.factory)
 	.directive('video', VideoDirective.factory)
 	.directive('visibility', VisibilityDirective.factory)
-	.directive('wishlist', WishlistDirective.factory);
+	.directive('wishlist', WishlistDirective.factory)
+	.directive('zoomable', ZoomableDirective.factory);
 
 app.controller('RootCtrl', RootCtrl)
 	.controller('AdvancedSearchCtrl', AdvancedSearchCtrl)

@@ -2022,6 +2022,9 @@ Keyframe
   [has-dropdown].opened .dropdown {
     max-height: 520px; }
 
+body.droppin-in {
+  overflow: hidden; }
+
 input,
 select,
 textarea {
@@ -2300,7 +2303,6 @@ control-messages {
 
 [media],
 [video] {
-  cursor: pointer;
   /*
 	.group--gallery & {
 		.btn--pinterest {
@@ -2449,6 +2451,9 @@ control-messages {
   .section--negative [media] .btn--wishlist .icon--wishlist, .section--negative
   [video] .btn--wishlist .icon--wishlist {
     fill: #ffffff; }
+
+[video] {
+  cursor: pointer; }
 
 @media (min-width: 860px) {
   [video]:hover .btn--play.playing {
@@ -3452,12 +3457,17 @@ canvas {
 
 .section--cards {
   padding: 80px 0; }
+  .section--cards .row > div {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto; }
 
 .card--collection {
   display: block;
   cursor: pointer;
   -webkit-transition: none;
   transition: none;
+  height: auto;
   padding-bottom: 30px;
   margin-bottom: 30px; }
   .card--collection .picture--horizontal {
@@ -3483,14 +3493,14 @@ canvas {
   .card--collection .title {
     position: relative;
     display: inline-block;
+    max-width: 100%;
+    margin: 15px 0 0 0;
+    padding-bottom: 4px;
     font-size: 16px;
     font-weight: 600;
-    margin: 15px 0 0 0;
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
-    padding-bottom: 4px;
-    max-width: 100%; }
+    overflow: hidden; }
     .card--collection .title:after {
       content: '';
       position: absolute;
@@ -3515,6 +3525,90 @@ canvas {
   .card--collection:hover img {
     -webkit-transform: scale(1.1, 1.1);
             transform: scale(1.1, 1.1); }
+
+.card--collection-xl {
+  display: block;
+  cursor: pointer;
+  -webkit-transition: none;
+  transition: none;
+  height: auto;
+  padding: 0px;
+  margin-bottom: 30px;
+  background: #f0f1f3;
+  -webkit-transition: all ease-in-out 350ms;
+  transition: all ease-in-out 350ms; }
+  .card--collection-xl .content {
+    padding: 40px; }
+  .card--collection-xl .picture--horizontal {
+    position: relative;
+    width: 100%;
+    padding-top: 69.08397%;
+    overflow: hidden;
+    margin: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none; }
+    .card--collection-xl .picture--horizontal img,
+    .card--collection-xl .picture--horizontal video,
+    .card--collection-xl .picture--horizontal canvas,
+    .card--collection-xl .picture--horizontal ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .card--collection-xl .picture--horizontal img {
+      -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
+      transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
+  .card--collection-xl .title {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    margin: 0;
+    padding-bottom: 4px;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden; }
+    .card--collection-xl .title:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: #0f3252;
+      -webkit-transform: scale(0, 1);
+              transform: scale(0, 1);
+      -webkit-transition: all ease-out 350ms;
+      transition: all ease-out 350ms; }
+  .card--collection-xl .abstract {
+    min-height: 60px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    color: #868887;
+    -webkit-transition: all ease-in-out 400ms;
+    transition: all ease-in-out 400ms; }
+  .card--collection-xl .group--cta {
+    margin: 20px 0 0 0;
+    text-align: left; }
+  .card--collection-xl:hover {
+    -webkit-box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
+            box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7); }
+    .card--collection-xl:hover .title:after {
+      -webkit-transform: scale(1, 1);
+              transform: scale(1, 1); }
+    .card--collection-xl:hover .abstract {
+      -webkit-transform: translateY(10px);
+              transform: translateY(10px); }
+    .card--collection-xl:hover img {
+      -webkit-transform: scale(1.1, 1.1);
+              transform: scale(1.1, 1.1); }
 
 .page {
   display: block;
@@ -4127,6 +4221,9 @@ page-transition {
       .section--submenu > .container {
         margin-top: 200px;
         margin-bottom: 50px; } }
+  @media screen and (max-height: 700px) {
+    .section--submenu > .container {
+      margin-top: 130px; } }
   @media (max-width: 859.98px) {
     .section--submenu {
       overflow: hidden;
@@ -4151,7 +4248,8 @@ page-transition {
   display: block;
   cursor: pointer;
   -webkit-transition: none;
-  transition: none; }
+  transition: none;
+  max-width: 33vh; }
   .submenu__item .picture--horizontal {
     position: relative;
     width: 100%;
@@ -4214,23 +4312,25 @@ page-transition {
     .submenu__item .title {
       margin: 0 0 20px 30px; } }
 
-.submenu__item--lg .picture--horizontal {
-  position: relative;
-  width: 100%;
-  padding-top: 69.23077%;
-  overflow: hidden;
-  margin-bottom: 10px; }
-  .submenu__item--lg .picture--horizontal img,
-  .submenu__item--lg .picture--horizontal video,
-  .submenu__item--lg .picture--horizontal canvas,
-  .submenu__item--lg .picture--horizontal ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.submenu__item--lg {
+  max-width: 70vh; }
+  .submenu__item--lg .picture--horizontal {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    padding-top: 69.23077%;
+    overflow: hidden;
+    margin-bottom: 10px; }
+    .submenu__item--lg .picture--horizontal img,
+    .submenu__item--lg .picture--horizontal video,
+    .submenu__item--lg .picture--horizontal canvas,
+    .submenu__item--lg .picture--horizontal ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
 .listing--submenu {
   display: -webkit-box;
@@ -6729,7 +6829,12 @@ page-transition {
         margin-bottom: 40px; } }
 
 .section--tile .swiper-container {
-  margin-bottom: 60px; }
+  margin-bottom: 60px;
+  overflow: visible; }
+
+.section--tile .swiper-pagination-bullets,
+.section--tile .swiper-container-horizontal > .swiper-pagination-bullets {
+  background: none; }
 
 .section--tile .picture {
   position: relative;
@@ -6754,8 +6859,8 @@ page-transition {
     height: 1px;
     top: -50px; }
     .section--tile .picture .width > span {
-      -webkit-transform: translateX(-50%) translateY(-60px);
-              transform: translateX(-50%) translateY(-60px); }
+      -webkit-transform: translateX(-50%) translateY(-35px);
+              transform: translateX(-50%) translateY(-35px); }
   .section--tile .picture .height {
     display: block;
     width: 1px;
@@ -6766,189 +6871,237 @@ page-transition {
       -webkit-transform: translateX(-90px) translateY(-50%) rotateZ(-90deg);
               transform: translateX(-90px) translateY(-50%) rotateZ(-90deg); }
 
-.section--tile .aspect--278x120 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 43.16547%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--278x120 > .picture img,
-  .section--tile .aspect--278x120 > .picture video,
-  .section--tile .aspect--278x120 > .picture canvas,
-  .section--tile .aspect--278x120 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--278x120 {
+  max-width: calc(278 / 120 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--278x120 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--278x120 > .picture > img {
+    padding-top: 43.16547%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--278x120 > .picture img,
+    .section--tile .aspect--278x120 > .picture video,
+    .section--tile .aspect--278x120 > .picture canvas,
+    .section--tile .aspect--278x120 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--278x120 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--120x120 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--120x120 > .picture img,
-  .section--tile .aspect--120x120 > .picture video,
-  .section--tile .aspect--120x120 > .picture canvas,
-  .section--tile .aspect--120x120 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--120x120 {
+  max-width: calc(120 / 120 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--120x120 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--120x120 > .picture > img {
+    padding-top: 100%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--120x120 > .picture img,
+    .section--tile .aspect--120x120 > .picture video,
+    .section--tile .aspect--120x120 > .picture canvas,
+    .section--tile .aspect--120x120 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--120x120 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--240x120 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 50%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--240x120 > .picture img,
-  .section--tile .aspect--240x120 > .picture video,
-  .section--tile .aspect--240x120 > .picture canvas,
-  .section--tile .aspect--240x120 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--240x120 {
+  max-width: calc(240 / 120 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--240x120 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--240x120 > .picture > img {
+    padding-top: 50%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--240x120 > .picture img,
+    .section--tile .aspect--240x120 > .picture video,
+    .section--tile .aspect--240x120 > .picture canvas,
+    .section--tile .aspect--240x120 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--240x120 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--75x75 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--75x75 > .picture img,
-  .section--tile .aspect--75x75 > .picture video,
-  .section--tile .aspect--75x75 > .picture canvas,
-  .section--tile .aspect--75x75 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--75x75 {
+  max-width: calc(75 / 75 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--75x75 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--75x75 > .picture > img {
+    padding-top: 100%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--75x75 > .picture img,
+    .section--tile .aspect--75x75 > .picture video,
+    .section--tile .aspect--75x75 > .picture canvas,
+    .section--tile .aspect--75x75 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--75x75 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--150x75 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 50%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--150x75 > .picture img,
-  .section--tile .aspect--150x75 > .picture video,
-  .section--tile .aspect--150x75 > .picture canvas,
-  .section--tile .aspect--150x75 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--150x75 {
+  max-width: calc(150 / 75 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--150x75 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--150x75 > .picture > img {
+    padding-top: 50%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--150x75 > .picture img,
+    .section--tile .aspect--150x75 > .picture video,
+    .section--tile .aspect--150x75 > .picture canvas,
+    .section--tile .aspect--150x75 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--150x75 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--30x60 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 200%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--30x60 > .picture img,
-  .section--tile .aspect--30x60 > .picture video,
-  .section--tile .aspect--30x60 > .picture canvas,
-  .section--tile .aspect--30x60 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--30x60 {
+  max-width: calc(30 / 60 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--30x60 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--30x60 > .picture > img {
+    padding-top: 200%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--30x60 > .picture img,
+    .section--tile .aspect--30x60 > .picture video,
+    .section--tile .aspect--30x60 > .picture canvas,
+    .section--tile .aspect--30x60 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--30x60 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--60x60 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--60x60 > .picture img,
-  .section--tile .aspect--60x60 > .picture video,
-  .section--tile .aspect--60x60 > .picture canvas,
-  .section--tile .aspect--60x60 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--60x60 {
+  max-width: calc(60 / 60 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--60x60 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--60x60 > .picture > img {
+    padding-top: 100%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--60x60 > .picture img,
+    .section--tile .aspect--60x60 > .picture video,
+    .section--tile .aspect--60x60 > .picture canvas,
+    .section--tile .aspect--60x60 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--60x60 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
 
-.section--tile .aspect--90x45 > .picture {
-  position: relative;
-  width: 100%;
-  padding-top: 50%;
-  overflow: hidden;
-  width: 100%;
-  overflow: visible; }
-  .section--tile .aspect--90x45 > .picture img,
-  .section--tile .aspect--90x45 > .picture video,
-  .section--tile .aspect--90x45 > .picture canvas,
-  .section--tile .aspect--90x45 > .picture ng-transclude {
-    position: absolute;
-    top: 0;
-    left: 0;
+.section--tile .aspect--90x45 {
+  max-width: calc(90 / 45 * 100vh - 500px);
+  margin: 0 auto; }
+  .section--tile .aspect--90x45 > .picture {
+    position: relative;
     width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
-  .section--tile .aspect--90x45 > .picture > img {
+    padding-top: 50%;
+    overflow: hidden;
     width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    overflow: visible; }
+    .section--tile .aspect--90x45 > .picture img,
+    .section--tile .aspect--90x45 > .picture video,
+    .section--tile .aspect--90x45 > .picture canvas,
+    .section--tile .aspect--90x45 > .picture ng-transclude {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .section--tile .aspect--90x45 > .picture > img {
+      width: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+
+.section--tile .zoomed .aspect--278x120 {
+  max-width: calc(278 / 120 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--120x120 {
+  max-width: calc(120 / 120 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--240x120 {
+  max-width: calc(240 / 120 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--75x75 {
+  max-width: calc(75 / 75 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--150x75 {
+  max-width: calc(150 / 75 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--30x60 {
+  max-width: calc(30 / 60 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--60x60 {
+  max-width: calc(60 / 60 * 100vh - 260px); }
+
+.section--tile .zoomed .aspect--90x45 {
+  max-width: calc(90 / 45 * 100vh - 260px); }
 
 .section--tile .title {
   color: #0f3252; }
@@ -6973,7 +7126,7 @@ page-transition {
 
 @media (min-width: 860px) {
   .section--tile .tile {
-    padding: 160px 160px 0 160px; }
+    padding: 160px 160px 10px 160px; }
   .section--tile .title {
     font-size: 40px;
     font-weight: 300;
@@ -7155,6 +7308,34 @@ page-transition {
       .section--intro-centered .abstract {
         font-size: 16px;
         margin-bottom: 50px; } }
+
+[zoomable] > .zoomable__content {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+[zoomable].zoomed > .zoomable__content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 100000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+@media (min-width: 860px) {
+  [zoomable].zoomed .section--tile .swiper-container {
+    margin-bottom: 0; }
+  [zoomable].zoomed .section--tile .tile {
+    padding: 130px 120px 10px 120px; } }
 
 .section--beinspired {
   text-align: center; }

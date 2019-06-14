@@ -21543,6 +21543,8 @@ var _visibility = _interopRequireDefault(require("./directives/visibility.direct
 
 var _wishlist = _interopRequireDefault(require("./directives/wishlist.directive"));
 
+var _zoomable = _interopRequireDefault(require("./directives/zoomable.directive"));
+
 var _faq = _interopRequireDefault(require("./faq/faq.controller"));
 
 var _imageWithFeatures = require("./filters/image-with-features.filter");
@@ -21604,7 +21606,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
 app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory) // .directive('transition', TransitionDirective.factory)
-.directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('visibility', _visibility.default.factory).directive('wishlist', _wishlist.default.factory);
+.directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('visibility', _visibility.default.factory).directive('wishlist', _wishlist.default.factory).directive('zoomable', _zoomable.default.factory);
 app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
@@ -21614,7 +21616,7 @@ app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $ro
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/video.directive":219,"./directives/visibility.directive":220,"./directives/wishlist.directive":221,"./faq/faq.controller":222,"./filters/image-with-features.filter":223,"./filters/notIn.filter":224,"./filters/trusted.filter":225,"./forms/control-messages.directive":226,"./forms/control.directive":227,"./forms/validate.directive":228,"./highway/highway.directive":231,"./magazine/magazine.controller":233,"./moodboard/moodboard-dropdown.directive":234,"./moodboard/moodboard-search.directive":235,"./moodboard/moodboard-section.controller":236,"./moodboard/moodboard.controller":237,"./news/news.controller":238,"./references/references.controller":239,"./root.controller":240,"./services/api.service":241,"./services/dom.service":242,"./services/wishlist.service":243,"./shared/location.service":244,"./shared/promise.service":245,"./shared/state.service":248,"./shared/storage.service":249,"./store-locator/store-locator.controller":250}],202:[function(require,module,exports){
+},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/video.directive":219,"./directives/visibility.directive":220,"./directives/wishlist.directive":221,"./directives/zoomable.directive":222,"./faq/faq.controller":223,"./filters/image-with-features.filter":224,"./filters/notIn.filter":225,"./filters/trusted.filter":226,"./forms/control-messages.directive":227,"./forms/control.directive":228,"./forms/validate.directive":229,"./highway/highway.directive":232,"./magazine/magazine.controller":234,"./moodboard/moodboard-dropdown.directive":235,"./moodboard/moodboard-search.directive":236,"./moodboard/moodboard-section.controller":237,"./moodboard/moodboard.controller":238,"./news/news.controller":239,"./references/references.controller":240,"./root.controller":241,"./services/api.service":242,"./services/dom.service":243,"./services/wishlist.service":244,"./shared/location.service":245,"./shared/promise.service":246,"./shared/state.service":249,"./shared/storage.service":250,"./store-locator/store-locator.controller":251}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22261,7 +22263,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{"../shared/shader":247}],207:[function(require,module,exports){
+},{"../shared/shader":248}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22532,14 +22534,16 @@ function () {
 
       var node = element[0];
 
+      var onClick = function onClick() {
+        window.location.href = attributes.href;
+      };
+
       if (USE_HIGHWAY) {
         if (attributes.routerDisabled === undefined) {
           scope.$emit('onHrefNode', node);
         } else {
           // console.log(attributes.routerDisabled, node);
-          node.addEventListener('click', function () {
-            window.location.href = attributes.href;
-          });
+          node.addEventListener('click', onClick);
         }
 
         return;
@@ -22552,7 +22556,7 @@ function () {
           return;
         }
 
-        var onClick = function onClick(event) {
+        var _onClick = function _onClick(event) {
           var href = attributes.href;
           var absolute = /^(http:|https:|\/\/)/.test(href);
 
@@ -22596,7 +22600,7 @@ function () {
           });
         };
 
-        node.addEventListener('click', onClick);
+        node.addEventListener('click', _onClick);
         /*
         scope.$on('onNavigationEnded', function($scope, $href) {
         	if (href === $href) {
@@ -22608,10 +22612,13 @@ function () {
         */
 
         element.on('$destroy', function () {
-          node.removeEventListener('click', onClick);
+          node.removeEventListener('click', _onClick);
         });
       }
 
+      element.on('$destroy', function () {
+        node.removeEventListener('click', onClick);
+      });
       return;
     }
   }, {
@@ -22907,14 +22914,17 @@ function () {
       var img = new Image();
 
       img.onload = function () {
+        img.onload = img.onerror = null;
+
         if (typeof callback === 'function') {
-          // setTimeout(() => {
-          callback(img.src); // }, 500);
+          setTimeout(function () {
+            callback(img.src);
+          }, 1);
         }
       };
 
       img.onerror = function (e) {
-        img.onerror = null;
+        img.onload = img.onerror = null;
         img.src = 'data:image/png;base64,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';
       };
 
@@ -22933,7 +22943,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":246,"rxjs/operators":198}],213:[function(require,module,exports){
+},{"../shared/rect":247,"rxjs/operators":198}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23211,7 +23221,7 @@ function () {
         var intersection = rect.intersection(windowRect);
 
         if (intersection.y > 0) {
-          return intersection.center.y; // Math.min(1, Math.max(-1, intersection.center.y));
+          return Math.min(1, Math.max(-1, intersection.center.y)); // intersection.center.y;
         } else {
           return null;
         }
@@ -23245,7 +23255,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":246,"rxjs/operators":198}],216:[function(require,module,exports){
+},{"../shared/rect":247,"rxjs/operators":198}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23421,7 +23431,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"../shared/rect":246,"rxjs/operators":198}],218:[function(require,module,exports){
+},{"../shared/rect":247,"rxjs/operators":198}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23454,7 +23464,7 @@ var DEFAULT_SWIPER_OPTIONS = {
   slidesPerView: 'auto',
   spaceBetween: 1,
   centeredSlides: true,
-  loop: true,
+  loop: false,
   loopAdditionalSlides: 100,
   speed: 600,
   autoplay: 5000,
@@ -23495,6 +23505,11 @@ function () {
       scope.$watch('$viewContentLoaded', function () {
         // console.log('viewContentLoaded');
         _this.onSwiper(element);
+      });
+      scope.$on('onResize', function ($scope) {
+        if (element.swiper) {
+          element.swiper.update();
+        }
       });
     }
   }, {
@@ -23549,7 +23564,7 @@ function (_SwiperDirective) {
       observer: true,
       observeParents: true,
       */
-      loop: true,
+      // loop: true,
       loopAdditionalSlides: 100,
       slidesPerView: 'auto',
       centeredSlides: true,
@@ -23597,7 +23612,7 @@ function (_SwiperDirective2) {
       speed: 600,
       parallax: true,
       autoplay: 5000,
-      loop: true,
+      // loop: true,
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
@@ -23730,7 +23745,7 @@ function (_SwiperDirective4) {
       speed: 600,
       parallax: true,
       autoplay: 5000,
-      loop: true,
+      // loop: true,
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
@@ -23892,6 +23907,7 @@ function () {
 
       element.on('$destroy', function () {
         if (video) {
+          console.log('VideoDirective.$destroy');
           video.removeEventListener('play', onPlay);
           video.removeEventListener('pause', onPause);
           video.removeEventListener('ended', onEnded);
@@ -23973,7 +23989,7 @@ function () {
 exports.default = VisibilityDirective;
 VisibilityDirective.factory.$inject = ['DomService'];
 
-},{"../gtm/gtm.service":229}],221:[function(require,module,exports){
+},{"../gtm/gtm.service":230}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24036,6 +24052,191 @@ exports.default = WishlistDirective;
 WishlistDirective.factory.$inject = ['WishlistService'];
 
 },{}],222:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// let INDEX = 0;
+var ZoomableDirective =
+/*#__PURE__*/
+function () {
+  // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
+  function ZoomableDirective($timeout, DomService) {
+    _classCallCheck(this, ZoomableDirective);
+
+    this.$timeout = $timeout;
+    this.domService = DomService;
+    this.restrict = 'A';
+  }
+
+  _createClass(ZoomableDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var triggers, rect;
+      var node = element[0];
+      var content = node.querySelector('.zoomable__content');
+
+      var onClick = function onClick() {
+        console.log(scope);
+
+        var slides = _toConsumableArray(node.querySelectorAll('.swiper-slide'));
+
+        if (node.classList.contains('zoomed')) {
+          TweenMax.to(content, 0.3, {
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height,
+            ease: Expo.easeInOut,
+            // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+            onUpdate: function onUpdate() {
+              // window.dispatchEvent(new Event('resize'));
+
+              /*
+              if (document.createEvent) {
+              element.dispatchEvent(event);
+              } else {
+              element.fireEvent("on" + event.eventType, event);
+              }
+              */
+              // slides.forEach(x => x.style.width = content.style.width);
+              scope.$broadcast('onResize');
+            },
+            onComplete: function onComplete() {
+              TweenMax.set(node, {
+                height: 'auto'
+              });
+              TweenMax.set(content, {
+                left: rect.left,
+                top: rect.top,
+                width: rect.width,
+                height: rect.height
+              });
+              node.classList.remove('zoomed');
+
+              _this.$timeout(function () {
+                scope.$parent.root.droppinIn = false;
+              });
+            }
+          });
+        } else {
+          rect = _rect.default.fromNode(node);
+          TweenMax.set(node, {
+            height: rect.height
+          });
+          TweenMax.set(content, {
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+          });
+          node.classList.add('zoomed');
+
+          _this.$timeout(function () {
+            scope.$parent.root.droppinIn = true;
+          });
+
+          TweenMax.to(content, 0.3, {
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            ease: Expo.easeInOut,
+            // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+            onUpdate: function onUpdate() {
+              // window.dispatchEvent(new Event('resize'));
+              // slides.forEach(x => x.style.width = content.style.width);
+              scope.$broadcast('onResize');
+            },
+            onComplete: function onComplete() {// scope.$broadcast('onResize');
+            }
+          });
+        }
+      };
+
+      scope.$on('lastItem', function ($scope, item) {
+        console.log('lastItem');
+        triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger'));
+        console.log('ZoomableDirective', node, content, triggers);
+        triggers.forEach(function (x) {
+          return x.addEventListener('click', onClick);
+        });
+      });
+      element.on('$destroy', function () {
+        triggers.forEach(function (x) {
+          return x.removeEventListener('click', onClick);
+        });
+      });
+
+      scope.onZoom = function (item) {
+        var rect = _rect.default.fromNode(content);
+
+        console.log(rect);
+        TweenMax.set(node, {
+          height: rect.height
+        });
+        _this.scope.zoomed = !_this.scope.zoomed;
+        /*
+        TweenMax.to(u, 0.50, {
+        	scaleX: 1,
+        	transformOrigin: '0 50%',
+        	delay: 0,
+        	ease: Power3.easeInOut,
+        	overwrite: 'all',
+        	onComplete: () => {
+        		TweenMax.set(u, { transformOrigin: '100% 50%', scaleX: 1 });
+        		TweenMax.to(u, 0.50, {
+        			scaleX: 0,
+        			transformOrigin: '100% 50%',
+        			delay: 1.0,
+        			ease: Power3.easeInOut,
+        			overwrite: 'all',
+        			onComplete: () => {
+        				animate();
+        			}
+        		});
+        	}
+        });
+        */
+      };
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, DomService) {
+      return new ZoomableDirective($timeout, DomService);
+    }
+  }]);
+
+  return ZoomableDirective;
+}();
+
+exports.default = ZoomableDirective;
+ZoomableDirective.factory.$inject = ['$timeout', 'DomService'];
+
+},{"../shared/rect":247}],223:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24209,7 +24410,7 @@ FaqCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = FaqCtrl;
 exports.default = _default;
 
-},{"rxjs":2,"rxjs/operators":198}],223:[function(require,module,exports){
+},{"rxjs":2,"rxjs/operators":198}],224:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24250,7 +24451,7 @@ function ImageWithFeatures() {
   };
 }
 
-},{}],224:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24275,7 +24476,7 @@ function NotInFilter($filter) {
   };
 }
 
-},{}],225:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24292,7 +24493,7 @@ function TrustedFilter($sce) {
   };
 }
 
-},{}],226:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24338,7 +24539,7 @@ function () {
 exports.default = ControlMessagesDirective;
 ControlMessagesDirective.factory.$inject = [];
 
-},{}],227:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24603,7 +24804,7 @@ function () {
 exports.default = ControlDirective;
 ControlDirective.factory.$inject = ['$parse', 'DomService'];
 
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24804,7 +25005,7 @@ function () {
 exports.default = ValidateDirective;
 ValidateDirective.factory.$inject = ['$filter'];
 
-},{}],229:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24857,7 +25058,7 @@ function () {
 
 exports.default = GtmService;
 
-},{}],230:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24927,19 +25128,24 @@ function (_Highway$Renderer) {
     value: function onEnter() {
       // console.log('onEnter');
       if (!first) {
-        var scope = CustomRenderer.scope;
         var $timeout = CustomRenderer.$timeout;
         $timeout(function () {
-          scope.root.menuOpened = false;
-          scope.root.menuProductOpened = false;
           var $compile = CustomRenderer.$compile;
 
-          var view = _toConsumableArray(document.querySelectorAll('.view')).pop(); // console.log(view.innerHTML);
+          var view = _toConsumableArray(document.querySelectorAll('.view')).pop(); // console.log(view.childNodes);
 
 
-          var element = angular.element(view);
+          var element = angular.element(view.childNodes);
           var $scope = element.scope();
-          $compile(element.contents())($scope);
+          $scope.root.menuOpened = false;
+          $scope.root.menuProductOpened = false;
+          var $newScope = $scope.$new();
+          var content = $compile(element)($newScope);
+          CustomRenderer.$newScope = $newScope;
+          CustomRenderer.content = content;
+          element.on('$destroy', function (event) {
+            console.log('.view -> $destroy', event);
+          }); // element.append(content);
         });
       }
     } // This method in the renderer is run when transition to hide the data-router-view is called.
@@ -24963,6 +25169,12 @@ function (_Highway$Renderer) {
     value: function onLeaveCompleted() {// console.log('onLeaveCompleted');
 
       /*
+      if (CustomRenderer.$newScope) {
+      	CustomRenderer.$newScope.$destroy();
+      }
+      */
+
+      /*
       const $timeout = CustomRenderer.$timeout;
       const scope = CustomRenderer.scope;
       $timeout(() => {
@@ -24978,7 +25190,7 @@ function (_Highway$Renderer) {
 
 exports.default = CustomRenderer;
 
-},{"../gtm/gtm.service":229,"@dogstudio/highway":1}],231:[function(require,module,exports){
+},{"../gtm/gtm.service":230,"@dogstudio/highway":1}],232:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25117,7 +25329,7 @@ function () {
 exports.default = HighwayDirective;
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
 
-},{"../gtm/gtm.service":229,"./custom-renderer":230,"./page-transition":232,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],232:[function(require,module,exports){
+},{"../gtm/gtm.service":230,"./custom-renderer":231,"./page-transition":233,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],233:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25126,6 +25338,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _highway = _interopRequireDefault(require("@dogstudio/highway"));
+
+var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25170,6 +25384,19 @@ function (_Highway$Transition) {
         minHeight: from.offsetHeight
       });
       window.scrollTo(0, 0);
+
+      if (_customRenderer.default.content) {
+        _customRenderer.default.content.remove();
+
+        _customRenderer.default.content = null;
+      }
+
+      if (_customRenderer.default.$newScope) {
+        _customRenderer.default.$newScope.$destroy();
+
+        _customRenderer.default.$newScope = null;
+      }
+
       from.remove();
       TweenMax.to(to, 0.6, {
         opacity: 1,
@@ -25223,7 +25450,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"@dogstudio/highway":1}],233:[function(require,module,exports){
+},{"./custom-renderer":231,"@dogstudio/highway":1}],234:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25292,7 +25519,7 @@ MagazineCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = MagazineCtrl;
 exports.default = _default;
 
-},{}],234:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25367,7 +25594,7 @@ function () {
 exports.default = MoodboardDropdownDirective;
 MoodboardDropdownDirective.factory.$inject = ['$compile'];
 
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25523,7 +25750,7 @@ function () {
 exports.default = MoodboardSearchDirective;
 MoodboardSearchDirective.factory.$inject = ['$compile'];
 
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25563,7 +25790,7 @@ MoodboardSectionCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiSer
 var _default = MoodboardSectionCtrl;
 exports.default = _default;
 
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25725,7 +25952,7 @@ MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardCtrl;
 exports.default = _default;
 
-},{}],238:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25925,7 +26152,7 @@ NewsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = NewsCtrl;
 exports.default = _default;
 
-},{}],239:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26098,7 +26325,7 @@ ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = ReferencesCtrl;
 exports.default = _default;
 
-},{}],240:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26135,6 +26362,7 @@ function () {
       this.brand = brand;
       this.webglEnabled = false; // this.domService.hasWebglSupport();
 
+      this.domService.addCustomRules();
       /*
       this.domService.smoothScroll$('.page').subscribe((top) => {
       	// console.log(top);
@@ -26179,6 +26407,10 @@ function () {
 
       if (this.direction === 1) {
         classes['scrolled-down'] = true;
+      }
+
+      if (this.droppinIn) {
+        classes['droppin-in'] = true;
       }
 
       return classes;
@@ -26337,7 +26569,7 @@ RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],241:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26402,7 +26634,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{"rxjs":2}],242:[function(require,module,exports){
+},{"rxjs":2}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26722,6 +26954,27 @@ function () {
       }), (0, _operators.distinctUntilChanged)());
     }
   }, {
+    key: "addCustomRules",
+    value: function addCustomRules() {
+      var sheet = this.addCustomSheet();
+      var body = document.querySelector('body');
+      var scrollBarWidth = window.innerWidth - body.clientWidth;
+      var rule = "body.droppin-in { padding-right: ".concat(scrollBarWidth, "px; }");
+      sheet.insertRule(rule, 0);
+      rule = "body.droppin-in header { width: calc(100% - ".concat(scrollBarWidth, "px); }");
+      sheet.insertRule(rule, 1);
+      rule = "body.droppin-in menu--product { width: calc(100% - ".concat(scrollBarWidth, "px); }");
+      sheet.insertRule(rule, 2);
+    }
+  }, {
+    key: "addCustomSheet",
+    value: function addCustomSheet() {
+      var style = document.createElement('style');
+      style.appendChild(document.createTextNode(''));
+      document.head.appendChild(style);
+      return style.sheet;
+    }
+  }, {
     key: "scrollTop",
     get: function get() {
       return DomService.getScrollTop(window);
@@ -26754,7 +27007,7 @@ function () {
 exports.default = DomService;
 DomService.factory.$inject = [];
 
-},{"../shared/rect":246,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],243:[function(require,module,exports){
+},{"../shared/rect":247,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],244:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26862,7 +27115,7 @@ function () {
 exports.default = WishlistService;
 WishlistService.factory.$inject = ['PromiseService', 'LocalStorageService', 'ApiService'];
 
-},{}],244:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26965,7 +27218,7 @@ function () {
 exports.default = LocationService;
 LocationService.factory.$inject = ['$location'];
 
-},{}],245:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27020,7 +27273,7 @@ function () {
 exports.default = PromiseService;
 PromiseService.factory.$inject = ['$q'];
 
-},{}],246:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27160,7 +27413,7 @@ function () {
 
 exports.default = Rect;
 
-},{}],247:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27174,7 +27427,7 @@ exports.FRAGMENT_SHADER = void 0;
 var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
 exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
 
-},{}],248:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27369,7 +27622,7 @@ function () {
 exports.default = StateService;
 StateService.factory.$inject = ['$timeout', '$rootScope'];
 
-},{}],249:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27779,7 +28032,7 @@ function () {
 exports.SessionStorageService = SessionStorageService;
 SessionStorageService.factory.$inject = ['PromiseService'];
 
-},{}],250:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

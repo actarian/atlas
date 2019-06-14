@@ -5,7 +5,7 @@ const DEFAULT_SWIPER_OPTIONS = {
 	slidesPerView: 'auto',
 	spaceBetween: 1,
 	centeredSlides: true,
-	loop: true,
+	loop: false,
 	loopAdditionalSlides: 100,
 	speed: 600,
 	autoplay: 5000,
@@ -39,6 +39,11 @@ export class SwiperDirective {
 		scope.$watch('$viewContentLoaded', () => {
 			// console.log('viewContentLoaded');
 			this.onSwiper(element);
+		});
+		scope.$on('onResize', ($scope) => {
+			if (element.swiper) {
+				element.swiper.update();
+			}
 		});
 	}
 
@@ -80,7 +85,7 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			observer: true,
 			observeParents: true,
 			*/
-			loop: true,
+			// loop: true,
 			loopAdditionalSlides: 100,
 			slidesPerView: 'auto',
 			centeredSlides: true,
@@ -115,7 +120,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 			speed: 600,
 			parallax: true,
 			autoplay: 5000,
-			loop: true,
+			// loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
@@ -221,7 +226,7 @@ export class SwiperTileDirective extends SwiperDirective {
 			speed: 600,
 			parallax: true,
 			autoplay: 5000,
-			loop: true,
+			// loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,

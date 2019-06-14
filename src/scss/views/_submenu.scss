@@ -28,6 +28,12 @@
 		}
 	}
 
+	@media screen and (max-height: 700px) {
+		&>.container {
+			margin-top: 130px;
+		}
+	}
+
 	@include media-breakpoint-down(xs) {
 		overflow: hidden;
 		background: $background-header;
@@ -60,6 +66,7 @@
 	display: block;
 	cursor: pointer;
 	transition: none;
+	max-width: 33vh;
 
 	.picture--horizontal {
 		@include aspect-clip(262, 181);
@@ -131,6 +138,8 @@
 }
 
 .submenu__item--lg {
+	max-width: 70vh;
+
 	.picture--horizontal {
 		@include aspect-clip(650, 450);
 		margin-bottom: 10px;

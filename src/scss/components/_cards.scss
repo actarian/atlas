@@ -1,11 +1,18 @@
 .section--cards {
 	padding: 80px 0;
+
+	.row {
+		&>div {
+			flex: 1 1 auto;
+		}
+	}
 }
 
 .card--collection {
 	display: block;
 	cursor: pointer;
 	transition: none;
+	height: auto;
 	padding-bottom: 30px;
 	margin-bottom: 30px;
 
@@ -21,14 +28,14 @@
 	.title {
 		position: relative;
 		display: inline-block;
+		max-width: 100%;
+		margin: 15px 0 0 0;
+		padding-bottom: 4px;
 		font-size: 16px;
 		font-weight: $font-semibold;
-		margin: 15px 0 0 0;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
-		padding-bottom: 4px;
-		max-width: 100%;
 
 		&:after {
 			content: '';
@@ -56,6 +63,95 @@
 			&:after {
 				transform: scale(1, 1);
 			}
+		}
+
+		img {
+			transform: scale(1.1, 1.1);
+		}
+	}
+
+	@include media-breakpoint-up(sm) {}
+
+	@include media-breakpoint-down(xs) {}
+
+}
+
+.card--collection-xl {
+	display: block;
+	cursor: pointer;
+	transition: none;
+	height: auto;
+	padding: 0px;
+	margin-bottom: 30px;
+	background: $background-tertiary;
+	transition: all ease-in-out 350ms;
+
+	.content {
+		padding: 40px;
+	}
+
+	.picture--horizontal {
+		@include aspect-clip(262, 181);
+		margin: 0;
+		box-shadow: none;
+
+		img {
+			transition: all 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990) !important;
+		}
+	}
+
+	.title {
+		position: relative;
+		display: inline-block;
+		max-width: 100%;
+		margin: 0;
+		padding-bottom: 4px;
+		font-size: 20px;
+		font-weight: $font-semibold;
+		text-transform: uppercase;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 2px;
+			background: $foreground;
+			transform: scale(0, 1);
+			transition: all ease-out 350ms;
+		}
+	}
+
+	.abstract {
+		min-height: 60px;
+		margin: 0;
+		font-size: 16px;
+		font-weight: $font-light;
+		line-height: 24px;
+		color: $foreground-secondary;
+		transition: all ease-in-out 400ms;
+	}
+
+	.group--cta {
+		margin: 20px 0 0 0;
+		text-align: left;
+	}
+
+	&:hover {
+		box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
+
+		.title {
+			&:after {
+				transform: scale(1, 1);
+			}
+		}
+
+		.abstract {
+			transform: translateY(10px)
 		}
 
 		img {

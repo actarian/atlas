@@ -45,7 +45,7 @@ export default class ParallaxDirective {
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
 				if (intersection.y > 0) {
-					return intersection.center.y; // Math.min(1, Math.max(-1, intersection.center.y));
+					return Math.min(1, Math.max(-1, intersection.center.y)); // intersection.center.y;
 				} else {
 					return null;
 				}

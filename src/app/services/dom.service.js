@@ -285,6 +285,25 @@ export default class DomService {
 		);
 	}
 
+	addCustomRules() {
+		const sheet = this.addCustomSheet();
+		const body = document.querySelector('body');
+		const scrollBarWidth = window.innerWidth - body.clientWidth;
+		let rule = `body.droppin-in { padding-right: ${scrollBarWidth}px; }`;
+		sheet.insertRule(rule, 0);
+		rule = `body.droppin-in header { width: calc(100% - ${scrollBarWidth}px); }`;
+		sheet.insertRule(rule, 1);
+		rule = `body.droppin-in menu--product { width: calc(100% - ${scrollBarWidth}px); }`;
+		sheet.insertRule(rule, 2);
+	}
+
+	addCustomSheet() {
+		const style = document.createElement('style');
+		style.appendChild(document.createTextNode(''));
+		document.head.appendChild(style);
+		return style.sheet;
+	}
+
 	static factory() {
 		return new DomService();
 	}

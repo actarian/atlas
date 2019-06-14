@@ -22,17 +22,23 @@ export default class CustomRenderer extends Highway.Renderer {
 	onEnter() {
 		// console.log('onEnter');
 		if (!first) {
-			const scope = CustomRenderer.scope;
 			const $timeout = CustomRenderer.$timeout;
 			$timeout(() => {
-				scope.root.menuOpened = false;
-				scope.root.menuProductOpened = false;
 				const $compile = CustomRenderer.$compile;
 				const view = [...document.querySelectorAll('.view')].pop();
-				// console.log(view.innerHTML);
-				const element = angular.element(view);
+				// console.log(view.childNodes);
+				const element = angular.element(view.childNodes);
 				const $scope = element.scope();
-				$compile(element.contents())($scope);
+				$scope.root.menuOpened = false;
+				$scope.root.menuProductOpened = false;
+				const $newScope = $scope.$new();
+				const content = $compile(element)($newScope);
+				CustomRenderer.$newScope = $newScope;
+				CustomRenderer.content = content;
+				element.on('$destroy', (event) => {
+					console.log('.view -> $destroy', event);
+				});
+				// element.append(content);
 			});
 		}
 	}
@@ -53,6 +59,11 @@ export default class CustomRenderer extends Highway.Renderer {
 	// This method in the renderer is run when the data-router-view is removed from the DOM Tree.
 	onLeaveCompleted() {
 		// console.log('onLeaveCompleted');
+		/*
+		if (CustomRenderer.$newScope) {
+			CustomRenderer.$newScope.$destroy();
+		}
+		*/
 		/*
 		const $timeout = CustomRenderer.$timeout;
 		const scope = CustomRenderer.scope;

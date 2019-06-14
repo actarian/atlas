@@ -11,14 +11,15 @@ export default class HrefDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
+		const onClick = () => {
+			window.location.href = attributes.href;
+		};
 		if (USE_HIGHWAY) {
 			if (attributes.routerDisabled === undefined) {
 				scope.$emit('onHrefNode', node);
 			} else {
 				// console.log(attributes.routerDisabled, node);
-				node.addEventListener('click', () => {
-					window.location.href = attributes.href;
-				});
+				node.addEventListener('click', onClick);
 			}
 			return;
 		} else {
@@ -72,6 +73,9 @@ export default class HrefDirective {
 				node.removeEventListener('click', onClick);
 			});
 		}
+		element.on('$destroy', () => {
+			node.removeEventListener('click', onClick);
+		});
 		return;
 	}
 

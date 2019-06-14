@@ -18,6 +18,7 @@ class RootCtrl {
 	onInit(brand) {
 		this.brand = brand;
 		this.webglEnabled = false; // this.domService.hasWebglSupport();
+		this.domService.addCustomRules();
 		/*
 		this.domService.smoothScroll$('.page').subscribe((top) => {
 			// console.log(top);
@@ -55,6 +56,9 @@ class RootCtrl {
 		}
 		if (this.direction === 1) {
 			classes['scrolled-down'] = true;
+		}
+		if (this.droppinIn) {
+			classes['droppin-in'] = true;
 		}
 		return classes;
 	}

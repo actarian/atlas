@@ -1,6 +1,5 @@
 [media],
 [video] {
-	cursor: pointer;
 
 	.overlay {
 		display: block;
@@ -158,6 +157,10 @@
 		}
 	}
 
+}
+
+[video] {
+	cursor: pointer;
 }
 
 @include media-breakpoint-up(sm) {
