@@ -22919,7 +22919,7 @@ function () {
         if (typeof callback === 'function') {
           setTimeout(function () {
             callback(img.src);
-          }, 1);
+          }, 10);
         }
       };
 
@@ -24100,8 +24100,7 @@ function () {
       var content = node.querySelector('.zoomable__content');
 
       var onClick = function onClick() {
-        console.log(scope);
-
+        // console.log(scope);
         var slides = _toConsumableArray(node.querySelectorAll('.swiper-slide'));
 
         if (node.classList.contains('zoomed')) {
@@ -24113,16 +24112,6 @@ function () {
             ease: Expo.easeInOut,
             // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
             onUpdate: function onUpdate() {
-              // window.dispatchEvent(new Event('resize'));
-
-              /*
-              if (document.createEvent) {
-              element.dispatchEvent(event);
-              } else {
-              element.fireEvent("on" + event.eventType, event);
-              }
-              */
-              // slides.forEach(x => x.style.width = content.style.width);
               scope.$broadcast('onResize');
             },
             onComplete: function onComplete() {
@@ -24136,10 +24125,7 @@ function () {
                 height: rect.height
               });
               node.classList.remove('zoomed');
-
-              _this.$timeout(function () {
-                scope.$parent.root.droppinIn = false;
-              });
+              scope.$emit('onDroppinIn', false);
             }
           });
         } else {
@@ -24154,11 +24140,7 @@ function () {
             height: rect.height
           });
           node.classList.add('zoomed');
-
-          _this.$timeout(function () {
-            scope.$parent.root.droppinIn = true;
-          });
-
+          scope.$emit('onDroppinIn', true);
           TweenMax.to(content, 0.3, {
             left: 0,
             top: 0,
@@ -24178,8 +24160,8 @@ function () {
       };
 
       var addListeners = function addListeners() {
-        triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger'));
-        console.log('ZoomableDirective', node, content, triggers);
+        triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger')); // console.log('ZoomableDirective', node, content, triggers);
+
         triggers.forEach(function (x) {
           return x.addEventListener('click', onClick);
         });
@@ -24194,7 +24176,7 @@ function () {
       };
 
       scope.$on('lastItem', function ($scope, item) {
-        console.log('lastItem');
+        // console.log('lastItem');
         removeListeners();
         addListeners();
       });
@@ -24206,9 +24188,9 @@ function () {
       });
 
       scope.onZoom = function (item) {
-        var rect = _rect.default.fromNode(content);
+        var rect = _rect.default.fromNode(content); // console.log(rect);
 
-        console.log(rect);
+
         TweenMax.set(node, {
           height: rect.height
         });
@@ -26404,6 +26386,12 @@ function () {
           overwrite: 'all'
         });
       }, 1000);
+      this.$scope.$on('onDroppinIn', function (scope, droppinIn) {
+        // console.log('onDroppinIn', droppinIn);
+        _this.$timeout(function () {
+          _this.droppinIn = droppinIn;
+        });
+      });
     }
   }, {
     key: "getClasses",

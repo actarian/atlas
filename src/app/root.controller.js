@@ -43,6 +43,12 @@ class RootCtrl {
 				overwrite: 'all'
 			});
 		}, 1000);
+		this.$scope.$on('onDroppinIn', (scope, droppinIn) => {
+			// console.log('onDroppinIn', droppinIn);
+			this.$timeout(() => {
+				this.droppinIn = droppinIn;
+			});
+		});
 	}
 
 	getClasses() {

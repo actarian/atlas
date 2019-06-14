@@ -121,7 +121,7 @@ export default class LazyDirective {
 			if (typeof callback === 'function') {
 				setTimeout(() => {
 					callback(img.src);
-				}, 1);
+				}, 10);
 			}
 		};
 		img.onerror = function(e) {
