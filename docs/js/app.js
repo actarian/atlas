@@ -24177,14 +24177,28 @@ function () {
         }
       };
 
-      scope.$on('lastItem', function ($scope, item) {
-        console.log('lastItem');
+      var addListeners = function addListeners() {
         triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger'));
         console.log('ZoomableDirective', node, content, triggers);
         triggers.forEach(function (x) {
           return x.addEventListener('click', onClick);
         });
+      };
+
+      var removeListeners = function removeListeners() {
+        if (triggers) {
+          triggers.forEach(function (x) {
+            return x.removeEventListener('click', onClick);
+          });
+        }
+      };
+
+      scope.$on('lastItem', function ($scope, item) {
+        console.log('lastItem');
+        removeListeners();
+        addListeners();
       });
+      addListeners();
       element.on('$destroy', function () {
         triggers.forEach(function (x) {
           return x.removeEventListener('click', onClick);

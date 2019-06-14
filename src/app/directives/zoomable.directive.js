@@ -80,12 +80,22 @@ export default class ZoomableDirective {
 				});
 			}
 		};
-		scope.$on('lastItem', ($scope, item) => {
-			console.log('lastItem');
+		const addListeners = () => {
 			triggers = [...node.querySelectorAll('.zoomable__trigger')];
 			console.log('ZoomableDirective', node, content, triggers);
 			triggers.forEach(x => x.addEventListener('click', onClick));
+		};
+		const removeListeners = () => {
+			if (triggers) {
+				triggers.forEach(x => x.removeEventListener('click', onClick));
+			}
+		};
+		scope.$on('lastItem', ($scope, item) => {
+			console.log('lastItem');
+			removeListeners();
+			addListeners();
 		});
+		addListeners();
 		element.on('$destroy', () => {
 			triggers.forEach(x => x.removeEventListener('click', onClick));
 		});

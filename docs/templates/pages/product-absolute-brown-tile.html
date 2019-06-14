@@ -21,10 +21,32 @@
 	<div class="container">
 		<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }">
 			<div class="zoomable__content">
+
+				<div class="tile aspect--240x120" ng-if="false">
+					<div class="picture zoomable__trigger">
+						<img lazy data-src="img/product/marvel/absolute-brown-tile/240x120-01.jpg" alt="title" />
+						<div class="width"><span>240 cm</span></div>
+						<div class="height"><span>120 cm</span></div>
+					</div>
+				</div>
+				<div class="row" ng-if="false">
+					<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
+						<div class="group group--tile">
+							<button type="button" class="btn btn--search zoomable__trigger"><svg class="icon icon--search">
+						<use xlink:href="#search"></use>
+					</svg></button>
+							<div>Available in <b>5 patterns</b></div>
+							<button type="button" class="btn btn--wishlist"><svg class="icon icon--wishlist">
+						<use xlink:href="#wishlist"></use>
+					</svg></button>
+						</div>
+					</div>
+				</div>
+
 				<!-- Swiper -->
-				<div class="swiper-container" swiper-tile appear>
+				<div class="swiper-container" swiper-tile appear ng-if="true">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide" last-item ng-repeat="item in [1,2,3] track by $index">
+						<div class="swiper-slide" last-item ng-repeat="item in [1, 2, 3] track by $index">
 							<div class="tile aspect--240x120">
 								<div class="picture zoomable__trigger">
 									<img lazy data-src="img/product/marvel/absolute-brown-tile/240x120-0{{item}}.jpg" alt="title" />
@@ -38,23 +60,25 @@
 					<div class="swiper-pagination swiper-pagination-white"></div>
 					<!-- Add Navigation -->
 					<!--
-					<div class="swiper-button-prev swiper-button-white"></div>
-					<div class="swiper-button-next swiper-button-white"></div>
-					-->
+						<div class="swiper-button-prev swiper-button-white"></div>
+						<div class="swiper-button-next swiper-button-white"></div>
+						-->
 					<div class="row">
 						<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
 							<div class="group group--tile">
 								<button type="button" class="btn btn--search zoomable__trigger"><svg class="icon icon--search">
-								<use xlink:href="#search"></use>
-							</svg></button>
+									<use xlink:href="#search"></use>
+								</svg></button>
 								<div>Available in <b>5 patterns</b></div>
 								<button type="button" class="btn btn--wishlist"><svg class="icon icon--wishlist">
-								<use xlink:href="#wishlist"></use>
-							</svg></button>
+									<use xlink:href="#wishlist"></use>
+								</svg></button>
 							</div>
 						</div>
 					</div>
 				</div>
+
+
 			</div>
 		</div>
 		<div class="row">
