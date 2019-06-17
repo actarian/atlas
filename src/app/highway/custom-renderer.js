@@ -4,7 +4,8 @@
 import Highway from '@dogstudio/highway';
 import GtmService from '../gtm/gtm.service';
 
-let first = true;
+let first = true,
+	destroyFirst = true;
 
 export default class CustomRenderer extends Highway.Renderer {
 
@@ -45,15 +46,26 @@ export default class CustomRenderer extends Highway.Renderer {
 
 	// This method in the renderer is run when transition to hide the data-router-view is called.
 	onLeave() {
-		// console.log('onLeave');
+		// console.log('onLeave', first);
+		if (first) {
+			first = false;
+			const view = [...document.querySelectorAll('.view')].shift();
+			const element = angular.element(view.childNodes);
+			// console.log(view, element);
+			element.on('$destroy', (event) => {
+				console.log('.view -> $destroy', event);
+			});
+		}
 	}
 
 	// This method in the renderer is run when the transition to display the data-router-view is done.
 	onEnterCompleted() {
 		// console.log('onEnterCompleted');
+		/*
 		if (first) {
 			first = false;
 		}
+		*/
 	}
 
 	// This method in the renderer is run when the data-router-view is removed from the DOM Tree.
@@ -73,4 +85,41 @@ export default class CustomRenderer extends Highway.Renderer {
 		});
 		*/
 	}
+
+	static $destroy(from) {
+		// console.log('CustomRenderer.destroy', destroyFirst, this.content, this.$newScope);
+		if (destroyFirst && false) {
+			destroyFirst = false;
+			const element = angular.element(from);
+			const scope = element.scope();
+			const scopes = this.collectScopes(scope);
+			scopes.sort((a, b) => b.$id - a.$id);
+			scopes.forEach(x => x.$destroy());
+			// console.log(scopes);
+		}
+		if (this.content) {
+			this.content.remove();
+			this.content = null;
+		}
+		if (this.$newScope) {
+			this.$newScope.$destroy();
+			this.$newScope = null;
+		}
+		from.remove();
+	}
+
+	static collectScopes(scope, scopes) {
+		scopes = scopes || [];
+		if (scope) {
+			let child = scope && scope.$$childHead;
+			while (child) {
+				scopes.push(child);
+				scopes = this.collectScopes(child, scopes);
+				child = child.$$nextSibling;
+			}
+			// console.log(scopes);
+		}
+		return scopes;
+	}
+
 }

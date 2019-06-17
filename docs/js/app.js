@@ -21593,6 +21593,8 @@ var _storage = require("./shared/storage.service");
 
 var _storeLocator = _interopRequireDefault(require("./store-locator/store-locator.controller"));
 
+var _wishlist3 = _interopRequireDefault(require("./wishlist/wishlist.controller"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
@@ -21607,7 +21609,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
 app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory) // .directive('transition', TransitionDirective.factory)
 .directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('visibility', _visibility.default.factory).directive('wishlist', _wishlist.default.factory).directive('zoomable', _zoomable.default.factory);
-app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default);
+app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default).controller('WishlistCtrl', _wishlist3.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $rootScope) {
@@ -21616,7 +21618,7 @@ app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $ro
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/video.directive":219,"./directives/visibility.directive":220,"./directives/wishlist.directive":221,"./directives/zoomable.directive":222,"./faq/faq.controller":223,"./filters/image-with-features.filter":224,"./filters/notIn.filter":225,"./filters/trusted.filter":226,"./forms/control-messages.directive":227,"./forms/control.directive":228,"./forms/validate.directive":229,"./highway/highway.directive":232,"./magazine/magazine.controller":234,"./moodboard/moodboard-dropdown.directive":235,"./moodboard/moodboard-search.directive":236,"./moodboard/moodboard-section.controller":237,"./moodboard/moodboard.controller":238,"./news/news.controller":239,"./references/references.controller":240,"./root.controller":241,"./services/api.service":242,"./services/dom.service":243,"./services/wishlist.service":244,"./shared/location.service":245,"./shared/promise.service":246,"./shared/state.service":249,"./shared/storage.service":250,"./store-locator/store-locator.controller":251}],202:[function(require,module,exports){
+},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/video.directive":219,"./directives/visibility.directive":220,"./directives/wishlist.directive":221,"./directives/zoomable.directive":222,"./faq/faq.controller":223,"./filters/image-with-features.filter":224,"./filters/notIn.filter":225,"./filters/trusted.filter":226,"./forms/control-messages.directive":227,"./forms/control.directive":228,"./forms/validate.directive":229,"./highway/highway.directive":232,"./magazine/magazine.controller":234,"./moodboard/moodboard-dropdown.directive":235,"./moodboard/moodboard-search.directive":236,"./moodboard/moodboard-section.controller":237,"./moodboard/moodboard.controller":238,"./news/news.controller":239,"./references/references.controller":240,"./root.controller":241,"./services/api.service":242,"./services/dom.service":243,"./services/wishlist.service":244,"./shared/location.service":245,"./shared/promise.service":246,"./shared/state.service":249,"./shared/storage.service":250,"./store-locator/store-locator.controller":251,"./wishlist/wishlist.controller":252}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22166,6 +22168,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var GlslCanvasDirective =
 /*#__PURE__*/
 function () {
+  /*
+  removed "node_modules/glsl-canvas-js/dist/glsl-canvas.js",
+  from gulpfile.config.json
+  */
   function GlslCanvasDirective(DomService) {
     _classCallCheck(this, GlslCanvasDirective);
 
@@ -23936,6 +23942,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _operators = require("rxjs/operators");
+
 var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23960,17 +23968,17 @@ function () {
     key: "link",
     value: function link(scope, element, attributes, controller) {
       var node = element[0];
-      var subscription = this.domService.visibility$(node).subscribe(function (visible) {
-        if (visible) {
-          // console.log('visibility', attributes.visibility, node.classList);
-          var gtmEvent = {
-            event: 'ElementVisibilityCustomEvent',
-            element: attributes.visibility,
-            classes: node.getAttribute('class')
-          }; // console.log(gtmEvent);
+      var subscription = this.domService.visibility$(node).pipe((0, _operators.filter)(function (visible) {
+        return visible;
+      }), (0, _operators.first)()).subscribe(function (visible) {
+        // console.log('visibility', attributes.visibility, node.classList);
+        var gtmEvent = {
+          event: 'ElementVisibilityCustomEvent',
+          element: attributes.visibility,
+          classes: node.getAttribute('class')
+        }; // console.log(gtmEvent);
 
-          _gtm.default.push(gtmEvent);
-        }
+        _gtm.default.push(gtmEvent);
       });
       element.on('$destroy', function () {
         subscription.unsubscribe();
@@ -23989,7 +23997,7 @@ function () {
 exports.default = VisibilityDirective;
 VisibilityDirective.factory.$inject = ['DomService'];
 
-},{"../gtm/gtm.service":230}],221:[function(require,module,exports){
+},{"../gtm/gtm.service":230,"rxjs/operators":198}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24009,7 +24017,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var WishlistDirective =
 /*#__PURE__*/
 function () {
-  function WishlistDirective(ApiService) {
+  function WishlistDirective(WishlistService) {
     _classCallCheck(this, WishlistDirective);
 
     this.wishlistService = WishlistService;
@@ -25094,7 +25102,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var first = true;
+var first = true,
+    destroyFirst = true;
 
 var CustomRenderer =
 /*#__PURE__*/
@@ -25148,17 +25157,31 @@ function (_Highway$Renderer) {
 
   }, {
     key: "onLeave",
-    value: function onLeave() {} // console.log('onLeave');
-    // This method in the renderer is run when the transition to display the data-router-view is done.
+    value: function onLeave() {
+      // console.log('onLeave', first);
+      if (first) {
+        first = false;
+
+        var view = _toConsumableArray(document.querySelectorAll('.view')).shift();
+
+        var element = angular.element(view.childNodes); // console.log(view, element);
+
+        element.on('$destroy', function (event) {
+          console.log('.view -> $destroy', event);
+        });
+      }
+    } // This method in the renderer is run when the transition to display the data-router-view is done.
 
   }, {
     key: "onEnterCompleted",
-    value: function onEnterCompleted() {
-      // console.log('onEnterCompleted');
-      if (first) {
-        first = false;
-      }
-    } // This method in the renderer is run when the data-router-view is removed from the DOM Tree.
+    value: function onEnterCompleted() {} // console.log('onEnterCompleted');
+
+    /*
+    if (first) {
+    	first = false;
+    }
+    */
+    // This method in the renderer is run when the data-router-view is removed from the DOM Tree.
 
   }, {
     key: "onLeaveCompleted",
@@ -25178,6 +25201,53 @@ function (_Highway$Renderer) {
       	scope.root.menuProductOpened = false;
       });
       */
+    }
+  }], [{
+    key: "$destroy",
+    value: function $destroy(from) {
+      // console.log('CustomRenderer.destroy', destroyFirst, this.content, this.$newScope);
+      if (destroyFirst && false) {
+        destroyFirst = false;
+        var element = angular.element(from);
+        var scope = element.scope();
+        var scopes = this.collectScopes(scope);
+        scopes.sort(function (a, b) {
+          return b.$id - a.$id;
+        });
+        scopes.forEach(function (x) {
+          return x.$destroy();
+        }); // console.log(scopes);
+      }
+
+      if (this.content) {
+        this.content.remove();
+        this.content = null;
+      }
+
+      if (this.$newScope) {
+        this.$newScope.$destroy();
+        this.$newScope = null;
+      }
+
+      from.remove();
+    }
+  }, {
+    key: "collectScopes",
+    value: function collectScopes(scope, scopes) {
+      scopes = scopes || [];
+
+      if (scope) {
+        var child = scope && scope.$$childHead;
+
+        while (child) {
+          scopes.push(child);
+          scopes = this.collectScopes(child, scopes);
+          child = child.$$nextSibling;
+        } // console.log(scopes);
+
+      }
+
+      return scopes;
     }
   }]);
 
@@ -25381,19 +25451,8 @@ function (_Highway$Transition) {
       });
       window.scrollTo(0, 0);
 
-      if (_customRenderer.default.content) {
-        _customRenderer.default.content.remove();
+      _customRenderer.default.$destroy(from);
 
-        _customRenderer.default.content = null;
-      }
-
-      if (_customRenderer.default.$newScope) {
-        _customRenderer.default.$newScope.$destroy();
-
-        _customRenderer.default.$newScope = null;
-      }
-
-      from.remove();
       TweenMax.to(to, 0.6, {
         opacity: 1,
         delay: 0.250,
@@ -26329,31 +26388,45 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _rxjs = require("rxjs");
+
+var _operators = require("rxjs/operators");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var RootCtrl =
 /*#__PURE__*/
 function () {
-  function RootCtrl($scope, $timeout, DomService, ApiService) {
+  function RootCtrl($scope, $timeout, DomService, ApiService, WishlistService) {
+    var _this = this;
+
     _classCallCheck(this, RootCtrl);
 
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.domService = DomService;
     this.apiService = ApiService;
+    this.wishlistService = WishlistService;
+    this.unsubscribe = new _rxjs.Subject();
+    this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (count) {
+      _this.wishlistCount = count;
+    });
+    $scope.$on('destroy', function () {
+      // console.log('destroy');
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
+    });
   }
 
   _createClass(RootCtrl, [{
     key: "onInit",
     value: function onInit(brand) {
-      var _this = this;
+      var _this2 = this;
 
       this.brand = brand;
       this.webglEnabled = false; // this.domService.hasWebglSupport();
@@ -26369,16 +26442,16 @@ function () {
         // console.log(event.scroll.direction, event.intersection);
         var scrolled = event.scroll.scrollTop > 40;
 
-        if (_this.scrolled !== scrolled || _this.direction !== event.scroll.direction) {
-          _this.$timeout(function () {
-            _this.scrolled = scrolled;
-            _this.direction = event.scroll.direction;
+        if (_this2.scrolled !== scrolled || _this2.direction !== event.scroll.direction) {
+          _this2.$timeout(function () {
+            _this2.scrolled = scrolled;
+            _this2.direction = event.scroll.direction;
           });
         }
       };
 
       this.$timeout(function () {
-        _this.init = true;
+        _this2.init = true;
         var view = document.querySelector('.view');
         TweenMax.to(view, 0.6, {
           opacity: 1,
@@ -26388,8 +26461,8 @@ function () {
       }, 1000);
       this.$scope.$on('onDroppinIn', function (scope, droppinIn) {
         // console.log('onDroppinIn', droppinIn);
-        _this.$timeout(function () {
-          _this.droppinIn = droppinIn;
+        _this2.$timeout(function () {
+          _this2.droppinIn = droppinIn;
         });
       });
     }
@@ -26432,12 +26505,12 @@ function () {
   }, {
     key: "toggleNav",
     value: function toggleNav(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.nav = this.nav === id ? null : id;
       this.closeNav().then(function () {
-        if (_this2.nav) {
-          _this2.openNav(_this2.nav);
+        if (_this3.nav) {
+          _this3.openNav(_this3.nav);
         }
       });
     }
@@ -26497,11 +26570,11 @@ function () {
   }, {
     key: "onDroppedIn",
     value: function onDroppedIn(node) {
-      var _this3 = this;
+      var _this4 = this;
 
       // console.log('onDroppedIn', node);
       return new Promise(function (resolve, reject) {
-        _this3.droppinIn = true;
+        _this4.droppinIn = true;
         var items = [].slice.call(node.querySelectorAll('.submenu__item'));
         TweenMax.set(items, {
           opacity: 0
@@ -26526,7 +26599,7 @@ function () {
             }); // TweenMax.set(node, { clearProps: 'all' });
 
             if (items.length === 0) {
-              _this3.droppinIn = false;
+              _this4.droppinIn = false;
             }
           }
         });
@@ -26537,7 +26610,7 @@ function () {
             stagger: 0.07,
             delay: 0.5,
             onComplete: function onComplete() {
-              _this3.droppinIn = false;
+              _this4.droppinIn = false;
             }
           });
         }
@@ -26567,11 +26640,11 @@ function () {
   return RootCtrl;
 }();
 
-RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
+RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService', 'WishlistService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{}],242:[function(require,module,exports){
+},{"rxjs":2,"rxjs/operators":198}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26603,9 +26676,15 @@ function () {
         }
       },
       wishlist: {
+        get: function get() {
+          return (0, _rxjs.from)($http.get('data/moodboard.json'));
+        },
         toggle: function toggle(item) {
           item.added = !item.added;
           return Promise.resolve(item);
+        },
+        clearAll: function clearAll() {
+          return Promise.resolve();
         }
       },
       moodboard: {
@@ -27017,22 +27096,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _rxjs = require("rxjs");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
 var WishlistService =
 /*#__PURE__*/
 function () {
-  function WishlistService(PromiseService, StorageService, ApiService) {
+  function WishlistService($http, PromiseService, StorageService, ApiService) {
     _classCallCheck(this, WishlistService);
 
+    this.$http = $http;
     this.promise = PromiseService;
     this.storage = StorageService;
-    this.api = ApiService; // console.log('WishlistService', this.storage);
+    this.api = ApiService;
+    this.count$ = WishlistService.count$;
+    var count = this.wishlist.length; // console.log('WishlistService', this.storage);
   }
 
   _createClass(WishlistService, [{
@@ -27091,11 +27174,36 @@ function () {
       }
     }
   }, {
+    key: "clearAll",
+    value: function clearAll() {
+      var _this3 = this;
+
+      return (0, _rxjs.from)(this.promise.make(function (promise) {
+        var wishlist = [];
+        _this3.wishlist = wishlist;
+        promise.resolve(wishlist);
+      }));
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      var _this4 = this;
+
+      return (0, _rxjs.from)(this.$http.get('data/moodboard.json').then(function (success) {
+        if (success.data) {
+          _this4.wishlist = success.data;
+        }
+
+        return success;
+      }));
+    }
+  }, {
     key: "wishlist",
     get: function get() {
       if (!this.wishlist_) {
         var wishlist = this.storage.get('wishlist');
         this.wishlist_ = wishlist || [];
+        WishlistService.count$.next(this.wishlist_.length);
       }
 
       return this.wishlist_;
@@ -27103,11 +27211,12 @@ function () {
     set: function set(wishlist) {
       this.wishlist_ = wishlist || [];
       this.storage.set('wishlist', this.wishlist_);
+      WishlistService.count$.next(this.wishlist_.length);
     }
   }], [{
     key: "factory",
-    value: function factory(PromiseService, StorageService, ApiService) {
-      return new WishlistService(PromiseService, StorageService, ApiService);
+    value: function factory($http, PromiseService, StorageService, ApiService) {
+      return new WishlistService($http, PromiseService, StorageService, ApiService);
     }
   }]);
 
@@ -27115,9 +27224,10 @@ function () {
 }();
 
 exports.default = WishlistService;
-WishlistService.factory.$inject = ['PromiseService', 'LocalStorageService', 'ApiService'];
+WishlistService.count$ = new _rxjs.BehaviorSubject(0);
+WishlistService.factory.$inject = ['$http', 'PromiseService', 'LocalStorageService', 'ApiService'];
 
-},{}],245:[function(require,module,exports){
+},{"rxjs":2}],245:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28514,6 +28624,136 @@ function () {
 
 StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = StoreLocatorCtrl;
+exports.default = _default;
+
+},{"rxjs":2,"rxjs/operators":198}],252:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.ITEMS_PER_PAGE = exports.MOOD_TYPES = void 0;
+
+var _rxjs = require("rxjs");
+
+var _operators = require("rxjs/operators");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var MOOD_TYPES = Object.freeze({
+  Tile: 1,
+  Horizontal: 2,
+  Vertical: 3,
+  Card: 4
+});
+exports.MOOD_TYPES = MOOD_TYPES;
+var ITEMS_PER_PAGE = 20;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
+
+var WishlistCtrl =
+/*#__PURE__*/
+function () {
+  function WishlistCtrl($scope, $timeout, WishlistService) {
+    var _this = this;
+
+    _classCallCheck(this, WishlistCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.wishlistService = WishlistService;
+    this.items = [];
+    this.moodTypes = MOOD_TYPES;
+    this.unsubscribe = new _rxjs.Subject();
+    this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (count) {
+      return _this.count = count;
+    });
+    $scope.$on('destroy', function () {
+      // console.log('destroy');
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
+    });
+    this.load();
+  }
+
+  _createClass(WishlistCtrl, [{
+    key: "load",
+    value: function load() {
+      var _this2 = this;
+
+      this.wishlistService.get().subscribe(function (success) {
+        console.log('WishlistCtrl.load', success.data);
+
+        if (success.data) {
+          var items = success.data.slice();
+          /* FAKE */
+
+          /*
+          while (items.length < 200) {
+          	items = items.concat(items);
+          }
+          items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
+          */
+
+          /* FAKE */
+
+          _this2.items = [];
+          _this2.visibleItems = [];
+          _this2.maxItems = ITEMS_PER_PAGE;
+
+          _this2.$timeout(function () {
+            _this2.items = items;
+            _this2.visibleItems = items.slice(0, _this2.maxItems);
+          }, 50);
+        }
+      }, function (error) {
+        return console.log('WishlistCtrl.load.error', error);
+      });
+    }
+  }, {
+    key: "clearAll",
+    value: function clearAll() {
+      var _this3 = this;
+
+      this.wishlistService.clearAll().subscribe(function (success) {
+        _this3.items = [];
+        _this3.visibleItems = [];
+        _this3.maxItems = ITEMS_PER_PAGE;
+      }, function (error) {
+        return console.log('WishlistCtrl.clearAll.error', error);
+      });
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this4 = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.items.length) {
+          this.$timeout(function () {
+            _this4.busy = true;
+
+            _this4.$timeout(function () {
+              _this4.maxItems += ITEMS_PER_PAGE;
+              _this4.visibleItems = _this4.items.slice(0, _this4.maxItems);
+              _this4.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
+      }
+    }
+  }]);
+
+  return WishlistCtrl;
+}();
+
+WishlistCtrl.$inject = ['$scope', '$timeout', 'WishlistService'];
+var _default = WishlistCtrl;
 exports.default = _default;
 
 },{"rxjs":2,"rxjs/operators":198}]},{},[200]);

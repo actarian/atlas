@@ -4,7 +4,7 @@
 export default class WishlistDirective {
 
 	constructor(
-		ApiService
+		WishlistService
 	) {
 		this.wishlistService = WishlistService;
 		this.restrict = 'E';

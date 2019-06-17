@@ -9,15 +9,7 @@ export default class PageTransition extends Highway.Transition {
 		// console.log('PageTransition.in');
 		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
 		window.scrollTo(0, 0);
-		if (CustomRenderer.content) {
-			CustomRenderer.content.remove();
-			CustomRenderer.content = null;
-		}
-		if (CustomRenderer.$newScope) {
-			CustomRenderer.$newScope.$destroy();
-			CustomRenderer.$newScope = null;
-		}
-		from.remove();
+		CustomRenderer.$destroy(from);
 		TweenMax.to(to, 0.6, {
 			opacity: 1,
 			delay: 0.250,

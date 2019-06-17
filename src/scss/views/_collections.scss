@@ -341,6 +341,16 @@
 		color: $foreground;
 	}
 
+	.abstract {
+		font-size: 24px;
+		line-height: 1.4;
+		font-weight: $font-light;
+
+		b {
+			font-weight: $font-semibold;
+		}
+	}
+
 	@include media-breakpoint-up(sm) {
 		padding-top: 120px;
 

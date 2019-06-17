@@ -132,6 +132,7 @@
 
 .nav--secondary {
 	&>li {
+		position: relative;
 
 		&>a,
 		&>span {
@@ -149,6 +150,21 @@
 			&>span {
 				color: $foreground-negative;
 			}
+		}
+
+		&>.wishlist--badge {
+			position: absolute;
+			top: 50%;
+			right: -16px;
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			font-size: 10px;
+			text-align: center;
+			line-height: 18px;
+			margin-top: -13px;
+			background: $background;
+			color: $foreground !important;
 		}
 
 	}

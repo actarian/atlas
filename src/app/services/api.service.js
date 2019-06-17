@@ -17,9 +17,15 @@ export default class ApiService {
 				},
 			},
 			wishlist: {
+				get: () => {
+					return from($http.get('data/moodboard.json'));
+				},
 				toggle: (item) => {
 					item.added = !item.added;
 					return Promise.resolve(item);
+				},
+				clearAll: () => {
+					return Promise.resolve();
 				},
 			},
 			moodboard: {

@@ -352,6 +352,7 @@ button,
 
 .btn--link, .btn--link-secondary, .nav--faq-menu > li > a {
   position: relative;
+  padding: 0;
   font-size: 15px;
   font-weight: var(--font-semibold); }
   .btn--link, .btn--link-secondary, .nav--faq-menu > li > a, .btn--link:active, .btn--link-secondary:active, .nav--faq-menu > li > a:active, .btn--link:focus, .btn--link-secondary:focus, .nav--faq-menu > li > a:focus, .btn--link:hover, .btn--link-secondary:hover, .nav--faq-menu > li > a:hover, .btn--link:visited, .btn--link-secondary:visited, .nav--faq-menu > li > a:visited {
@@ -3960,18 +3961,32 @@ page-transition {
   .nav--primary > li + li {
     margin-left: 0; } }
 
-.nav--secondary > li > a,
-.nav--secondary > li > span {
-  font-size: 13px;
-  font-weight: var(--font-semibold);
-  color: var(--nav-header);
-  cursor: pointer; }
-
-.nav--secondary > li:hover > a,
-.nav--secondary > li:hover > span, .nav--secondary > li:active > a,
-.nav--secondary > li:active > span, .nav--secondary > li.active > a,
-.nav--secondary > li.active > span {
-  color: var(--foreground-negative); }
+.nav--secondary > li {
+  position: relative; }
+  .nav--secondary > li > a,
+  .nav--secondary > li > span {
+    font-size: 13px;
+    font-weight: var(--font-semibold);
+    color: var(--nav-header);
+    cursor: pointer; }
+  .nav--secondary > li:hover > a,
+  .nav--secondary > li:hover > span, .nav--secondary > li:active > a,
+  .nav--secondary > li:active > span, .nav--secondary > li.active > a,
+  .nav--secondary > li.active > span {
+    color: var(--foreground-negative); }
+  .nav--secondary > li > .wishlist--badge {
+    position: absolute;
+    top: 50%;
+    right: -16px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 10px;
+    text-align: center;
+    line-height: 18px;
+    margin-top: -13px;
+    background: var(--background);
+    color: var(--foreground) !important; }
 
 .nav--secondary svg {
   fill: var(--nav-header);
@@ -5603,6 +5618,12 @@ page-transition {
     margin-bottom: 40px; }
   .section--collections .title {
     color: var(--foreground); }
+  .section--collections .abstract {
+    font-size: 24px;
+    line-height: 1.4;
+    font-weight: var(--font-light); }
+    .section--collections .abstract b {
+      font-weight: var(--font-semibold); }
   @media (min-width: 860px) {
     .section--collections {
       padding-top: 120px; }

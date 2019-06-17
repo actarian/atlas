@@ -5,6 +5,11 @@ import { FRAGMENT_SHADER } from "../shared/shader";
 
 export default class GlslCanvasDirective {
 
+	/*
+	removed "node_modules/glsl-canvas-js/dist/glsl-canvas.js",
+	from gulpfile.config.json
+	*/
+
 	constructor(
 		DomService
 	) {

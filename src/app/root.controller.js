@@ -1,18 +1,34 @@
 ﻿/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+
 class RootCtrl {
 
 	constructor(
 		$scope,
 		$timeout,
 		DomService,
-		ApiService
+		ApiService,
+		WishlistService
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
 		this.domService = DomService;
 		this.apiService = ApiService;
+		this.wishlistService = WishlistService;
+		this.unsubscribe = new Subject();
+		this.wishlistService.count$.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(count => {
+			this.wishlistCount = count;
+		});
+		$scope.$on('destroy', () => {
+			// console.log('destroy');
+			this.unsubscribe.next();
+			this.unsubscribe.complete();
+		});
 	}
 
 	onInit(brand) {
@@ -189,6 +205,6 @@ class RootCtrl {
 
 }
 
-RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
+RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService', 'WishlistService'];
 
 export default RootCtrl;

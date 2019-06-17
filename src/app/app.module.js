@@ -48,6 +48,7 @@ import PromiseService from './shared/promise.service';
 import StateService from './shared/state.service';
 import { CookieService, LocalStorageService, SessionStorageService } from './shared/storage.service';
 import StoreLocatorCtrl from './store-locator/store-locator.controller';
+import WishlistCtrl from './wishlist/wishlist.controller';
 
 const MODULE_NAME = 'app';
 
@@ -107,7 +108,8 @@ app.controller('RootCtrl', RootCtrl)
 	.controller('MoodboardSectionCtrl', MoodboardSectionCtrl)
 	.controller('NewsCtrl', NewsCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)
-	.controller('StoreLocatorCtrl', StoreLocatorCtrl);
+	.controller('StoreLocatorCtrl', StoreLocatorCtrl)
+	.controller('WishlistCtrl', WishlistCtrl);
 
 app.filter('imageWithFeatures', [ImageWithFeatures])
 	.filter('notIn', ['$filter', NotInFilter])
