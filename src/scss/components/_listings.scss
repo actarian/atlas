@@ -191,11 +191,17 @@
 		margin-bottom: 55px;
 		cursor: pointer;
 
-		.picture {
+		&>.picture {
+			@include as-aspect-clip();
 			margin-bottom: 20px;
 			background: $background;
 			border: 1px solid #898c8e;
 			transition: all ease-in-out 400ms;
+
+			&>img {
+				width: 100%;
+				object-fit: cover;
+			}
 		}
 
 		&:not(:hover) {
@@ -219,28 +225,18 @@
 
 		.aspect--#{$w}x#{$h} {
 
-			&>.picture {
-				&>img {
-					width: 100%;
-					object-fit: cover;
-				}
-			}
-
 			@include media-breakpoint-up(sm) {
 				width: 0.26% * $w;
 				flex: 0 0 0.26% * $w;
 
 				&>.picture {
-					@include aspect-clip($w, $h);
-					width: 100%;
+					@include as-aspect-clip-size($w, $h);
 				}
 			}
 
 			@include media-breakpoint-down(xs) {
-				width: 100%;
-
 				&>.picture {
-					@include aspect-clip($w, $h * (0.36 * $w / 100));
+					@include as-aspect-clip-size($w, $h * (0.36 * $w / 100));
 					width: 0.36% * $w;
 				}
 			}
@@ -262,6 +258,11 @@
 			}
 		}
 
+		&>.listing__item {
+			&>.picture {
+				width: 100%;
+			}
+		}
 	}
 
 	@include media-breakpoint-down(xs) {
@@ -269,6 +270,7 @@
 
 		&>.listing__item {
 			display: block;
+			width: 100%;
 		}
 
 	}

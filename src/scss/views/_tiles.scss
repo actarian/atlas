@@ -55,6 +55,22 @@
 		}
 	}
 
+	.tile {
+		width: 100%;
+		margin: 0 auto;
+
+		&>.picture {
+			@include as-aspect-clip();
+			width: 100%;
+			overflow: visible;
+
+			&>img {
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+
 	$widths: 278 120 240 75 150 30 60 90;
 	$heights: 120 120 120 75 75 60 60 45;
 
@@ -63,19 +79,10 @@
 		$h: nth($heights, $i);
 
 		.aspect--#{$w}x#{$h} {
-			width: 100%;
 			max-width: calc(#{$w} / #{$h} * 100vh - 140px);
-			margin: 0 auto;
 
 			&>.picture {
-				@include aspect-clip($w, $h);
-				width: 100%;
-				overflow: visible;
-
-				&>img {
-					width: 100%;
-					object-fit: cover;
-				}
+				@include as-aspect-clip-size($w, $h);
 			}
 		}
 	}
@@ -136,6 +143,10 @@
 	}
 
 	@include media-breakpoint-down(xs) {
+		.tile {
+			padding: 0;
+		}
+
 		.swiper-container {
 			margin-left: -30px;
 			margin-right: -30px;
@@ -151,10 +162,6 @@
 
 		.swiper-slide {
 			padding: 30px 30px 0 30px;
-		}
-
-		.tile {
-			padding: 0;
 		}
 
 		.picture {

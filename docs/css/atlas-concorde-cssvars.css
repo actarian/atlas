@@ -3081,22 +3081,36 @@ canvas {
     margin-right: 30px;
     margin-bottom: 55px;
     cursor: pointer; }
-    .listing--sizes > .listing__item .picture {
+    .listing--sizes > .listing__item > .picture {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
       margin-bottom: 20px;
       background: var(--background);
       border: 1px solid #898c8e;
       -webkit-transition: all ease-in-out 400ms;
       transition: all ease-in-out 400ms; }
+      .listing--sizes > .listing__item > .picture img,
+      .listing--sizes > .listing__item > .picture video,
+      .listing--sizes > .listing__item > .picture canvas,
+      .listing--sizes > .listing__item > .picture ng-transclude {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
+      .listing--sizes > .listing__item > .picture > img {
+        width: 100%;
+        -o-object-fit: cover;
+           object-fit: cover; }
     .listing--sizes > .listing__item:not(:hover) .picture {
       -webkit-box-shadow: none;
               box-shadow: none; }
     .listing--sizes > .listing__item .group--size {
       font-size: 14px;
       line-height: 24px; }
-  .listing--sizes .aspect--278x120 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
   @media (min-width: 860px) {
     .listing--sizes .aspect--278x120 {
       width: 72.28%;
@@ -3104,46 +3118,11 @@ canvas {
           -ms-flex: 0 0 72.28%;
               flex: 0 0 72.28%; }
       .listing--sizes .aspect--278x120 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 43.16547%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--278x120 > .picture img,
-        .listing--sizes .aspect--278x120 > .picture video,
-        .listing--sizes .aspect--278x120 > .picture canvas,
-        .listing--sizes .aspect--278x120 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 43.16547%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--278x120 {
-      width: 100%; }
-      .listing--sizes .aspect--278x120 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 43.2%;
-        overflow: hidden;
-        width: 100.08%; }
-        .listing--sizes .aspect--278x120 > .picture img,
-        .listing--sizes .aspect--278x120 > .picture video,
-        .listing--sizes .aspect--278x120 > .picture canvas,
-        .listing--sizes .aspect--278x120 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--120x120 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--278x120 > .picture {
+      padding-top: 43.2%;
+      width: 100.08%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--120x120 {
       width: 31.2%;
@@ -3151,46 +3130,11 @@ canvas {
           -ms-flex: 0 0 31.2%;
               flex: 0 0 31.2%; }
       .listing--sizes .aspect--120x120 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 100%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--120x120 > .picture img,
-        .listing--sizes .aspect--120x120 > .picture video,
-        .listing--sizes .aspect--120x120 > .picture canvas,
-        .listing--sizes .aspect--120x120 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 100%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--120x120 {
-      width: 100%; }
-      .listing--sizes .aspect--120x120 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 43.2%;
-        overflow: hidden;
-        width: 43.2%; }
-        .listing--sizes .aspect--120x120 > .picture img,
-        .listing--sizes .aspect--120x120 > .picture video,
-        .listing--sizes .aspect--120x120 > .picture canvas,
-        .listing--sizes .aspect--120x120 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--240x120 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--120x120 > .picture {
+      padding-top: 43.2%;
+      width: 43.2%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--240x120 {
       width: 62.4%;
@@ -3198,46 +3142,11 @@ canvas {
           -ms-flex: 0 0 62.4%;
               flex: 0 0 62.4%; }
       .listing--sizes .aspect--240x120 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 50%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--240x120 > .picture img,
-        .listing--sizes .aspect--240x120 > .picture video,
-        .listing--sizes .aspect--240x120 > .picture canvas,
-        .listing--sizes .aspect--240x120 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 50%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--240x120 {
-      width: 100%; }
-      .listing--sizes .aspect--240x120 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 43.2%;
-        overflow: hidden;
-        width: 86.4%; }
-        .listing--sizes .aspect--240x120 > .picture img,
-        .listing--sizes .aspect--240x120 > .picture video,
-        .listing--sizes .aspect--240x120 > .picture canvas,
-        .listing--sizes .aspect--240x120 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--75x75 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--240x120 > .picture {
+      padding-top: 43.2%;
+      width: 86.4%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--75x75 {
       width: 19.5%;
@@ -3245,46 +3154,11 @@ canvas {
           -ms-flex: 0 0 19.5%;
               flex: 0 0 19.5%; }
       .listing--sizes .aspect--75x75 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 100%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--75x75 > .picture img,
-        .listing--sizes .aspect--75x75 > .picture video,
-        .listing--sizes .aspect--75x75 > .picture canvas,
-        .listing--sizes .aspect--75x75 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 100%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--75x75 {
-      width: 100%; }
-      .listing--sizes .aspect--75x75 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 27%;
-        overflow: hidden;
-        width: 27%; }
-        .listing--sizes .aspect--75x75 > .picture img,
-        .listing--sizes .aspect--75x75 > .picture video,
-        .listing--sizes .aspect--75x75 > .picture canvas,
-        .listing--sizes .aspect--75x75 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--150x75 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--75x75 > .picture {
+      padding-top: 27%;
+      width: 27%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--150x75 {
       width: 39%;
@@ -3292,46 +3166,11 @@ canvas {
           -ms-flex: 0 0 39%;
               flex: 0 0 39%; }
       .listing--sizes .aspect--150x75 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 50%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--150x75 > .picture img,
-        .listing--sizes .aspect--150x75 > .picture video,
-        .listing--sizes .aspect--150x75 > .picture canvas,
-        .listing--sizes .aspect--150x75 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 50%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--150x75 {
-      width: 100%; }
-      .listing--sizes .aspect--150x75 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 27%;
-        overflow: hidden;
-        width: 54%; }
-        .listing--sizes .aspect--150x75 > .picture img,
-        .listing--sizes .aspect--150x75 > .picture video,
-        .listing--sizes .aspect--150x75 > .picture canvas,
-        .listing--sizes .aspect--150x75 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--30x60 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--150x75 > .picture {
+      padding-top: 27%;
+      width: 54%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--30x60 {
       width: 7.8%;
@@ -3339,46 +3178,11 @@ canvas {
           -ms-flex: 0 0 7.8%;
               flex: 0 0 7.8%; }
       .listing--sizes .aspect--30x60 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 200%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--30x60 > .picture img,
-        .listing--sizes .aspect--30x60 > .picture video,
-        .listing--sizes .aspect--30x60 > .picture canvas,
-        .listing--sizes .aspect--30x60 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 200%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--30x60 {
-      width: 100%; }
-      .listing--sizes .aspect--30x60 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 21.6%;
-        overflow: hidden;
-        width: 10.8%; }
-        .listing--sizes .aspect--30x60 > .picture img,
-        .listing--sizes .aspect--30x60 > .picture video,
-        .listing--sizes .aspect--30x60 > .picture canvas,
-        .listing--sizes .aspect--30x60 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--60x60 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--30x60 > .picture {
+      padding-top: 21.6%;
+      width: 10.8%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--60x60 {
       width: 15.6%;
@@ -3386,46 +3190,11 @@ canvas {
           -ms-flex: 0 0 15.6%;
               flex: 0 0 15.6%; }
       .listing--sizes .aspect--60x60 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 100%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--60x60 > .picture img,
-        .listing--sizes .aspect--60x60 > .picture video,
-        .listing--sizes .aspect--60x60 > .picture canvas,
-        .listing--sizes .aspect--60x60 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 100%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--60x60 {
-      width: 100%; }
-      .listing--sizes .aspect--60x60 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 21.6%;
-        overflow: hidden;
-        width: 21.6%; }
-        .listing--sizes .aspect--60x60 > .picture img,
-        .listing--sizes .aspect--60x60 > .picture video,
-        .listing--sizes .aspect--60x60 > .picture canvas,
-        .listing--sizes .aspect--60x60 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
-  .listing--sizes .aspect--90x45 > .picture > img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover; }
+    .listing--sizes .aspect--60x60 > .picture {
+      padding-top: 21.6%;
+      width: 21.6%; } }
   @media (min-width: 860px) {
     .listing--sizes .aspect--90x45 {
       width: 23.4%;
@@ -3433,42 +3202,11 @@ canvas {
           -ms-flex: 0 0 23.4%;
               flex: 0 0 23.4%; }
       .listing--sizes .aspect--90x45 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 50%;
-        overflow: hidden;
-        width: 100%; }
-        .listing--sizes .aspect--90x45 > .picture img,
-        .listing--sizes .aspect--90x45 > .picture video,
-        .listing--sizes .aspect--90x45 > .picture canvas,
-        .listing--sizes .aspect--90x45 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+        padding-top: 50%; } }
   @media (max-width: 859.98px) {
-    .listing--sizes .aspect--90x45 {
-      width: 100%; }
-      .listing--sizes .aspect--90x45 > .picture {
-        position: relative;
-        width: 100%;
-        padding-top: 16.2%;
-        overflow: hidden;
-        width: 32.4%; }
-        .listing--sizes .aspect--90x45 > .picture img,
-        .listing--sizes .aspect--90x45 > .picture video,
-        .listing--sizes .aspect--90x45 > .picture canvas,
-        .listing--sizes .aspect--90x45 > .picture ng-transclude {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          -o-object-fit: cover;
-             object-fit: cover; } }
+    .listing--sizes .aspect--90x45 > .picture {
+      padding-top: 16.2%;
+      width: 32.4%; } }
   @media (min-width: 860px) {
     .listing--sizes {
       display: -webkit-box;
@@ -3479,12 +3217,15 @@ canvas {
       .listing--sizes .aspect--150x75 {
         margin-right: 30%; }
       .listing--sizes .aspect--90x45 > .picture {
-        margin-top: 16.5%; } }
+        margin-top: 16.5%; }
+      .listing--sizes > .listing__item > .picture {
+        width: 100%; } }
   @media (max-width: 859.98px) {
     .listing--sizes {
       display: block; }
       .listing--sizes > .listing__item {
-        display: block; } }
+        display: block;
+        width: 100%; } }
 
 [appear] {
   opacity: 0 !important;
@@ -7146,21 +6887,19 @@ page-transition {
       -webkit-transform: translateX(-90px) translateY(-50%) rotateZ(-90deg);
               transform: translateX(-90px) translateY(-50%) rotateZ(-90deg); }
 
-.section--tile .aspect--278x120 {
+.section--tile .tile {
   width: 100%;
-  max-width: calc(278 / 120 * 100vh - 140px);
   margin: 0 auto; }
-  .section--tile .aspect--278x120 > .picture {
+  .section--tile .tile > .picture {
     position: relative;
     width: 100%;
-    padding-top: 43.16547%;
     overflow: hidden;
     width: 100%;
     overflow: visible; }
-    .section--tile .aspect--278x120 > .picture img,
-    .section--tile .aspect--278x120 > .picture video,
-    .section--tile .aspect--278x120 > .picture canvas,
-    .section--tile .aspect--278x120 > .picture ng-transclude {
+    .section--tile .tile > .picture img,
+    .section--tile .tile > .picture video,
+    .section--tile .tile > .picture canvas,
+    .section--tile .tile > .picture ng-transclude {
       position: absolute;
       top: 0;
       left: 0;
@@ -7168,199 +6907,50 @@ page-transition {
       height: 100%;
       -o-object-fit: cover;
          object-fit: cover; }
-    .section--tile .aspect--278x120 > .picture > img {
+    .section--tile .tile > .picture > img {
       width: 100%;
       -o-object-fit: cover;
          object-fit: cover; }
+
+.section--tile .aspect--278x120 {
+  max-width: calc(278 / 120 * 100vh - 140px); }
+  .section--tile .aspect--278x120 > .picture {
+    padding-top: 43.16547%; }
 
 .section--tile .aspect--120x120 {
-  width: 100%;
-  max-width: calc(120 / 120 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(120 / 120 * 100vh - 140px); }
   .section--tile .aspect--120x120 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--120x120 > .picture img,
-    .section--tile .aspect--120x120 > .picture video,
-    .section--tile .aspect--120x120 > .picture canvas,
-    .section--tile .aspect--120x120 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--120x120 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 100%; }
 
 .section--tile .aspect--240x120 {
-  width: 100%;
-  max-width: calc(240 / 120 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(240 / 120 * 100vh - 140px); }
   .section--tile .aspect--240x120 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 50%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--240x120 > .picture img,
-    .section--tile .aspect--240x120 > .picture video,
-    .section--tile .aspect--240x120 > .picture canvas,
-    .section--tile .aspect--240x120 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--240x120 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 50%; }
 
 .section--tile .aspect--75x75 {
-  width: 100%;
-  max-width: calc(75 / 75 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(75 / 75 * 100vh - 140px); }
   .section--tile .aspect--75x75 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--75x75 > .picture img,
-    .section--tile .aspect--75x75 > .picture video,
-    .section--tile .aspect--75x75 > .picture canvas,
-    .section--tile .aspect--75x75 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--75x75 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 100%; }
 
 .section--tile .aspect--150x75 {
-  width: 100%;
-  max-width: calc(150 / 75 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(150 / 75 * 100vh - 140px); }
   .section--tile .aspect--150x75 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 50%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--150x75 > .picture img,
-    .section--tile .aspect--150x75 > .picture video,
-    .section--tile .aspect--150x75 > .picture canvas,
-    .section--tile .aspect--150x75 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--150x75 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 50%; }
 
 .section--tile .aspect--30x60 {
-  width: 100%;
-  max-width: calc(30 / 60 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(30 / 60 * 100vh - 140px); }
   .section--tile .aspect--30x60 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 200%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--30x60 > .picture img,
-    .section--tile .aspect--30x60 > .picture video,
-    .section--tile .aspect--30x60 > .picture canvas,
-    .section--tile .aspect--30x60 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--30x60 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 200%; }
 
 .section--tile .aspect--60x60 {
-  width: 100%;
-  max-width: calc(60 / 60 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(60 / 60 * 100vh - 140px); }
   .section--tile .aspect--60x60 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--60x60 > .picture img,
-    .section--tile .aspect--60x60 > .picture video,
-    .section--tile .aspect--60x60 > .picture canvas,
-    .section--tile .aspect--60x60 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--60x60 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 100%; }
 
 .section--tile .aspect--90x45 {
-  width: 100%;
-  max-width: calc(90 / 45 * 100vh - 140px);
-  margin: 0 auto; }
+  max-width: calc(90 / 45 * 100vh - 140px); }
   .section--tile .aspect--90x45 > .picture {
-    position: relative;
-    width: 100%;
-    padding-top: 50%;
-    overflow: hidden;
-    width: 100%;
-    overflow: visible; }
-    .section--tile .aspect--90x45 > .picture img,
-    .section--tile .aspect--90x45 > .picture video,
-    .section--tile .aspect--90x45 > .picture canvas,
-    .section--tile .aspect--90x45 > .picture ng-transclude {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
-    .section--tile .aspect--90x45 > .picture > img {
-      width: 100%;
-      -o-object-fit: cover;
-         object-fit: cover; }
+    padding-top: 50%; }
 
 .section--tile .zoomed .aspect--278x120 {
   max-width: calc(278 / 120 * 100vh - 260px); }
@@ -7419,6 +7009,8 @@ page-transition {
     font-weight: var(--font-extralight); } }
 
 @media (max-width: 859.98px) {
+  .section--tile .tile {
+    padding: 0; }
   .section--tile .swiper-container {
     margin-left: -30px;
     margin-right: -30px;
@@ -7430,8 +7022,6 @@ page-transition {
       width: calc(100% - 30px); }
   .section--tile .swiper-slide {
     padding: 30px 30px 0 30px; }
-  .section--tile .tile {
-    padding: 0; }
   .section--tile .picture .width,
   .section--tile .picture .height {
     background: none; }
