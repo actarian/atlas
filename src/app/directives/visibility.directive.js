@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
-import { filter, first } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
 
 export default class VisibilityDirective {
@@ -15,10 +14,7 @@ export default class VisibilityDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		const subscription = this.domService.visibility$(node).pipe(
-			filter(visible => visible),
-			first()
-		).subscribe(visible => {
+		const subscription = this.domService.firstVisibility$(node).subscribe(visible => {
 			// console.log('visibility', attributes.visibility, node.classList);
 			const gtmEvent = {
 				event: 'ElementVisibilityCustomEvent',

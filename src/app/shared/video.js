@@ -38,9 +38,9 @@ export default class Video {
 	disappear() {
 		if (this.visible) {
 			this.visible = false;
-			console.log(this.node);
+			// console.log(this.node);
 			this.node.pause();
-			console.log('video.disappear');
+			// console.log('video.disappear');
 		}
 	}
 

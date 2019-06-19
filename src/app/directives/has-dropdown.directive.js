@@ -90,6 +90,7 @@ export default class HasDropdownDirective {
 				});
 			}
 		};
+		scope.$on('onCloseDropdown', closeDropdown);
 		scope.$on('onNavigateOut', closeDropdown);
 		scope.$on('onNavigationTransitionIn', closeDropdown);
 		const addListeners = () => {

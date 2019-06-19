@@ -21379,6 +21379,7 @@ function () {
       filter.value = item.value;
       filter.placeholder = item.label;
       this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
     }
   }, {
     key: "removeFilter",
@@ -21613,6 +21614,7 @@ app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _adva
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $rootScope) {
+  $rootScope.first = true;
   $rootScope.firstView = document.querySelector('.view').cloneNode(true); // console.log('$rootScope.firstView', $rootScope.firstView);
 }]);
 var _default = MODULE_NAME;
@@ -21801,6 +21803,7 @@ function () {
       filter.value = item.value;
       filter.placeholder = item.label;
       this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
     }
   }, {
     key: "removeFilter",
@@ -22392,6 +22395,7 @@ function () {
         }
       };
 
+      scope.$on('onCloseDropdown', closeDropdown);
       scope.$on('onNavigateOut', closeDropdown);
       scope.$on('onNavigationTransitionIn', closeDropdown);
 
@@ -22818,7 +22822,7 @@ function () {
       // empty picture
       // image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 
-      element.subscription = this.domService.appear$(image).subscribe(function (event) {
+      var subscription = this.domService.appear$(image).subscribe(function (event) {
         if (!image.classList.contains('lazying')) {
           image.classList.add('lazying');
 
@@ -22841,9 +22845,7 @@ function () {
       */
 
       element.on('$destroy', function () {
-        if (element.subscription) {
-          element.subscription.unsubscribe();
-        }
+        subscription.unsubscribe();
       });
     }
   }, {
@@ -22890,8 +22892,8 @@ function () {
       } else if (scope.src) {
         image.removeAttribute('data-src');
         var src = this.getThronSrc(image, scope.src);
-        this.onImagePreload(src, function () {
-          image.setAttribute('src', src);
+        this.onImagePreload(image, src, function (srcOrUndefined) {
+          // image.setAttribute('src', src);
           image.classList.remove('lazying');
           image.classList.add('lazyed');
         });
@@ -22916,25 +22918,25 @@ function () {
     }
   }, {
     key: "onImagePreload",
-    value: function onImagePreload(src, callback) {
-      var img = new Image();
-
-      img.onload = function () {
-        img.onload = img.onerror = null;
+    value: function onImagePreload(image, src, callback) {
+      // const img = new Image();
+      image.onload = function () {
+        image.onload = image.onerror = null;
 
         if (typeof callback === 'function') {
-          setTimeout(function () {
-            callback(img.src);
-          }, 10);
+          // setTimeout(() => {
+          callback(image.src); // }, 10);
         }
       };
 
-      img.onerror = function (e) {
-        img.onload = img.onerror = null;
-        img.src = 'data:image/png;base64,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';
+      image.onerror = function (e) {
+        image.onload = image.onerror = null;
+        image.src = 'data:image/png;base64,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'; // setTimeout(() => {
+
+        callback(); // }, 10);
       };
 
-      img.src = src;
+      image.src = src;
     }
   }], [{
     key: "factory",
@@ -23942,8 +23944,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _operators = require("rxjs/operators");
-
 var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23968,9 +23968,7 @@ function () {
     key: "link",
     value: function link(scope, element, attributes, controller) {
       var node = element[0];
-      var subscription = this.domService.visibility$(node).pipe((0, _operators.filter)(function (visible) {
-        return visible;
-      }), (0, _operators.first)()).subscribe(function (visible) {
+      var subscription = this.domService.firstVisibility$(node).subscribe(function (visible) {
         // console.log('visibility', attributes.visibility, node.classList);
         var gtmEvent = {
           event: 'ElementVisibilityCustomEvent',
@@ -23997,7 +23995,7 @@ function () {
 exports.default = VisibilityDirective;
 VisibilityDirective.factory.$inject = ['DomService'];
 
-},{"../gtm/gtm.service":230,"rxjs/operators":198}],221:[function(require,module,exports){
+},{"../gtm/gtm.service":230}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25124,8 +25122,22 @@ function (_Highway$Renderer) {
       document.title = this.properties.page.title; // console.log('CustomRenderer.update', this.properties);
       // CustomRenderer.H.pushState_();
       // console.log(document.innerHTML, this.properties.page.innerHTML);
+      // console.log(this.properties.page);
 
       _gtm.default.pageView();
+
+      var page = this.properties.page; // console.log(page);
+
+      var body = page.querySelector('body');
+      var brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
+      brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde'; // console.log(brand);
+
+      var $timeout = CustomRenderer.$timeout;
+      $timeout(function () {
+        var scope = CustomRenderer.scope;
+        scope.root.brand = brand; // console.log('CustomRenderer.update', scope);
+        // ng-init="root.onInit('atlas-concorde-russia')"
+      });
     } // This method in the renderer is run when the data-router-view is added to the DOM Tree.
 
   }, {
@@ -25206,30 +25218,35 @@ function (_Highway$Renderer) {
     key: "$destroy",
     value: function $destroy(from) {
       // console.log('CustomRenderer.destroy', destroyFirst, this.content, this.$newScope);
-      if (destroyFirst && false) {
-        destroyFirst = false;
-        var element = angular.element(from);
-        var scope = element.scope();
-        var scopes = this.collectScopes(scope);
-        scopes.sort(function (a, b) {
-          return b.$id - a.$id;
+      if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
+        CustomRenderer.$timeout(function () {
+          CustomRenderer.scope.$root.first = null;
         });
-        scopes.forEach(function (x) {
-          return x.$destroy();
-        }); // console.log(scopes);
-      }
+      } else {
+        if (this.content) {
+          this.content.remove();
+          this.content = null;
+        }
 
-      if (this.content) {
-        this.content.remove();
-        this.content = null;
-      }
+        if (this.$newScope) {
+          this.$newScope.$destroy();
+          this.$newScope = null;
+        }
 
-      if (this.$newScope) {
-        this.$newScope.$destroy();
-        this.$newScope = null;
+        from.remove();
       }
+      /*
+      if (destroyFirst && false) {
+      	destroyFirst = false;
+      	const element = angular.element(from);
+      	const scope = element.scope();
+      	const scopes = this.collectScopes(scope);
+      	scopes.sort((a, b) => b.$id - a.$id);
+      	scopes.forEach(x => x.$destroy());
+      	// console.log(scopes);
+      }
+      */
 
-      from.remove();
     }
   }, {
     key: "collectScopes",
@@ -25309,6 +25326,15 @@ function () {
     value: function link(scope, element, attributes, controller) {
       var _this = this;
 
+      this.$timeout(function () {
+        _this.init(scope, element, attributes, controller);
+      });
+    }
+  }, {
+    key: "init",
+    value: function init(scope, element, attributes, controller) {
+      var _this2 = this;
+
       _customRenderer.default.$compile = this.$compile;
       _customRenderer.default.$timeout = this.$timeout;
       _customRenderer.default.scope = scope;
@@ -25328,7 +25354,7 @@ function () {
       this.H = H;
       _customRenderer.default.H = H;
       scope.$on('onHrefNode', function ($scope, node) {
-        _this.link$.next();
+        _this2.link$.next();
       });
       var subscription = this.onLink$().subscribe(function (x) {
         // console.log('onLinks$');
@@ -25599,7 +25625,7 @@ function () {
 
     this.$compile = $compile;
     this.restrict = 'A';
-    this.template = "\n<span has-dropdown>\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\" ng-class=\"{ active: filter.value }\">\n\t\t<span class=\"moodboard__underline\"></span>\n\t\t<span class=\"moodboard__text\">{{filter.placeholder}}</span>\n\t</span>\n</span>\n"; // this.require = 'ngModel';
+    this.template = "\n<span has-dropdown=\".moodboard__value\">\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\" ng-class=\"{ active: filter.value }\">\n\t\t<span class=\"moodboard__underline\"></span>\n\t\t<span class=\"moodboard__text\">{{filter.placeholder}}</span>\n\t</span>\n</span>\n"; // this.require = 'ngModel';
 
     this.scope = {
       filter: '=?moodboardDropdown'
@@ -25628,6 +25654,8 @@ function () {
         if (typeof filter.doFilter === 'function') {
           filter.doFilter(item, item.value);
         }
+
+        scope.$broadcast('onCloseDropdown');
       };
 
       scope.removeFilter = function (filter) {
@@ -25774,8 +25802,8 @@ function () {
     key: "animateOff",
     value: function animateOff(node) {
       if (this.animated) {
-        this.animated = false;
-        console.log('animateOff'); // TweenMax.killAll();
+        this.animated = false; // console.log('animateOff');
+        // TweenMax.killAll();
 
         var values = _toConsumableArray(node.querySelectorAll('.moodboard__underline'));
 
@@ -25853,15 +25881,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.ITEMS_PER_PAGE = exports.MOOD_TYPES = void 0;
 
+var _operators = require("rxjs/operators");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var MOOD_TYPES = Object.freeze({
   Tile: 1,
   Horizontal: 2,
@@ -25894,8 +25921,8 @@ function () {
     value: function deserializeFilters() {
       var _this = this;
 
-      var locationFilters = this.locationService.deserialize('filters') || {};
-      console.log('MoodboardCtrl.deserializeFilters', filters);
+      var locationFilters = this.locationService.deserialize('filters') || {}; // console.log('MoodboardCtrl.deserializeFilters', filters);
+
       Object.keys(this.filters).forEach(function (x) {
         var filter = _this.filters[x];
 
@@ -25948,11 +25975,10 @@ function () {
         return _this3.filters[x];
       }).filter(function (x) {
         return x.value !== null;
-      });
-      console.log(filters);
+      }); // console.log(filters);
 
       if (filters.length) {
-        this.apiService.moodboard.filter(filters).subscribe(function (success) {
+        this.apiService.moodboard.filter(filters).pipe((0, _operators.first)()).subscribe(function (success) {
           var items = success.data;
           /* FAKE */
 
@@ -26007,7 +26033,7 @@ MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardCtrl;
 exports.default = _default;
 
-},{}],239:[function(require,module,exports){
+},{"rxjs/operators":198}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26172,6 +26198,7 @@ function () {
       filter.value = item.value;
       filter.placeholder = item.label;
       this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
     }
   }, {
     key: "removeFilter",
@@ -26365,6 +26392,7 @@ function () {
       filter.value = item.value;
       filter.placeholder = item.label;
       this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
     }
   }, {
     key: "removeFilter",
@@ -26689,7 +26717,7 @@ function () {
       },
       moodboard: {
         filter: function filter(filters) {
-          // return $http.post(API_HREF + '/api/moodboard/json', filters);
+          // return from($http.post(API_HREF + '/api/moodboard/json', filters));
           return (0, _rxjs.from)($http.get('data/moodboard.json'));
         }
       },
@@ -26846,64 +26874,27 @@ function () {
   }, {
     key: "raf$",
     value: function raf$() {
-      return (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame).pipe((0, _operators.shareReplay)());
-    }
-  }, {
-    key: "rafAndRect$",
-    value: function rafAndRect$() {
-      return (0, _rxjs.combineLatest)(this.raf$(), this.windowRect$()).pipe((0, _operators.shareReplay)());
+      return DomService.raf$;
     }
   }, {
     key: "windowRect$",
     value: function windowRect$() {
-      var windowRect = new _rect.default({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-      return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(function (originalEvent) {
-        windowRect.width = window.innerWidth;
-        windowRect.height = window.innerHeight;
-        return windowRect;
-      }), (0, _operators.startWith)(windowRect), (0, _operators.shareReplay)());
+      return DomService.windowRect$;
+    }
+  }, {
+    key: "rafAndRect$",
+    value: function rafAndRect$() {
+      return DomService.rafAndRect$;
     }
   }, {
     key: "scroll$",
     value: function scroll$() {
-      var target = window;
-      var previousTop = DomService.getScrollTop(target);
-      var event = {
-        /*
-        top: target.offsetTop || 0,
-        left: target.offsetLeft || 0,
-        width: target.offsetWidth || target.innerWidth,
-        height: target.offsetHeight || target.innerHeight,
-        */
-        scrollTop: previousTop,
-        scrollLeft: DomService.getScrollLeft(target),
-        direction: 0,
-        originalEvent: null
-      };
-      return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.auditTime)(33), // 30 fps
-      (0, _operators.map)(function (originalEvent) {
-        /*
-        event.top = target.offsetTop || 0;
-        event.left = target.offsetLeft || 0;
-        event.width = target.offsetWidth || target.innerWidth;
-        event.height = target.offsetHeight || target.innerHeight;
-        */
-        event.scrollTop = DomService.getScrollTop(target);
-        event.scrollLeft = DomService.getScrollLeft(target);
-        var diff = event.scrollTop - previousTop;
-        event.direction = diff / Math.abs(diff);
-        previousTop = event.scrollTop;
-        event.originalEvent = originalEvent;
-        return event;
-      }), (0, _operators.startWith)(event), (0, _operators.shareReplay)());
+      return DomService.scroll$;
     }
   }, {
     key: "scrollAndRect$",
     value: function scrollAndRect$() {
-      return (0, _rxjs.combineLatest)(this.scroll$(), this.windowRect$()).pipe((0, _operators.shareReplay)());
+      return DomService.scrollAndRect$;
     }
   }, {
     key: "smoothScroll$",
@@ -26991,12 +26982,12 @@ function () {
         var rect = _rect.default.fromNode(node);
 
         var intersection = rect.intersection(windowRect);
-        return {
-          scroll: datas[0],
-          windowRect: datas[1],
-          rect: rect,
-          intersection: intersection
-        };
+        var response = DomService.rafIntersection_;
+        response.scroll = datas[0];
+        response.windowRect = datas[1];
+        response.rect = rect;
+        response.intersection = intersection;
+        return response;
       }));
     }
   }, {
@@ -27009,12 +27000,12 @@ function () {
         var rect = _rect.default.fromNode(node);
 
         var intersection = rect.intersection(windowRect);
-        return {
-          scroll: datas[0],
-          windowRect: datas[1],
-          rect: rect,
-          intersection: intersection
-        };
+        var response = DomService.scrollIntersection_;
+        response.scroll = datas[0];
+        response.windowRect = datas[1];
+        response.rect = rect;
+        response.intersection = intersection;
+        return response;
       }));
     }
   }, {
@@ -27029,10 +27020,18 @@ function () {
   }, {
     key: "visibility$",
     value: function visibility$(node) {
-      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.0;
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
       return this.rafIntersection$(node).pipe((0, _operators.map)(function (x) {
-        return x.intersection.y > 0.5;
+        return x.intersection.y > value;
       }), (0, _operators.distinctUntilChanged)());
+    }
+  }, {
+    key: "firstVisibility$",
+    value: function firstVisibility$(node) {
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+      return this.visibility$(node, value).pipe((0, _operators.filter)(function (visible) {
+        return visible;
+      }), (0, _operators.first)());
     }
   }, {
     key: "addCustomRules",
@@ -27087,6 +27086,58 @@ function () {
 
 exports.default = DomService;
 DomService.factory.$inject = [];
+DomService.rafIntersection_ = {};
+DomService.scrollIntersection_ = {};
+DomService.raf$ = (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame);
+
+DomService.windowRect$ = function () {
+  var windowRect = new _rect.default({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+  return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(function (originalEvent) {
+    windowRect.width = window.innerWidth;
+    windowRect.height = window.innerHeight;
+    return windowRect;
+  }), (0, _operators.startWith)(windowRect));
+}();
+
+DomService.rafAndRect$ = (0, _rxjs.combineLatest)(DomService.raf$, DomService.windowRect$);
+
+DomService.scroll$ = function () {
+  var target = window;
+  var previousTop = DomService.getScrollTop(target);
+  var event = {
+    /*
+    top: target.offsetTop || 0,
+    left: target.offsetLeft || 0,
+    width: target.offsetWidth || target.innerWidth,
+    height: target.offsetHeight || target.innerHeight,
+    */
+    scrollTop: previousTop,
+    scrollLeft: DomService.getScrollLeft(target),
+    direction: 0,
+    originalEvent: null
+  };
+  return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.auditTime)(33), // 30 fps
+  (0, _operators.map)(function (originalEvent) {
+    /*
+    event.top = target.offsetTop || 0;
+    event.left = target.offsetLeft || 0;
+    event.width = target.offsetWidth || target.innerWidth;
+    event.height = target.offsetHeight || target.innerHeight;
+    */
+    event.scrollTop = DomService.getScrollTop(target);
+    event.scrollLeft = DomService.getScrollLeft(target);
+    var diff = event.scrollTop - previousTop;
+    event.direction = diff / Math.abs(diff);
+    previousTop = event.scrollTop;
+    event.originalEvent = originalEvent;
+    return event;
+  }), (0, _operators.startWith)(event));
+}();
+
+DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$);
 
 },{"../shared/rect":247,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],244:[function(require,module,exports){
 "use strict";
@@ -27424,12 +27475,16 @@ function () {
         this.bottom = this.top + this.height;
       }
 
-      this.center = {
-        top: this.top + this.height / 2,
-        left: this.left + this.width / 2
-      };
-      this.center.x = this.center.left;
-      this.center.y = this.center.top;
+      this.setCenter();
+    }
+  }, {
+    key: "setCenter",
+    value: function setCenter() {
+      var center = this.center || (this.center = {});
+      center.top = this.top + this.height / 2;
+      center.left = this.left + this.width / 2;
+      center.x = center.left;
+      center.y = center.top;
     }
   }, {
     key: "contains",
@@ -27444,23 +27499,22 @@ function () {
   }, {
     key: "intersection",
     value: function intersection(rect) {
-      var center = {
-        x: (this.center.x - rect.center.x) / (rect.width / 2),
-        y: (this.center.y - rect.center.y) / (rect.height / 2)
-      };
+      var intersection = this.intersection_ || (this.intersection_ = {
+        center: {}
+      });
+      intersection.center.x = (this.center.x - rect.center.x) / (rect.width / 2);
+      intersection.center.y = (this.center.y - rect.center.y) / (rect.height / 2);
       var dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
       var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
       var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
       var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
-      return {
-        x: x,
-        y: y,
-        center: center
-      };
+      intersection.x = x;
+      intersection.y = y;
+      return intersection;
     }
   }, {
-    key: "intersection_",
-    value: function intersection_(rect) {
+    key: "intersection___",
+    value: function intersection___(rect) {
       var center = {
         x: (this.center.x - rect.center.x) / (rect.width / 2),
         y: (this.center.y - rect.center.y) / (rect.height / 2)
@@ -27503,20 +27557,23 @@ function () {
         return;
       }
 
-      if (!node.getClientRects().length) {
-        return new Rect();
+      var rect = node.rect_ || (node.rect_ = new Rect());
+      var rects = node.getClientRects();
+
+      if (!rects.length) {
+        // console.log(rects, node);
+        return rect;
       }
 
-      var rect = node.getBoundingClientRect(); // const defaultView = node.ownerDocument.defaultView;
+      var boundingRect = node.getBoundingClientRect(); // rect.top: boundingRect.top + defaultView.pageYOffset,
+      // rect.left: boundingRect.left + defaultView.pageXOffset,
 
-      return new Rect({
-        // top: rect.top + defaultView.pageYOffset,
-        // left: rect.left + defaultView.pageXOffset,
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height
-      });
+      rect.top = boundingRect.top;
+      rect.left = boundingRect.left;
+      rect.width = boundingRect.width;
+      rect.height = boundingRect.height;
+      rect.setCenter();
+      return rect;
     }
   }]);
 
@@ -28213,8 +28270,7 @@ function () {
       _this.findNearStores(_this.stores, position);
     });
     $scope.$on('destroy', function () {
-      console.log('destroy');
-
+      // console.log('destroy');
       _this.unsubscribe.next();
 
       _this.unsubscribe.complete();
@@ -28479,8 +28535,7 @@ function () {
           var position = new google.maps.LatLng(store.latitude, store.longitude);
           bounds.extend(position);
         });
-        this.map.fitBounds(bounds);
-        console.log('fitBounds');
+        this.map.fitBounds(bounds); // console.log('fitBounds');
       }
     }
   }, {
@@ -28685,10 +28740,9 @@ function () {
     value: function load() {
       var _this2 = this;
 
-      this.wishlistService.get().subscribe(function (success) {
-        console.log('WishlistCtrl.load', success.data);
-
-        if (success.data) {
+      this.wishlistService.get().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (success) {
+        // console.log('WishlistCtrl.load', success);
+        if (success) {
           var items = success.data.slice();
           /* FAKE */
 
@@ -28719,7 +28773,7 @@ function () {
     value: function clearAll() {
       var _this3 = this;
 
-      this.wishlistService.clearAll().subscribe(function (success) {
+      this.wishlistService.clearAll().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (success) {
         _this3.items = [];
         _this3.visibleItems = [];
         _this3.maxItems = ITEMS_PER_PAGE;

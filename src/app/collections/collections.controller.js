@@ -131,6 +131,7 @@ class CollectionsCtrl {
 		filter.value = item.value;
 		filter.placeholder = item.label;
 		this.applyFilters();
+		this.$scope.$broadcast('onCloseDropdown');
 	}
 
 	removeFilter(filter) {

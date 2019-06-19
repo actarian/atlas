@@ -98,74 +98,23 @@ export default class DomService {
 	}
 
 	raf$() {
-		return range(0, Number.POSITIVE_INFINITY, animationFrame).pipe(
-			shareReplay()
-		);
-	}
-
-	rafAndRect$() {
-		return combineLatest(this.raf$(), this.windowRect$()).pipe(
-			shareReplay()
-		);
+		return DomService.raf$;
 	}
 
 	windowRect$() {
-		const windowRect = new Rect({
-			width: window.innerWidth,
-			height: window.innerHeight
-		});
-		return fromEvent(window, 'resize').pipe(
-			map(originalEvent => {
-				windowRect.width = window.innerWidth;
-				windowRect.height = window.innerHeight;
-				return windowRect;
-			}),
-			startWith(windowRect),
-			shareReplay()
-		);
+		return DomService.windowRect$;
+	}
+
+	rafAndRect$() {
+		return DomService.rafAndRect$;
 	}
 
 	scroll$() {
-		const target = window;
-		let previousTop = DomService.getScrollTop(target);
-		const event = {
-			/*
-			top: target.offsetTop || 0,
-			left: target.offsetLeft || 0,
-			width: target.offsetWidth || target.innerWidth,
-			height: target.offsetHeight || target.innerHeight,
-			*/
-			scrollTop: previousTop,
-			scrollLeft: DomService.getScrollLeft(target),
-			direction: 0,
-			originalEvent: null,
-		};
-		return fromEvent(target, 'scroll').pipe(
-			auditTime(33), // 30 fps
-			map((originalEvent) => {
-				/*
-				event.top = target.offsetTop || 0;
-				event.left = target.offsetLeft || 0;
-				event.width = target.offsetWidth || target.innerWidth;
-				event.height = target.offsetHeight || target.innerHeight;
-				*/
-				event.scrollTop = DomService.getScrollTop(target);
-				event.scrollLeft = DomService.getScrollLeft(target);
-				const diff = event.scrollTop - previousTop;
-				event.direction = diff / Math.abs(diff);
-				previousTop = event.scrollTop;
-				event.originalEvent = originalEvent;
-				return event;
-			}),
-			startWith(event),
-			shareReplay()
-		);
+		return DomService.scroll$;
 	}
 
 	scrollAndRect$() {
-		return combineLatest(this.scroll$(), this.windowRect$()).pipe(
-			shareReplay()
-		);
+		return DomService.scrollAndRect$;
 	}
 
 	smoothScroll$(selector, friction = 20) {
@@ -244,12 +193,12 @@ export default class DomService {
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
-				return {
-					scroll: datas[0],
-					windowRect: datas[1],
-					rect: rect,
-					intersection: intersection,
-				};
+				const response = DomService.rafIntersection_;
+				response.scroll = datas[0];
+				response.windowRect = datas[1];
+				response.rect = rect;
+				response.intersection = intersection;
+				return response;
 			})
 		);
 	}
@@ -261,12 +210,12 @@ export default class DomService {
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
 				const intersection = rect.intersection(windowRect);
-				return {
-					scroll: datas[0],
-					windowRect: datas[1],
-					rect: rect,
-					intersection: intersection,
-				};
+				const response = DomService.scrollIntersection_;
+				response.scroll = datas[0];
+				response.windowRect = datas[1];
+				response.rect = rect;
+				response.intersection = intersection;
+				return response;
 			})
 		);
 	}
@@ -278,10 +227,17 @@ export default class DomService {
 		);
 	}
 
-	visibility$(node, value = 0.0) {
+	visibility$(node, value = 0.5) {
 		return this.rafIntersection$(node).pipe(
-			map(x => x.intersection.y > 0.5),
+			map(x => x.intersection.y > value),
 			distinctUntilChanged()
+		);
+	}
+
+	firstVisibility$(node, value = 0.5) {
+		return this.visibility$(node, value).pipe(
+			filter(visible => visible),
+			first()
 		);
 	}
 
@@ -319,3 +275,57 @@ export default class DomService {
 }
 
 DomService.factory.$inject = [];
+DomService.rafIntersection_ = {};
+DomService.scrollIntersection_ = {};
+DomService.raf$ = range(0, Number.POSITIVE_INFINITY, animationFrame);
+DomService.windowRect$ = function() {
+	const windowRect = new Rect({
+		width: window.innerWidth,
+		height: window.innerHeight
+	});
+	return fromEvent(window, 'resize').pipe(
+		map(originalEvent => {
+			windowRect.width = window.innerWidth;
+			windowRect.height = window.innerHeight;
+			return windowRect;
+		}),
+		startWith(windowRect)
+	);
+}();
+DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$);
+DomService.scroll$ = function() {
+	const target = window;
+	let previousTop = DomService.getScrollTop(target);
+	const event = {
+		/*
+		top: target.offsetTop || 0,
+		left: target.offsetLeft || 0,
+		width: target.offsetWidth || target.innerWidth,
+		height: target.offsetHeight || target.innerHeight,
+		*/
+		scrollTop: previousTop,
+		scrollLeft: DomService.getScrollLeft(target),
+		direction: 0,
+		originalEvent: null,
+	};
+	return fromEvent(target, 'scroll').pipe(
+		auditTime(33), // 30 fps
+		map((originalEvent) => {
+			/*
+			event.top = target.offsetTop || 0;
+			event.left = target.offsetLeft || 0;
+			event.width = target.offsetWidth || target.innerWidth;
+			event.height = target.offsetHeight || target.innerHeight;
+			*/
+			event.scrollTop = DomService.getScrollTop(target);
+			event.scrollLeft = DomService.getScrollLeft(target);
+			const diff = event.scrollTop - previousTop;
+			event.direction = diff / Math.abs(diff);
+			previousTop = event.scrollTop;
+			event.originalEvent = originalEvent;
+			return event;
+		}),
+		startWith(event)
+	);
+}();
+DomService.scrollAndRect$ = combineLatest(DomService.scroll$, DomService.windowRect$);

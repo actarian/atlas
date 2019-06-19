@@ -60,7 +60,7 @@
 	<ng-include src="'templates/shared/svg.html'"></ng-include>
 	<ng-include src="'templates/shared/header.html'"></ng-include>
 	<main class="page" data-router-wrapper>
-		<div class="view" data-router-view="view">
+		<div class="view" data-router-view="view" ng-if="first">
 			<div ng-cloak>
 				<ng-include src="'templates/pages/product-gallery-detail.html'"></ng-include>
 				<!-- BREADCRUMB -->

@@ -21,6 +21,9 @@
 			}, {
 				label: 'Peak Floor',
 				value: 16,
+			}, {
+				label: 'Cliff',
+				value: 17,
 			}]
 		},
 		looks: {
@@ -85,6 +88,7 @@
 	window.brands = [{
 		brand: 'atlas-concorde',
 		collections: [{
+			url: 'product-project.html',
 			id: 11,
 			images: [{
 				url: 'img/collections/01.jpg',
@@ -144,6 +148,7 @@
 			}],
 			features: [22, 31, 32, 41],
 		}, {
+			url: 'product-project.html',
 			id: 12,
 			images: [{
 				url: 'img/collections/02.jpg',
@@ -200,6 +205,7 @@
 			}],
 			features: [24, 31, 32, 42],
 		}, {
+			url: 'product-project.html',
 			id: 13,
 			images: [{
 				url: 'img/collections/03.jpg',
@@ -242,8 +248,39 @@
 			features: [23, 31, 32, 43],
 		}]
 	}, {
+		brand: 'atlas-concorde-russia',
+		collections: [{
+			url: 'product-project-russia.html',
+			id: 17,
+			images: [{
+				url: 'img/collections/04.jpg',
+				features: [31],
+			}],
+			look: 'concrete look',
+			title: 'Cliff',
+			abstract: 'A marked impact and neutral colors, for a contemporary taste.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/19.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/20.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/21.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/22.jpg'
+				}]
+			}],
+			features: [24, 31, 41, 42],
+		}]
+	}, {
 		brand: 'atlas-concorde-solution',
 		collections: [{
+			url: 'product-project.html',
 			id: 14,
 			images: [{
 				url: 'img/collections/04.jpg',
@@ -270,6 +307,7 @@
 			}],
 			features: [24, 31, 41, 42],
 		}, {
+			url: 'product-project.html',
 			id: 15,
 			images: [{
 				url: 'img/collections/05.jpg',
@@ -296,6 +334,7 @@
 			}],
 			features: [23, 31, 41, 42],
 		}, {
+			url: 'product-project.html',
 			id: 16,
 			images: [{
 				url: 'img/collections/06.jpg',
@@ -345,7 +384,7 @@
 		<form class="form form--filters" sticky-content>
 			<div class="form__group" ng-repeat="(key, filter) in collectionsCtrl.filters track by $index">
 				<div select-with-autocomplete="filter" handler="collectionsCtrl" ng-if="key == 'collections'"></div>
-				<div has-dropdown ng-if="key != 'collections'">
+				<div has-dropdown=".control" ng-if="key != 'collections'">
 					<div class="dropdown">
 						<ul class="nav nav--select">
 							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
@@ -562,7 +601,7 @@
 					</div>
 				</div>
 				<div class="listing listing--collections">
-					<a href="product-project.html" class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
+					<a ng-href="{{collection.url}}" class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
 						<div class="picture picture--with-category">
 							<img lazy data-src="{{collection.images | imageWithFeatures : [collectionsCtrl.filters.typologies.value] }}" alt="title" />
 							<span class="category" ng-bind="collection.look"></span>

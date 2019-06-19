@@ -237,7 +237,7 @@
 		<form class="form form--filters" sticky-content>
 			<div class="form__group" ng-repeat="(key, filter) in referencesCtrl.filters track by $index">
 				<div select-with-autocomplete="filter" handler="referencesCtrl" ng-if="key == 'collections'"></div>
-				<div has-dropdown ng-if="key != 'collections'">
+				<div has-dropdown=".control" ng-if="key != 'collections'">
 					<div class="dropdown">
 						<ul class="nav nav--select">
 							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">

@@ -50,9 +50,9 @@ class AdvancedSearchCtrl {
 			//		return has;
 			//	};
 			//} else {
-				filter.doFilter = (item, value) => {
-					return item.features.indexOf(value) !== -1;
-				};
+			filter.doFilter = (item, value) => {
+				return item.features.indexOf(value) !== -1;
+			};
 			//}
 			//switch (filter.key) {
 			//	case 'finish':
@@ -190,6 +190,7 @@ class AdvancedSearchCtrl {
 		filter.value = item.value;
 		filter.placeholder = item.label;
 		this.applyFilters();
+		this.$scope.$broadcast('onCloseDropdown');
 	}
 
 	removeFilter(filter) {

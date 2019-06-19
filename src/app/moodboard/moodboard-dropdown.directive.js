@@ -9,7 +9,7 @@ export default class MoodboardDropdownDirective {
 		this.$compile = $compile;
 		this.restrict = 'A';
 		this.template = `
-<span has-dropdown>
+<span has-dropdown=".moodboard__value">
 	<span class="dropdown">
 		<ul class="nav nav--select">
 			<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
@@ -45,6 +45,7 @@ export default class MoodboardDropdownDirective {
 			if (typeof filter.doFilter === 'function') {
 				filter.doFilter(item, item.value);
 			}
+			scope.$broadcast('onCloseDropdown');
 		};
 		scope.removeFilter = (filter) => {
 			this.setFilter(null, filter);

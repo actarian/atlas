@@ -29,6 +29,12 @@ export default class HighwayDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		this.$timeout(() => {
+			this.init(scope, element, attributes, controller);
+		});
+	}
+
+	init(scope, element, attributes, controller) {
 		CustomRenderer.$compile = this.$compile;
 		CustomRenderer.$timeout = this.$timeout;
 		CustomRenderer.scope = scope;

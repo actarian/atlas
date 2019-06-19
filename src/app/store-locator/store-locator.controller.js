@@ -55,7 +55,7 @@ class StoreLocatorCtrl {
 			this.findNearStores(this.stores, position);
 		});
 		$scope.$on('destroy', () => {
-			console.log('destroy');
+			// console.log('destroy');
 			this.unsubscribe.next();
 			this.unsubscribe.complete();
 		});
@@ -231,7 +231,7 @@ class StoreLocatorCtrl {
 				bounds.extend(position);
 			});
 			this.map.fitBounds(bounds);
-			console.log('fitBounds');
+			// console.log('fitBounds');
 		}
 	}
 

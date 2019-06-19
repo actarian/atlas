@@ -142,7 +142,7 @@
 		<form class="form form--filters" sticky-content>
 			<button class="btn btn--toggle" ng-class="{ active: newsCtrl.filters.categories.value == item.value, disabled: item.disabled }" ng-click="newsCtrl.setFilter(item, newsCtrl.filters.categories)" ng-repeat="item in newsCtrl.filters.categories.options track by $index"><span ng-bind="item.label"></span></button>
 			<div class="form__group form__group--white" ng-repeat="(key, filter) in newsCtrl.filters track by $index" ng-if="key == 'years'">
-				<div has-dropdown>
+				<div has-dropdown=".control">
 					<div class="dropdown">
 						<ul class="nav nav--select">
 							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">

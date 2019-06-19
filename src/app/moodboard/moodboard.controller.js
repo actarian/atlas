@@ -1,6 +1,8 @@
 ﻿/* jshint esversion: 6 */
 /* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
+import { first } from 'rxjs/operators';
+
 export const MOOD_TYPES = Object.freeze({
 	Tile: 1,
 	Horizontal: 2,
@@ -31,7 +33,7 @@ class MoodboardCtrl {
 
 	deserializeFilters() {
 		const locationFilters = this.locationService.deserialize('filters') || {};
-		console.log('MoodboardCtrl.deserializeFilters', filters);
+		// console.log('MoodboardCtrl.deserializeFilters', filters);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -70,9 +72,11 @@ class MoodboardCtrl {
 		// console.log('MoodboardCtrl.applyFilters', this.filters);
 		this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		console.log(filters);
+		// console.log(filters);
 		if (filters.length) {
-			this.apiService.moodboard.filter(filters).subscribe(
+			this.apiService.moodboard.filter(filters).pipe(
+				first()
+			).subscribe(
 				success => {
 					let items = success.data;
 					/* FAKE */

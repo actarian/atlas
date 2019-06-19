@@ -27,19 +27,21 @@ export default class Rect {
 		if (!node) {
 			return;
 		}
-		if (!node.getClientRects().length) {
-			return new Rect();
+		const rect = node.rect_ || (node.rect_ = new Rect());
+		const rects = node.getClientRects();
+		if (!rects.length) {
+			// console.log(rects, node);
+			return rect;
 		}
-		let rect = node.getBoundingClientRect();
-		// const defaultView = node.ownerDocument.defaultView;
-		return new Rect({
-			// top: rect.top + defaultView.pageYOffset,
-			// left: rect.left + defaultView.pageXOffset,
-			top: rect.top,
-			left: rect.left,
-			width: rect.width,
-			height: rect.height,
-		});
+		const boundingRect = node.getBoundingClientRect();
+		// rect.top: boundingRect.top + defaultView.pageYOffset,
+		// rect.left: boundingRect.left + defaultView.pageXOffset,
+		rect.top = boundingRect.top;
+		rect.left = boundingRect.left;
+		rect.width = boundingRect.width;
+		rect.height = boundingRect.height;
+		rect.setCenter();
+		return rect;
 	}
 
 	set(rect) {
@@ -48,12 +50,15 @@ export default class Rect {
 			this.right = this.left + this.width;
 			this.bottom = this.top + this.height;
 		}
-		this.center = {
-			top: this.top + this.height / 2,
-			left: this.left + this.width / 2,
-		};
-		this.center.x = this.center.left;
-		this.center.y = this.center.top;
+		this.setCenter();
+	}
+
+	setCenter() {
+		const center = this.center || (this.center = {});
+		center.top = this.top + this.height / 2;
+		center.left = this.left + this.width / 2;
+		center.x = center.left;
+		center.y = center.top;
 	}
 
 	contains(left, top) {
@@ -65,22 +70,19 @@ export default class Rect {
 	}
 
 	intersection(rect) {
-		const center = {
-			x: (this.center.x - rect.center.x) / (rect.width / 2),
-			y: (this.center.y - rect.center.y) / (rect.height / 2),
-		};
+		const intersection = this.intersection_ || (this.intersection_ = { center: {} });
+		intersection.center.x = (this.center.x - rect.center.x) / (rect.width / 2);
+		intersection.center.y = (this.center.y - rect.center.y) / (rect.height / 2);
 		const dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
 		const dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
 		const x = dx ? (1 - dx / this.width) : ((rect.left + rect.width) - this.left) / this.width;
 		const y = dy ? (1 - dy / this.height) : ((rect.top + rect.height) - this.top) / this.height;
-		return {
-			x: x,
-			y: y,
-			center: center
-		};
+		intersection.x = x;
+		intersection.y = y;
+		return intersection;
 	}
 
-	intersection_(rect) {
+	intersection___(rect) {
 		const center = {
 			x: (this.center.x - rect.center.x) / (rect.width / 2),
 			y: (this.center.y - rect.center.y) / (rect.height / 2),

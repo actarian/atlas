@@ -16,7 +16,21 @@ export default class CustomRenderer extends Highway.Renderer {
 		// console.log('CustomRenderer.update', this.properties);
 		// CustomRenderer.H.pushState_();
 		// console.log(document.innerHTML, this.properties.page.innerHTML);
+		// console.log(this.properties.page);
 		GtmService.pageView();
+		const page = this.properties.page;
+		// console.log(page);
+		const body = page.querySelector('body');
+		let brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
+		brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde';
+		// console.log(brand);
+		const $timeout = CustomRenderer.$timeout;
+		$timeout(() => {
+			const scope = CustomRenderer.scope;
+			scope.root.brand = brand;
+			// console.log('CustomRenderer.update', scope);
+			// ng-init="root.onInit('atlas-concorde-russia')"
+		});
 	}
 
 	// This method in the renderer is run when the data-router-view is added to the DOM Tree.
@@ -88,6 +102,22 @@ export default class CustomRenderer extends Highway.Renderer {
 
 	static $destroy(from) {
 		// console.log('CustomRenderer.destroy', destroyFirst, this.content, this.$newScope);
+		if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
+			CustomRenderer.$timeout(() => {
+				CustomRenderer.scope.$root.first = null;
+			});
+		} else {
+			if (this.content) {
+				this.content.remove();
+				this.content = null;
+			}
+			if (this.$newScope) {
+				this.$newScope.$destroy();
+				this.$newScope = null;
+			}
+			from.remove();
+		}
+		/*
 		if (destroyFirst && false) {
 			destroyFirst = false;
 			const element = angular.element(from);
@@ -97,15 +127,7 @@ export default class CustomRenderer extends Highway.Renderer {
 			scopes.forEach(x => x.$destroy());
 			// console.log(scopes);
 		}
-		if (this.content) {
-			this.content.remove();
-			this.content = null;
-		}
-		if (this.$newScope) {
-			this.$newScope.$destroy();
-			this.$newScope = null;
-		}
-		from.remove();
+		*/
 	}
 
 	static collectScopes(scope, scopes) {

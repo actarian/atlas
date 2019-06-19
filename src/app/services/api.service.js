@@ -30,7 +30,7 @@ export default class ApiService {
 			},
 			moodboard: {
 				filter: (filters) => {
-					// return $http.post(API_HREF + '/api/moodboard/json', filters);
+					// return from($http.post(API_HREF + '/api/moodboard/json', filters));
 					return from($http.get('data/moodboard.json'));
 				},
 			},

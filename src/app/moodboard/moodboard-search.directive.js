@@ -75,7 +75,7 @@ export default class MoodboardSearchDirective {
 	animateOff(node) {
 		if (this.animated) {
 			this.animated = false;
-			console.log('animateOff');
+			// console.log('animateOff');
 			// TweenMax.killAll();
 			const values = [...node.querySelectorAll('.moodboard__underline')];
 			TweenMax.set(values, { transformOrigin: '0 50%', scaleX: 0 });

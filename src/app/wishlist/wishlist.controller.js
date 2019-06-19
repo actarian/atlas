@@ -38,10 +38,12 @@ class WishlistCtrl {
 	}
 
 	load() {
-		this.wishlistService.get().subscribe(
+		this.wishlistService.get().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(
 			success => {
-				console.log('WishlistCtrl.load', success.data);
-				if (success.data) {
+				// console.log('WishlistCtrl.load', success);
+				if (success) {
 					let items = success.data.slice();
 					/* FAKE */
 					/*
@@ -65,7 +67,9 @@ class WishlistCtrl {
 	}
 
 	clearAll() {
-		this.wishlistService.clearAll().subscribe(
+		this.wishlistService.clearAll().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(
 			success => {
 				this.items = [];
 				this.visibleItems = [];
