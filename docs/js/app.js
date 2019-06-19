@@ -25911,9 +25911,10 @@ function () {
     this.apiService = ApiService;
     this.filters = window.filters || {};
     this.filteredItems = [];
+    this.initialFilters = window.initialFilters || null;
     this.moodTypes = MOOD_TYPES;
-    this.deserializeFilters();
-    this.applyFilters();
+    this.deserializeFilters(this.initialFilters);
+    this.applyFilters(false);
   }
 
   _createClass(MoodboardCtrl, [{
@@ -25921,8 +25922,8 @@ function () {
     value: function deserializeFilters() {
       var _this = this;
 
-      var locationFilters = this.locationService.deserialize('filters') || {}; // console.log('MoodboardCtrl.deserializeFilters', filters);
-
+      var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {};
+      console.log('MoodboardCtrl.deserializeFilters', filters);
       Object.keys(this.filters).forEach(function (x) {
         var filter = _this.filters[x];
 
@@ -25953,34 +25954,45 @@ function () {
       var _this2 = this;
 
       var filters = {};
+      var any = false;
       Object.keys(this.filters).forEach(function (x) {
         var filter = _this2.filters[x];
 
         if (filter.value !== null) {
           filters[x] = filter.value;
+          any = true;
         }
-      }); // console.log('MoodboardCtrl.serializeFilters', filters);
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('MoodboardCtrl.serializeFilters', filters);
+
 
       this.locationService.serialize('filters', filters);
       return filters;
     }
   }, {
     key: "applyFilters",
-    value: function applyFilters(item, value) {
+    value: function applyFilters(serialize) {
       var _this3 = this;
 
       // console.log('MoodboardCtrl.applyFilters', this.filters);
-      this.serializeFilters();
+      if (serialize !== false) this.serializeFilters();
+      var me = this;
       var filters = Object.keys(this.filters).map(function (x) {
-        return _this3.filters[x];
+        return {
+          key: x,
+          value: me.filters[x].value
+        };
       }).filter(function (x) {
         return x.value !== null;
-      }); // console.log(filters);
+      });
+      console.log(filters);
 
       if (filters.length) {
         this.apiService.moodboard.filter(filters).pipe((0, _operators.first)()).subscribe(function (success) {
-          var items = success.data;
-          /* FAKE */
+          var items = success.data; ///* FAKE */
 
           while (items.length < 200) {
             items = items.concat(items);
@@ -25988,8 +26000,7 @@ function () {
 
           items.sort(function (a, b) {
             return Math.random() > 0.5 ? 1 : -1;
-          });
-          /* FAKE */
+          }); ///* FAKE */
 
           _this3.filteredItems = [];
           _this3.visibleItems = [];

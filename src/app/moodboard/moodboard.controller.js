@@ -26,14 +26,15 @@ class MoodboardCtrl {
 		this.apiService = ApiService;
 		this.filters = window.filters || {};
 		this.filteredItems = [];
+		this.initialFilters = window.initialFilters || null;
 		this.moodTypes = MOOD_TYPES;
-		this.deserializeFilters();
-		this.applyFilters();
+		this.deserializeFilters(this.initialFilters);
+		this.applyFilters(false);
 	}
 
 	deserializeFilters() {
-		const locationFilters = this.locationService.deserialize('filters') || {};
-		// console.log('MoodboardCtrl.deserializeFilters', filters);
+		const locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {};
+		console.log('MoodboardCtrl.deserializeFilters', filters);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -56,35 +57,41 @@ class MoodboardCtrl {
 	}
 
 	serializeFilters() {
-		const filters = {};
+		let filters = {};
+		let any = false;
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			if (filter.value !== null) {
 				filters[x] = filter.value;
+				any = true;
 			}
 		});
+		if (!any) {
+			filters = this.initialFilters ? {} : null;
+		}
 		// console.log('MoodboardCtrl.serializeFilters', filters);
 		this.locationService.serialize('filters', filters);
 		return filters;
 	}
 
-	applyFilters(item, value) {
+	applyFilters(serialize) {
 		// console.log('MoodboardCtrl.applyFilters', this.filters);
-		this.serializeFilters();
-		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		// console.log(filters);
+		if (serialize !== false) this.serializeFilters();
+		var me = this;
+		const filters = Object.keys(this.filters).map(x => ({ key: x, value: me.filters[x].value })).filter(x => x.value !== null);
+		console.log(filters);
 		if (filters.length) {
 			this.apiService.moodboard.filter(filters).pipe(
 				first()
 			).subscribe(
 				success => {
 					let items = success.data;
-					/* FAKE */
+					///* FAKE */
 					while (items.length < 200) {
 						items = items.concat(items);
 					}
 					items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-					/* FAKE */
+					///* FAKE */
 					this.filteredItems = [];
 					this.visibleItems = [];
 					this.maxItems = ITEMS_PER_PAGE;

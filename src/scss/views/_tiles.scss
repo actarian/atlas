@@ -64,7 +64,7 @@
 
 		.aspect--#{$w}x#{$h} {
 			width: 100%;
-			max-width: calc(#{$w} / #{$h} * 100vh - 500px);
+			max-width: calc(#{$w} / #{$h} * 100vh - 140px);
 			margin: 0 auto;
 
 			&>.picture {
@@ -119,7 +119,7 @@
 
 	@include media-breakpoint-up(sm) {
 		.tile {
-			padding: 160px 160px 10px 160px;
+			padding: 10vh 10vh 10px 10vh;
 		}
 
 		.title {

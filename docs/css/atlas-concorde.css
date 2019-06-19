@@ -7027,7 +7027,7 @@ page-transition {
 
 .section--tile .aspect--278x120 {
   width: 100%;
-  max-width: calc(278 / 120 * 100vh - 500px);
+  max-width: calc(278 / 120 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--278x120 > .picture {
     position: relative;
@@ -7054,7 +7054,7 @@ page-transition {
 
 .section--tile .aspect--120x120 {
   width: 100%;
-  max-width: calc(120 / 120 * 100vh - 500px);
+  max-width: calc(120 / 120 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--120x120 > .picture {
     position: relative;
@@ -7081,7 +7081,7 @@ page-transition {
 
 .section--tile .aspect--240x120 {
   width: 100%;
-  max-width: calc(240 / 120 * 100vh - 500px);
+  max-width: calc(240 / 120 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--240x120 > .picture {
     position: relative;
@@ -7108,7 +7108,7 @@ page-transition {
 
 .section--tile .aspect--75x75 {
   width: 100%;
-  max-width: calc(75 / 75 * 100vh - 500px);
+  max-width: calc(75 / 75 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--75x75 > .picture {
     position: relative;
@@ -7135,7 +7135,7 @@ page-transition {
 
 .section--tile .aspect--150x75 {
   width: 100%;
-  max-width: calc(150 / 75 * 100vh - 500px);
+  max-width: calc(150 / 75 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--150x75 > .picture {
     position: relative;
@@ -7162,7 +7162,7 @@ page-transition {
 
 .section--tile .aspect--30x60 {
   width: 100%;
-  max-width: calc(30 / 60 * 100vh - 500px);
+  max-width: calc(30 / 60 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--30x60 > .picture {
     position: relative;
@@ -7189,7 +7189,7 @@ page-transition {
 
 .section--tile .aspect--60x60 {
   width: 100%;
-  max-width: calc(60 / 60 * 100vh - 500px);
+  max-width: calc(60 / 60 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--60x60 > .picture {
     position: relative;
@@ -7216,7 +7216,7 @@ page-transition {
 
 .section--tile .aspect--90x45 {
   width: 100%;
-  max-width: calc(90 / 45 * 100vh - 500px);
+  max-width: calc(90 / 45 * 100vh - 140px);
   margin: 0 auto; }
   .section--tile .aspect--90x45 > .picture {
     position: relative;
@@ -7288,7 +7288,7 @@ page-transition {
 
 @media (min-width: 860px) {
   .section--tile .tile {
-    padding: 160px 160px 10px 160px; }
+    padding: 10vh 10vh 10px 10vh; }
   .section--tile .title {
     font-size: 40px;
     font-weight: 300;
