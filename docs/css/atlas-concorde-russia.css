@@ -6777,14 +6777,37 @@ page-transition {
         font-size: 16px;
         margin-bottom: 50px; } }
 
-.section--tile {
-  margin-top: 20px; }
-  .section--tile .swiper-container {
-    overflow: visible; }
-  .section--tile .swiper-pagination-bullets,
-  .section--tile .swiper-container-horizontal > .swiper-pagination-bullets {
-    background: none; }
-  .section--tile .tile {
+.section--tile .swiper-container {
+  overflow: visible; }
+
+.section--tile .swiper-pagination-bullets,
+.section--tile .swiper-container-horizontal > .swiper-pagination-bullets {
+  background: none; }
+
+.section--tile .tile {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.section--tile .picture--decors {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background: none; }
+
+.section--tile .picture {
+  position: relative;
+  overflow: visible; }
+  .section--tile .picture img {
+    display: block; }
+  .section--tile .picture .width,
+  .section--tile .picture .height {
+    position: absolute;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -6793,138 +6816,106 @@ page-transition {
             justify-content: center;
     -webkit-box-align: center;
         -ms-flex-align: center;
-            align-items: center; }
-  .section--tile .picture--decors {
-    -webkit-box-shadow: none;
-            box-shadow: none;
-    background: none; }
-  .section--tile .picture {
-    position: relative;
-    overflow: visible; }
-    .section--tile .picture img {
-      display: block; }
-    .section--tile .picture .width,
-    .section--tile .picture .height {
-      position: absolute;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: center;
-          -ms-flex-pack: center;
-              justify-content: center;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
-      background: #cdc9c7; }
-      .section--tile .picture .width > span,
-      .section--tile .picture .height > span {
-        display: block;
-        font-size: 20px;
-        font-weight: 100;
-        white-space: nowrap;
-        color: #64605d; }
-    .section--tile .picture .width {
-      width: 100%;
-      height: 1px;
-      top: -3vh; }
-      .section--tile .picture .width > span {
-        -webkit-transform: translateY(-20px);
-                transform: translateY(-20px); }
-    .section--tile .picture .height {
-      width: 1px;
-      height: 100%;
-      left: -3vh;
-      top: 0; }
-      .section--tile .picture .height > span {
-        -webkit-transform: rotateZ(-90deg) translateY(-20px);
-                transform: rotateZ(-90deg) translateY(-20px); }
-  .section--tile .title {
-    color: #af8462;
-    margin-top: 40px; }
-  .section--tile .abstract {
-    margin-bottom: 20px; }
-  .section--tile .description {
-    font-size: 18px;
-    margin-bottom: 20px; }
-  .section--tile .category {
-    padding-bottom: 50px;
-    font-size: 15px;
-    text-transform: uppercase;
-    color: #99887e; }
-  .section--tile .icon--made-in-italy {
-    width: 161px;
-    height: 9px;
-    margin-bottom: 60px; }
-  @media (min-width: 860px) {
-    .section--tile .tile {
-      margin: 10vh 10vh 0 10vh;
-      max-height: calc(80vh - 250px);
-      height: 100vh; }
-    .section--tile .picture img {
-      max-width: 760px;
-      max-height: calc(80vh - 320px); }
-    .section--tile .title {
-      font-size: 40px;
-      font-weight: 300;
-      line-height: 0.9; }
-    .section--tile .abstract {
-      font-size: 40px;
-      font-weight: 200; } }
-  @media (max-width: 859.98px) {
-    .section--tile {
-      /*
-		.tile {
-			margin: 10vh 10vh 0 10vh;
-			max-height: calc(80vh - 250px);
-			height: 100vh;
-		}
+            align-items: center;
+    background: #cdc9c7; }
+    .section--tile .picture .width > span,
+    .section--tile .picture .height > span {
+      display: block;
+      font-size: 20px;
+      font-weight: 100;
+      white-space: nowrap;
+      color: #64605d; }
+  .section--tile .picture .width {
+    width: 100%;
+    height: 1px;
+    top: -3vh; }
+    .section--tile .picture .width > span {
+      -webkit-transform: translateY(-20px);
+              transform: translateY(-20px); }
+  .section--tile .picture .height {
+    width: 1px;
+    height: 100%;
+    left: -3vh;
+    top: 0; }
+    .section--tile .picture .height > span {
+      -webkit-transform: rotateZ(-90deg) translateY(-20px);
+              transform: rotateZ(-90deg) translateY(-20px); }
 
-		.picture {
-			img {
-				max-width: 760px;
-				max-height: calc(80vh - 320px);
-			}
-		}
-		*/ }
-      .section--tile .swiper-container {
-        margin-left: -30px;
-        margin-right: -30px;
-        width: calc(100% + 60px);
-        margin-top: 30px; }
-        .section--tile .swiper-container > .row {
-          min-width: calc(100% - 30px);
-          margin: 0 15px;
-          width: calc(100% - 30px); }
-      .section--tile .swiper-slide {
-        padding: 30px 30px 0 30px; }
-      .section--tile .tile {
-        padding: 0; }
-      .section--tile .picture .width,
-      .section--tile .picture .height {
-        background: none; }
-        .section--tile .picture .width > span,
-        .section--tile .picture .height > span {
-          font-size: 15px;
-          font-weight: bold; }
-      .section--tile .picture .width {
-        height: 1px;
-        top: 10px; }
-        .section--tile .picture .width > span {
-          -webkit-transform: translateX(-50%) translateY(-25px);
-                  transform: translateX(-50%) translateY(-25px); }
-      .section--tile .picture .height {
-        left: 10px; }
-        .section--tile .picture .height > span {
-          -webkit-transform: translateX(-85px) translateY(-50%) rotateZ(-90deg);
-                  transform: translateX(-85px) translateY(-50%) rotateZ(-90deg); }
-      .section--tile .title {
-        font-size: 36px;
-        font-weight: 600;
-        line-height: 1.2; }
-      .section--tile .abstract {
-        font-size: 36px;
-        font-weight: 200;
-        line-height: 1.2; } }
+.section--tile .title {
+  color: #af8462;
+  margin-top: 40px; }
+
+.section--tile .abstract {
+  margin-bottom: 20px; }
+
+.section--tile .description {
+  font-size: 18px;
+  margin-bottom: 20px; }
+
+.section--tile .category {
+  padding-bottom: 50px;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #99887e; }
+
+.section--tile .icon--made-in-italy {
+  width: 161px;
+  height: 9px;
+  margin-bottom: 60px; }
+
+@media (min-width: 860px) {
+  .section--tile .tile {
+    margin: 10vh 10vh 0 10vh;
+    max-height: calc(80vh - 250px);
+    height: 100vh; }
+  .section--tile .picture img {
+    max-width: 760px;
+    max-height: calc(80vh - 320px); }
+  .section--tile .title {
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 0.9; }
+  .section--tile .abstract {
+    font-size: 40px;
+    font-weight: 200; } }
+
+@media (max-width: 859.98px) {
+  .section--tile .swiper-container {
+    margin-left: -30px;
+    margin-right: -30px;
+    width: calc(100% + 60px);
+    margin-top: 30px; }
+    .section--tile .swiper-container > .row {
+      min-width: calc(100% - 30px);
+      margin: 0 15px;
+      width: calc(100% - 30px); }
+  .section--tile .swiper-slide {
+    padding: 0 30px; }
+  .section--tile .tile {
+    height: calc(100vw - 60px); }
+  .section--tile .picture .width > span,
+  .section--tile .picture .height > span {
+    font-size: 15px;
+    font-weight: bold; }
+  .section--tile .picture .width {
+    height: 1px;
+    top: -5px; }
+    .section--tile .picture .width > span {
+      -webkit-transform: translateY(-10px);
+              transform: translateY(-10px); }
+  .section--tile .picture .height {
+    left: -5px; }
+    .section--tile .picture .height > span {
+      -webkit-transform: rotateZ(-90deg) translateY(-10px);
+              transform: rotateZ(-90deg) translateY(-10px); }
+  .section--tile .title {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2; }
+  .section--tile .abstract {
+    font-size: 36px;
+    font-weight: 200;
+    line-height: 1.2; } }
 
 [zoomable] > .swiper-container {
   -webkit-transition: none !important;
