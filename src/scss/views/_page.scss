@@ -11,6 +11,7 @@
 	overflow: hidden;
 
 	.view {
+		position: relative;
 		background: $background;
 		min-height: 100vh;
 		opacity: 0;
@@ -45,6 +46,35 @@
 		position: relative;
 	}
 	*/
+}
+
+.page {
+	&:before {
+		content: '';
+		opacity: 1;
+		display: block;
+		position: absolute;
+		width: 64px;
+		height: 64px;
+		top: 50vh;
+		left: 50vw;
+		margin: -32px 0 0 -32px;
+		border-radius: 50%;
+		border: 10px solid $primary;
+		animation: ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+	}
+}
+
+@keyframes ripple {
+	0% {
+		opacity: 1;
+		transform: scale(0.01, 0.01);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(1, 1);
+	}
 }
 
 .wrapper {

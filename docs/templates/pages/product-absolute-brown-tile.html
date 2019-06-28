@@ -22,13 +22,14 @@
 		<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }">
 			<div class="zoomable__content">
 
-				<div class="tile aspect--240x120" ng-if="false">
+				<div class="tile" ng-if="false">
 					<div class="picture zoomable__trigger">
 						<img lazy data-src="img/product/marvel/absolute-brown-tile/240x120-01.jpg" alt="title" />
 						<div class="width"><span>240 cm</span></div>
 						<div class="height"><span>120 cm</span></div>
 					</div>
 				</div>
+
 				<div class="row" ng-if="false">
 					<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
 						<div class="group group--tile">
@@ -46,14 +47,40 @@
 				<!-- Swiper -->
 				<div class="swiper-container" swiper-tile appear ng-if="true">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide" last-item ng-repeat="item in [1, 2, 3] track by $index">
-							<div class="tile aspect--240x120">
+						<div class="swiper-slide" last-item ng-repeat="item in [1, 2, 4] track by $index">
+
+							<div class="tile" ng-if="item == 1">
 								<div class="picture zoomable__trigger">
 									<img lazy data-src="img/product/marvel/absolute-brown-tile/240x120-0{{item}}.jpg" alt="title" />
 									<div class="width"><span>240 cm</span></div>
 									<div class="height"><span>120 cm</span></div>
 								</div>
 							</div>
+
+							<div class="tile" ng-if="item == 2">
+								<div class="picture zoomable__trigger">
+									<img lazy="" alt="" class="ng-isolate-scope" src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/f6b7379d-3950-4d33-b282-8caea6b449d4/yz1hpd/std/4096x512/AtlasConcorde_Arbor_Tobacco_30x240_Matte_AMHX_1.jpg?scalemode=centered">
+									<div class="width"><span>240 cm 94½"</span></div>
+									<div class="height"><span>30 cm 11¾"</span></div>
+								</div>
+							</div>
+
+							<div class="tile" ng-if="item == 3">
+								<div class="picture zoomable__trigger">
+									<img lazy="" alt="" class="ng-isolate-scope lazyed" src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/46449732-3bd4-4251-acd2-8861a89c8079/yz1hpd/std/1417x177/AtlasConcorde_Arbor_Tobacco_7,5x60_Matte_AN34_1.jpg?scalemode=centered">
+									<div class="width"><span>60 cm 23⅝"</span></div>
+									<div class="height"><span>7,5 cm 3"</span></div>
+								</div>
+							</div>
+
+							<div class="tile" ng-if="item == 4">
+								<div class="picture zoomable__trigger">
+									<img lazy="" alt="" class="ng-isolate-scope lazyed" src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/e27c827d-844b-489d-a348-cc19c4c17516/yz1hpd/std/2835x2835/AtlasConcorde_Boost_White_120x120_Grip_AMGN_1.jpg?scalemode=centered">
+									<div class="width"><span>120 cm 47¼"</span></div>
+									<div class="height"><span>120 cm 47¼"</span></div>
+								</div>
+							</div>
+
 						</div>
 					</div>
 					<!-- Add Pagination -->
@@ -66,9 +93,10 @@
 					<div class="row">
 						<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
 							<div class="group group--tile">
-								<button type="button" class="btn btn--search zoomable__trigger"><svg class="icon icon--search">
-									<use xlink:href="#search"></use>
-								</svg></button>
+								<button type="button" class="btn btn--zoom zoomable__trigger">
+									<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+									<svg class="icon icon--close"><use xlink:href="#close"></use></svg>
+								</button>
 								<div>Available in <b>5 patterns</b></div>
 								<button type="button" class="btn btn--wishlist"><svg class="icon icon--wishlist">
 									<use xlink:href="#wishlist"></use>

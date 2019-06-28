@@ -24110,58 +24110,11 @@ function () {
         var slides = _toConsumableArray(node.querySelectorAll('.swiper-slide'));
 
         if (node.classList.contains('zoomed')) {
-          TweenMax.to(content, 0.3, {
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height,
-            ease: Expo.easeInOut,
-            // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
-            onUpdate: function onUpdate() {
-              scope.$broadcast('onResize');
-            },
-            onComplete: function onComplete() {
-              TweenMax.set(node, {
-                height: 'auto'
-              });
-              TweenMax.set(content, {
-                left: rect.left,
-                top: rect.top,
-                width: rect.width,
-                height: rect.height
-              });
-              node.classList.remove('zoomed');
-              scope.$emit('onDroppinIn', false);
-            }
-          });
+          _this.zoomOut(scope, node, content, rect);
         } else {
           rect = _rect.default.fromNode(node);
-          TweenMax.set(node, {
-            height: rect.height
-          });
-          TweenMax.set(content, {
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height
-          });
-          node.classList.add('zoomed');
-          scope.$emit('onDroppinIn', true);
-          TweenMax.to(content, 0.3, {
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%',
-            ease: Expo.easeInOut,
-            // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
-            onUpdate: function onUpdate() {
-              // window.dispatchEvent(new Event('resize'));
-              // slides.forEach(x => x.style.width = content.style.width);
-              scope.$broadcast('onResize');
-            },
-            onComplete: function onComplete() {// scope.$broadcast('onResize');
-            }
-          });
+
+          _this.zoomIn(scope, node, content, rect);
         }
       };
 
@@ -24224,6 +24177,103 @@ function () {
         });
         */
       };
+    }
+  }, {
+    key: "zoomIn",
+    value: function zoomIn(scope, node, content, rect) {
+      TweenMax.set(node, {
+        height: rect.height
+      });
+      TweenMax.set(content, {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
+      });
+      node.classList.add('zoomed');
+      TweenMax.set(content, {
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%'
+      });
+      setTimeout(function () {
+        scope.$broadcast('onResize');
+      }, 1); // scope.$emit('onDroppinIn', true);
+    }
+  }, {
+    key: "zoomOut",
+    value: function zoomOut(scope, node, content, rect) {
+      TweenMax.set(node, {
+        height: 'auto'
+      }); // TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+
+      TweenMax.set(content, {
+        clearProps: 'all'
+      }); // TweenMax.set(content, rect);
+
+      node.classList.remove('zoomed');
+      setTimeout(function () {
+        scope.$broadcast('onResize');
+      }, 1); // scope.$emit('onDroppinIn', false);
+    }
+  }, {
+    key: "zoomInAnimated",
+    value: function zoomInAnimated(scope, node, content, rect) {
+      TweenMax.set(node, {
+        height: rect.height
+      });
+      TweenMax.set(content, {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
+      });
+      node.classList.add('zoomed');
+      scope.$emit('onDroppinIn', true);
+      TweenMax.to(content, 0.3, {
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        ease: Expo.easeInOut,
+        // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+        onUpdate: function onUpdate() {
+          // window.dispatchEvent(new Event('resize'));
+          // slides.forEach(x => x.style.width = content.style.width);
+          scope.$broadcast('onResize');
+        },
+        onComplete: function onComplete() {// scope.$broadcast('onResize');
+        }
+      });
+    }
+  }, {
+    key: "zoomOutAnimated",
+    value: function zoomOutAnimated(scope, node, content, rect) {
+      TweenMax.to(content, 0.3, {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        ease: Expo.easeInOut,
+        // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+        onUpdate: function onUpdate() {
+          scope.$broadcast('onResize');
+        },
+        onComplete: function onComplete() {
+          TweenMax.set(node, {
+            height: 'auto'
+          });
+          TweenMax.set(content, {
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+          });
+          node.classList.remove('zoomed');
+          scope.$emit('onDroppinIn', false);
+        }
+      });
     }
   }], [{
     key: "factory",
@@ -25100,8 +25150,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var first = true,
-    destroyFirst = true;
+var first = true;
 
 var CustomRenderer =
 /*#__PURE__*/
@@ -25132,11 +25181,9 @@ function (_Highway$Renderer) {
       var brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
       brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde'; // console.log(brand);
 
-      var $timeout = CustomRenderer.$timeout;
-      $timeout(function () {
+      CustomRenderer.$timeout(function () {
         var scope = CustomRenderer.scope;
         scope.root.brand = brand; // console.log('CustomRenderer.update', scope);
-        // ng-init="root.onInit('atlas-concorde-russia')"
       });
     } // This method in the renderer is run when the data-router-view is added to the DOM Tree.
 
@@ -25145,8 +25192,7 @@ function (_Highway$Renderer) {
     value: function onEnter() {
       // console.log('onEnter');
       if (!first) {
-        var $timeout = CustomRenderer.$timeout;
-        $timeout(function () {
+        CustomRenderer.$timeout(function () {
           var $compile = CustomRenderer.$compile;
 
           var view = _toConsumableArray(document.querySelectorAll('.view')).pop(); // console.log(view.childNodes);
@@ -25198,26 +25244,11 @@ function (_Highway$Renderer) {
   }, {
     key: "onLeaveCompleted",
     value: function onLeaveCompleted() {// console.log('onLeaveCompleted');
-
-      /*
-      if (CustomRenderer.$newScope) {
-      	CustomRenderer.$newScope.$destroy();
-      }
-      */
-
-      /*
-      const $timeout = CustomRenderer.$timeout;
-      const scope = CustomRenderer.scope;
-      $timeout(() => {
-      	scope.root.menuOpened = false;
-      	scope.root.menuProductOpened = false;
-      });
-      */
     }
   }], [{
     key: "$destroy",
     value: function $destroy(from) {
-      // console.log('CustomRenderer.destroy', destroyFirst, this.content, this.$newScope);
+      // console.log('CustomRenderer.destroy', this.content, this.$newScope);
       if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
         CustomRenderer.$timeout(function () {
           CustomRenderer.scope.$root.first = null;
@@ -25235,18 +25266,6 @@ function (_Highway$Renderer) {
 
         from.remove();
       }
-      /*
-      if (destroyFirst && false) {
-      	destroyFirst = false;
-      	const element = angular.element(from);
-      	const scope = element.scope();
-      	const scopes = this.collectScopes(scope);
-      	scopes.sort((a, b) => b.$id - a.$id);
-      	scopes.forEach(x => x.$destroy());
-      	// console.log(scopes);
-      }
-      */
-
     }
   }, {
     key: "collectScopes",
@@ -25431,6 +25450,10 @@ exports.default = void 0;
 
 var _highway = _interopRequireDefault(require("@dogstudio/highway"));
 
+var _dom = _interopRequireDefault(require("../services/dom.service"));
+
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
 var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -25479,17 +25502,30 @@ function (_Highway$Transition) {
 
       _customRenderer.default.$destroy(from);
 
+      if (PageTransition.origin) {
+        var left = PageTransition.origin.x / window.innerWidth * 100;
+        var top = PageTransition.origin.y;
+        TweenMax.set(to, {
+          scale: 1.1,
+          transformOrigin: "".concat(left, "% ").concat(top, "px")
+        });
+      }
+
+      console.log(PageTransition.origin);
       TweenMax.to(to, 0.6, {
+        scale: 1,
         opacity: 1,
-        delay: 0.250,
+        delay: 0.1,
+        // 0.250,
         overwrite: 'all',
         onComplete: function onComplete() {
           setTimeout(function () {
+            // TweenMax.set(to, { clearProps: 'all' });
             TweenMax.set(to, {
               minHeight: 0
             });
-            done();
           }, 50);
+          done();
         }
       });
     }
@@ -25497,6 +25533,7 @@ function (_Highway$Transition) {
     key: "out",
     value: function out(_ref2) {
       var from = _ref2.from,
+          trigger = _ref2.trigger,
           done = _ref2.done;
       // console.log('PageTransition.out');
       var headerMenu = document.querySelector('.header__menu');
@@ -25515,9 +25552,26 @@ function (_Highway$Transition) {
         */
       }
 
+      var left = 50;
+
+      var top = _dom.default.getScrollTop(window);
+
+      if (trigger instanceof HTMLElement) {
+        var rect = _rect.default.fromNode(trigger);
+
+        PageTransition.origin = rect.center;
+        top += rect.center.y;
+        left = rect.center.x / window.innerWidth * 100;
+      }
+
+      TweenMax.set(from, {
+        transformOrigin: "".concat(left, "% ").concat(top, "px")
+      });
       TweenMax.to(from, 0.6, {
+        scale: 1.1,
         opacity: 0,
-        delay: 0.150,
+        delay: 0,
+        // 0.150,
         overwrite: 'all',
         onComplete: function onComplete() {
           setTimeout(done, 500);
@@ -25531,7 +25585,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"./custom-renderer":231,"@dogstudio/highway":1}],234:[function(require,module,exports){
+},{"../services/dom.service":243,"../shared/rect":247,"./custom-renderer":231,"@dogstudio/highway":1}],234:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

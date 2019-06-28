@@ -4,8 +4,7 @@
 import Highway from '@dogstudio/highway';
 import GtmService from '../gtm/gtm.service';
 
-let first = true,
-	destroyFirst = true;
+let first = true;
 
 export default class CustomRenderer extends Highway.Renderer {
 
@@ -24,12 +23,10 @@ export default class CustomRenderer extends Highway.Renderer {
 		let brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
 		brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde';
 		// console.log(brand);
-		const $timeout = CustomRenderer.$timeout;
-		$timeout(() => {
+		CustomRenderer.$timeout(() => {
 			const scope = CustomRenderer.scope;
 			scope.root.brand = brand;
 			// console.log('CustomRenderer.update', scope);
-			// ng-init="root.onInit('atlas-concorde-russia')"
 		});
 	}
 
@@ -37,8 +34,7 @@ export default class CustomRenderer extends Highway.Renderer {
 	onEnter() {
 		// console.log('onEnter');
 		if (!first) {
-			const $timeout = CustomRenderer.$timeout;
-			$timeout(() => {
+			CustomRenderer.$timeout(() => {
 				const $compile = CustomRenderer.$compile;
 				const view = [...document.querySelectorAll('.view')].pop();
 				// console.log(view.childNodes);
@@ -85,23 +81,10 @@ export default class CustomRenderer extends Highway.Renderer {
 	// This method in the renderer is run when the data-router-view is removed from the DOM Tree.
 	onLeaveCompleted() {
 		// console.log('onLeaveCompleted');
-		/*
-		if (CustomRenderer.$newScope) {
-			CustomRenderer.$newScope.$destroy();
-		}
-		*/
-		/*
-		const $timeout = CustomRenderer.$timeout;
-		const scope = CustomRenderer.scope;
-		$timeout(() => {
-			scope.root.menuOpened = false;
-			scope.root.menuProductOpened = false;
-		});
-		*/
 	}
 
 	static $destroy(from) {
-		// console.log('CustomRenderer.destroy', destroyFirst, this.content, this.$newScope);
+		// console.log('CustomRenderer.destroy', this.content, this.$newScope);
 		if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
 			CustomRenderer.$timeout(() => {
 				CustomRenderer.scope.$root.first = null;
@@ -117,17 +100,6 @@ export default class CustomRenderer extends Highway.Renderer {
 			}
 			from.remove();
 		}
-		/*
-		if (destroyFirst && false) {
-			destroyFirst = false;
-			const element = angular.element(from);
-			const scope = element.scope();
-			const scopes = this.collectScopes(scope);
-			scopes.sort((a, b) => b.$id - a.$id);
-			scopes.forEach(x => x.$destroy());
-			// console.log(scopes);
-		}
-		*/
 	}
 
 	static collectScopes(scope, scopes) {

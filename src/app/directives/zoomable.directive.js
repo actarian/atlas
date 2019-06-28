@@ -26,45 +26,10 @@ export default class ZoomableDirective {
 			// console.log(scope);
 			const slides = [...node.querySelectorAll('.swiper-slide')];
 			if (node.classList.contains('zoomed')) {
-				TweenMax.to(content, 0.3, {
-					left: rect.left,
-					top: rect.top,
-					width: rect.width,
-					height: rect.height,
-					ease: Expo.easeInOut,
-					// ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
-					onUpdate: () => {
-						scope.$broadcast('onResize');
-					},
-					onComplete: () => {
-						TweenMax.set(node, { height: 'auto' });
-						TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
-						node.classList.remove('zoomed');
-						scope.$emit('onDroppinIn', false);
-					}
-				});
+				this.zoomOut(scope, node, content, rect);
 			} else {
 				rect = Rect.fromNode(node);
-				TweenMax.set(node, { height: rect.height });
-				TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
-				node.classList.add('zoomed');
-				scope.$emit('onDroppinIn', true);
-				TweenMax.to(content, 0.3, {
-					left: 0,
-					top: 0,
-					width: '100%',
-					height: '100%',
-					ease: Expo.easeInOut,
-					// ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
-					onUpdate: () => {
-						// window.dispatchEvent(new Event('resize'));
-						// slides.forEach(x => x.style.width = content.style.width);
-						scope.$broadcast('onResize');
-					},
-					onComplete: () => {
-						// scope.$broadcast('onResize');
-					}
-				});
+				this.zoomIn(scope, node, content, rect);
 			}
 		};
 		const addListeners = () => {
@@ -115,6 +80,72 @@ export default class ZoomableDirective {
 			*/
 
 		};
+	}
+
+	zoomIn(scope, node, content, rect) {
+		TweenMax.set(node, { height: rect.height });
+		TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+		node.classList.add('zoomed');
+		TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
+		setTimeout(() => {
+			scope.$broadcast('onResize');
+		}, 1);
+		// scope.$emit('onDroppinIn', true);
+	}
+
+	zoomOut(scope, node, content, rect) {
+		TweenMax.set(node, { height: 'auto' });
+		// TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+		TweenMax.set(content, { clearProps: 'all' });
+		// TweenMax.set(content, rect);
+		node.classList.remove('zoomed');
+		setTimeout(() => {
+			scope.$broadcast('onResize');
+		}, 1);
+		// scope.$emit('onDroppinIn', false);
+	}
+
+	zoomInAnimated(scope, node, content, rect) {
+		TweenMax.set(node, { height: rect.height });
+		TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+		node.classList.add('zoomed');
+		scope.$emit('onDroppinIn', true);
+		TweenMax.to(content, 0.3, {
+			left: 0,
+			top: 0,
+			width: '100%',
+			height: '100%',
+			ease: Expo.easeInOut,
+			// ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+			onUpdate: () => {
+				// window.dispatchEvent(new Event('resize'));
+				// slides.forEach(x => x.style.width = content.style.width);
+				scope.$broadcast('onResize');
+			},
+			onComplete: () => {
+				// scope.$broadcast('onResize');
+			}
+		});
+	}
+
+	zoomOutAnimated(scope, node, content, rect) {
+		TweenMax.to(content, 0.3, {
+			left: rect.left,
+			top: rect.top,
+			width: rect.width,
+			height: rect.height,
+			ease: Expo.easeInOut,
+			// ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+			onUpdate: () => {
+				scope.$broadcast('onResize');
+			},
+			onComplete: () => {
+				TweenMax.set(node, { height: 'auto' });
+				TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+				node.classList.remove('zoomed');
+				scope.$emit('onDroppinIn', false);
+			}
+		});
 	}
 
 	static factory($timeout, DomService) {
