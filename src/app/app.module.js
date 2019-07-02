@@ -18,11 +18,12 @@ import { MuuriDirective } from './directives/muuri.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
-import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective } from './directives/swiper.directive';
+import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
 // import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
 import VisibilityDirective from './directives/visibility.directive';
 import WishlistDirective from './directives/wishlist.directive';
+import WorldDirective from './directives/world.directive';
 import ZoomableDirective from './directives/zoomable.directive';
 import FaqCtrl from './faq/faq.controller';
 import { ImageWithFeatures } from './filters/image-with-features.filter';
@@ -91,11 +92,14 @@ app.directive('appear', AppearDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
 	.directive('swiperProjects', SwiperProjectsDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
+	.directive('swiperTimeline', SwiperTimelineDirective.factory)
+
 	// .directive('transition', TransitionDirective.factory)
 	.directive('validate', ValidateDirective.factory)
 	.directive('video', VideoDirective.factory)
 	.directive('visibility', VisibilityDirective.factory)
 	.directive('wishlist', WishlistDirective.factory)
+	.directive('world', WorldDirective.factory)
 	.directive('zoomable', ZoomableDirective.factory);
 
 app.controller('RootCtrl', RootCtrl)

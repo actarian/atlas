@@ -1,0 +1,165 @@
+.section--timeline {
+	padding-bottom: 80px;
+
+	.row {
+		align-items: center;
+
+		&>div {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			&:first-child {
+				align-items: center;
+			}
+
+			&:last-child {
+				align-items: flex-start;
+			}
+		}
+	}
+
+	.picture {
+		margin-bottom: 50px;
+
+		img {
+			max-height: calc(100vh - 400px);
+		}
+	}
+
+	.year {
+		font-size: 80px;
+		line-height: 1;
+		font-weight: $font-semibold;
+		color: $foreground;
+		margin-bottom: 30px;
+	}
+
+	.abstract {
+		font-size: 18px;
+		line-height: 1.7;
+		font-weight: $font-extralight;
+		color: $foreground;
+	}
+
+	.swiper-container {
+		overflow: visible;
+	}
+
+	.swiper-wrapper {
+		display: flex;
+		align-items: center;
+	}
+
+	@include media-breakpoint-up(md) {
+
+		.swiper-pagination-bullets,
+		.swiper-container-horizontal>.swiper-pagination-bullets {
+			background: $background-tertiary;
+			display: none;
+		}
+	}
+
+	@include media-breakpoint-down(sm) {
+		.nav--timeline {
+			display: none;
+		}
+
+		.swiper-container-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
+			background: transparent;
+			width: 63px !important;
+		}
+	}
+
+}
+
+.nav--timeline {
+	position: relative;
+	width: 100%;
+	border-top: 1px solid #e4e0dd;
+	padding-top: 10px;
+
+	&:before,
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top: -1px;
+		width: 100%;
+		height: 1px;
+		background: #e4e0dd;
+	}
+
+	&:before {
+		left: -100%;
+	}
+
+	&:after {
+		right: -100%;
+	}
+
+	&>li {
+		flex: 1 1 percentage(1 / 8);
+		font-size: 13px;
+		font-weight: $font-light;
+		color: #b1aaa6;
+		transition: color ease-in-out 350ms;
+		// position: relative;
+
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			top: -5px;
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			border: 2px solid $background-tertiary;
+			background: #b1aaa6;
+			transition: background ease-in-out 350ms;
+		}
+
+		&:hover,
+		&.active {
+			color: $foreground-secondary;
+
+
+			&:before {
+				background: $foreground-secondary;
+			}
+
+		}
+	}
+}
+
+/*
+.section--timeline {
+	padding-top: 140px;
+	padding-bottom: 40px;
+
+	.title {
+		font-size: 40px;
+		line-height: 1.1;
+		font-weight: $font-semibold;
+		color: $foreground;
+		margin-bottom: 60px;
+	}
+
+	.abstract {
+		font-size: 32px;
+		line-height: 1.1;
+		font-weight: $font-regular;
+		color: $foreground;
+		margin-bottom: 60px;
+
+		p {
+			margin-bottom: 10px;
+		}
+	}
+
+	.description {
+		margin-bottom: 60px;
+	}
+
+}
+*/

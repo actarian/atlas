@@ -1,6 +1,7 @@
 .swiper-container {
 	width: 100%;
 	cursor: pointer;
+	overflow: visible;
 	// visibility: hidden;
 
 	&.ready {
@@ -38,7 +39,6 @@
 		bottom: 0;
 		padding: 0;
 		height: 60px;
-		background: white;
 	}
 }
 

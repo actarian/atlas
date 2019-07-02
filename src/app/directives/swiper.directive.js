@@ -227,7 +227,7 @@ export class SwiperTileDirective extends SwiperDirective {
 			parallax: true,
 			autoplay: 5000,
 			// loop: true,
-			spaceBetween: 0,
+			spaceBetween: 60,
 			keyboardControl: true,
 			mousewheelControl: false,
 			onSlideClick: function(swiper) {
@@ -247,3 +247,67 @@ export class SwiperTileDirective extends SwiperDirective {
 }
 
 SwiperTileDirective.factory.$inject = [];
+
+export class SwiperTimelineDirective extends SwiperDirective {
+
+	constructor() {
+		super();
+		this.options = {
+			/*
+			observer: true,
+			observeParents: true,
+			*/
+			// loop: true,
+			// loopAdditionalSlides: 100,
+			slidesPerView: 1, // 'auto',
+			// centeredSlides: true,
+			spaceBetween: 60,
+			speed: 600,
+			autoplay: 5000,
+			keyboardControl: true,
+			mousewheelControl: false,
+			/*
+			onSlideClick: function(swiper) {
+				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+			},
+			*/
+			on: {
+				init: function() {
+					const swiper = this;
+					const container = swiper.$el[0];
+					const lis = [...container.querySelectorAll('.nav--timeline>li')];
+					lis.forEach((x, i) => {
+						x.addEventListener('click', () => {
+							swiper.slideTo(i, 600);
+						});
+					});
+
+				},
+				slideChange: function() {
+					const swiper = this;
+					console.log(swiper);
+					const container = swiper.$el[0];
+					const lis = [...container.querySelectorAll('.nav--timeline>li')];
+					lis.forEach((x, i) => {
+						if (i === swiper.activeIndex) {
+							x.classList.add('active');
+						} else {
+							x.classList.remove('active');
+						}
+					});
+				},
+			},
+			pagination: {
+				el: '.swiper-pagination',
+				dynamicBullets: true,
+			},
+		};
+	}
+
+	static factory() {
+		return new SwiperTimelineDirective();
+	}
+
+}
+
+SwiperTimelineDirective.factory.$inject = [];

@@ -22,30 +22,30 @@
 		<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }">
 			<div class="zoomable__content">
 
-				<div class="tile" ng-if="false">
+				<div class="tile" ng-if="true">
 					<div class="picture zoomable__trigger">
 						<img lazy data-src="img/product/marvel/absolute-brown-tile/240x120-01.jpg" alt="title" />
 						<div class="width"><span>240 cm</span></div>
 						<div class="height"><span>120 cm</span></div>
 					</div>
 				</div>
-
-				<div class="row" ng-if="false">
+				<div class="row" ng-if="true">
 					<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
 						<div class="group group--tile">
-							<button type="button" class="btn btn--search zoomable__trigger"><svg class="icon icon--search">
-						<use xlink:href="#search"></use>
-					</svg></button>
+							<button type="button" class="btn btn--zoom zoomable__trigger">
+								<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+								<svg class="icon icon--close"><use xlink:href="#close"></use></svg>
+							</button>
 							<div>Available in <b>5 patterns</b></div>
-							<button type="button" class="btn btn--wishlist"><svg class="icon icon--wishlist">
-						<use xlink:href="#wishlist"></use>
-					</svg></button>
+							<button type="button" class="btn btn--wishlist">
+								<svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg>
+							</button>
 						</div>
 					</div>
 				</div>
 
 				<!-- Swiper -->
-				<div class="swiper-container" swiper-tile appear ng-if="true">
+				<div class="swiper-container" swiper-tile appear ng-if="false">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" last-item ng-repeat="item in [1, 2, 4] track by $index">
 

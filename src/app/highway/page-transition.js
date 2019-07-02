@@ -18,7 +18,7 @@ export default class PageTransition extends Highway.Transition {
 			const top = PageTransition.origin.y;
 			TweenMax.set(to, { scale: 1.1, transformOrigin: `${left}% ${top}px` });
 		}
-		console.log(PageTransition.origin);
+		// console.log(PageTransition.origin);
 		TweenMax.to(to, 0.6, {
 			scale: 1,
 			opacity: 1,
@@ -26,8 +26,8 @@ export default class PageTransition extends Highway.Transition {
 			overwrite: 'all',
 			onComplete: () => {
 				setTimeout(() => {
-					// TweenMax.set(to, { clearProps: 'all' });
-					TweenMax.set(to, { minHeight: 0 });
+					TweenMax.set(to, { clearProps: 'all' });
+					TweenMax.set(to, { minHeight: 0, opacity: 1 });
 				}, 50);
 				done();
 			}

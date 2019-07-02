@@ -78,7 +78,12 @@
 			margin-bottom: 25px;
 			background: $foreground-negative;
 			box-shadow: none;
-			transition: all ease-in-out 400ms;
+			transition: all ease-out 350ms;
+
+			img {
+				transform: translateZ(1px);
+				background: transparent;
+			}
 		}
 
 		&:hover {

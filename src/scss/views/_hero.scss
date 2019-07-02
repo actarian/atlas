@@ -127,6 +127,14 @@
 		height: auto;
 	}
 
+	.swiper-pagination-bullets {
+
+		&,
+		.swiper-container-horizontal>& {
+			background: white;
+		}
+	}
+
 	.container {
 		align-items: center;
 		justify-content: flex-end;

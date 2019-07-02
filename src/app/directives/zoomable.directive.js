@@ -23,7 +23,7 @@ export default class ZoomableDirective {
 		const node = element[0];
 		const content = node.querySelector('.zoomable__content');
 		const onClick = () => {
-			// console.log(scope);
+			console.log(scope);
 			const slides = [...node.querySelectorAll('.swiper-slide')];
 			if (node.classList.contains('zoomed')) {
 				this.zoomOut(scope, node, content, rect);
@@ -34,7 +34,7 @@ export default class ZoomableDirective {
 		};
 		const addListeners = () => {
 			triggers = [...node.querySelectorAll('.zoomable__trigger')];
-			// console.log('ZoomableDirective', node, content, triggers);
+			console.log('ZoomableDirective', node, content, triggers);
 			triggers.forEach(x => x.addEventListener('click', onClick));
 		};
 		const removeListeners = () => {
@@ -47,7 +47,9 @@ export default class ZoomableDirective {
 			removeListeners();
 			addListeners();
 		});
-		addListeners();
+		this.$timeout(() => {
+			addListeners();
+		});
 		element.on('$destroy', () => {
 			triggers.forEach(x => x.removeEventListener('click', onClick));
 		});
@@ -83,10 +85,10 @@ export default class ZoomableDirective {
 	}
 
 	zoomIn(scope, node, content, rect) {
-		TweenMax.set(node, { height: rect.height });
-		TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+		// TweenMax.set(node, { height: rect.height });
+		// TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
 		node.classList.add('zoomed');
-		TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
+		// TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
 		setTimeout(() => {
 			scope.$broadcast('onResize');
 		}, 1);
@@ -94,10 +96,8 @@ export default class ZoomableDirective {
 	}
 
 	zoomOut(scope, node, content, rect) {
-		TweenMax.set(node, { height: 'auto' });
-		// TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
-		TweenMax.set(content, { clearProps: 'all' });
-		// TweenMax.set(content, rect);
+		// TweenMax.set(node, { height: 'auto' });
+		// TweenMax.set(content, { clearProps: 'all' });
 		node.classList.remove('zoomed');
 		setTimeout(() => {
 			scope.$broadcast('onResize');
