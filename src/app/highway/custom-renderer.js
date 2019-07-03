@@ -9,16 +9,19 @@ let first = true;
 export default class CustomRenderer extends Highway.Renderer {
 
 	update() {
-		// Now we update all the informations in the DOM we need!
-		// We update the title
-		document.title = this.properties.page.title;
-		// console.log('CustomRenderer.update', this.properties);
-		// CustomRenderer.H.pushState_();
-		// console.log(document.innerHTML, this.properties.page.innerHTML);
-		// console.log(this.properties.page);
+		this.updateMeta();
 		GtmService.pageView();
+		this.updateBrand();
+		this.updateMarketsAndLanguages();
+	}
+
+	updateMeta() {
 		const page = this.properties.page;
-		// console.log(page);
+		document.title = page.title;
+	}
+
+	updateBrand() {
+		const page = this.properties.page;
 		const body = page.querySelector('body');
 		let brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
 		brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde';
@@ -28,6 +31,20 @@ export default class CustomRenderer extends Highway.Renderer {
 			scope.root.brand = brand;
 			// console.log('CustomRenderer.update', scope);
 		});
+	}
+
+	updateMarketsAndLanguages() {
+		const page = this.properties.page;
+		const marketsAndLanguages = [...page.querySelectorAll('.nav--markets__secondary > li > a')];
+		const anchors = [...document.querySelectorAll('.nav--markets__secondary > li > a')];
+		anchors.forEach(a => {
+			const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
+			if (marketAndLanguage) {
+				a.href = marketAndLanguage.href;
+				console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
+			}
+		});
+		// console.log('updateMarketsAndLanguages', marketsAndLanguages, anchors);
 	}
 
 	// This method in the renderer is run when the data-router-view is added to the DOM Tree.
@@ -46,9 +63,11 @@ export default class CustomRenderer extends Highway.Renderer {
 				const content = $compile(element)($newScope);
 				CustomRenderer.$newScope = $newScope;
 				CustomRenderer.content = content;
+				/*
 				element.on('$destroy', (event) => {
 					console.log('.view -> $destroy', event);
 				});
+				*/
 				// element.append(content);
 			});
 		}
@@ -61,10 +80,11 @@ export default class CustomRenderer extends Highway.Renderer {
 			first = false;
 			const view = [...document.querySelectorAll('.view')].shift();
 			const element = angular.element(view.childNodes);
-			// console.log(view, element);
+			/*
 			element.on('$destroy', (event) => {
 				console.log('.view -> $destroy', event);
 			});
+			*/
 		}
 	}
 

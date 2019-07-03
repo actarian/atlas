@@ -118,7 +118,7 @@ export default class VideoDirective {
 		}
 		element.on('$destroy', () => {
 			if (video) {
-				console.log('VideoDirective.$destroy');
+				// console.log('VideoDirective.$destroy');
 				video.removeEventListener('play', onPlay);
 				video.removeEventListener('pause', onPause);
 				video.removeEventListener('ended', onEnded);

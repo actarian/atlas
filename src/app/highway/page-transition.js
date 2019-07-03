@@ -10,6 +10,14 @@ export default class PageTransition extends Highway.Transition {
 
 	in ({ from, to, done }) {
 		// console.log('PageTransition.in');
+		const loader = document.querySelector('.loader--cube');
+		TweenMax.to(loader, 0.45, {
+			opacity: 0,
+			ease: Power2.easeInOut,
+			onComplete: () => {
+				TweenMax.set(loader, { display: 'none' });
+			}
+		});
 		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
 		window.scrollTo(0, 0);
 		CustomRenderer.$destroy(from);
@@ -23,7 +31,8 @@ export default class PageTransition extends Highway.Transition {
 			scale: 1,
 			opacity: 1,
 			delay: 0.1, // 0.250,
-			overwrite: 'all',
+			// overwrite: 'all',
+			ease: Power2.easeInOut,
 			onComplete: () => {
 				setTimeout(() => {
 					TweenMax.set(to, { clearProps: 'all' });
@@ -36,6 +45,12 @@ export default class PageTransition extends Highway.Transition {
 
 	out({ from, trigger, done }) {
 		// console.log('PageTransition.out');
+		const loader = document.querySelector('.loader--cube');
+		TweenMax.set(loader, { opacity: 0, display: 'block' });
+		TweenMax.to(loader, 0.45, {
+			opacity: 1,
+			ease: Power2.easeInOut,
+		});
 		const headerMenu = document.querySelector('.header__menu');
 		if (headerMenu) {
 			headerMenu.classList.remove('opened');
@@ -63,7 +78,8 @@ export default class PageTransition extends Highway.Transition {
 			scale: 1.1,
 			opacity: 0,
 			delay: 0, // 0.150,
-			overwrite: 'all',
+			// overwrite: 'all',
+			ease: Power2.easeInOut,
 			onComplete: () => {
 				setTimeout(done, 500);
 			}

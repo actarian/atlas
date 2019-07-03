@@ -24007,7 +24007,7 @@ function () {
 
       element.on('$destroy', function () {
         if (video) {
-          console.log('VideoDirective.$destroy');
+          // console.log('VideoDirective.$destroy');
           video.removeEventListener('play', onPlay);
           video.removeEventListener('pause', onPause);
           video.removeEventListener('ended', onEnded);
@@ -24334,8 +24334,8 @@ function () {
       };
 
       var addListeners = function addListeners() {
-        triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger'));
-        console.log('ZoomableDirective', node, content, triggers);
+        triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger')); // console.log('ZoomableDirective', node, content, triggers);
+
         triggers.forEach(function (x) {
           return x.addEventListener('click', onClick);
         });
@@ -25365,17 +25365,23 @@ function (_Highway$Renderer) {
   _createClass(CustomRenderer, [{
     key: "update",
     value: function update() {
-      // Now we update all the informations in the DOM we need!
-      // We update the title
-      document.title = this.properties.page.title; // console.log('CustomRenderer.update', this.properties);
-      // CustomRenderer.H.pushState_();
-      // console.log(document.innerHTML, this.properties.page.innerHTML);
-      // console.log(this.properties.page);
+      this.updateMeta();
 
       _gtm.default.pageView();
 
-      var page = this.properties.page; // console.log(page);
-
+      this.updateBrand();
+      this.updateMarketsAndLanguages();
+    }
+  }, {
+    key: "updateMeta",
+    value: function updateMeta() {
+      var page = this.properties.page;
+      document.title = page.title;
+    }
+  }, {
+    key: "updateBrand",
+    value: function updateBrand() {
+      var page = this.properties.page;
       var body = page.querySelector('body');
       var brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
       brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde'; // console.log(brand);
@@ -25384,6 +25390,26 @@ function (_Highway$Renderer) {
         var scope = CustomRenderer.scope;
         scope.root.brand = brand; // console.log('CustomRenderer.update', scope);
       });
+    }
+  }, {
+    key: "updateMarketsAndLanguages",
+    value: function updateMarketsAndLanguages() {
+      var page = this.properties.page;
+
+      var marketsAndLanguages = _toConsumableArray(page.querySelectorAll('.nav--markets__secondary > li > a'));
+
+      var anchors = _toConsumableArray(document.querySelectorAll('.nav--markets__secondary > li > a'));
+
+      anchors.forEach(function (a) {
+        var marketAndLanguage = marketsAndLanguages.find(function (x) {
+          return x.id === a.id;
+        });
+
+        if (marketAndLanguage) {
+          a.href = marketAndLanguage.href;
+          console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
+        }
+      }); // console.log('updateMarketsAndLanguages', marketsAndLanguages, anchors);
     } // This method in the renderer is run when the data-router-view is added to the DOM Tree.
 
   }, {
@@ -25405,9 +25431,12 @@ function (_Highway$Renderer) {
           var content = $compile(element)($newScope);
           CustomRenderer.$newScope = $newScope;
           CustomRenderer.content = content;
-          element.on('$destroy', function (event) {
-            console.log('.view -> $destroy', event);
-          }); // element.append(content);
+          /*
+          element.on('$destroy', (event) => {
+          	console.log('.view -> $destroy', event);
+          });
+          */
+          // element.append(content);
         });
       }
     } // This method in the renderer is run when transition to hide the data-router-view is called.
@@ -25421,11 +25450,12 @@ function (_Highway$Renderer) {
 
         var view = _toConsumableArray(document.querySelectorAll('.view')).shift();
 
-        var element = angular.element(view.childNodes); // console.log(view, element);
-
-        element.on('$destroy', function (event) {
-          console.log('.view -> $destroy', event);
+        var element = angular.element(view.childNodes);
+        /*
+        element.on('$destroy', (event) => {
+        	console.log('.view -> $destroy', event);
         });
+        */
       }
     } // This method in the renderer is run when the transition to display the data-router-view is done.
 
@@ -25693,6 +25723,16 @@ function (_Highway$Transition) {
           to = _ref.to,
           done = _ref.done;
       // console.log('PageTransition.in');
+      var loader = document.querySelector('.loader--cube');
+      TweenMax.to(loader, 0.45, {
+        opacity: 0,
+        ease: Power2.easeInOut,
+        onComplete: function onComplete() {
+          TweenMax.set(loader, {
+            display: 'none'
+          });
+        }
+      });
       TweenMax.set(to, {
         opacity: 0,
         minHeight: from.offsetHeight
@@ -25716,7 +25756,8 @@ function (_Highway$Transition) {
         opacity: 1,
         delay: 0.1,
         // 0.250,
-        overwrite: 'all',
+        // overwrite: 'all',
+        ease: Power2.easeInOut,
         onComplete: function onComplete() {
           setTimeout(function () {
             TweenMax.set(to, {
@@ -25738,6 +25779,15 @@ function (_Highway$Transition) {
           trigger = _ref2.trigger,
           done = _ref2.done;
       // console.log('PageTransition.out');
+      var loader = document.querySelector('.loader--cube');
+      TweenMax.set(loader, {
+        opacity: 0,
+        display: 'block'
+      });
+      TweenMax.to(loader, 0.45, {
+        opacity: 1,
+        ease: Power2.easeInOut
+      });
       var headerMenu = document.querySelector('.header__menu');
 
       if (headerMenu) {
@@ -25774,7 +25824,8 @@ function (_Highway$Transition) {
         opacity: 0,
         delay: 0,
         // 0.150,
-        overwrite: 'all',
+        // overwrite: 'all',
+        ease: Power2.easeInOut,
         onComplete: function onComplete() {
           setTimeout(done, 500);
         }

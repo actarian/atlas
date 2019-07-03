@@ -1,5 +1,30 @@
 .section--timeline {
+	padding-top: 140px;
 	padding-bottom: 80px;
+
+	.title {
+		font-size: 40px;
+		line-height: 1.1;
+		font-weight: $font-semibold;
+		color: $foreground;
+		margin-bottom: 60px;
+	}
+
+	.abstract {
+		font-size: 32px;
+		line-height: 1.1;
+		font-weight: $font-regular;
+		color: $foreground;
+		margin-bottom: 60px;
+
+		p {
+			margin-bottom: 10px;
+		}
+	}
+
+	.description {
+		margin-bottom: 60px;
+	}
 
 	.row {
 		align-items: center;
@@ -61,6 +86,9 @@
 	}
 
 	@include media-breakpoint-down(sm) {
+		padding-top: 80px;
+		padding-bottom: 40px;
+
 		.nav--timeline {
 			display: none;
 		}
@@ -131,35 +159,3 @@
 		}
 	}
 }
-
-/*
-.section--timeline {
-	padding-top: 140px;
-	padding-bottom: 40px;
-
-	.title {
-		font-size: 40px;
-		line-height: 1.1;
-		font-weight: $font-semibold;
-		color: $foreground;
-		margin-bottom: 60px;
-	}
-
-	.abstract {
-		font-size: 32px;
-		line-height: 1.1;
-		font-weight: $font-regular;
-		color: $foreground;
-		margin-bottom: 60px;
-
-		p {
-			margin-bottom: 10px;
-		}
-	}
-
-	.description {
-		margin-bottom: 60px;
-	}
-
-}
-*/

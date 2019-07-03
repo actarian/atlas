@@ -34,7 +34,7 @@ export default class ZoomableDirective {
 		};
 		const addListeners = () => {
 			triggers = [...node.querySelectorAll('.zoomable__trigger')];
-			console.log('ZoomableDirective', node, content, triggers);
+			// console.log('ZoomableDirective', node, content, triggers);
 			triggers.forEach(x => x.addEventListener('click', onClick));
 		};
 		const removeListeners = () => {
