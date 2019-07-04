@@ -26200,7 +26200,8 @@ var MOOD_TYPES = Object.freeze({
   Tile: 1,
   Horizontal: 2,
   Vertical: 3,
-  Card: 4
+  Card: 4,
+  Decor: 5
 });
 exports.MOOD_TYPES = MOOD_TYPES;
 var ITEMS_PER_PAGE = 20;
@@ -26770,9 +26771,26 @@ function () {
   }
 
   _createClass(RootCtrl, [{
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this2 = this;
+
+      var scrolled = event.scroll.scrollTop > 40;
+      var direction = event.scroll.direction;
+
+      if (event.scroll.direction) {
+        if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
+          this.$timeout(function () {
+            _this2.scrolled = scrolled;
+            _this2.direction = direction;
+          }, 1);
+        }
+      }
+    }
+  }, {
     key: "onInit",
     value: function onInit(brand) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.brand = brand;
       this.webglEnabled = false; // this.domService.hasWebglSupport();
@@ -26784,20 +26802,8 @@ function () {
       });
       */
 
-      this.$scope.onScroll = function (event) {
-        // console.log(event.scroll.direction, event.intersection);
-        var scrolled = event.scroll.scrollTop > 40;
-
-        if (_this2.scrolled !== scrolled || _this2.direction !== event.scroll.direction) {
-          _this2.$timeout(function () {
-            _this2.scrolled = scrolled;
-            _this2.direction = event.scroll.direction;
-          });
-        }
-      };
-
       this.$timeout(function () {
-        _this2.init = true;
+        _this3.init = true;
         var view = document.querySelector('.view');
         TweenMax.to(view, 0.6, {
           opacity: 1,
@@ -26807,8 +26813,8 @@ function () {
       }, 1000);
       this.$scope.$on('onDroppinIn', function (scope, droppinIn) {
         // console.log('onDroppinIn', droppinIn);
-        _this2.$timeout(function () {
-          _this2.droppinIn = droppinIn;
+        _this3.$timeout(function () {
+          _this3.droppinIn = droppinIn;
         });
       });
     }
@@ -26851,12 +26857,12 @@ function () {
   }, {
     key: "toggleNav",
     value: function toggleNav(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.nav = this.nav === id ? null : id;
       this.closeNav().then(function () {
-        if (_this3.nav) {
-          _this3.openNav(_this3.nav);
+        if (_this4.nav) {
+          _this4.openNav(_this4.nav);
         }
       });
     }
@@ -26916,11 +26922,11 @@ function () {
   }, {
     key: "onDroppedIn",
     value: function onDroppedIn(node) {
-      var _this4 = this;
+      var _this5 = this;
 
       // console.log('onDroppedIn', node);
       return new Promise(function (resolve, reject) {
-        _this4.droppinIn = true;
+        _this5.droppinIn = true;
         var items = [].slice.call(node.querySelectorAll('.submenu__item'));
         TweenMax.set(items, {
           opacity: 0
@@ -26945,7 +26951,7 @@ function () {
             }); // TweenMax.set(node, { clearProps: 'all' });
 
             if (items.length === 0) {
-              _this4.droppinIn = false;
+              _this5.droppinIn = false;
             }
           }
         });
@@ -26956,7 +26962,7 @@ function () {
             stagger: 0.07,
             delay: 0.5,
             onComplete: function onComplete() {
-              _this4.droppinIn = false;
+              _this5.droppinIn = false;
             }
           });
         }
@@ -27437,7 +27443,7 @@ DomService.scroll$ = function () {
     direction: 0,
     originalEvent: null
   };
-  return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.auditTime)(33), // 30 fps
+  return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.startWith)(event), (0, _operators.auditTime)(33), // 30 fps
   (0, _operators.map)(function (originalEvent) {
     /*
     event.top = target.offsetTop || 0;
@@ -27448,11 +27454,13 @@ DomService.scroll$ = function () {
     event.scrollTop = DomService.getScrollTop(target);
     event.scrollLeft = DomService.getScrollLeft(target);
     var diff = event.scrollTop - previousTop;
-    event.direction = diff / Math.abs(diff);
+    event.direction = diff ? diff / Math.abs(diff) : 0;
     previousTop = event.scrollTop;
     event.originalEvent = originalEvent;
     return event;
-  }), (0, _operators.startWith)(event));
+  }) // ,
+  // filter(event => event.direction !== 0)
+  );
 }();
 
 DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$);
@@ -29021,7 +29029,8 @@ var MOOD_TYPES = Object.freeze({
   Tile: 1,
   Horizontal: 2,
   Vertical: 3,
-  Card: 4
+  Card: 4,
+  Decor: 5
 });
 exports.MOOD_TYPES = MOOD_TYPES;
 var ITEMS_PER_PAGE = 20;

@@ -96,11 +96,6 @@ $diff: 280px;
 	}
 }
 
-.picture--decors {
-	box-shadow: none;
-	background: none;
-}
-
 .picture--vertical {
 	position: relative;
 	width: 100%;
@@ -127,6 +122,33 @@ $diff: 280px;
 			&>.media {
 				@include aspect-clip(37, 61);
 			}
+		}
+	}
+}
+
+.picture--decors {
+	box-shadow: none;
+	background: none;
+
+	&>.media {
+		overflow: visible;
+
+		img,
+		video,
+		canvas,
+		ng-transclude {
+			object-fit: contain;
+		}
+
+	}
+
+	.overlay {
+		display: none;
+	}
+
+	.btn--pinterest {
+		.icon--pinterest {
+			fill: $primary;
 		}
 	}
 }

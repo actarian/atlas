@@ -57,63 +57,21 @@
 			}
 		}
 
-		&.activated {
-			animation: activated 350ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-		}
-
-		&.deactivated {
-			animation: deactivated 350ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-		}
-
 	}
 
-	@keyframes activated {
-		0% {
-			opacity: 0;
-			transform: scale(2.0);
-		}
-
-		100% {
-			opacity: 1;
-			transform: scale(1.0);
-		}
-	}
-
-	@keyframes deactivated {
-		0% {
-			opacity: 1;
-			transform: scale(1.0);
-		}
-
-		100% {
-			opacity: 0;
-			transform: scale(1.5);
-		}
-	}
-
-	/*
-	.group--gallery & {
+	.section--negative & {
 		.btn--pinterest {
-			left: 0;
-			bottom: -55px;
-			opacity: 1;
-
 			.icon--pinterest {
-				fill: $primary;
+				fill: $foreground-negative;
 			}
 		}
 
 		.btn--wishlist {
-			right: 0;
-			bottom: -55px;
-			opacity: 1;
-
 			.icon--wishlist {
-				fill: $primary;
+				fill: $foreground-negative;
 			}
 		}
 	}
-	*/
 
 	ng-transclude {
 		display: block;
@@ -143,21 +101,44 @@
 		}
 	}
 
-	.section--negative & {
-		.btn--pinterest {
-			.icon--pinterest {
-				fill: $foreground-negative;
-			}
-		}
+}
 
-		.btn--wishlist {
-			.icon--wishlist {
-				fill: $foreground-negative;
-			}
-		}
+.btn--wishlist {
+
+	&.activated {
+		animation: activated 350ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	}
+
+	&.deactivated {
+		animation: deactivated 350ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	}
 
 }
+
+@keyframes activated {
+	0% {
+		opacity: 0;
+		transform: scale(2.0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: scale(1.0);
+	}
+}
+
+@keyframes deactivated {
+	0% {
+		opacity: 1;
+		transform: scale(1.0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(1.5);
+	}
+}
+
 
 [video] {
 	cursor: pointer;

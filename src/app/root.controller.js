@@ -31,6 +31,19 @@ class RootCtrl {
 		});
 	}
 
+	onScroll(event) {
+		const scrolled = event.scroll.scrollTop > 40;
+		const direction = event.scroll.direction;
+		if (event.scroll.direction) {
+			if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
+				this.$timeout(() => {
+					this.scrolled = scrolled;
+					this.direction = direction;
+				}, 1);
+			}
+		}
+	}
+
 	onInit(brand) {
 		this.brand = brand;
 		this.webglEnabled = false; // this.domService.hasWebglSupport();
@@ -40,16 +53,6 @@ class RootCtrl {
 			// console.log(top);
 		});
 		*/
-		this.$scope.onScroll = (event) => {
-			// console.log(event.scroll.direction, event.intersection);
-			const scrolled = event.scroll.scrollTop > 40;
-			if (this.scrolled !== scrolled || this.direction !== event.scroll.direction) {
-				this.$timeout(() => {
-					this.scrolled = scrolled;
-					this.direction = event.scroll.direction;
-				});
-			}
-		};
 		this.$timeout(() => {
 			this.init = true;
 			const view = document.querySelector('.view');

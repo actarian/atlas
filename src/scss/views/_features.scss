@@ -199,6 +199,8 @@
 	padding-bottom: 20px;
 
 	&>.listing__item {
+		display: flex;
+		align-items: center;
 		margin-bottom: 40px;
 	}
 
@@ -206,6 +208,12 @@
 		img {
 			width: 58px;
 			height: 58px;
+		}
+	}
+
+	.group--feature {
+		.abstract {
+			font-size: 12px;
 		}
 	}
 

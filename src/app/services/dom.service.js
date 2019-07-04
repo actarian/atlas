@@ -309,6 +309,7 @@ DomService.scroll$ = function() {
 		originalEvent: null,
 	};
 	return fromEvent(target, 'scroll').pipe(
+		startWith(event),
 		auditTime(33), // 30 fps
 		map((originalEvent) => {
 			/*
@@ -320,12 +321,12 @@ DomService.scroll$ = function() {
 			event.scrollTop = DomService.getScrollTop(target);
 			event.scrollLeft = DomService.getScrollLeft(target);
 			const diff = event.scrollTop - previousTop;
-			event.direction = diff / Math.abs(diff);
+			event.direction = diff ? diff / Math.abs(diff) : 0;
 			previousTop = event.scrollTop;
 			event.originalEvent = originalEvent;
 			return event;
-		}),
-		startWith(event)
+		}) // ,
+		// filter(event => event.direction !== 0)
 	);
 }();
 DomService.scrollAndRect$ = combineLatest(DomService.scroll$, DomService.windowRect$);

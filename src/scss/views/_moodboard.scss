@@ -345,7 +345,8 @@ $moodboard-gutter: 60px;
 	}
 }
 
-.mood--tile {
+.mood--tile,
+.mood--decor {
 	.btn {
 		display: inline-block;
 		max-width: 100%;
@@ -406,7 +407,8 @@ $moodboard-gutter: 60px;
 	width: 100%;
 }
 
-.mood--tile {
+.mood--tile,
+.mood--decor {
 	.mood__item {
 		max-width: 330px;
 	}
@@ -439,13 +441,15 @@ $moodboard-gutter: 60px;
 @include media-breakpoint-down(sm) {
 
 	.mood--tile,
+	.mood--decor,
 	.mood--horizontal,
 	.mood--vertical,
 	.mood--card {
 		width: 100%;
 	}
 
-	.mood--tile {
+	.mood--tile,
+	.mood--decor {
 		text-align: center;
 	}
 }
@@ -456,7 +460,8 @@ $moodboard-gutter: 60px;
 		margin-right: -$moodboard-gutter;
 	}
 
-	.mood--tile {
+	.mood--tile,
+	.mood--decor {
 		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
 	}
 
@@ -475,7 +480,8 @@ $moodboard-gutter: 60px;
 
 @include media-breakpoint-up(lg) {
 
-	.mood--tile {
+	.mood--tile,
+	.mood-decor {
 		width: calc(#{100% / 12 * 3} - #{$moodboard-gutter});
 	}
 

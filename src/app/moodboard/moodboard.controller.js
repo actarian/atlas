@@ -7,7 +7,8 @@ export const MOOD_TYPES = Object.freeze({
 	Tile: 1,
 	Horizontal: 2,
 	Vertical: 3,
-	Card: 4
+	Card: 4,
+	Decor: 5,
 });
 
 export const ITEMS_PER_PAGE = 20;

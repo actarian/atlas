@@ -38,3 +38,14 @@
 		</div>
 	</a>
 </script>
+<!-- mood-decor -->
+<script type="text/ng-template" id="templates/moodboard/mood-decor.html">
+	<a class="mood__item" href="{{item.url}}">
+		<div class="picture picture--square picture--decors" media="item">
+			<img lazy data-src="{{item.image}}" alt="{{item.title}}" />
+		</div>
+		<div class="btn btn--link">
+			<span ng-bind="item.title"></span>
+		</div>
+	</a>
+</script>

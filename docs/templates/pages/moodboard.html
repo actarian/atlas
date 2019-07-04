@@ -160,11 +160,13 @@
 						'mood--horizontal': item.type === moodboardCtrl.moodTypes.Horizontal,
 						'mood--vertical': item.type === moodboardCtrl.moodTypes.Vertical,
 						'mood--card': item.type === moodboardCtrl.moodTypes.Card
+						'mood--decor': item.type === moodboardCtrl.moodTypes.Decor
 					}" ng-repeat="item in moodboardCtrl.visibleItems track by $index" last-item>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-tile.html'" ng-if="item.type === moodboardCtrl.moodTypes.Tile"></div>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-horizontal.html'" ng-if="item.type === moodboardCtrl.moodTypes.Horizontal"></div>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-vertical.html'" ng-if="item.type === moodboardCtrl.moodTypes.Vertical"></div>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-card.html'" ng-if="item.type === moodboardCtrl.moodTypes.Card"></div>
+						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-decor.html'" ng-if="item.type === moodboardCtrl.moodTypes.Decor"></div>
 					</div>
 				</div>
 				<div class="loader" ng-if="moodboardCtrl.busy">
