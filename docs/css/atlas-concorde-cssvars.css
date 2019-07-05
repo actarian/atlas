@@ -2872,8 +2872,12 @@ canvas {
          object-fit: contain; }
   .picture--decors .overlay {
     display: none; }
-  .picture--decors .btn--pinterest .icon--pinterest {
-    fill: var(--primary); }
+  .picture--decors .btn--pinterest {
+    left: 0; }
+    .picture--decors .btn--pinterest .icon--pinterest {
+      fill: var(--primary); }
+  .picture--decors .btn--wishlist {
+    right: 0; }
 
 [parallax] {
   overflow: hidden; }

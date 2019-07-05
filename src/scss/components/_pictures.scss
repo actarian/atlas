@@ -147,9 +147,17 @@ $diff: 280px;
 	}
 
 	.btn--pinterest {
+		// bottom: 0;
+		left: 0;
+
 		.icon--pinterest {
 			fill: $primary;
 		}
+	}
+
+	.btn--wishlist {
+		// bottom: 0;
+		right: 0;
 	}
 }
 
