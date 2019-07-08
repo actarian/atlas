@@ -4,34 +4,64 @@
 export default class WishlistDirective {
 
 	constructor(
+		$timeout,
 		WishlistService
 	) {
+		this.$timeout = $timeout;
 		this.wishlistService = WishlistService;
 		this.restrict = 'E';
 		this.scope = {
 			item: '=',
 		};
-		this.template = `<div class="btn btn--wishlist" ng-class="{ added: item.added }" ng-click="onWishlist()">
-				<svg class="icon icon--wishlist" ng-if="!item.added"><use xlink:href="#wishlist"></use></svg>
-				<svg class="icon icon--wishlist" ng-if="item.added"><use xlink:href="#wishlist-added"></use></svg>
-			</div>`;
+		this.transclude = true;
+		this.template = `<div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
+		<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
+		<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
+		<ng-transclude></ng-transclude>
+	</div>`;
 	}
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		scope.item = scope.item || {};
-		scope.onWishlist = () => {
-			this.wishlistService.toggle(scope.item).then((item) => {
-				Object.assign(scope.item, item);
-			}, (error) => console.log(error));
+		scope.$watch(() => {
+			return this.wishlistService.has(scope.item);
+		}, (current, previous) => {
+			// console.log(current, previous, node);
+			if (scope.wishlistActive !== current) {
+				scope.wishlistActive = current;
+				if (current) {
+					scope.wishlistActivated = true;
+					this.$timeout(() => {
+						scope.wishlistActivated = false;
+					}, 2000);
+				} else {
+					scope.wishlistDeactivated = true;
+					this.$timeout(() => {
+						scope.wishlistDeactivated = false;
+					}, 2000);
+				}
+			}
+		});
+		scope.onClickWishlist = (event) => {
+			this.wishlistService.toggle(scope.item).then(
+				(has) => {
+					console.log('WishlistDirective.onClickWishlist', has);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+			event.preventDefault();
+			event.stopPropagation();
 		};
 		element.on('$destroy', () => {});
 	}
 
-	static factory(WishlistService) {
-		return new WishlistDirective(WishlistService);
+	static factory($timeout, WishlistService) {
+		return new WishlistDirective($timeout, WishlistService);
 	}
 
 }
 
-WishlistDirective.factory.$inject = ['WishlistService'];
+WishlistDirective.factory.$inject = ['$timeout', 'WishlistService'];

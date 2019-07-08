@@ -540,7 +540,8 @@ button,
   width: 25px;
   height: 22px; }
 
-.btn--wishlist .icon--wishlist + span {
+.btn--wishlist .icon--wishlist + span,
+.btn--wishlist .icon--wishlist + ng-transclude {
   margin-left: 10px; }
 
 .btn--play {

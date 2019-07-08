@@ -24107,15 +24107,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var WishlistDirective =
 /*#__PURE__*/
 function () {
-  function WishlistDirective(WishlistService) {
+  function WishlistDirective($timeout, WishlistService) {
     _classCallCheck(this, WishlistDirective);
 
+    this.$timeout = $timeout;
     this.wishlistService = WishlistService;
     this.restrict = 'E';
     this.scope = {
       item: '='
     };
-    this.template = "<div class=\"btn btn--wishlist\" ng-class=\"{ added: item.added }\" ng-click=\"onWishlist()\">\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!item.added\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--wishlist\" ng-if=\"item.added\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t\t</div>";
+    this.transclude = true;
+    this.template = "<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t<ng-transclude></ng-transclude>\n\t</div>";
   }
 
   _createClass(WishlistDirective, [{
@@ -24125,21 +24127,46 @@ function () {
 
       var node = element[0];
       scope.item = scope.item || {};
+      scope.$watch(function () {
+        return _this.wishlistService.has(scope.item);
+      }, function (current, previous) {
+        // console.log(current, previous, node);
+        if (scope.wishlistActive !== current) {
+          scope.wishlistActive = current;
 
-      scope.onWishlist = function () {
-        _this.wishlistService.toggle(scope.item).then(function (item) {
-          Object.assign(scope.item, item);
+          if (current) {
+            scope.wishlistActivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistActivated = false;
+            }, 2000);
+          } else {
+            scope.wishlistDeactivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistDeactivated = false;
+            }, 2000);
+          }
+        }
+      });
+
+      scope.onClickWishlist = function (event) {
+        _this.wishlistService.toggle(scope.item).then(function (has) {
+          console.log('WishlistDirective.onClickWishlist', has);
         }, function (error) {
-          return console.log(error);
+          console.log(error);
         });
+
+        event.preventDefault();
+        event.stopPropagation();
       };
 
       element.on('$destroy', function () {});
     }
   }], [{
     key: "factory",
-    value: function factory(WishlistService) {
-      return new WishlistDirective(WishlistService);
+    value: function factory($timeout, WishlistService) {
+      return new WishlistDirective($timeout, WishlistService);
     }
   }]);
 
@@ -24147,7 +24174,7 @@ function () {
 }();
 
 exports.default = WishlistDirective;
-WishlistDirective.factory.$inject = ['WishlistService'];
+WishlistDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
 },{}],222:[function(require,module,exports){
 "use strict";
