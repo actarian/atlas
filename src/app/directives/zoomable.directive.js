@@ -22,9 +22,13 @@ export default class ZoomableDirective {
 		let triggers, rect;
 		const node = element[0];
 		const content = node.querySelector('.zoomable__content');
+		const onClose = () => {
+			if (node.classList.contains('zoomed')) {
+				this.zoomOut(scope, node, content, rect);
+			}
+		};
 		const onClick = () => {
-			console.log(scope);
-			const slides = [...node.querySelectorAll('.swiper-slide')];
+			// const slides = [...node.querySelectorAll('.swiper-slide')];
 			if (node.classList.contains('zoomed')) {
 				this.zoomOut(scope, node, content, rect);
 			} else {
@@ -33,11 +37,19 @@ export default class ZoomableDirective {
 			}
 		};
 		const addListeners = () => {
+			const close = node.querySelector('.zoomable__close');
+			if (close) {
+				close.addEventListener('click', onClose);
+			}
 			triggers = [...node.querySelectorAll('.zoomable__trigger')];
 			// console.log('ZoomableDirective', node, content, triggers);
 			triggers.forEach(x => x.addEventListener('click', onClick));
 		};
 		const removeListeners = () => {
+			const close = node.querySelector('.zoomable__close');
+			if (close) {
+				close.removeEventListener('click', onClose);
+			}
 			if (triggers) {
 				triggers.forEach(x => x.removeEventListener('click', onClick));
 			}
@@ -53,11 +65,14 @@ export default class ZoomableDirective {
 		element.on('$destroy', () => {
 			triggers.forEach(x => x.removeEventListener('click', onClick));
 		});
+		console.log('ZoomableDirective', scope.$id);
 		scope.onZoom = (item) => {
 			const rect = Rect.fromNode(content);
-			// console.log(rect);
+			console.log('ZoomableDirective.onZoom', scope.zoomed);
 			TweenMax.set(node, { height: rect.height });
-			this.scope.zoomed = !this.scope.zoomed;
+			this.$timeout(() => {
+				scope.zoomed = !scope.zoomed;
+			});
 			/*
 			TweenMax.to(u, 0.50, {
 				scaleX: 1,
@@ -88,9 +103,10 @@ export default class ZoomableDirective {
 		// TweenMax.set(node, { height: rect.height });
 		// TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
 		node.classList.add('zoomed');
+		scope.zoomed = true;
 		// TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
 		setTimeout(() => {
-			scope.$broadcast('onResize');
+			scope.$broadcast('onResize', scope.zoomed);
 		}, 1);
 		// scope.$emit('onDroppinIn', true);
 	}
@@ -99,8 +115,9 @@ export default class ZoomableDirective {
 		// TweenMax.set(node, { height: 'auto' });
 		// TweenMax.set(content, { clearProps: 'all' });
 		node.classList.remove('zoomed');
+		scope.zoomed = false;
 		setTimeout(() => {
-			scope.$broadcast('onResize');
+			scope.$broadcast('onResize', scope.zoomed);
 		}, 1);
 		// scope.$emit('onDroppinIn', false);
 	}

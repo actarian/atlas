@@ -133,6 +133,28 @@ button,
 		margin-right: 10px;
 	}
 
+	.section--negative & {
+
+		svg {
+			fill: $foreground-negative;
+		}
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			color: $foreground-negative;
+		}
+
+		b {
+			&:after {
+				background: $foreground-negative;
+			}
+		}
+
+	}
+
 	@include media-breakpoint-down(xs) {
 		justify-content: flex-start;
 		align-items: center;

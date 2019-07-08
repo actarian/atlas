@@ -40,11 +40,17 @@ export class SwiperDirective {
 			// console.log('viewContentLoaded');
 			this.onSwiper(element);
 		});
+		console.log('SwiperDirective', scope.$id, element);
 		scope.$on('onResize', ($scope) => {
-			if (element.swiper) {
-				element.swiper.update();
-			}
+			this.onResize(scope, element);
 		});
+	}
+
+	onResize(scope, element) {
+		if (element.swiper) {
+			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
+			element.swiper.update();
+		}
 	}
 
 	onSwiper(element) {
@@ -102,6 +108,15 @@ export class SwiperGalleryDirective extends SwiperDirective {
 				clickable: true,
 			},
 		};
+	}
+
+	onResize(scope, element) {
+		if (element.swiper) {
+			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
+			element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
+			element.swiper.update();
+		}
+		console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed);
 	}
 
 	static factory() {
