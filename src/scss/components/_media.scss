@@ -59,6 +59,20 @@
 
 	}
 
+	.btn--zoom {
+		display: block;
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		opacity: 0;
+
+		.icon--zoom {
+			width: 24px;
+			height: 24px;
+			fill: $foreground-negative;
+		}
+	}
+
 	.section--negative & {
 		.btn--pinterest {
 			.icon--pinterest {
@@ -68,6 +82,12 @@
 
 		.btn--wishlist {
 			.icon--wishlist {
+				fill: $foreground-negative;
+			}
+		}
+
+		.btn--zoom {
+			.icon--zoom {
 				fill: $foreground-negative;
 			}
 		}
@@ -93,6 +113,10 @@
 		}
 
 		.btn--wishlist {
+			opacity: 1;
+		}
+
+		.btn--zoom {
 			opacity: 1;
 		}
 

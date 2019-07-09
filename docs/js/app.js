@@ -23001,63 +23001,6 @@ function () {
 
       scope.item = scope.item || {};
       var node = element[0];
-      var trigger = node.querySelector('.overlay');
-
-      var onClick = function onClick(event) {
-        _this.$timeout(function () {
-          var index = 0;
-
-          var items = _toConsumableArray(document.querySelectorAll('[media], [video]')).map(function (itemNode, i) {
-            if (itemNode == node) {
-              index = i;
-            }
-
-            var item = {};
-            item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
-            console.log(item.type, itemNode.hasAttribute('media'));
-
-            if (item.type === 'media') {
-              var _img = itemNode.querySelector('img');
-
-              item.src = _img.getAttribute('src') || _img.getAttribute('data-src');
-              item.title = _img.getAttribute('alt');
-              var wishlist = itemNode.getAttribute('media');
-
-              if (wishlist) {
-                item.wishlist = JSON.parse(wishlist.split(/[^\d\W]+/g).join('"'));
-              }
-            } else {
-              var video = itemNode.querySelector('video');
-              var source = video.querySelector('source');
-              item.poster = video.getAttribute('poster');
-              item.src = source.getAttribute('src');
-              item.title = video.getAttribute('alt');
-
-              var _wishlist = itemNode.getAttribute('video');
-
-              if (_wishlist) {
-                item.wishlist = JSON.parse(_wishlist.split(/[^\d\W]+/g).join('"'));
-              }
-            }
-
-            return item;
-          });
-
-          scope.$root.gallery = {
-            index: index,
-            items: items
-          };
-        });
-      };
-
-      var addListeners = function addListeners() {
-        trigger.addEventListener('click', onClick);
-      };
-
-      var removeListeners = function removeListeners() {
-        trigger.removeEventListener('click', onClick);
-      };
-
       var img = node.querySelector('img');
 
       if (img) {
@@ -23102,16 +23045,66 @@ function () {
           console.log('MediaDirective.onClickWishlist', has);
         }, function (error) {
           console.log(error);
-        });
+        }); // event.preventDefault();
+        // event.stopPropagation();
 
-        event.preventDefault();
-        event.stopPropagation();
       };
 
-      addListeners();
-      element.on('$destroy', function () {
-        removeListeners();
-      });
+      scope.onOverlay = function (event) {
+        if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+          _this.$timeout(function () {
+            var index = 0;
+
+            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')).map(function (itemNode, i) {
+              if (itemNode == node) {
+                index = i;
+              }
+
+              var item = {};
+              item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+
+              if (item.type === 'media') {
+                var _img = itemNode.querySelector('img');
+
+                if (_img) {
+                  item.src = _img.getAttribute('src') || _img.getAttribute('data-src');
+                  item.title = _img.getAttribute('alt');
+                  var wishlist = itemNode.getAttribute('media');
+
+                  if (wishlist) {
+                    item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                  }
+                } else {
+                  console.log(itemNode, _img);
+                }
+              } else {
+                var video = itemNode.querySelector('video');
+                var source = video.querySelector('source');
+                item.poster = video.getAttribute('poster');
+                item.src = source.getAttribute('src');
+                item.title = video.getAttribute('alt');
+
+                var _wishlist = itemNode.getAttribute('video');
+
+                if (_wishlist) {
+                  item.wishlist = JSON.parse(_wishlist.indexOf('"') === -1 ? _wishlist.split(/[^\d\W]+/g).join('"') : _wishlist);
+                }
+              }
+
+              return item;
+            });
+
+            scope.$root.gallery = {
+              index: index,
+              items: items
+            };
+          });
+        } // event.preventDefault();
+        // event.stopPropagation();
+
+      };
+
+      element.on('$destroy', function () {});
     }
   }], [{
     key: "factory",
@@ -24001,6 +23994,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -24020,7 +24021,7 @@ function () {
     this.wishlistService = WishlistService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>";
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>\n<div class=\"btn btn--zoom\" ng-click=\"onClickZoom($event)\">\n\t<svg class=\"icon icon--zoom\"><use xlink:href=\"#zoom\"></use></svg>\n</div>";
     this.scope = {
       item: '=?video'
     };
@@ -24112,10 +24113,64 @@ function () {
           console.log('VideoDirective.onClickWishlist', has);
         }, function (error) {
           console.log(error);
-        });
+        }); // event.preventDefault();
+        // event.stopPropagation();
 
-        event.preventDefault();
-        event.stopPropagation();
+      };
+
+      scope.onClickZoom = function (event) {
+        if (scope.$root.gallery) {
+          _this.$timeout(function () {
+            scope.$root.gallery = null;
+          });
+        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+          _this.$timeout(function () {
+            var index = 0;
+
+            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')).map(function (itemNode, i) {
+              if (itemNode == node) {
+                index = i;
+              }
+
+              var item = {};
+              item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+
+              if (item.type === 'media') {
+                var img = itemNode.querySelector('img');
+                item.src = img.getAttribute('src') || img.getAttribute('data-src');
+                item.title = img.getAttribute('alt');
+                var wishlist = itemNode.getAttribute('media');
+
+                if (wishlist) {
+                  item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                }
+              } else {
+                var _video = itemNode.querySelector('video');
+
+                var source = _video.querySelector('source');
+
+                item.poster = _video.getAttribute('poster');
+                item.src = source.getAttribute('src');
+                item.title = _video.getAttribute('alt');
+
+                var _wishlist = itemNode.getAttribute('video');
+
+                if (_wishlist) {
+                  item.wishlist = JSON.parse(_wishlist.indexOf('"') === -1 ? _wishlist.split(/[^\d\W]+/g).join('"') : _wishlist);
+                }
+              }
+
+              return item;
+            });
+
+            scope.$root.gallery = {
+              index: index,
+              items: items
+            };
+          });
+        } // event.preventDefault();
+        // event.stopPropagation();
+
       };
 
       if (video) {

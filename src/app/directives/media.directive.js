@@ -30,50 +30,6 @@ export default class MediaDirective {
 	link(scope, element, attributes, controller) {
 		scope.item = scope.item || {};
 		const node = element[0];
-		const trigger = node.querySelector('.overlay');
-		const onClick = (event) => {
-			this.$timeout(() => {
-				let index = 0;
-				const items = [...document.querySelectorAll('[media], [video]')].map((itemNode, i) => {
-					if (itemNode == node) {
-						index = i;
-					}
-					const item = {};
-					item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
-					console.log(item.type, itemNode.hasAttribute('media'));
-					if (item.type === 'media') {
-						const img = itemNode.querySelector('img');
-						item.src = img.getAttribute('src') || img.getAttribute('data-src');
-						item.title = img.getAttribute('alt');
-						const wishlist = itemNode.getAttribute('media');
-						if (wishlist) {
-							item.wishlist = JSON.parse(wishlist.split(/[^\d\W]+/g).join('"'));
-						}
-					} else {
-						const video = itemNode.querySelector('video');
-						const source = video.querySelector('source');
-						item.poster = video.getAttribute('poster');
-						item.src = source.getAttribute('src');
-						item.title = video.getAttribute('alt');
-						const wishlist = itemNode.getAttribute('video');
-						if (wishlist) {
-							item.wishlist = JSON.parse(wishlist.split(/[^\d\W]+/g).join('"'));
-						}
-					}
-					return item;
-				});
-				scope.$root.gallery = {
-					index,
-					items,
-				};
-			});
-		};
-		const addListeners = () => {
-			trigger.addEventListener('click', onClick);
-		};
-		const removeListeners = () => {
-			trigger.removeEventListener('click', onClick);
-		};
 		const img = node.querySelector('img');
 		if (img) {
 			const pageTitle = document.title;
@@ -115,13 +71,54 @@ export default class MediaDirective {
 					console.log(error);
 				}
 			);
-			event.preventDefault();
-			event.stopPropagation();
+			// event.preventDefault();
+			// event.stopPropagation();
 		};
-		addListeners();
-		element.on('$destroy', () => {
-			removeListeners();
-		});
+		scope.onOverlay = (event) => {
+			if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+				this.$timeout(() => {
+					let index = 0;
+					const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')].map((itemNode, i) => {
+						if (itemNode == node) {
+							index = i;
+						}
+						const item = {};
+						item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+						if (item.type === 'media') {
+							const img = itemNode.querySelector('img');
+							if (img) {
+								item.src = img.getAttribute('src') || img.getAttribute('data-src');
+								item.title = img.getAttribute('alt');
+								const wishlist = itemNode.getAttribute('media');
+								if (wishlist) {
+									item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+								}
+							} else {
+								console.log(itemNode, img);
+							}
+						} else {
+							const video = itemNode.querySelector('video');
+							const source = video.querySelector('source');
+							item.poster = video.getAttribute('poster');
+							item.src = source.getAttribute('src');
+							item.title = video.getAttribute('alt');
+							const wishlist = itemNode.getAttribute('video');
+							if (wishlist) {
+								item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+							}
+						}
+						return item;
+					});
+					scope.$root.gallery = {
+						index,
+						items,
+					};
+				});
+			}
+			// event.preventDefault();
+			// event.stopPropagation();
+		};
+		element.on('$destroy', () => {});
 	}
 
 	static factory($timeout, WishlistService) {

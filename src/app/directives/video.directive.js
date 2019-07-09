@@ -28,6 +28,9 @@ export default class VideoDirective {
 <div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
 	<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
 	<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
+</div>
+<div class="btn btn--zoom" ng-click="onClickZoom($event)">
+	<svg class="icon icon--zoom"><use xlink:href="#zoom"></use></svg>
 </div>`;
 		this.scope = {
 			item: '=?video',
@@ -107,8 +110,53 @@ export default class VideoDirective {
 					console.log(error);
 				}
 			);
-			event.preventDefault();
-			event.stopPropagation();
+			// event.preventDefault();
+			// event.stopPropagation();
+
+		};
+		scope.onClickZoom = (event) => {
+			if (scope.$root.gallery) {
+				this.$timeout(() => {
+					scope.$root.gallery = null;
+				});
+			} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+				this.$timeout(() => {
+					let index = 0;
+					const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')].map((itemNode, i) => {
+						if (itemNode == node) {
+							index = i;
+						}
+						const item = {};
+						item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+						if (item.type === 'media') {
+							const img = itemNode.querySelector('img');
+							item.src = img.getAttribute('src') || img.getAttribute('data-src');
+							item.title = img.getAttribute('alt');
+							const wishlist = itemNode.getAttribute('media');
+							if (wishlist) {
+								item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+							}
+						} else {
+							const video = itemNode.querySelector('video');
+							const source = video.querySelector('source');
+							item.poster = video.getAttribute('poster');
+							item.src = source.getAttribute('src');
+							item.title = video.getAttribute('alt');
+							const wishlist = itemNode.getAttribute('video');
+							if (wishlist) {
+								item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+							}
+						}
+						return item;
+					});
+					scope.$root.gallery = {
+						index,
+						items,
+					};
+				});
+			}
+			// event.preventDefault();
+			// event.stopPropagation();
 		};
 		if (video) {
 			video.addEventListener('play', onPlay);

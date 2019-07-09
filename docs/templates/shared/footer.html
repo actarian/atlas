@@ -113,18 +113,16 @@
 	</div>
 </footer>
 
-<section class="section section--gallery" ng-if="gallery">
+<section class="section section--zoomed-gallery" ng-if="gallery">
 	<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }" zoomed>
 		<div class="zoomable__content">
 			<div class="swiper-container" swiper-gallery initial-slide="{{gallery.index}}">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" ng-repeat="item in gallery.items">
-						<div class="picture zoomable__trigger" ng-if="item.type == 'media'">
-							<!-- media="item.wishlist" -->
+						<div class="picture zoomable__trigger" media="item.wishlist" ng-if="item.type == 'media'">
 							<img ng-src="{{item.src}}" alt="{{item.title}}" />
 						</div>
-						<div class="picture zoomable__trigger" ng-if="item.type == 'video'">
-							<!-- video="item.wishlist" -->
+						<div class="picture" video="item.wishlist" ng-if="item.type == 'video'">
 							<video muted playsinline ng-attr-poster="{{item.poster}}">
 								<source ng-src="{{item.src}}" type="video/mp4">
 							</video>

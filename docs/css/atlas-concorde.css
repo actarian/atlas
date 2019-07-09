@@ -2464,12 +2464,29 @@ control-messages {
     [video] .btn--wishlist.active .icon--wishlist {
       fill: #b92442; }
 
+[media] .btn--zoom,
+[video] .btn--zoom {
+  display: block;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  opacity: 0; }
+  [media] .btn--zoom .icon--zoom,
+  [video] .btn--zoom .icon--zoom {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff; }
+
 .section--negative [media] .btn--pinterest .icon--pinterest, .section--negative
 [video] .btn--pinterest .icon--pinterest {
   fill: #ffffff; }
 
 .section--negative [media] .btn--wishlist .icon--wishlist, .section--negative
 [video] .btn--wishlist .icon--wishlist {
+  fill: #ffffff; }
+
+.section--negative [media] .btn--zoom .icon--zoom, .section--negative
+[video] .btn--zoom .icon--zoom {
   fill: #ffffff; }
 
 [media] ng-transclude,
@@ -2494,6 +2511,10 @@ control-messages {
 
 [media]:hover .btn--wishlist,
 [video]:hover .btn--wishlist {
+  opacity: 1; }
+
+[media]:hover .btn--zoom,
+[video]:hover .btn--zoom {
   opacity: 1; }
 
 [media]:hover .category,
@@ -2659,7 +2680,9 @@ canvas {
     -webkit-box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4);
             box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4); }
   .picture img {
-    max-width: 100%; }
+    max-width: 100%;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden; }
 
 .picture--square {
   position: relative;
@@ -5972,6 +5995,24 @@ page-transition {
   [swiper-gallery] .swiper-slide:not(.swiper-slide-active) img {
     opacity: 0.5; }
 
+.zoomed [swiper-gallery] .swiper-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+  .zoomed [swiper-gallery] .swiper-container .swiper-wrapper {
+    height: calc(100vh - 60px);
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 calc(100vh - 60px);
+            flex: 1 1 calc(100vh - 60px); }
+  .zoomed [swiper-gallery] .swiper-container .swiper-pagination {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto; }
+
 .zoomed [swiper-gallery] .swiper-slide {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -5983,7 +6024,6 @@ page-transition {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  height: calc(100vh - 100px);
   background: white; }
   .zoomed [swiper-gallery] .swiper-slide img {
     -webkit-transition: opacity ease-in-out 350ms;
@@ -6005,6 +6045,60 @@ page-transition {
 
 .zoomed [swiper-gallery] .swiper-pagination-bullets {
   padding-top: 30px; }
+
+.section--zoomed-gallery .swiper-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100vh; }
+  .section--zoomed-gallery .swiper-container .swiper-wrapper {
+    height: calc(100vh - 60px);
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 calc(100vh - 60px);
+            flex: 1 1 calc(100vh - 60px); }
+  .section--zoomed-gallery .swiper-container .swiper-slide {
+    padding-top: 40px; }
+  .section--zoomed-gallery .swiper-container .swiper-pagination {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto; }
+  .section--zoomed-gallery .swiper-container .swiper-pagination-bullets {
+    padding: 0; }
+
+.section--zoomed-gallery .picture {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  max-height: calc(100vh - 140px); }
+
+.section--zoomed-gallery video {
+  -o-object-fit: cover;
+     object-fit: cover; }
+
+@media (min-width: 860px) {
+  .section--zoomed-gallery .swiper-slide {
+    height: calc(100vh - 80px); }
+  .section--zoomed-gallery .picture {
+    max-width: calc(100vw - 60px); } }
+
+@media (max-width: 859.98px) {
+  .section--zoomed-gallery .picture {
+    max-width: 100vw; }
+  .section--zoomed-gallery .overlay {
+    -webkit-transition: none;
+    transition: none; } }
 
 .section--hero-moodboard {
   position: relative;
