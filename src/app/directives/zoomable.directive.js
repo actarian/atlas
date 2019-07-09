@@ -25,12 +25,28 @@ export default class ZoomableDirective {
 		const onClose = () => {
 			if (node.classList.contains('zoomed')) {
 				this.zoomOut(scope, node, content, rect);
+				if (attributes.zoomed !== undefined) {
+					this.$timeout(() => {
+						scope.$root.gallery = null;
+					});
+				}
+			}
+		};
+		const onOpen = () => {
+			if (!node.classList.contains('zoomed')) {
+				rect = Rect.fromNode(node);
+				this.zoomIn(scope, node, content, rect);
 			}
 		};
 		const onClick = () => {
 			// const slides = [...node.querySelectorAll('.swiper-slide')];
 			if (node.classList.contains('zoomed')) {
 				this.zoomOut(scope, node, content, rect);
+				if (attributes.zoomed !== undefined) {
+					this.$timeout(() => {
+						scope.$root.gallery = null;
+					});
+				}
 			} else {
 				rect = Rect.fromNode(node);
 				this.zoomIn(scope, node, content, rect);
@@ -95,8 +111,10 @@ export default class ZoomableDirective {
 				}
 			});
 			*/
-
 		};
+		if (attributes.zoomed !== undefined) {
+			onOpen();
+		}
 	}
 
 	zoomIn(scope, node, content, rect) {

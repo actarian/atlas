@@ -22961,6 +22961,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -22993,6 +23001,63 @@ function () {
 
       scope.item = scope.item || {};
       var node = element[0];
+      var trigger = node.querySelector('.overlay');
+
+      var onClick = function onClick(event) {
+        _this.$timeout(function () {
+          var index = 0;
+
+          var items = _toConsumableArray(document.querySelectorAll('[media], [video]')).map(function (itemNode, i) {
+            if (itemNode == node) {
+              index = i;
+            }
+
+            var item = {};
+            item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+            console.log(item.type, itemNode.hasAttribute('media'));
+
+            if (item.type === 'media') {
+              var _img = itemNode.querySelector('img');
+
+              item.src = _img.getAttribute('src') || _img.getAttribute('data-src');
+              item.title = _img.getAttribute('alt');
+              var wishlist = itemNode.getAttribute('media');
+
+              if (wishlist) {
+                item.wishlist = JSON.parse(wishlist.split(/[^\d\W]+/g).join('"'));
+              }
+            } else {
+              var video = itemNode.querySelector('video');
+              var source = video.querySelector('source');
+              item.poster = video.getAttribute('poster');
+              item.src = source.getAttribute('src');
+              item.title = video.getAttribute('alt');
+
+              var _wishlist = itemNode.getAttribute('video');
+
+              if (_wishlist) {
+                item.wishlist = JSON.parse(_wishlist.split(/[^\d\W]+/g).join('"'));
+              }
+            }
+
+            return item;
+          });
+
+          scope.$root.gallery = {
+            index: index,
+            items: items
+          };
+        });
+      };
+
+      var addListeners = function addListeners() {
+        trigger.addEventListener('click', onClick);
+      };
+
+      var removeListeners = function removeListeners() {
+        trigger.removeEventListener('click', onClick);
+      };
+
       var img = node.querySelector('img');
 
       if (img) {
@@ -23043,7 +23108,10 @@ function () {
         event.stopPropagation();
       };
 
-      element.on('$destroy', function () {});
+      addListeners();
+      element.on('$destroy', function () {
+        removeListeners();
+      });
     }
   }], [{
     key: "factory",
@@ -23512,8 +23580,12 @@ function () {
     value: function link(scope, element, attributes, controller) {
       var _this = this;
 
+      var node = element[0];
+      TweenMax.set(node, {
+        opacity: 0
+      });
       scope.$on('lastItem', function (slide) {
-        _this.onSwiper(element);
+        _this.onSwiper(element, attributes);
       });
       element.on('$destroy', function () {
         if (element.swiper) {
@@ -23521,17 +23593,16 @@ function () {
         }
       });
       scope.$watch('$viewContentLoaded', function () {
-        // console.log('viewContentLoaded');
-        _this.onSwiper(element);
-      });
-      console.log('SwiperDirective', scope.$id, element);
+        _this.onSwiper(element, attributes);
+      }); // console.log('SwiperDirective', scope.$id, element);
+
       scope.$on('onResize', function ($scope) {
-        _this.onResize(scope, element);
+        _this.onResize(scope, element, attributes);
       });
     }
   }, {
     key: "onResize",
-    value: function onResize(scope, element) {
+    value: function onResize(scope, element, attributes) {
       if (element.swiper) {
         Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(function (node) {
           return node.setAttribute('style', '');
@@ -23541,26 +23612,54 @@ function () {
     }
   }, {
     key: "onSwiper",
-    value: function onSwiper(element) {
-      /*
-      if (element.swiper) {
-      	element.swiper.destroy(true, true);
+    value: function onSwiper(element, attributes) {
+      var node = element[0];
+      var initialSlide = attributes.initialSlide;
+
+      if (initialSlide !== undefined) {
+        attributes.initialSlide = undefined;
       }
-      element.swiper = new Swiper(element, this.options);
-      element.addClass('swiper-init');
-      */
+
+      console.log('initialSlide', initialSlide);
+
       if (element.swiper) {
         element.swiper.update();
+
+        if (initialSlide !== undefined) {
+          setTimeout(function () {
+            element.swiper.slideTo(initialSlide, 0);
+            TweenMax.to(node, 0.4, {
+              opacity: 1,
+              ease: Power2.easeOut
+            });
+          }, 100);
+        }
       } else {
+        if (initialSlide !== undefined) {
+          this.options.initialSlide = initialSlide;
+        } else {
+          TweenMax.set(node, {
+            opacity: 1
+          });
+        }
+
         element.swiper = new Swiper(element, this.options);
         element.addClass('swiper-init');
-      }
-      /*
-      setTimeout(() => {
-      	[...document.querySelectorAll('.swiper-pagination-bullet:first-child')].forEach(x => x.click());
-      }, 1000);
-      */
 
+        if (initialSlide !== undefined) {
+          setTimeout(function () {
+            element.swiper.slideTo(initialSlide, 0);
+            TweenMax.to(node, 0.4, {
+              opacity: 1,
+              ease: Power2.easeOut
+            });
+          }, 100);
+        } else {
+          TweenMax.set(node, {
+            opacity: 1
+          });
+        }
+      }
     }
   }], [{
     key: "factory",
@@ -23613,7 +23712,7 @@ function (_SwiperDirective) {
 
   _createClass(SwiperGalleryDirective, [{
     key: "onResize",
-    value: function onResize(scope, element) {
+    value: function onResize(scope, element, attributes) {
       if (element.swiper) {
         Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(function (node) {
           return node.setAttribute('style', '');
@@ -23622,7 +23721,7 @@ function (_SwiperDirective) {
         element.swiper.update();
       }
 
-      console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed);
+      console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
     }
   }], [{
     key: "factory",
@@ -23860,7 +23959,6 @@ function (_SwiperDirective5) {
         },
         slideChange: function slideChange() {
           var swiper = this;
-          console.log(swiper);
           var container = swiper.$el[0];
 
           var lis = _toConsumableArray(container.querySelectorAll('.nav--timeline>li'));
@@ -24371,6 +24469,20 @@ function () {
       var onClose = function onClose() {
         if (node.classList.contains('zoomed')) {
           _this.zoomOut(scope, node, content, rect);
+
+          if (attributes.zoomed !== undefined) {
+            _this.$timeout(function () {
+              scope.$root.gallery = null;
+            });
+          }
+        }
+      };
+
+      var onOpen = function onOpen() {
+        if (!node.classList.contains('zoomed')) {
+          rect = _rect.default.fromNode(node);
+
+          _this.zoomIn(scope, node, content, rect);
         }
       };
 
@@ -24378,6 +24490,12 @@ function () {
         // const slides = [...node.querySelectorAll('.swiper-slide')];
         if (node.classList.contains('zoomed')) {
           _this.zoomOut(scope, node, content, rect);
+
+          if (attributes.zoomed !== undefined) {
+            _this.$timeout(function () {
+              scope.$root.gallery = null;
+            });
+          }
         } else {
           rect = _rect.default.fromNode(node);
 
@@ -24463,6 +24581,10 @@ function () {
         */
 
       };
+
+      if (attributes.zoomed !== undefined) {
+        onOpen();
+      }
     }
   }, {
     key: "zoomIn",
@@ -27569,14 +27691,18 @@ function () {
   _createClass(WishlistService, [{
     key: "indexOf",
     value: function indexOf(item) {
-      var index = this.wishlist.reduce(function (p, c, i) {
-        if (p === -1) {
-          return c.id === item.id && c.coId === item.coId ? i : p;
-        } else {
-          return p;
-        }
-      }, -1);
-      return index;
+      if (item) {
+        var index = this.wishlist.reduce(function (p, c, i) {
+          if (p === -1) {
+            return c.id === item.id && c.coId === item.coId ? i : p;
+          } else {
+            return p;
+          }
+        }, -1);
+        return index;
+      } else {
+        return -1;
+      }
     }
   }, {
     key: "has",

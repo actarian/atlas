@@ -28,8 +28,10 @@ export class SwiperDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		const node = element[0];
+		TweenMax.set(node, { opacity: 0 });
 		scope.$on('lastItem', (slide) => {
-			this.onSwiper(element);
+			this.onSwiper(element, attributes);
 		});
 		element.on('$destroy', () => {
 			if (element.swiper) {
@@ -37,41 +39,59 @@ export class SwiperDirective {
 			}
 		});
 		scope.$watch('$viewContentLoaded', () => {
-			// console.log('viewContentLoaded');
-			this.onSwiper(element);
+			this.onSwiper(element, attributes);
 		});
-		console.log('SwiperDirective', scope.$id, element);
+		// console.log('SwiperDirective', scope.$id, element);
 		scope.$on('onResize', ($scope) => {
-			this.onResize(scope, element);
+			this.onResize(scope, element, attributes);
 		});
 	}
 
-	onResize(scope, element) {
+	onResize(scope, element, attributes) {
 		if (element.swiper) {
 			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
 			element.swiper.update();
 		}
 	}
 
-	onSwiper(element) {
-		/*
-		if (element.swiper) {
-			element.swiper.destroy(true, true);
+	onSwiper(element, attributes) {
+		const node = element[0];
+		const initialSlide = attributes.initialSlide;
+		if (initialSlide !== undefined) {
+			attributes.initialSlide = undefined;
 		}
-		element.swiper = new Swiper(element, this.options);
-		element.addClass('swiper-init');
-		*/
+		console.log('initialSlide', initialSlide);
 		if (element.swiper) {
 			element.swiper.update();
+			if (initialSlide !== undefined) {
+				setTimeout(() => {
+					element.swiper.slideTo(initialSlide, 0);
+					TweenMax.to(node, 0.4, {
+						opacity: 1,
+						ease: Power2.easeOut,
+					});
+				}, 100);
+			}
 		} else {
+			if (initialSlide !== undefined) {
+				this.options.initialSlide = initialSlide;
+			} else {
+				TweenMax.set(node, { opacity: 1 });
+			}
 			element.swiper = new Swiper(element, this.options);
 			element.addClass('swiper-init');
+			if (initialSlide !== undefined) {
+				setTimeout(() => {
+					element.swiper.slideTo(initialSlide, 0);
+					TweenMax.to(node, 0.4, {
+						opacity: 1,
+						ease: Power2.easeOut,
+					});
+				}, 100);
+			} else {
+				TweenMax.set(node, { opacity: 1 });
+			}
 		}
-		/*
-		setTimeout(() => {
-			[...document.querySelectorAll('.swiper-pagination-bullet:first-child')].forEach(x => x.click());
-		}, 1000);
-		*/
 	}
 
 	static factory() {
@@ -110,13 +130,13 @@ export class SwiperGalleryDirective extends SwiperDirective {
 		};
 	}
 
-	onResize(scope, element) {
+	onResize(scope, element, attributes) {
 		if (element.swiper) {
 			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
 			element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
 			element.swiper.update();
 		}
-		console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed);
+		console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
 	}
 
 	static factory() {
@@ -300,7 +320,6 @@ export class SwiperTimelineDirective extends SwiperDirective {
 				},
 				slideChange: function() {
 					const swiper = this;
-					console.log(swiper);
 					const container = swiper.$el[0];
 					const lis = [...container.querySelectorAll('.nav--timeline>li')];
 					lis.forEach((x, i) => {

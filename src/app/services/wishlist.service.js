@@ -35,14 +35,18 @@ export default class WishlistService {
 	}
 
 	indexOf(item) {
-		const index = this.wishlist.reduce((p, c, i) => {
-			if (p === -1) {
-				return c.id === item.id && c.coId === item.coId ? i : p;
-			} else {
-				return p;
-			}
-		}, -1);
-		return index;
+		if (item) {
+			const index = this.wishlist.reduce((p, c, i) => {
+				if (p === -1) {
+					return c.id === item.id && c.coId === item.coId ? i : p;
+				} else {
+					return p;
+				}
+			}, -1);
+			return index;
+		} else {
+			return -1;
+		}
 	}
 
 	has(item) {
