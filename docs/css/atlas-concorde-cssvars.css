@@ -6110,7 +6110,7 @@ page-transition {
     -webkit-transition: opacity ease-in-out 350ms;
     transition: opacity ease-in-out 350ms;
     height: calc(100vh - 220px);
-    max-height: 780px; }
+    max-height: 500px; }
   [swiper-gallery] .swiper-slide .title {
     display: none; }
   [swiper-gallery] .swiper-slide:not(.swiper-slide-active) img {
