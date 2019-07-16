@@ -23587,8 +23587,7 @@ function () {
       });
       scope.$watch('$viewContentLoaded', function () {
         _this.onSwiper(element, attributes);
-      }); // console.log('SwiperDirective', scope.$id, element);
-
+      });
       scope.$on('onResize', function ($scope) {
         _this.onResize(scope, element, attributes);
       });
@@ -23607,51 +23606,33 @@ function () {
     key: "onSwiper",
     value: function onSwiper(element, attributes) {
       var node = element[0];
-      var initialSlide = attributes.initialSlide;
-
-      if (initialSlide !== undefined) {
-        attributes.initialSlide = undefined;
-      }
-
-      console.log('initialSlide', initialSlide);
+      var initialSlide = attributes.initialSlide !== undefined ? attributes.initialSlide : 0;
 
       if (element.swiper) {
         element.swiper.update();
-
-        if (initialSlide !== undefined) {
-          setTimeout(function () {
-            element.swiper.slideTo(initialSlide, 0);
-            TweenMax.to(node, 0.4, {
-              opacity: 1,
-              ease: Power2.easeOut
-            });
-          }, 100);
-        }
       } else {
-        if (initialSlide !== undefined) {
-          this.options.initialSlide = initialSlide;
-        } else {
-          TweenMax.set(node, {
-            opacity: 1
-          });
-        }
+        this.options.initialSlide = initialSlide;
+        var on = this.options.on || (this.options.on = {});
+        var callback = on.init;
 
+        on.init = function () {
+          var swiper = this;
+          swiper.slideTo(initialSlide);
+          TweenMax.to(node, 0.4, {
+            opacity: 1,
+            ease: Power2.easeOut
+          });
+
+          if (typeof callback === 'function') {
+            callback.call(this);
+          }
+        };
+
+        TweenMax.set(node, {
+          opacity: 1
+        });
         element.swiper = new Swiper(element, this.options);
         element.addClass('swiper-init');
-
-        if (initialSlide !== undefined) {
-          setTimeout(function () {
-            element.swiper.slideTo(initialSlide, 0);
-            TweenMax.to(node, 0.4, {
-              opacity: 1,
-              ease: Power2.easeOut
-            });
-          }, 100);
-        } else {
-          TweenMax.set(node, {
-            opacity: 1
-          });
-        }
       }
     }
   }], [{
@@ -23679,17 +23660,13 @@ function (_SwiperDirective) {
 
     _this2 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperGalleryDirective).call(this));
     _this2.options = {
-      /*
-      observer: true,
-      observeParents: true,
-      */
-      // loop: true,
-      loopAdditionalSlides: 100,
+      // loopAdditionalSlides: 100,
       slidesPerView: 'auto',
-      centeredSlides: true,
+      // centeredSlides: true,
+      // watchOverflow: true,
       spaceBetween: 1,
-      speed: 600,
-      autoplay: 5000,
+      // speed: 600,
+      // autoplay: 5,
       keyboardControl: true,
       mousewheelControl: false,
       onSlideClick: function onSlideClick(swiper) {
@@ -23744,60 +23721,16 @@ function (_SwiperDirective2) {
       speed: 600,
       parallax: true,
       autoplay: 5000,
-      // loop: true,
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
       onSlideClick: function onSlideClick(swiper) {
         angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
       },
-      on: {
-        /*
-        setTranslate: function () {
-        	console.log('setTranslate', this);
-        },
-        */
-        setTransition: function setTransition() {// console.log('setTransition', this);
-
-          /*
-          var x = 73 - 5 + (Math.random() * 10);
-          var y = 24;
-          var r = 18 - 5 + (Math.random() * 10);
-          console.log(x, y, r)
-          dynamics.animate(element[0].querySelector('.fico'), {
-          	rotateZ: '-' + r + 'deg',
-          	translateX: '-' + x + '%',
-          	translateY: '-' + y + '%',
-          }, {
-          	type: dynamics.bezier,
-          	points: [{
-          		"x": 0,
-          		"y": 0,
-          		"cp": [{
-          			"x": 0.462, "y": -0.877
-          		}]
-          	}, {
-          		"x": 1,
-          		"y": 1,
-          		"cp": [{
-          			"x": 0.538, "y": 1.899
-          		}]
-          	}],
-          });
-          */
-        }
-      },
       pagination: {
         el: '.swiper-pagination',
         clickable: true
       }
-      /*
-      navigation: {
-      	nextEl: '.swiper-button-next',
-      	prevEl: '.swiper-button-prev',
-      },
-      */
-
     };
     return _this3;
   }
@@ -23917,26 +23850,12 @@ function (_SwiperDirective5) {
 
     _this6 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperTimelineDirective).call(this));
     _this6.options = {
-      /*
-      observer: true,
-      observeParents: true,
-      */
-      // loop: true,
-      // loopAdditionalSlides: 100,
       slidesPerView: 1,
-      // 'auto',
-      // centeredSlides: true,
       spaceBetween: 60,
       speed: 600,
       autoplay: 5000,
       keyboardControl: true,
       mousewheelControl: false,
-
-      /*
-      onSlideClick: function(swiper) {
-      	angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-      },
-      */
       on: {
         init: function init() {
           var swiper = this;
@@ -24021,7 +23940,7 @@ function () {
     this.wishlistService = WishlistService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>\n<div class=\"btn btn--zoom\" ng-click=\"onClickZoom($event)\">\n\t<svg class=\"icon icon--zoom\"><use xlink:href=\"#zoom\"></use></svg>\n</div>";
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay($event)\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>\n<div class=\"btn btn--zoom\" ng-click=\"onClickZoom($event)\">\n\t<svg class=\"icon icon--zoom\"><use xlink:href=\"#zoom\"></use></svg>\n</div>";
     this.scope = {
       item: '=?video'
     };
@@ -24052,7 +23971,7 @@ function () {
       var progress = node.querySelector('.icon--play-progress path');
       scope.item = scope.item || {};
 
-      scope.onOverlay = function () {
+      scope.onOverlay = function (event) {
         if (video) {
           if (video.paused) {
             video.play();
@@ -24060,6 +23979,9 @@ function () {
             video.pause();
           }
         }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
       };
 
       var onPlay = function onPlay() {

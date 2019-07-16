@@ -14,7 +14,7 @@ export default class VideoDirective {
 		this.template = `<div class="media">
 	<ng-transclude></ng-transclude>
 </div>
-<div class="overlay" ng-click="onOverlay()"></div>
+<div class="overlay" ng-click="onOverlay($event)"></div>
 <div class="btn btn--play" ng-class="{ playing: playing }">
 	<svg class="icon icon--play-progress-background"><use xlink:href="#play-progress"></use></svg>
 	<svg class="icon icon--play-progress" viewBox="0 0 196 196">
@@ -54,7 +54,7 @@ export default class VideoDirective {
 		}
 		const progress = node.querySelector('.icon--play-progress path');
 		scope.item = scope.item || {};
-		scope.onOverlay = () => {
+		scope.onOverlay = (event) => {
 			if (video) {
 				if (video.paused) {
 					video.play();
@@ -62,6 +62,8 @@ export default class VideoDirective {
 					video.pause();
 				}
 			}
+			event.preventDefault();
+			event.stopImmediatePropagation();
 		};
 		const onPlay = () => {
 			this.$timeout(() => {

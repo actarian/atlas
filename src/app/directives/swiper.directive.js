@@ -41,7 +41,6 @@ export class SwiperDirective {
 		scope.$watch('$viewContentLoaded', () => {
 			this.onSwiper(element, attributes);
 		});
-		// console.log('SwiperDirective', scope.$id, element);
 		scope.$on('onResize', ($scope) => {
 			this.onResize(scope, element, attributes);
 		});
@@ -56,41 +55,27 @@ export class SwiperDirective {
 
 	onSwiper(element, attributes) {
 		const node = element[0];
-		const initialSlide = attributes.initialSlide;
-		if (initialSlide !== undefined) {
-			attributes.initialSlide = undefined;
-		}
-		console.log('initialSlide', initialSlide);
+		const initialSlide = attributes.initialSlide !== undefined ? attributes.initialSlide : 0;
 		if (element.swiper) {
 			element.swiper.update();
-			if (initialSlide !== undefined) {
-				setTimeout(() => {
-					element.swiper.slideTo(initialSlide, 0);
-					TweenMax.to(node, 0.4, {
-						opacity: 1,
-						ease: Power2.easeOut,
-					});
-				}, 100);
-			}
 		} else {
-			if (initialSlide !== undefined) {
-				this.options.initialSlide = initialSlide;
-			} else {
-				TweenMax.set(node, { opacity: 1 });
-			}
+			this.options.initialSlide = initialSlide;
+			const on = this.options.on || (this.options.on = {});
+			const callback = on.init;
+			on.init = function() {
+				const swiper = this;
+				swiper.slideTo(initialSlide);
+				TweenMax.to(node, 0.4, {
+					opacity: 1,
+					ease: Power2.easeOut,
+				});
+				if (typeof callback === 'function') {
+					callback.call(this);
+				}
+			};
+			TweenMax.set(node, { opacity: 1 });
 			element.swiper = new Swiper(element, this.options);
 			element.addClass('swiper-init');
-			if (initialSlide !== undefined) {
-				setTimeout(() => {
-					element.swiper.slideTo(initialSlide, 0);
-					TweenMax.to(node, 0.4, {
-						opacity: 1,
-						ease: Power2.easeOut,
-					});
-				}, 100);
-			} else {
-				TweenMax.set(node, { opacity: 1 });
-			}
 		}
 	}
 
@@ -107,17 +92,13 @@ export class SwiperGalleryDirective extends SwiperDirective {
 	constructor() {
 		super();
 		this.options = {
-			/*
-			observer: true,
-			observeParents: true,
-			*/
-			// loop: true,
-			loopAdditionalSlides: 100,
+			// loopAdditionalSlides: 100,
 			slidesPerView: 'auto',
-			centeredSlides: true,
+			// centeredSlides: true,
+			// watchOverflow: true,
 			spaceBetween: 1,
-			speed: 600,
-			autoplay: 5000,
+			// speed: 600,
+			// autoplay: 5,
 			keyboardControl: true,
 			mousewheelControl: false,
 			onSlideClick: function(swiper) {
@@ -155,59 +136,16 @@ export class SwiperHeroDirective extends SwiperDirective {
 			speed: 600,
 			parallax: true,
 			autoplay: 5000,
-			// loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
 			onSlideClick: function(swiper) {
 				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
 			},
-			on: {
-				/*
-				setTranslate: function () {
-					console.log('setTranslate', this);
-				},
-				*/
-				setTransition: function() {
-					// console.log('setTransition', this);
-					/*
-					var x = 73 - 5 + (Math.random() * 10);
-					var y = 24;
-					var r = 18 - 5 + (Math.random() * 10);
-					console.log(x, y, r)
-					dynamics.animate(element[0].querySelector('.fico'), {
-						rotateZ: '-' + r + 'deg',
-						translateX: '-' + x + '%',
-						translateY: '-' + y + '%',
-					}, {
-						type: dynamics.bezier,
-						points: [{
-							"x": 0,
-							"y": 0,
-							"cp": [{
-								"x": 0.462, "y": -0.877
-							}]
-						}, {
-							"x": 1,
-							"y": 1,
-							"cp": [{
-								"x": 0.538, "y": 1.899
-							}]
-						}],
-					});
-					*/
-				},
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
 			},
-			/*
-			navigation: {
-				nextEl: '.swiper-button-next',
-				prevEl: '.swiper-button-prev',
-			},
-			*/
 		};
 	}
 
@@ -288,24 +226,12 @@ export class SwiperTimelineDirective extends SwiperDirective {
 	constructor() {
 		super();
 		this.options = {
-			/*
-			observer: true,
-			observeParents: true,
-			*/
-			// loop: true,
-			// loopAdditionalSlides: 100,
-			slidesPerView: 1, // 'auto',
-			// centeredSlides: true,
+			slidesPerView: 1,
 			spaceBetween: 60,
 			speed: 600,
 			autoplay: 5000,
 			keyboardControl: true,
 			mousewheelControl: false,
-			/*
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
-			*/
 			on: {
 				init: function() {
 					const swiper = this;

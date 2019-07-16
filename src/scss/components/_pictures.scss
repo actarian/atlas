@@ -162,6 +162,14 @@ $diff: 280px;
 	}
 }
 
+.picture--technical {
+	img {
+		max-width: 380px;
+		padding: 10px 0;
+		margin-left: -8px;
+	}
+}
+
 [parallax] {
 	overflow: hidden;
 }
