@@ -1,5 +1,5 @@
 ﻿/* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 export const ITEMS_PER_PAGE = 9;
 

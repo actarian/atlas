@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 // Import Polyfills
 // See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill

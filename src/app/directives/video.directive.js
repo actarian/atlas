@@ -1,5 +1,4 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 export default class VideoDirective {
 
@@ -57,13 +56,17 @@ export default class VideoDirective {
 		scope.onOverlay = (event) => {
 			if (video) {
 				if (video.paused) {
+					const gallery = document.querySelector('.section--gallery');
+					video.muted = gallery ? false : true;
 					video.play();
 				} else {
 					video.pause();
 				}
 			}
+			/*
 			event.preventDefault();
 			event.stopImmediatePropagation();
+			*/
 		};
 		const onPlay = () => {
 			this.$timeout(() => {

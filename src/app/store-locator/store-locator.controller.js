@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';

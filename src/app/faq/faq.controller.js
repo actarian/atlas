@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, takeUntil } from 'rxjs/operators';

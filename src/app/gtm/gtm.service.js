@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 function push_(event) {
 	const dataLayer = window.dataLayer || [];

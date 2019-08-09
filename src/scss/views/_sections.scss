@@ -76,7 +76,7 @@
 	}
 
 	.picture--vertical {
-		max-width: 100%;
+		max-width: calc((100vh - 150px) / 90 * 68);
 	}
 
 	&.text--primary {

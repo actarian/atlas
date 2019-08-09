@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 import Highway from '@dogstudio/highway';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';

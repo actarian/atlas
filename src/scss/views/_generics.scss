@@ -251,23 +251,38 @@
 		.swiper-slide {
 			flex-direction: column;
 			align-items: center;
-			justify-content: center;
+			// justify-content: center;
+			justify-content: flex-end;
 			background: white;
+
+			.picture {
+				flex: 0 1 auto;
+				margin-top: 20px;
+				margin-bottom: 20px;
+				overflow: hidden;
+			}
 
 			img {
 				transition: opacity ease-in-out 350ms;
 				width: auto;
 				height: auto;
-				max-height: calc(100vh - 100px);
+				// max-height: calc(100vh - 100px);
 			}
 
 			.title {
+				// position: absolute;
+				// bottom: 0;
+				// padding: 10px 10px 0 10px;
+				// transition: opacity ease-in-out 350ms;
+				// opacity: 0;
+				// background: rgba(255, 255, 255, 0.9);
 				display: block;
-				position: absolute;
-				bottom: 0;
-				padding: 10px 10px 0 10px;
-				transition: opacity ease-in-out 350ms;
-				opacity: 0;
+				position: relative;
+				opacity: 1;
+				padding: 9px 15px;
+				max-width: 1200px;
+				font-size: 16px;
+				line-height: 1.35;
 			}
 
 			&:hover {

@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 const DEFAULT_SWIPER_OPTIONS = {
 	slidesPerView: 'auto',

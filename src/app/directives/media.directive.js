@@ -1,5 +1,4 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 
 export default class MediaDirective {
 
@@ -75,6 +74,12 @@ export default class MediaDirective {
 			// event.stopPropagation();
 		};
 		scope.onOverlay = (event) => {
+			const btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
+			if (btnGallery !== null) {
+				console.log(btnGallery);
+				btnGallery.click();
+				return;
+			}
 			if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
 				this.$timeout(() => {
 					let index = 0;

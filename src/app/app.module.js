@@ -1,11 +1,12 @@
 ﻿/* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 import AdvancedSearchCtrl from './advanced-search/advanced-search.controller';
 import CollectionsCtrl from './collections/collections.controller';
 import ContactsCtrl from './contacts/contacts.controller';
 import AppearDirective from './directives/appear.directive';
 import AutocompleteDirective from './directives/autocomplete.directive';
+import CookiesDirective from './directives/cookies.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
 import HasDropdownDirective from './directives/has-dropdown.directive';
 import HilightDirective from './directives/hilight.directive';
@@ -72,6 +73,7 @@ app.factory('ApiService', ApiService.factory)
 app.directive('appear', AppearDirective.factory)
 	.directive('control', ControlDirective.factory)
 	.directive('controlMessages', ControlMessagesDirective.factory)
+	.directive('cookies', CookiesDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
 	.directive('hasDropdown', HasDropdownDirective.factory)
 	.directive('highway', HighwayDirective.factory)

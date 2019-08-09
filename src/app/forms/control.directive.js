@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 const formatLabel = function(string = '', prepend = '', expression = undefined) {
 	const splitted = string.split(',');

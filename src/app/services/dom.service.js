@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
+
 
 import { combineLatest, fromEvent, range } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';

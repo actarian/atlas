@@ -125,6 +125,18 @@
 		}
 	}
 
+	.section--gallery & {
+		ng-transclude {
+			transform: scale(1, 1);
+		}
+
+		&:hover {
+			.overlay {
+				opacity: 0;
+			}
+		}
+	}
+
 }
 
 .btn--wishlist {

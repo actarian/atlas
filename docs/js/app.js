@@ -21134,8 +21134,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 //import { of } from "rxjs";
 var ITEMS_PER_PAGE = 20;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
@@ -21489,8 +21487,6 @@ var _appModule = _interopRequireDefault(require("./app.module.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 console.log('bootstrap', document);
 angular.bootstrap(document, [_appModule.default]);
 
@@ -21511,6 +21507,8 @@ var _contacts = _interopRequireDefault(require("./contacts/contacts.controller")
 var _appear = _interopRequireDefault(require("./directives/appear.directive"));
 
 var _autocomplete = _interopRequireDefault(require("./directives/autocomplete.directive"));
+
+var _cookies = _interopRequireDefault(require("./directives/cookies.directive"));
 
 var _glslCanvas = _interopRequireDefault(require("./directives/glsl-canvas.directive"));
 
@@ -21601,8 +21599,6 @@ var _wishlist3 = _interopRequireDefault(require("./wishlist/wishlist.controller"
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 // import TransitionDirective from './directives/transition.directive';
 var MODULE_NAME = 'app';
 var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
@@ -21610,7 +21606,7 @@ app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
-app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperTimeline', _swiper.SwiperTimelineDirective.factory) // .directive('transition', TransitionDirective.factory)
+app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('cookies', _cookies.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperTimeline', _swiper.SwiperTimelineDirective.factory) // .directive('transition', TransitionDirective.factory)
 .directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('visibility', _visibility.default.factory).directive('wishlist', _wishlist.default.factory).directive('world', _world.default.factory).directive('zoomable', _zoomable.default.factory);
 app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default).controller('WishlistCtrl', _wishlist3.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
@@ -21622,7 +21618,7 @@ app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $ro
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/glsl-canvas.directive":206,"./directives/has-dropdown.directive":207,"./directives/hilight.directive":208,"./directives/href.directive":209,"./directives/last-item.directive":210,"./directives/lazy-script.directive":211,"./directives/lazy.directive":212,"./directives/media.directive":213,"./directives/muuri.directive":214,"./directives/parallax.directive":215,"./directives/scroll.directive":216,"./directives/sticky.directive":217,"./directives/swiper.directive":218,"./directives/video.directive":219,"./directives/visibility.directive":220,"./directives/wishlist.directive":221,"./directives/world.directive":222,"./directives/zoomable.directive":223,"./faq/faq.controller":224,"./filters/image-with-features.filter":225,"./filters/notIn.filter":226,"./filters/trusted.filter":227,"./forms/control-messages.directive":228,"./forms/control.directive":229,"./forms/validate.directive":230,"./highway/highway.directive":233,"./magazine/magazine.controller":235,"./moodboard/moodboard-dropdown.directive":236,"./moodboard/moodboard-search.directive":237,"./moodboard/moodboard-section.controller":238,"./moodboard/moodboard.controller":239,"./news/news.controller":240,"./references/references.controller":241,"./root.controller":242,"./services/api.service":243,"./services/dom.service":244,"./services/wishlist.service":245,"./shared/location.service":246,"./shared/promise.service":247,"./shared/state.service":250,"./shared/storage.service":251,"./store-locator/store-locator.controller":252,"./wishlist/wishlist.controller":253}],202:[function(require,module,exports){
+},{"./advanced-search/advanced-search.controller":199,"./collections/collections.controller":202,"./contacts/contacts.controller":203,"./directives/appear.directive":204,"./directives/autocomplete.directive":205,"./directives/cookies.directive":206,"./directives/glsl-canvas.directive":207,"./directives/has-dropdown.directive":208,"./directives/hilight.directive":209,"./directives/href.directive":210,"./directives/last-item.directive":211,"./directives/lazy-script.directive":212,"./directives/lazy.directive":213,"./directives/media.directive":214,"./directives/muuri.directive":215,"./directives/parallax.directive":216,"./directives/scroll.directive":217,"./directives/sticky.directive":218,"./directives/swiper.directive":219,"./directives/video.directive":220,"./directives/visibility.directive":221,"./directives/wishlist.directive":222,"./directives/world.directive":223,"./directives/zoomable.directive":224,"./faq/faq.controller":225,"./filters/image-with-features.filter":226,"./filters/notIn.filter":227,"./filters/trusted.filter":228,"./forms/control-messages.directive":229,"./forms/control.directive":230,"./forms/validate.directive":231,"./highway/highway.directive":234,"./magazine/magazine.controller":236,"./moodboard/moodboard-dropdown.directive":237,"./moodboard/moodboard-search.directive":238,"./moodboard/moodboard-section.controller":239,"./moodboard/moodboard.controller":240,"./news/news.controller":241,"./references/references.controller":242,"./root.controller":243,"./services/api.service":244,"./services/dom.service":245,"./services/wishlist.service":246,"./shared/location.service":247,"./shared/promise.service":248,"./shared/state.service":251,"./shared/storage.service":252,"./store-locator/store-locator.controller":253,"./wishlist/wishlist.controller":254}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21637,8 +21633,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var CollectionsCtrl =
 /*#__PURE__*/
 function () {
@@ -21836,8 +21830,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ContactsCtrl =
 /*#__PURE__*/
 function () {
@@ -21919,8 +21911,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 // Import Polyfills
 // See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
 // import 'intersection-observer';
@@ -22154,7 +22144,78 @@ function () {
 exports.default = AutocompleteDirective;
 AutocompleteDirective.factory.$inject = ['$timeout'];
 
-},{"./has-dropdown.directive":207}],206:[function(require,module,exports){
+},{"./has-dropdown.directive":208}],206:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* jshint esversion: 6 */
+var CookiesDirective =
+/*#__PURE__*/
+function () {
+  function CookiesDirective($timeout, StorageService) {
+    _classCallCheck(this, CookiesDirective);
+
+    this.$timeout = $timeout;
+    this.storage = StorageService;
+    this.restrict = 'A';
+  }
+
+  _createClass(CookiesDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      var accept = function accept() {
+        var dt = new Date();
+        dt.setDate(dt.getDate() + 365);
+        document.cookie = '_cookiepolicy=accept; path=/; expires=' + dt.toUTCString();
+      };
+
+      var node = element[0];
+      var cookiesAccepted = this.storage.get('cookiesAccepted');
+
+      if (cookiesAccepted) {
+        node.classList.add('cookies-accepted');
+      }
+
+      scope.onAcceptCookies = function (event) {
+        _this.storage.set('cookiesAccepted', true); // accept();
+
+
+        TweenMax.to(node, 0.5, {
+          bottom: '-100%',
+          ease: Power2.easeInOut,
+          delay: 0.15,
+          onComplete: function onComplete() {
+            node.classList.add('cookies-accepted');
+          }
+        });
+      };
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, StorageService) {
+      return new CookiesDirective($timeout, StorageService);
+    }
+  }]);
+
+  return CookiesDirective;
+}();
+
+exports.default = CookiesDirective;
+CookiesDirective.factory.$inject = ['$timeout', 'CookieService'];
+
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22274,7 +22335,7 @@ function () {
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{"../shared/shader":249}],207:[function(require,module,exports){
+},{"../shared/shader":250}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22289,8 +22350,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var HasDropdownDirective =
 /*#__PURE__*/
 function () {
@@ -22437,7 +22496,7 @@ exports.default = HasDropdownDirective;
 HasDropdownDirective.dropDownUid = 0;
 HasDropdownDirective.factory.$inject = ['$timeout'];
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22452,8 +22511,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var HilightDirective =
 /*#__PURE__*/
 function () {
@@ -22511,7 +22568,7 @@ function () {
 exports.default = HilightDirective;
 HilightDirective.factory.$inject = [];
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22526,8 +22583,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var USE_HIGHWAY = true;
 
 var HrefDirective =
@@ -22660,7 +22715,7 @@ function () {
 exports.default = HrefDirective;
 HrefDirective.factory.$inject = [];
 
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22675,8 +22730,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var LastItemDirective =
 /*#__PURE__*/
 function () {
@@ -22709,7 +22762,7 @@ function () {
 exports.LastItemDirective = LastItemDirective;
 LastItemDirective.factory.$inject = ['$timeout'];
 
-},{}],211:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22724,8 +22777,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var LazyScriptDirective =
 /*#__PURE__*/
 function () {
@@ -22777,7 +22828,7 @@ function () {
 exports.default = LazyScriptDirective;
 LazyScriptDirective.factory.$inject = [];
 
-},{}],212:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22953,7 +23004,7 @@ function () {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":248,"rxjs/operators":198}],213:[function(require,module,exports){
+},{"../shared/rect":249,"rxjs/operators":198}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22976,8 +23027,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var MediaDirective =
 /*#__PURE__*/
 function () {
@@ -23051,6 +23100,14 @@ function () {
       };
 
       scope.onOverlay = function (event) {
+        var btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
+
+        if (btnGallery !== null) {
+          console.log(btnGallery);
+          btnGallery.click();
+          return;
+        }
+
         if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
           _this.$timeout(function () {
             var index = 0;
@@ -23119,7 +23176,7 @@ function () {
 exports.default = MediaDirective;
 MediaDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-},{}],214:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23220,7 +23277,7 @@ function () {
 exports.MuuriDirective = MuuriDirective;
 MuuriDirective.factory.$inject = [];
 
-},{}],215:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23326,7 +23383,7 @@ function () {
 exports.default = ParallaxDirective;
 ParallaxDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":248,"rxjs/operators":198}],216:[function(require,module,exports){
+},{"../shared/rect":249,"rxjs/operators":198}],217:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23341,8 +23398,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ScrollDirective =
 /*#__PURE__*/
 function () {
@@ -23393,7 +23448,7 @@ function () {
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = ['DomService'];
 
-},{}],217:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23502,7 +23557,7 @@ function () {
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"../shared/rect":248,"rxjs/operators":198}],218:[function(require,module,exports){
+},{"../shared/rect":249,"rxjs/operators":198}],219:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23537,8 +23592,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var DEFAULT_SWIPER_OPTIONS = {
   slidesPerView: 'auto',
   spaceBetween: 1,
@@ -23905,7 +23958,7 @@ function (_SwiperDirective5) {
 exports.SwiperTimelineDirective = SwiperTimelineDirective;
 SwiperTimelineDirective.factory.$inject = [];
 
-},{}],219:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23928,8 +23981,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var VideoDirective =
 /*#__PURE__*/
 function () {
@@ -23974,14 +24025,18 @@ function () {
       scope.onOverlay = function (event) {
         if (video) {
           if (video.paused) {
+            var gallery = document.querySelector('.section--gallery');
+            video.muted = gallery ? false : true;
             video.play();
           } else {
             video.pause();
           }
         }
-
+        /*
         event.preventDefault();
         event.stopImmediatePropagation();
+        */
+
       };
 
       var onPlay = function onPlay() {
@@ -24125,7 +24180,7 @@ function () {
 exports.default = VideoDirective;
 VideoDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-},{}],220:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24184,7 +24239,7 @@ function () {
 exports.default = VisibilityDirective;
 VisibilityDirective.factory.$inject = ['DomService'];
 
-},{"../gtm/gtm.service":231}],221:[function(require,module,exports){
+},{"../gtm/gtm.service":232}],222:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24199,8 +24254,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var WishlistDirective =
 /*#__PURE__*/
 function () {
@@ -24273,7 +24326,7 @@ function () {
 exports.default = WishlistDirective;
 WishlistDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-},{}],222:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24296,8 +24349,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 // let INDEX = 0;
 var WorldDirective =
 /*#__PURE__*/
@@ -24395,7 +24446,7 @@ function () {
 exports.default = WorldDirective;
 WorldDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{}],223:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24657,7 +24708,7 @@ function () {
 exports.default = ZoomableDirective;
 ZoomableDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"../shared/rect":248}],224:[function(require,module,exports){
+},{"../shared/rect":249}],225:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24831,7 +24882,7 @@ FaqCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = FaqCtrl;
 exports.default = _default;
 
-},{"rxjs":2,"rxjs/operators":198}],225:[function(require,module,exports){
+},{"rxjs":2,"rxjs/operators":198}],226:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24840,8 +24891,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.ImageWithFeatures = ImageWithFeatures;
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 function ImageWithFeatures() {
   return function (images, features) {
     if (!images) {
@@ -24872,7 +24921,7 @@ function ImageWithFeatures() {
   };
 }
 
-},{}],226:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24881,8 +24930,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.NotInFilter = NotInFilter;
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 function NotInFilter($filter) {
   return function (array, filters, element) {
     if (filters) {
@@ -24897,7 +24944,7 @@ function NotInFilter($filter) {
   };
 }
 
-},{}],227:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24906,15 +24953,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.TrustedFilter = TrustedFilter;
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 function TrustedFilter($sce) {
   return function (url) {
     return $sce.trustAsResourceUrl(url);
   };
 }
 
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24929,8 +24974,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ControlMessagesDirective =
 /*#__PURE__*/
 function () {
@@ -24960,7 +25003,7 @@ function () {
 exports.default = ControlMessagesDirective;
 ControlMessagesDirective.factory.$inject = [];
 
-},{}],229:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24975,8 +25018,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var formatLabel = function formatLabel() {
   var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var prepend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
@@ -25225,7 +25266,7 @@ function () {
 exports.default = ControlDirective;
 ControlDirective.factory.$inject = ['$parse', 'DomService'];
 
-},{}],230:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25240,8 +25281,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ValidateDirective =
 /*#__PURE__*/
 function () {
@@ -25426,7 +25465,7 @@ function () {
 exports.default = ValidateDirective;
 ValidateDirective.factory.$inject = ['$filter'];
 
-},{}],231:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25441,8 +25480,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 function push_(event) {
   var dataLayer = window.dataLayer || [];
   dataLayer.push(event);
@@ -25479,7 +25516,7 @@ function () {
 
 exports.default = GtmService;
 
-},{}],232:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25691,7 +25728,7 @@ function (_Highway$Renderer) {
 
 exports.default = CustomRenderer;
 
-},{"../gtm/gtm.service":231,"@dogstudio/highway":1}],233:[function(require,module,exports){
+},{"../gtm/gtm.service":232,"@dogstudio/highway":1}],234:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25839,7 +25876,7 @@ function () {
 exports.default = HighwayDirective;
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
 
-},{"../gtm/gtm.service":231,"./custom-renderer":232,"./page-transition":234,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],234:[function(require,module,exports){
+},{"../gtm/gtm.service":232,"./custom-renderer":233,"./page-transition":235,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],235:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26008,7 +26045,7 @@ function (_Highway$Transition) {
 
 exports.default = PageTransition;
 
-},{"../services/dom.service":244,"../shared/rect":248,"./custom-renderer":232,"@dogstudio/highway":1}],235:[function(require,module,exports){
+},{"../services/dom.service":245,"../shared/rect":249,"./custom-renderer":233,"@dogstudio/highway":1}],236:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26023,8 +26060,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ITEMS_PER_PAGE = 9;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
@@ -26077,7 +26112,7 @@ MagazineCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = MagazineCtrl;
 exports.default = _default;
 
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26154,7 +26189,7 @@ function () {
 exports.default = MoodboardDropdownDirective;
 MoodboardDropdownDirective.factory.$inject = ['$compile'];
 
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26310,7 +26345,7 @@ function () {
 exports.default = MoodboardSearchDirective;
 MoodboardSearchDirective.factory.$inject = ['$compile'];
 
-},{}],238:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26321,8 +26356,6 @@ exports.default = void 0;
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var MoodboardSectionCtrl = function MoodboardSectionCtrl($scope, $timeout, LocationService, ApiService) {
   var _this = this;
 
@@ -26350,7 +26383,7 @@ MoodboardSectionCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiSer
 var _default = MoodboardSectionCtrl;
 exports.default = _default;
 
-},{}],239:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26522,7 +26555,7 @@ MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardCtrl;
 exports.default = _default;
 
-},{"rxjs/operators":198}],240:[function(require,module,exports){
+},{"rxjs/operators":198}],241:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26537,8 +26570,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ITEMS_PER_PAGE = 9;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
@@ -26723,7 +26754,7 @@ NewsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = NewsCtrl;
 exports.default = _default;
 
-},{}],241:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26738,8 +26769,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var ReferencesCtrl =
 /*#__PURE__*/
 function () {
@@ -26897,7 +26926,7 @@ ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = ReferencesCtrl;
 exports.default = _default;
 
-},{}],242:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27166,7 +27195,7 @@ RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService', 'WishlistS
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"rxjs":2,"rxjs/operators":198}],243:[function(require,module,exports){
+},{"rxjs":2,"rxjs/operators":198}],244:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27237,7 +27266,7 @@ function () {
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 
-},{"rxjs":2}],244:[function(require,module,exports){
+},{"rxjs":2}],245:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27635,7 +27664,7 @@ DomService.scroll$ = function () {
 
 DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$);
 
-},{"../shared/rect":248,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],245:[function(require,module,exports){
+},{"../shared/rect":249,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],246:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27778,7 +27807,7 @@ exports.default = WishlistService;
 WishlistService.count$ = new _rxjs.BehaviorSubject(0);
 WishlistService.factory.$inject = ['$http', 'PromiseService', 'LocalStorageService', 'ApiService'];
 
-},{"rxjs":2}],246:[function(require,module,exports){
+},{"rxjs":2}],247:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27881,7 +27910,7 @@ function () {
 exports.default = LocationService;
 LocationService.factory.$inject = ['$location'];
 
-},{}],247:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27936,7 +27965,7 @@ function () {
 exports.default = PromiseService;
 PromiseService.factory.$inject = ['$q'];
 
-},{}],248:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28082,7 +28111,7 @@ function () {
 
 exports.default = Rect;
 
-},{}],249:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28091,12 +28120,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.FRAGMENT_SHADER = void 0;
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
 exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
 
-},{}],250:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28111,8 +28138,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* jshint esversion: 6 */
-
-/* global window, document, angular, Swiper, TweenMax, TimelineMax */
 var State =
 /*#__PURE__*/
 function () {
@@ -28291,7 +28316,7 @@ function () {
 exports.default = StateService;
 StateService.factory.$inject = ['$timeout', '$rootScope'];
 
-},{}],251:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28701,7 +28726,7 @@ function () {
 exports.SessionStorageService = SessionStorageService;
 SessionStorageService.factory.$inject = ['PromiseService'];
 
-},{}],252:[function(require,module,exports){
+},{}],253:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29181,7 +29206,7 @@ StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = StoreLocatorCtrl;
 exports.default = _default;
 
-},{"rxjs":2,"rxjs/operators":198}],253:[function(require,module,exports){
+},{"rxjs":2,"rxjs/operators":198}],254:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
