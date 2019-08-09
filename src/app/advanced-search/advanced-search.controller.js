@@ -1,9 +1,11 @@
 /* jshint esversion: 6 */
 
-
 //import { of } from "rxjs";
 
 export const ITEMS_PER_PAGE = 20;
+
+import GtmService from '../gtm/gtm.service';
+const GTM_CAT = 'ricerca-avanzata';
 
 class AdvancedSearchCtrl {
 
@@ -158,6 +160,8 @@ class AdvancedSearchCtrl {
 			this.visibleItems = filteredItems.slice(0, this.maxItems);
 			this.updateFilterStates(filteredItems);
 		}, 50);
+
+		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
 	updateFilterStates(brands) {

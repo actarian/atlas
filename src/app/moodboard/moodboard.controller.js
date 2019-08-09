@@ -1,14 +1,15 @@
-﻿/* jshint esversion: 6 */
-
+/* jshint esversion: 6 */
 
 import { first } from 'rxjs/operators';
+import GtmService from '../gtm/gtm.service';
+const GTM_CAT = 'moodboard';
 
 export const MOOD_TYPES = Object.freeze({
 	Tile: 1,
 	Horizontal: 2,
 	Vertical: 3,
 	Card: 4,
-	Decor: 5,
+	Decor: 5
 });
 
 export const ITEMS_PER_PAGE = 20;
@@ -79,20 +80,22 @@ class MoodboardCtrl {
 		// console.log('MoodboardCtrl.applyFilters', this.filters);
 		if (serialize !== false) this.serializeFilters();
 		var me = this;
-		const filters = Object.keys(this.filters).map(x => ({ key: x, value: me.filters[x].value })).filter(x => x.value !== null);
+		const filters = {};
+		let anyFilter = false;
+		Object.keys(this.filters).map(key => {
+			const v = me.filters[key].value;
+			if (v !== null) {
+				filters[key] = v;
+				anyFilter = true;
+			}
+		});
 		console.log(filters);
-		if (filters.length) {
+		if (anyFilter) {
 			this.apiService.moodboard.filter(filters).pipe(
 				first()
 			).subscribe(
 				success => {
 					let items = success.data;
-					///* FAKE */
-					while (items.length < 200) {
-						items = items.concat(items);
-					}
-					items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-					///* FAKE */
 					this.filteredItems = [];
 					this.visibleItems = [];
 					this.maxItems = ITEMS_PER_PAGE;
@@ -104,6 +107,8 @@ class MoodboardCtrl {
 				error => console.log('MoodboardCtrl.applyFilters.error', error)
 			);
 		}
+
+		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
 	onScroll(event) {

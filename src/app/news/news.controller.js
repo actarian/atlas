@@ -1,7 +1,9 @@
-﻿/* jshint esversion: 6 */
-
+/* jshint esversion: 6 */
 
 export const ITEMS_PER_PAGE = 9;
+
+import GtmService from '../gtm/gtm.service';
+const GTM_CAT = 'news';
 
 class NewsCtrl {
 
@@ -15,18 +17,19 @@ class NewsCtrl {
 		this.locationService = LocationService;
 		this.filters = window.filters || {};
 		this.news = window.news || [];
+		this.initialFilters = window.initialFilters || null;
 		this.filteredItems = [];
-		// !!! FAKE
-		while (this.news.length < 100) {
-			this.news = this.news.concat(this.news);
-		}
-		// !!! FAKE
-		this.deserializeFilters();
-		this.applyFilters();
+		//// !!! FAKE
+		//while (this.news.length < 100) {
+		//	this.news = this.news.concat(this.news);
+		//}
+		//// !!! FAKE
+		this.deserializeFilters(this.initialFilters);
+		this.applyFilters(false);
 	}
 
-	deserializeFilters() {
-		const locationFilters = this.locationService.deserialize('filters') || {};
+	deserializeFilters(initialFilter) {
+		const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -53,20 +56,25 @@ class NewsCtrl {
 	}
 
 	serializeFilters() {
-		const filters = {};
+		let filters = {};
+		let any = false;
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			if (filter.value !== null) {
 				filters[x] = filter.value;
+				any = true;
 			}
 		});
+		if (!any) {
+			filters = this.initialFilters ? {} : null;
+		}
 		// console.log('ReferenceCtrl.serializeFilters', filters);
 		this.locationService.serialize('filters', filters);
 		return filters;
 	}
 
-	applyFilters() {
-		this.serializeFilters();
+	applyFilters(serialize) {
+		if (serialize !== false) this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
 		let filteredItems = this.news.slice();
 		// console.log(filteredItems);
@@ -89,6 +97,8 @@ class NewsCtrl {
 			this.updateFilterStates(filteredItems);
 			// delayer for image update
 		}, 50);
+
+		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
 	updateFilterStates(news) {

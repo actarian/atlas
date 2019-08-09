@@ -1,9 +1,11 @@
 /* jshint esversion: 6 */
 
-import GtmService from '../gtm/gtm.service';
-const GTM_CAT = 'references';
+export const ITEMS_PER_PAGE = 9;
 
-class ReferencesCtrl {
+import GtmService from '../gtm/gtm.service';
+const GTM_CAT = 'gallerie';
+
+class GalleriesCtrl {
 
 	constructor(
 		$scope,
@@ -14,8 +16,16 @@ class ReferencesCtrl {
 		this.$timeout = $timeout;
 		this.locationService = LocationService;
 		this.filters = window.filters || {};
-		this.references = window.references || [];
+		this.galleries = window.galleries || [];
 		this.initialFilters = window.initialFilters || null;
+		this.filteredItems = [];
+		// !!! FAKE
+		//if (this.galleries.length > 0) {
+		//	while (this.galleries.length < 100) {
+		//		this.galleries = this.galleries.concat(this.galleries);
+		//	}
+		//}
+		// !!! FAKE
 		this.deserializeFilters(this.initialFilters);
 		this.applyFilters(false);
 	}
@@ -25,14 +35,9 @@ class ReferencesCtrl {
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
-				case 'collections':
+				case 'collections': // probabilmente verrà aggiunto
 					filter.doFilter = (item, value) => {
-						return item.collections.indexOf(value) !== -1;
-					};
-					break;
-				case 'countries':
-					filter.doFilter = (item, value) => {
-						return item.countryId === value;
+						return item.id === value;
 					};
 					break;
 				default:
@@ -41,7 +46,7 @@ class ReferencesCtrl {
 					};
 			}
 			filter.options.unshift({
-				label: this.filters[x].placeholder,
+				label: filter.placeholder,
 				value: null,
 			});
 			const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
@@ -72,10 +77,10 @@ class ReferencesCtrl {
 	applyFilters(serialize) {
 		if (serialize !== false) this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		let filteredReferences = this.references.slice();
-		// console.log(filteredReferences);
+		let filteredItems = this.galleries.slice();
+		// console.log(filteredItems);
 		if (filters.length) {
-			filteredReferences = filteredReferences.filter(reference => {
+			filteredItems = filteredItems.filter(reference => {
 				let has = true;
 				filters.forEach(filter => {
 					has = has && filter.doFilter(reference, filter.value);
@@ -83,27 +88,30 @@ class ReferencesCtrl {
 				return has;
 			});
 		}
-		// console.log(filteredReferences, filters);
-		this.filteredReferences = [];
+		// console.log(filteredItems, filters);
+		this.filteredItems = [];
+		this.visibleItems = [];
+		this.maxItems = ITEMS_PER_PAGE;
 		this.$timeout(() => {
-			this.filteredReferences = filteredReferences;
-			this.updateFilterStates(filteredReferences);
+			this.filteredItems = filteredItems;
+			this.visibleItems = filteredItems.slice(0, this.maxItems);
+			this.updateFilterStates(filteredItems);
 			// delayer for image update
 		}, 50);
 
 		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
-	updateFilterStates(references) {
-		// console.log('updateFilterStates', references);
+	updateFilterStates(galleries) {
+		// console.log('updateFilterStates', galleries);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			filter.options.forEach(option => {
 				let has = false;
 				if (option.value) {
 					let i = 0;
-					while (i < references.length && !has) {
-						const reference = references[i];
+					while (i < galleries.length && !has) {
+						const reference = galleries[i];
 						has = filter.doFilter(reference, option.value);
 						i++;
 					}
@@ -128,8 +136,24 @@ class ReferencesCtrl {
 		this.setFilter(null, filter);
 	}
 
+	onScroll(event) {
+		if (event.rect.bottom < event.windowRect.bottom) {
+			// console.log('more!');
+			if (!this.busy && this.maxItems < this.filteredItems.length) {
+				this.$timeout(() => {
+					this.busy = true;
+					this.$timeout(() => {
+						this.maxItems += ITEMS_PER_PAGE;
+						this.visibleItems = this.filteredItems.slice(0, this.maxItems);
+						this.busy = false;
+						// console.log(this.visibleItems.length);
+					}, 1000);
+				}, 0);
+			}
+		}
+	}
 }
 
-ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
+GalleriesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-export default ReferencesCtrl;
+export default GalleriesCtrl;

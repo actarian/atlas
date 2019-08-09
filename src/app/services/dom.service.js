@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import { combineLatest, fromEvent, range } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
 import { auditTime, distinctUntilChanged, filter, first, map, shareReplay, startWith } from 'rxjs/operators';

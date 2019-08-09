@@ -98,7 +98,10 @@ export default class HighwayDirective {
 			return pushState.apply(history, args);
 		};
 		*/
-		GtmService.pageView();
+
+		if (!H.properties.page.getElementById(GtmService.FILTERS_SCRIPT_ID)) {
+			GtmService.pageView();
+		}
 	}
 
 	static factory($compile, $timeout) {

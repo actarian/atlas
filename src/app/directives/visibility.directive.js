@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import GtmService from '../gtm/gtm.service';
 
 export default class VisibilityDirective {

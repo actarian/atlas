@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
 
 import { BehaviorSubject, from } from "rxjs";
+import GtmService from '../gtm/gtm.service';
 
 export default class WishlistService {
 
@@ -56,7 +57,14 @@ export default class WishlistService {
 	add(item) {
 		return this.promise.make((promise) => {
 			const wishlist = this.wishlist;
-			wishlist.push({ id: item.id, coId: item.coId });
+
+			GtmService.push({
+				event: 'addWishlist',
+				wish_name: item.name || item.coId,
+				wish_type: item.type
+			});
+
+			wishlist.push({ id: item.id, coId: item.coId, type: item.type, name: item.name });
 			this.wishlist = wishlist;
 			promise.resolve(true);
 		});
@@ -66,6 +74,13 @@ export default class WishlistService {
 		return this.promise.make((promise) => {
 			const index = this.indexOf(item);
 			const wishlist = this.wishlist;
+
+			GtmService.push({
+				event: 'removeWishlist',
+				wish_name: wishlist[index].name || wishlist[index].coId,
+				wish_type: wishlist[index].type
+			});
+
 			wishlist.splice(index, 1);
 			this.wishlist = wishlist;
 			promise.resolve(false);
@@ -89,10 +104,10 @@ export default class WishlistService {
 	}
 
 	get() {
-		return from(this.$http.get('data/moodboard.json').then(success => {
-			if (success.data) {
-				this.wishlist = success.data;
-			}
+		return from(this.$http/*.get('data/moodboard.json')*/.post('', this.wishlist).then(success => {
+			//if (success.data) {
+			//	this.wishlist = success.data;
+			//}
 			return success;
 		}));
 	}

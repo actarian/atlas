@@ -12,7 +12,7 @@ export default class HrefDirective {
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		const onClick = () => {
-			window.location.href = attributes.href;
+			window.location.href = node.getAttribute('href') /* attributes.href mantiene il valore iniziale */;
 		};
 		if (USE_HIGHWAY) {
 			if (attributes.routerDisabled === undefined) {

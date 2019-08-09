@@ -1,6 +1,5 @@
 ﻿/* jshint esversion: 6 */
 
-
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 

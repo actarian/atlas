@@ -1,8 +1,10 @@
 /* jshint esversion: 6 */
 
-
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, takeUntil } from 'rxjs/operators';
+import GtmService from '../gtm/gtm.service';
+
+const GTM_CAT = 'faq';
 
 class FaqCtrl {
 
@@ -95,6 +97,20 @@ class FaqCtrl {
 				this.query = query;
 				this.faqCategories.forEach(x => x.items.forEach(i => i.opened = false));
 				if (query !== '') {
+
+					const fakeFilter = {
+						q: {
+							value: query,
+							options: [
+								{
+									value: query,
+									key: query
+								}
+							]
+						}
+					};
+					GtmService.pageViewFilters(GTM_CAT, fakeFilter);
+
 					const filteredFaqCategories = this.faqCategories.map(x => Object.assign({}, x)).filter(category => {
 						let has = false;
 						let items = category.items.filter(item => {

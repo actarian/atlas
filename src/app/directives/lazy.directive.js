@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import { map } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
@@ -62,12 +61,12 @@ export default class LazyDirective {
 				src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
 				if (!src.match(/[&?]scalemode=?/)) {
 					src += src.indexOf('?') !== -1 ? '&' : '?';
-					src += 'scalemode=centered';
+					src += 'scalemode=auto';
 				}
-				if (window.devicePixelRatio > 1) {
-					src += src.indexOf('?') !== -1 ? '&' : '?';
-					src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
-				}
+			}
+			if (window.devicePixelRatio > 1) {
+				src += src.indexOf('?') !== -1 ? '&' : '?';
+				src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
 			}
 		}
 		return src;

@@ -32,16 +32,18 @@ class ContactsCtrl {
 	onSubmit() {
 		console.log('ContactsCtrl.onSubmit', this.model);
 		if (this.state.busy()) {
-			this.$http.post('/WS/wsForms.asmx/SaveForm', this.model).then(
+			this.$http.post('/WS/wsForms.asmx/SaveForm', { datamodel: this.model }).then(
 				success => {
-
+					this.state.success();
+					this.$scope.$emit('formsubmit');
 				},
 				error => {
 					this.error = error;
+					this.state.error(error);
 				}
-			).finally(() => {
+			)/*.finally(() => {
 				this.state.ready();
-			});
+			})*/;
 			/*
 			this.$timeout(() => {
 				this.state.ready();

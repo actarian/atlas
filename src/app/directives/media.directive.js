@@ -1,5 +1,7 @@
 /* jshint esversion: 6 */
 
+import GtmService from '../gtm/gtm.service';
+
 export default class MediaDirective {
 
 	constructor(
@@ -39,6 +41,13 @@ export default class MediaDirective {
 					description: img.title || pageTitle,
 				};
 				// console.log('MediaDirective.onPin', pin);
+
+				GtmService.push({
+					event: 'Pinterest',
+					wish_name: scope.item.name || scope.item.coId,
+					wish_type: scope.item.type
+				});
+
 				PinUtils.pinOne(pin);
 			};
 		}
@@ -76,7 +85,7 @@ export default class MediaDirective {
 		scope.onOverlay = (event) => {
 			const btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
 			if (btnGallery !== null) {
-				console.log(btnGallery);
+				// console.log(btnGallery);
 				btnGallery.click();
 				return;
 			}
@@ -92,7 +101,7 @@ export default class MediaDirective {
 						if (item.type === 'media') {
 							const img = itemNode.querySelector('img');
 							if (img) {
-								item.src = img.getAttribute('src') || img.getAttribute('data-src');
+								item.src = img.getAttribute('data-src-zoom') || img.getAttribute('src') || img.getAttribute('data-src');
 								item.title = img.getAttribute('alt');
 								const wishlist = itemNode.getAttribute('media');
 								if (wishlist) {

@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import { tap } from 'rxjs/operators';
 import Rect from '../shared/rect';
 

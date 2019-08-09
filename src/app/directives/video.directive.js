@@ -1,5 +1,7 @@
 /* jshint esversion: 6 */
 
+import GtmService from '../gtm/gtm.service';
+
 export default class VideoDirective {
 
 	constructor(
@@ -37,6 +39,7 @@ export default class VideoDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		scope.item = scope.item || {};
 		const node = element[0];
 		const video = node.querySelector('video');
 		if (video) {
@@ -47,6 +50,13 @@ export default class VideoDirective {
 					media: video.poster,
 					description: video.title || pageTitle,
 				};
+
+				GtmService.push({
+					event: 'Pinterest',
+					wish_name: scope.item.name || scope.item.coId,
+					wish_type: scope.item.type
+				});
+
 				// console.log('VideoDirective.onPin', pin);
 				PinUtils.pinOne(pin);
 			};
@@ -72,6 +82,17 @@ export default class VideoDirective {
 			this.$timeout(() => {
 				scope.playing = true;
 			});
+		};
+		const onPlayGtm = () => {
+			const source = video.querySelector('source');
+			if (source) {
+				const src = source.getAttribute('src');
+				if (src)
+					GtmService.push({
+						event: 'video play',
+						video_name: src
+					});
+			}
 		};
 		const onPause = () => {
 			this.$timeout(() => {
@@ -165,6 +186,7 @@ export default class VideoDirective {
 		};
 		if (video) {
 			video.addEventListener('play', onPlay);
+			video.addEventListener('play', onPlayGtm);
 			video.addEventListener('pause', onPause);
 			video.addEventListener('ended', onEnded);
 			video.addEventListener('timeupdate', onTimeUpdate);
@@ -173,6 +195,7 @@ export default class VideoDirective {
 			if (video) {
 				// console.log('VideoDirective.$destroy');
 				video.removeEventListener('play', onPlay);
+				video.removeEventListener('play', onPlayGtm);
 				video.removeEventListener('pause', onPause);
 				video.removeEventListener('ended', onEnded);
 				video.removeEventListener('timeupdate', onTimeUpdate);

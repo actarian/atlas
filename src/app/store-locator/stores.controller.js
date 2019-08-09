@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 
 import GtmService from '../gtm/gtm.service';
-const GTM_CAT = 'references';
+const GTM_CAT = 'stores';
 
-class ReferencesCtrl {
+class StoresCtrl {
 
 	constructor(
 		$scope,
@@ -14,7 +14,7 @@ class ReferencesCtrl {
 		this.$timeout = $timeout;
 		this.locationService = LocationService;
 		this.filters = window.filters || {};
-		this.references = window.references || [];
+		this.stores = window.stores || [];
 		this.initialFilters = window.initialFilters || null;
 		this.deserializeFilters(this.initialFilters);
 		this.applyFilters(false);
@@ -32,7 +32,7 @@ class ReferencesCtrl {
 					break;
 				case 'countries':
 					filter.doFilter = (item, value) => {
-						return item.countryId === value;
+						return item.stato === value;
 					};
 					break;
 				default:
@@ -64,7 +64,7 @@ class ReferencesCtrl {
 		if (!any) {
 			filters = this.initialFilters ? {} : null;
 		}
-		// console.log('ReferenceCtrl.serializeFilters', filters);
+		// console.log('StoresCtrl.serializeFilters', filters);
 		this.locationService.serialize('filters', filters);
 		return filters;
 	}
@@ -72,39 +72,39 @@ class ReferencesCtrl {
 	applyFilters(serialize) {
 		if (serialize !== false) this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		let filteredReferences = this.references.slice();
-		// console.log(filteredReferences);
+		let filteredStores = this.stores.slice();
+		// console.log(filteredStores);
 		if (filters.length) {
-			filteredReferences = filteredReferences.filter(reference => {
+			filteredStores = filteredStores.filter(store => {
 				let has = true;
 				filters.forEach(filter => {
-					has = has && filter.doFilter(reference, filter.value);
+					has = has && filter.doFilter(store, filter.value);
 				});
 				return has;
 			});
 		}
-		// console.log(filteredReferences, filters);
-		this.filteredReferences = [];
+		// console.log(filteredStores, filters);
+		this.filteredStores = [];
 		this.$timeout(() => {
-			this.filteredReferences = filteredReferences;
-			this.updateFilterStates(filteredReferences);
+			this.filteredStores = filteredStores;
+			this.updateFilterStates(filteredStores);
 			// delayer for image update
 		}, 50);
 
 		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
-	updateFilterStates(references) {
-		// console.log('updateFilterStates', references);
+	updateFilterStates(stores) {
+		// console.log('updateFilterStores', stores);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			filter.options.forEach(option => {
 				let has = false;
 				if (option.value) {
 					let i = 0;
-					while (i < references.length && !has) {
-						const reference = references[i];
-						has = filter.doFilter(reference, option.value);
+					while (i < stores.length && !has) {
+						const store = stores[i];
+						has = filter.doFilter(store, option.value);
 						i++;
 					}
 				} else {
@@ -130,6 +130,6 @@ class ReferencesCtrl {
 
 }
 
-ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
+StoresCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-export default ReferencesCtrl;
+export default StoresCtrl;

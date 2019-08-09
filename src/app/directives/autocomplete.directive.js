@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import HasDropdownDirective from "./has-dropdown.directive";
 
 export default class AutocompleteDirective {

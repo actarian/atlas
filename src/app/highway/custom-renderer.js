@@ -10,7 +10,8 @@ export default class CustomRenderer extends Highway.Renderer {
 
 	update() {
 		this.updateMeta();
-		GtmService.pageView();
+		this.updateGTMData();
+		this.pageView();
 		this.updateBrand();
 		this.updateMarketsAndLanguages();
 	}
@@ -45,6 +46,24 @@ export default class CustomRenderer extends Highway.Renderer {
 			}
 		});
 		// console.log('updateMarketsAndLanguages', marketsAndLanguages, anchors);
+	}
+
+	pageView() {
+		const page = this.properties.page;
+		if (!page.getElementById(GtmService.FILTERS_SCRIPT_ID)) {
+			GtmService.pageView();
+		}
+	}
+
+	updateGTMData() {
+		const page = this.properties.page;
+		const script = page.getElementById("gtm-page-data");
+		if (script && script.text) {
+			try {
+				new Function(script.text)();
+			} catch (error) {
+			}
+		}
 	}
 
 	// This method in the renderer is run when the data-router-view is added to the DOM Tree.

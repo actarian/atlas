@@ -1,5 +1,7 @@
 /* jshint esversion: 6 */
 
+import GtmService from '../gtm/gtm.service';
+const GTM_CAT = 'collezioni';
 
 class CollectionsCtrl {
 
@@ -102,6 +104,8 @@ class CollectionsCtrl {
 			this.updateFilterStates(filteredBrands);
 			// delayer for image update
 		}, 50);
+
+		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
 	updateFilterStates(brands) {

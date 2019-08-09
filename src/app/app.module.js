@@ -1,5 +1,4 @@
-﻿/* jshint esversion: 6 */
-
+/* jshint esversion: 6 */
 
 import AdvancedSearchCtrl from './advanced-search/advanced-search.controller';
 import CollectionsCtrl from './collections/collections.controller';
@@ -33,6 +32,10 @@ import { TrustedFilter } from './filters/trusted.filter';
 import ControlMessagesDirective from './forms/control-messages.directive';
 import ControlDirective from './forms/control.directive';
 import ValidateDirective from './forms/validate.directive';
+import GalleriesCtrl from './galleries/galleries.controller';
+import GtmCollectionDirective from './gtm/gtm-collection.directive';
+import gtmDealerLocatorDirective from './gtm/gtm-dealerlocator.directive';
+import GtmFormDirective from './gtm/gtm-form.directive';
 import HighwayDirective from './highway/highway.directive';
 import MagazineCtrl from './magazine/magazine.controller';
 import MoodboardDropdownDirective from './moodboard/moodboard-dropdown.directive';
@@ -50,6 +53,7 @@ import PromiseService from './shared/promise.service';
 import StateService from './shared/state.service';
 import { CookieService, LocalStorageService, SessionStorageService } from './shared/storage.service';
 import StoreLocatorCtrl from './store-locator/store-locator.controller';
+import StoresCtrl from './store-locator/stores.controller';
 import WishlistCtrl from './wishlist/wishlist.controller';
 
 const MODULE_NAME = 'app';
@@ -75,6 +79,9 @@ app.directive('appear', AppearDirective.factory)
 	.directive('controlMessages', ControlMessagesDirective.factory)
 	.directive('cookies', CookiesDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
+	.directive('gtmCollection', GtmCollectionDirective.factory)
+	.directive('gtmDealerLocator', gtmDealerLocatorDirective.factory)
+	.directive('gtmForm', GtmFormDirective.factory)
 	.directive('hasDropdown', HasDropdownDirective.factory)
 	.directive('highway', HighwayDirective.factory)
 	.directive('hilight', HilightDirective.factory)
@@ -109,12 +116,14 @@ app.controller('RootCtrl', RootCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
 	.controller('ContactsCtrl', ContactsCtrl)
 	.controller('FaqCtrl', FaqCtrl)
+	.controller('GalleriesCtrl', GalleriesCtrl)
 	.controller('MagazineCtrl', MagazineCtrl)
 	.controller('MoodboardCtrl', MoodboardCtrl)
 	.controller('MoodboardSectionCtrl', MoodboardSectionCtrl)
 	.controller('NewsCtrl', NewsCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)
 	.controller('StoreLocatorCtrl', StoreLocatorCtrl)
+	.controller('StoresCtrl', StoresCtrl)
 	.controller('WishlistCtrl', WishlistCtrl);
 
 app.filter('imageWithFeatures', [ImageWithFeatures])

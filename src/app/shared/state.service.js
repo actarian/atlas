@@ -1,6 +1,8 @@
 /* jshint esversion: 6 */
 
 
+const DELAY = 3000;
+
 export class State {
 
 	constructor(
@@ -65,7 +67,7 @@ export class State {
 		this.isSuccess = false;
 		this.isSuccessing = false;
 		this.errors.push(error);
-		$timeout(() => {
+		this.$timeout(() => {
 			this.isErroring = false;
 		}, DELAY);
 	}
