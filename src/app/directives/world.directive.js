@@ -20,7 +20,8 @@ export default class WorldDirective {
 		const node = element[0];
 		const img = node.querySelector('img');
 		const nodePoints = node.querySelector('.points');
-		const onEnter = (event) => {
+		const /*onEnter*/onClick = (event) => {
+			event.stopImmediatePropagation();
 			[...node.querySelectorAll('.world__point')].forEach(x => {
 				if (x === event.currentTarget) {
 					x.classList.add('active');
@@ -45,18 +46,24 @@ export default class WorldDirective {
 				const pointNode = this.makePoint(x);
 				TweenMax.set(pointNode, { top: (top / h * 100) + '%', left: (left / w * 100) + '%' });
 				nodePoints.appendChild(pointNode);
-				pointNode.addEventListener('mouseenter', onEnter);
-				const pointInfoNode = pointNode.querySelector('.world__info');
-				pointInfoNode.addEventListener('mouseleave', onLeave);
+				node.addEventListener('click', onClick);
+				pointNode.addEventListener('click', onClick);
+				//pointNode.addEventListener('mouseenter', onEnter);
+				//const pointInfoNode = pointNode.querySelector('.world__info');
+				//pointInfoNode.addEventListener('mouseleave', onLeave);
 			});
 		};
 		element.on('$destroy', () => {
+			node.removeEventListener('click', onClick);
 			[...node.querySelectorAll('.world__point')].forEach(node => {
-				node.removeEventListener('mouseenter', onEnter);
+				node.removeEventListener('click', onClick);
 			});
-			[...node.querySelectorAll('.world__point .world__info')].forEach(node => {
-				node.removeEventListener('mouseleave', onLeave);
-			});
+			//[...node.querySelectorAll('.world__point')].forEach(node => {
+			//	node.removeEventListener('mouseenter', onEnter);
+			//});
+			//[...node.querySelectorAll('.world__point .world__info')].forEach(node => {
+			//	node.removeEventListener('mouseleave', onLeave);
+			//});
 		});
 	}
 
@@ -68,7 +75,7 @@ export default class WorldDirective {
 		}
 		let cta = point.url ? `
 		<div class="group group--cta">
-			<a href="${point.url}" class="btn btn--link"><span>More Info</span></a>
+			<a href="${point.url}" class="btn btn--link"><span>${window.BOMLabels.More_info}</span></a>
 		</div>
 		` : '';
 		pointNode.innerHTML = `

@@ -16,7 +16,7 @@ export default class MediaDirective {
 	<ng-transclude></ng-transclude>
 </div>
 <div class="overlay" ng-click="onOverlay()"></div>
-<div class="btn btn--pinterest" ng-click="onPin()" ng-if="onPin">
+<div class="btn btn--pinterest" ng-click="onPin($event)" ng-if="onPin">
 	<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
 </div>
 <div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
@@ -34,7 +34,10 @@ export default class MediaDirective {
 		const img = node.querySelector('img');
 		if (img) {
 			const pageTitle = document.title;
-			scope.onPin = () => {
+			scope.onPin = (event) => {
+				event.preventDefault();
+				event.stopPropagation();
+
 				const pin = {
 					url: window.location.href,
 					media: img.src,
@@ -71,6 +74,9 @@ export default class MediaDirective {
 			}
 		});
 		scope.onClickWishlist = (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+
 			this.wishlistService.toggle(scope.item).then(
 				(has) => {
 					console.log('MediaDirective.onClickWishlist', has);
@@ -79,8 +85,6 @@ export default class MediaDirective {
 					console.log(error);
 				}
 			);
-			// event.preventDefault();
-			// event.stopPropagation();
 		};
 		scope.onOverlay = (event) => {
 			const btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');

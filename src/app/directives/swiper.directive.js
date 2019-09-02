@@ -55,26 +55,29 @@ export class SwiperDirective {
 
 	onSwiper(element, attributes) {
 		const node = element[0];
-		const initialSlide = attributes.initialSlide !== undefined ? attributes.initialSlide : 0;
+		//const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
 		if (element.swiper) {
 			element.swiper.update();
 		} else {
-			this.options.initialSlide = initialSlide;
+			//this.options.initialSlide = initialSlide;
 			const on = this.options.on || (this.options.on = {});
 			const callback = on.init;
-			on.init = function() {
-				const swiper = this;
-				swiper.slideTo(initialSlide);
-				TweenMax.to(node, 0.4, {
-					opacity: 1,
-					ease: Power2.easeOut,
-				});
-				if (typeof callback === 'function') {
-					callback.call(this);
-				}
-			};
+			if (!on.init || !on.init.swiperDirectiveInit) {
+				on.init = function () {					
+					TweenMax.to(node, 0.4, {
+						opacity: 1,
+						ease: Power2.easeOut,
+					});
+					if (typeof callback === 'function') {
+						callback.call(this);
+					}
+				};
+				on.init.swiperDirectiveInit = true;
+			}
+
 			TweenMax.set(node, { opacity: 1 });
 			element.swiper = new Swiper(element, this.options);
+			element.swiper._opening = true;
 			element.addClass('swiper-init');
 		}
 	}
@@ -116,6 +119,14 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
 			element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
 			element.swiper.update();
+
+			if (element.swiper._opening) {
+				element.swiper._opening = false;
+
+				const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+				if (initialSlide)
+					element.swiper.slideTo(initialSlide, 0);
+			}
 		}
 		console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
 	}
