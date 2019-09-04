@@ -4058,6 +4058,7 @@ page-transition {
       margin-top: 30px; }
     .header__menu.opened {
       max-height: 100vh;
+      padding-bottom: 50vh;
       pointer-events: all; } }
 
 .header__menu .group--search {
