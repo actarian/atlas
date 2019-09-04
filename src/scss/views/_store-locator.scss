@@ -432,8 +432,6 @@
 				}
 			}
 		}
-
-
 	}
 
 	.section--map {
@@ -461,6 +459,22 @@
 		.section--stores {
 			width: 40px;
 			flex: 0 0 40px;
+		}
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.listing--stores {
+		.group--info {
+			flex-direction: column;
+
+			.distance {
+				margin-bottom: 15px;
+			}
+
+			.address {
+				order: 1;
+			}
 		}
 	}
 }
@@ -544,18 +558,6 @@
 
 		.group--cta {
 			align-items: flex-start;
-		}
-
-		.group--info {
-			flex-direction: column;
-
-			.distance {
-				margin-bottom: 15px;
-			}
-
-			.address {
-				order: 1;
-			}
 		}
 	}
 }

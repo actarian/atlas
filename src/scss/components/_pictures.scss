@@ -89,29 +89,34 @@ $diff: 280px;
 .picture--square {
 	position: relative;
 	width: 100%;
-	max-width: calc((100vh - #{$diff}) / 1 * 1);
 	margin: 0 auto;
 
 	&>.media {
 		@include aspect-clip(1, 1);
+	}
+
+	@include media-breakpoint-up(sm) {
+		max-width: calc((100vh - #{$diff}) / 1 * 1);
 	}
 }
 
 .picture--vertical {
 	position: relative;
 	width: 100%;
-	max-width: calc((100vh - #{$diff}) / 90 * 68);
 	margin: 0 auto;
 
 	&>.media {
 		@include aspect-clip(68, 90);
+	}
+
+	@include media-breakpoint-up(sm) {
+		max-width: calc((100vh - #{$diff}) / 90 * 68);
 	}
 }
 
 .picture--horizontal {
 	position: relative;
 	width: 100%;
-	max-width: calc((100vh - #{$diff}) / 88 * 153);
 	margin: 0 auto;
 
 	&>.media {
@@ -124,6 +129,10 @@ $diff: 280px;
 				@include aspect-clip(37, 61);
 			}
 		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		max-width: calc((100vh - #{$diff}) / 88 * 153);
 	}
 }
 

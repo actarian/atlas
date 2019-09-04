@@ -90,10 +90,6 @@
 
 	@include media-breakpoint-down(xs) {
 
-		.aspect {
-			@include aspect-grid(375, 667);
-		}
-
 		.title {
 			font-size: 48px;
 			font-weight: $font-semibold;
@@ -101,6 +97,19 @@
 
 		.abstract {
 			font-size: 16px;
+		}
+
+	}
+
+	@media (max-width: 859.98px) and (orientation: portrait) {
+		.aspect {
+			@include aspect-grid(375, 600); // 667
+		}
+	}
+
+	@media (max-width: 859.98px) and (orientation: landscape) {
+		.aspect {
+			@include aspect-grid(600, 375); // 667
 		}
 	}
 
@@ -218,17 +227,23 @@
 		}
 	}
 
+	/*
 	@include media-breakpoint-down(xs) {
-
-		/*
-		.aspect {
-			width: 100vw;
-			height: 100vh;
-			max-height: 200vw;
-		}
-		*/
 		.aspect {
 			@include aspect-grid(375, 667);
+		}
+	}
+	*/
+
+	@media (max-width: 859.98px) and (orientation: portrait) {
+		.aspect {
+			@include aspect-grid(375, 600); // 667
+		}
+	}
+
+	@media (max-width: 859.98px) and (orientation: landscape) {
+		.aspect {
+			@include aspect-grid(600, 375); // 667
 		}
 	}
 
