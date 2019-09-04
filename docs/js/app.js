@@ -22991,7 +22991,7 @@ class ObjectFitDirective {
     } // Percentage values (e.g., 30% 10%)
 
 
-    if (position.indexOf('%') >= 0) {
+    if (position.indexOf('%') !== -1) {
       position = parseInt(position);
 
       if (position < 50) {
@@ -23008,6 +23008,8 @@ class ObjectFitDirective {
       // Length-based values (e.g. 10px / 10em)
       node.style[start] = position;
     }
+
+    node.style.position = 'absolute';
   }
 
   static factory(DomService) {
