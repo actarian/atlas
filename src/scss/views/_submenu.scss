@@ -28,7 +28,7 @@
 		}
 	}
 
-	@media screen and (max-height: 700px) {
+	@media screen and (max-height: 700px) and (min-width: 860px) {
 		&>.container {
 			margin-top: 130px;
 		}
@@ -39,7 +39,7 @@
 		background: $background-header;
 
 		&>.container {
-			padding: 40px 0 0 0;
+			padding: 20px 0 0 0;
 
 			&>.row {
 				margin: 0;

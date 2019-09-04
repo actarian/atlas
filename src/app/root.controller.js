@@ -81,7 +81,7 @@ class RootCtrl {
 		if (this.direction === 1) {
 			classes['scrolled-down'] = true;
 		}
-		if (this.droppinIn) {
+		if (this.droppinIn || this.menuOpened || this.menuProductOpened) {
 			classes['droppin-in'] = true;
 		}
 		return classes;

@@ -33,7 +33,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="section section--store-locator" ng-show="locator.position">
+	<section class="section section--store-locator" ng-show="locator.position" ng-class="{ 'stores-hidden': locator.storesHidden }">
 		<div class="section section--map">
 			<div class="map" id="map"></div>
 			<div class="group group--error" ng-if="locator.error">
@@ -56,6 +56,9 @@
 		<div class="section section--stores">
 			<div class="group group--legend">
 				<!-- <div class="category">Showroom with</div> -->
+				<button type="button" class="btn btn--collapse hidden-sm-down" ng-click="locator.storesHidden = !locator.storesHidden">
+					<svg class="icon icon--angle-left"><use xlink:href="#angle-left"></use></svg>
+				</button>
 				<div class="legend"><svg class="icon icon--atlas"><use xlink:href="#atlas"></use></svg> <span>200m<sup>2</sup> exposition area</span></div>
 				<div class="legend"><svg class="icon icon--atlas icon--atlas--secondary"><use xlink:href="#atlas"></use></svg> <span>100m<sup>2</sup> exposition area</span></div>
 			</div>

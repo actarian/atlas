@@ -30,7 +30,7 @@
 	</div>
 	<!--
 	<div class="background" parallax>
-		<video muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop">
+		<video onloadeddata="this.play();" muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop">
 			<source src="img/product/marvel/living.mp4" type="video/mp4">
 		</video>
 	</div>
@@ -42,7 +42,7 @@
 	-->
 	<!--
 	<div class="background" ng-if="!root.webglEnabled" parallax>
-		<video muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop">
+		<video onloadeddata="this.play();" muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop">
 			<source src="img/product/marvel/living.mp4" type="video/mp4">
 		</video>
 	</div>

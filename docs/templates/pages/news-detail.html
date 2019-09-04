@@ -41,28 +41,43 @@
 		</div>
 	</div>
 </section>
+
 <section class="section section--gallery">
-	<div class="swiper-container" swiper-gallery initial-slide="0">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<img src="img/news-detail/gallery-01.jpg?height=780&mode=crop" alt="title" />
-			</div>
-			<div class="swiper-slide">
-				<img src="img/news-detail/gallery-02.jpg?height=780&mode=crop" alt="title" />
-			</div>
-			<div class="swiper-slide">
-				<img src="img/news-detail/gallery-03.jpg?height=780&mode=crop" alt="title" />
-			</div>
-		</div>
-		<!-- pagination -->
-		<div class="swiper-pagination swiper-pagination-white"></div>
-		<!-- navigation -->
-		<!--
+	<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }">
+		<div class="zoomable__content">
+			<div class="swiper-container" swiper-gallery initial-slide="0">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media='{ "coId": 10112, "id": "159fa495-4398-4358-a6ee-87d007af7ddd" }'>
+							<img src="img/news-detail/gallery-01.jpg?height=780&mode=crop" alt="title" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 35</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media='{ "coId": 10112, "id": "159fa495-4398-4358-a6ee-87d007af7ddd" }'>
+							<img src="img/news-detail/gallery-02.jpg?height=780&mode=crop" alt="title" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 35</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media='{ "coId": 10112, "id": "159fa495-4398-4358-a6ee-87d007af7ddd" }'>
+							<img src="img/news-detail/gallery-03.jpg?height=780&mode=crop" alt="title" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 35</div>
+					</div>
+				</div>
+				<!-- pagination -->
+				<div class="swiper-pagination swiper-pagination-white"></div>
+				<!-- navigation -->
+				<!--
 		<div class="swiper-button-prev swiper-button-white"></div>
 		<div class="swiper-button-next swiper-button-white"></div>
 		-->
+			</div>
+		</div>
 	</div>
 </section>
+
 <!-- @if category collection ? -->
 <!--
 <section class="section--collections-results border-bottom">

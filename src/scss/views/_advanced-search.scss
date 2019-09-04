@@ -3,8 +3,6 @@
 }
 
 .section--advanced-search {
-	padding-top: 100px;
-	padding-bottom: 60px;
 	text-align: left;
 
 	/*
@@ -28,6 +26,16 @@
 		color: $foreground;
 	}
 	*/
+
+	@include media-breakpoint-up(sm) {
+		padding-top: 100px;
+		padding-bottom: 60px;
+	}
+
+	@include media-breakpoint-down(xs) {
+		padding-top: 60px;
+		padding-bottom: 60px;
+	}
 }
 
 .group--search-filters {
@@ -158,11 +166,14 @@
 
 	&>li {
 
+		&:last-child {
+			margin-bottom: 40px;
+		}
+
 		&>.nav__item {
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
-			padding: 10px 0 30px 0;
 
 			span {
 				display: block;
@@ -204,6 +215,22 @@
 		color: $primary;
 	}
 
+	@include media-breakpoint-up(lg) {
+		&>li {
+			&>.nav__item {
+				padding: 10px 0 30px 0;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(md) {
+		&>li {
+			&>.nav__item {
+				padding: 10px 0 20px 0;
+			}
+		}
+	}
+
 }
 
 .listing--advanced-search {
@@ -211,9 +238,7 @@
 	flex-wrap: wrap;
 
 	&>.listing__item {
-
 		display: block;
-		padding-bottom: 90px;
 		text-align: left;
 
 		.picture {
@@ -242,6 +267,13 @@
 
 		@include media-breakpoint-up(sm) {
 			max-width: 365px;
+			flex: 0 0 calc(50% - 60px);
+			margin-right: 60px;
+			padding-bottom: 90px;
+		}
+
+		@include media-breakpoint-up(lg) {
+			max-width: 365px;
 			flex: 0 0 calc(33% - 60px);
 			margin-right: 60px;
 
@@ -250,9 +282,9 @@
 		@include media-breakpoint-down(xs) {
 			flex: 0 0 100%;
 			margin: 0;
+			padding-bottom: 40px;
 
 			.group--cta {
-				display: block;
 				display: block;
 				line-height: 1.2;
 
@@ -269,5 +301,9 @@
 				}
 			}
 		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		margin-right: -60px;
 	}
 }

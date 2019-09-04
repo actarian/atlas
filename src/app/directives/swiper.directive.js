@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 const DEFAULT_SWIPER_OPTIONS = {
 	slidesPerView: 'auto',
 	spaceBetween: 1,
@@ -63,7 +62,7 @@ export class SwiperDirective {
 			const on = this.options.on || (this.options.on = {});
 			const callback = on.init;
 			if (!on.init || !on.init.swiperDirectiveInit) {
-				on.init = function () {					
+				on.init = function() {
 					TweenMax.to(node, 0.4, {
 						opacity: 1,
 						ease: Power2.easeOut,
@@ -74,7 +73,10 @@ export class SwiperDirective {
 				};
 				on.init.swiperDirectiveInit = true;
 			}
-
+			if (attributes.noLoop !== undefined) {
+				this.options.loop = false;
+			}
+			console.log('attributes.noLoop', attributes.noLoop);
 			TweenMax.set(node, { opacity: 1 });
 			element.swiper = new Swiper(element, this.options);
 			element.swiper._opening = true;
@@ -95,9 +97,10 @@ export class SwiperGalleryDirective extends SwiperDirective {
 	constructor() {
 		super();
 		this.options = {
-			// loopAdditionalSlides: 100,
 			slidesPerView: 'auto',
-			// centeredSlides: true,
+			loopAdditionalSlides: 100,
+			loop: true,
+			centeredSlides: false,
 			// watchOverflow: true,
 			spaceBetween: 1,
 			// speed: 600,
@@ -119,13 +122,12 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
 			element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
 			element.swiper.update();
-
 			if (element.swiper._opening) {
 				element.swiper._opening = false;
-
 				const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
-				if (initialSlide)
+				if (initialSlide) {
 					element.swiper.slideTo(initialSlide, 0);
+				}
 			}
 		}
 		console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);

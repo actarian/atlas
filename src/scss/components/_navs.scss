@@ -128,12 +128,15 @@
 			span {
 				display: block;
 				text-transform: lowercase;
+				text-overflow: ellipsis;
+				overflow: hidden;
 			}
 		}
 
 		&>.option--picture {
 			img {
 				display: block;
+				min-width: 48px;
 				width: 48px;
 				height: 48px;
 				margin-right: 15px;
@@ -203,7 +206,7 @@
 		}
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(lg) {
 		&>li {
 			&>.option {
 				padding: 10px 20px 10px 40px;
@@ -211,10 +214,10 @@
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(md) {
 		&>li {
 			&>.option {
-				padding: 10px 0 10px 28px;
+				padding: 10px 20px;
 
 				span {
 					font-size: 18px;
@@ -230,6 +233,7 @@
 	width: 100%;
 	top: 0;
 	left: 0;
+	min-width: 240px;
 	background: $background;
 	z-index: 0;
 	box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.15);

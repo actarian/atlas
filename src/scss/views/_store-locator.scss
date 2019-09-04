@@ -140,6 +140,10 @@
 		}
 	}
 
+	.btn--toggle {
+		display: none;
+	}
+
 }
 
 .section--map {
@@ -370,6 +374,66 @@
 @include media-breakpoint-up(sm) {
 	.section--store-locator {
 		flex-direction: row;
+
+		.btn--collapse {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			top: 0;
+			left: 0;
+			margin-top: -20px;
+			width: 30px;
+			height: 40px;
+			padding: 0;
+			margin: 0;
+			overflow: hidden;
+			line-height: 0;
+			min-height: 0;
+			cursor: pointer;
+			z-index: 1;
+
+			.icon--angle-left {
+				width: 8px;
+				height: 12px;
+				transform: scale(-1, 1);
+			}
+
+			&,
+			&:link,
+			&:active,
+			&:visited {
+				background: transparent;
+				color: $foreground-secondary;
+				opacity: 0.5;
+			}
+
+			&:hover,
+			&.active {
+				background: transparent;
+				color: $foreground-secondary;
+				opacity: 1;
+			}
+
+			&:hover {
+				&>span {
+					&:after {
+						transform: scale(1, 1);
+					}
+				}
+			}
+
+		}
+
+		&.stores-hidden {
+			.btn--collapse {
+				.icon--angle-left {
+					transform: scale(1, 1);
+				}
+			}
+		}
+
+
 	}
 
 	.section--map {
@@ -380,6 +444,24 @@
 	.section--stores {
 		width: 30%;
 		flex: 0 0 30%;
+	}
+
+	.stores-hidden {
+
+		.legend,
+		.listing--stores {
+			display: none;
+		}
+
+		.section--map {
+			width: calc(100% - 40px);
+			flex: 0 0 calc(100% - 40px);
+		}
+
+		.section--stores {
+			width: 40px;
+			flex: 0 0 40px;
+		}
 	}
 }
 

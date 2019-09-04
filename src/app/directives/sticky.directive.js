@@ -15,10 +15,25 @@ export default class StickyDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		const node = element[0];
+		const content = node.querySelector('[sticky-content]');
+		const onClick = () => {
+			if (window.innerWidth > 860) {
+				// console.log('StickyDirective.onClick');
+				const top = this.domService.scrollTop + node.getBoundingClientRect().top;
+				window.scroll({
+					top: top,
+					left: 0,
+					behavior: 'smooth'
+				});
+			}
+		};
 		this.$timeout(() => {
 			const subscription = this.scroll$(element, attributes).subscribe();
+			content.addEventListener('click', onClick);
 			element.on('$destroy', () => {
 				subscription.unsubscribe();
+				content.removeEventListener('click', onClick);
 			});
 		});
 	}
@@ -34,6 +49,7 @@ export default class StickyDirective {
 				// top = Math.max(0, Math.min(maxtop, top - rect.top));
 				const maxTop = Math.max(0, stickyTop - rect.top);
 				// content.setAttribute('style', `transform: translateY(${maxTop}px);`);
+				// console.log(maxTop, stickyTop, rect.top);
 				const sticky = maxTop > 0;
 				if (sticky !== element.sticky) {
 					element.sticky = sticky;
