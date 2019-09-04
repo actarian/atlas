@@ -15,6 +15,7 @@ import LazyScriptDirective from './directives/lazy-script.directive';
 import LazyDirective from './directives/lazy.directive';
 import MediaDirective from './directives/media.directive';
 import { MuuriDirective } from './directives/muuri.directive';
+import ObjectFitDirective from './directives/object-fit.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
@@ -94,6 +95,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('moodboardSearch', MoodboardSearchDirective.factory)
 	.directive('muuri', MuuriDirective.factory)
 	.directive('parallax', ParallaxDirective.factory)
+	.directive('objectFit', ObjectFitDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
 	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('sticky', StickyDirective.factory)
