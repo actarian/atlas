@@ -93,7 +93,7 @@
 		margin-bottom: 50px;
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 
 		.tile {
 			margin: 10vh 10vh 20px 10vh;
@@ -127,7 +127,7 @@
 
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 
 		.swiper-container {
 			margin-left: -30px;

@@ -21594,7 +21594,9 @@ class AppearDirective {
       const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
       const timeout = index * 50;
       setTimeout(() => {
-        node.classList.add('appeared');
+        if (node) {
+          node.classList.add('appeared');
+        }
       }, timeout); // (i - firstVisibleIndex));
 
       /*
@@ -23036,6 +23038,8 @@ var _rect = _interopRequireDefault(require("../shared/rect"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
+const isEdge = window.navigator.userAgent.indexOf('Edge') !== -1;
+
 class ParallaxDirective {
   constructor(DomService) {
     this.domService = DomService;
@@ -23044,7 +23048,7 @@ class ParallaxDirective {
 
   link(scope, element, attributes, controller) {
     const node = element[0];
-    const childNode = node.querySelector('img, video');
+    const childNode = node.querySelector(isEdge ? 'img' : 'img, video');
 
     if (childNode) {
       const style = window.getComputedStyle(node);

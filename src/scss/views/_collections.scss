@@ -5,7 +5,7 @@
 		}
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		z-index: 100;
 		min-height: 97px;
 
@@ -24,7 +24,7 @@
 		min-height: 100px;
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		position: fixed;
 		display: flex;
 		flex-direction: column;
@@ -457,14 +457,17 @@ $collection-gutter: 70px;
 
 		@include media-breakpoint-up(md) {
 			flex: 0 0 calc(33% - #{$collection-gutter});
+			width: calc(33% - #{$collection-gutter});
 		}
 
 		@include media-breakpoint-down(sm) {
 			flex: 0 0 calc(50% - #{$collection-gutter});
+			width: calc(50% - #{$collection-gutter});
 		}
 
 		@include media-breakpoint-down(xs) {
 			flex: 0 0 calc(100% - #{$collection-gutter});
+			width: calc(100% - #{$collection-gutter});
 
 			.title {
 				font-size: 16px;

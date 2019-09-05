@@ -24,12 +24,12 @@
 		}
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		display: flex;
 		justify-content: flex-end;
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		display: block;
 		justify-content: flex-start;
 	}
@@ -93,7 +93,7 @@
 		transition: fill, stroke, opacity ease-in-out 350ms;
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		&>li+li {
 			margin-left: 30px;
 		}
@@ -113,7 +113,7 @@
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		&>li {
 			margin-bottom: 20px;
 
@@ -174,13 +174,13 @@
 		margin-left: 4px;
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		&>li+li {
 			margin-left: 30px;
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		&>li {
 			margin-bottom: 10px;
 
@@ -217,8 +217,6 @@
 		z-index: 1;
 		line-height: 0;
 		font-size: 0;
-
-		@include media-breakpoint-down(sm) {}
 	}
 
 	.icon--brand {
@@ -247,7 +245,7 @@
 		background: $background-header;
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 
 		&.scrolled {
 			transform: translateY(-36px);
@@ -287,7 +285,7 @@
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		transition: background ease-in-out 350ms;
 
 		.menu--primary {
@@ -301,7 +299,7 @@
 
 .header__menu {
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		position: fixed;
 		top: 0;
 		left: 0;

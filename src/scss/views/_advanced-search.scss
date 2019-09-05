@@ -266,15 +266,17 @@
 		}
 
 		@include media-breakpoint-up(sm) {
-			max-width: 365px;
 			flex: 0 0 calc(50% - 60px);
+			width: calc(50% - 60px);
+			max-width: 365px;
 			margin-right: 60px;
 			padding-bottom: 90px;
 		}
 
 		@include media-breakpoint-up(lg) {
-			max-width: 365px;
 			flex: 0 0 calc(33% - 60px);
+			width: calc(33% - 60px);
+			max-width: 365px;
 			margin-right: 60px;
 
 		}

@@ -1,6 +1,6 @@
 .section--product {
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		z-index: 100;
 		min-height: 80px;
 
@@ -22,7 +22,7 @@
 	}
 	*/
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		position: fixed;
 		display: flex;
 		flex-direction: column;

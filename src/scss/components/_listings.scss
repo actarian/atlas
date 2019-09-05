@@ -186,12 +186,14 @@
 	@include media-breakpoint-down(sm) {
 		&>.listing__item {
 			flex: 1 1 calc(100% / 2 - 60px);
+			width: calc(100% / 2 - 60px);
 		}
 	}
 
 	@include media-breakpoint-up(md) {
 		&>.listing__item {
 			flex: 1 1 calc(100% / 3 - 60px);
+			width: calc(100% / 3 - 60px);
 		}
 	}
 }

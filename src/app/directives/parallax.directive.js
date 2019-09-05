@@ -3,6 +3,8 @@
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
+const isEdge = window.navigator.userAgent.indexOf('Edge') !== -1;
+
 export default class ParallaxDirective {
 
 	constructor(
@@ -14,7 +16,7 @@ export default class ParallaxDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		const childNode = node.querySelector('img, video');
+		const childNode = node.querySelector(isEdge ? 'img' : 'img, video');
 		if (childNode) {
 			const style = window.getComputedStyle(node);
 			const position = style.position;

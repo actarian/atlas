@@ -438,7 +438,7 @@ $moodboard-gutter: 60px;
 	}
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(xs) {
 
 	.mood--tile,
 	.mood--decor,
@@ -454,7 +454,7 @@ $moodboard-gutter: 60px;
 	}
 }
 
-@include media-breakpoint-up(md) {
+@include media-breakpoint-between(sm, md) {
 
 	[muuri] {
 		margin-right: -$moodboard-gutter;
@@ -466,7 +466,32 @@ $moodboard-gutter: 60px;
 	}
 
 	.mood--horizontal {
+		width: calc(#{100%} - #{$moodboard-gutter});
+	}
+
+	.mood--vertical {
 		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
+
+	.mood--card {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
+}
+
+@include media-breakpoint-between(md, lg) {
+
+	[muuri] {
+		margin-right: -$moodboard-gutter;
+	}
+
+	.mood--tile,
+	.mood--decor {
+		width: calc(#{100% / 12 * 6} - #{$moodboard-gutter});
+	}
+
+	.mood--horizontal {
+		width: calc(#{100% / 12 * 12} - #{$moodboard-gutter});
+		padding: 0 calc(#{100% / 12 * 1});
 	}
 
 	.mood--vertical {
@@ -481,7 +506,7 @@ $moodboard-gutter: 60px;
 @include media-breakpoint-up(lg) {
 
 	.mood--tile,
-	.mood-decor {
+	.mood--decor {
 		width: calc(#{100% / 12 * 3} - #{$moodboard-gutter});
 	}
 

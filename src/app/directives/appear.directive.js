@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 // Import Polyfills
 // See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
 // import 'intersection-observer';
@@ -26,7 +25,9 @@ export default class AppearDirective {
 			const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
 			const timeout = index * 50;
 			setTimeout(() => {
-				node.classList.add('appeared');
+				if (node) {
+					node.classList.add('appeared');
+				}
 			}, timeout); // (i - firstVisibleIndex));
 			/*
 			if (index > 0) {

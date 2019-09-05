@@ -65,12 +65,6 @@
 		color: $foreground-negative;
 	}
 
-	@include media-breakpoint-up(sm) {
-		.aspect {
-			@include aspect-grid(1920, 800);
-		}
-	}
-
 	@include media-breakpoint-up(xl) {
 		.title {
 			font-size: 175px;
@@ -101,15 +95,27 @@
 
 	}
 
-	@media (max-width: 859.98px) and (orientation: portrait) {
+	@media (max-width: 767.98px) and (orientation: portrait) {
 		.aspect {
 			@include aspect-grid(375, 600); // 667
 		}
 	}
 
-	@media (max-width: 859.98px) and (orientation: landscape) {
+	@media (max-width: 767.98px) and (orientation: landscape) {
 		.aspect {
 			@include aspect-grid(600, 375); // 667
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		.aspect {
+			@include aspect-grid(4, 3);
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		.aspect {
+			@include aspect-grid(1920, 670);
 		}
 	}
 
@@ -197,15 +203,12 @@
 	}
 
 	.category {
-		margin-bottom: 30px;
-		font-size: 14px;
 		font-weight: $font-semibold;
 		text-transform: uppercase;
 		color: $foreground;
 	}
 
 	.title {
-		font-size: 5.2vw;
 		line-height: 1.1;
 		font-weight: $font-light;
 		color: $foreground;
@@ -215,8 +218,18 @@
 		}
 	}
 
-	@include media-breakpoint-down(sm) {
+	@include media-breakpoint-up(sm) {
+		.category {
+			margin-bottom: 30px;
+			font-size: 14px;
+		}
 
+		.title {
+			font-size: 5.2vw;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
 		.category {
 			margin-bottom: 15px;
 			font-size: 12px;
@@ -235,19 +248,25 @@
 	}
 	*/
 
-	@media (max-width: 859.98px) and (orientation: portrait) {
+	@media (max-width: 767.98px) and (orientation: portrait) {
 		.aspect {
 			@include aspect-grid(375, 600); // 667
 		}
 	}
 
-	@media (max-width: 859.98px) and (orientation: landscape) {
+	@media (max-width: 767.98px) and (orientation: landscape) {
 		.aspect {
 			@include aspect-grid(600, 375); // 667
 		}
 	}
 
 	@include media-breakpoint-up(sm) {
+		.aspect {
+			@include aspect-grid(4, 3);
+		}
+	}
+
+	@include media-breakpoint-up(md) {
 		.aspect {
 			@include aspect-grid(1920, 670);
 		}

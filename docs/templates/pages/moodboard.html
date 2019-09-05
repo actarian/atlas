@@ -159,7 +159,7 @@
 						'mood--tile': item.type === moodboardCtrl.moodTypes.Tile,
 						'mood--horizontal': item.type === moodboardCtrl.moodTypes.Horizontal,
 						'mood--vertical': item.type === moodboardCtrl.moodTypes.Vertical,
-						'mood--card': item.type === moodboardCtrl.moodTypes.Card
+						'mood--card': item.type === moodboardCtrl.moodTypes.Card,
 						'mood--decor': item.type === moodboardCtrl.moodTypes.Decor
 					}" ng-repeat="item in moodboardCtrl.visibleItems track by $index" last-item>
 						<div class="listing__content" appear ng-include src="'templates/moodboard/mood-tile.html'" ng-if="item.type === moodboardCtrl.moodTypes.Tile"></div>

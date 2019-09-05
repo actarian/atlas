@@ -12,7 +12,7 @@
 				</a>
 			</div>
 			<div class="group">
-				<ul class="nav nav--primary hidden-xs-down">
+				<ul class="nav nav--primary hidden-sm-down">
 					<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
 						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections.html'"></ng-include>
@@ -33,7 +33,7 @@
 					<li><a href="#" ng-click="root.webglEnabled = !root.webglEnabled"><svg class="icon icon--search"><use xlink:href="#search"></use></svg></a></li>
 					-->
 				</ul>
-				<button type="button" class="btn btn--menu hidden-sm-up" ng-click="root.menuOpened = !root.menuOpened">
+				<button type="button" class="btn btn--menu hidden-md-up" ng-click="root.menuOpened = !root.menuOpened">
 					<svg class="icon icon--menu" ng-if="!root.menuOpened"><use xlink:href="#menu"></use></svg>
 					<svg class="icon icon--close" ng-if="root.menuOpened"><use xlink:href="#close"></use></svg>
 				</button>
@@ -41,9 +41,9 @@
 		</div>
 	</div>
 	<div class="header__menu" ng-class="{ opened: root.menuOpened }">
-		<div class="menu menu--secondary" ng-class="{ 'hidden-xs-down': !root.menuOpened }">
+		<div class="menu menu--secondary" ng-class="{ 'hidden-sm-down': !root.menuOpened }">
 			<div class="container">
-				<div class="group hidden-sm-up">
+				<div class="group hidden-md-up">
 					<ul class="nav nav--primary">
 						<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
 							<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
@@ -82,7 +82,7 @@
 					</ul>
 				</div>
 				<!--
-				<div class="group group--search hidden-sm-up">
+				<div class="group group--search hidden-md-up">
 					<svg class="icon icon--search"><use xlink:href="#search"></use></svg> <input class="control--search" placeholder="I’m looking for...">
 				</div>
 				-->

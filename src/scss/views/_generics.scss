@@ -138,10 +138,6 @@
 
 		&>.zoomable__close {
 			position: fixed;
-			top: 10px;
-			right: 10px;
-			width: 40px;
-			height: 40px;
 			z-index: 100000;
 			display: flex;
 			justify-content: center;
@@ -150,8 +146,6 @@
 
 			svg {
 				fill: $primary;
-				width: 26px;
-				height: 26px;
 			}
 		}
 
@@ -167,6 +161,34 @@
 			.swiper-pagination-bullets,
 			.swiper-container-horizontal>.swiper-pagination-bullets {
 				height: 30px;
+			}
+		}
+
+		@include media-breakpoint-down(sm) {
+			&>.zoomable__close {
+				top: 0px;
+				right: 0px;
+				width: 40px;
+				height: 40px;
+
+				svg {
+					width: 16px;
+					height: 16px;
+				}
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			&>.zoomable__close {
+				top: 10px;
+				right: 10px;
+				width: 40px;
+				height: 40px;
+
+				svg {
+					width: 26px;
+					height: 26px;
+				}
 			}
 		}
 	}

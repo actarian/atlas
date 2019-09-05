@@ -217,7 +217,7 @@
 		color: $foreground;
 	}
 
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		padding: 90px 0;
 
 		.title {
@@ -227,7 +227,7 @@
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
+	@include media-breakpoint-down(sm) {
 		padding: 70px 0;
 
 		.title {
@@ -371,7 +371,7 @@
 	fill: $store-secondary;
 }
 
-@include media-breakpoint-up(sm) {
+@include media-breakpoint-up(md) {
 	.section--store-locator {
 		flex-direction: row;
 
@@ -479,7 +479,7 @@
 	}
 }
 
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
 	.section--store-locator {
 		flex-direction: column;
 		height: auto;
