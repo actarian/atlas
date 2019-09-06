@@ -203,9 +203,7 @@
 	}
 
 	.category {
-		font-weight: $font-semibold;
-		text-transform: uppercase;
-		color: $foreground;
+		@extend %category;
 	}
 
 	.title {
@@ -219,22 +217,12 @@
 	}
 
 	@include media-breakpoint-up(sm) {
-		.category {
-			margin-bottom: 30px;
-			font-size: 14px;
-		}
-
 		.title {
 			font-size: 5.2vw;
 		}
 	}
 
 	@include media-breakpoint-down(xs) {
-		.category {
-			margin-bottom: 15px;
-			font-size: 12px;
-		}
-
 		.title {
 			font-size: 12.8vw;
 		}

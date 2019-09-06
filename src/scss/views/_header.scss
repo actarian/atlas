@@ -136,7 +136,7 @@
 
 		&>a,
 		&>span {
-			font-size: 13px;
+			font-size: 14px;
 			font-weight: $font-semibold;
 			color: $nav-header;
 			cursor: pointer;
@@ -220,8 +220,16 @@
 	}
 
 	.icon--brand {
-		width: 210px;
-		height: 50px;
+		@include media-breakpoint-up(sm) {
+			width: 282px;
+			height: 50px;
+			margin-top: 1px;
+		}
+
+		@include media-breakpoint-down(xs) {
+			width: 58vw;
+			height: 10vw;
+		}
 	}
 
 	.icon--wishlist {

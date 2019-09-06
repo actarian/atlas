@@ -325,10 +325,7 @@
 	text-align: center;
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 0;
+		@extend %category;
 	}
 
 	.icon--brand {
@@ -421,16 +418,6 @@ $collection-gutter: 70px;
 			min-height: 60px;
 			color: $foreground-secondary;
 		}
-
-		/*
-		.category {
-			font-size: 12px;
-			line-height: 1;
-			text-transform: uppercase;
-			// margin-bottom: 10px;
-			color: $foreground-secondary;
-		}
-		*/
 
 		.group--location {
 			display: flex;

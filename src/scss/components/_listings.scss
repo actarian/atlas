@@ -175,18 +175,26 @@
 .listing--beinspired {
 	display: flex;
 	flex-wrap: wrap;
-	width: calc(100% + 60px);
 	text-align: left;
 
-	&>.listing__item {
-		margin-right: 60px;
-		margin-bottom: 60px;
+	@include media-breakpoint-down(xs) {
+		width: 100%;
+
+		&>.listing__item {
+			flex: 1 1 100%;
+			width: 100%;
+			margin-bottom: 40px;
+		}
 	}
 
-	@include media-breakpoint-down(sm) {
+	@include media-breakpoint-up(sm) {
+		width: calc(100% + 60px);
+
 		&>.listing__item {
 			flex: 1 1 calc(100% / 2 - 60px);
 			width: calc(100% / 2 - 60px);
+			margin-right: 60px;
+			margin-bottom: 60px;
 		}
 	}
 

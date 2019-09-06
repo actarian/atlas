@@ -5,28 +5,6 @@
 .section--advanced-search {
 	text-align: left;
 
-	/*
-	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 0;
-	}
-
-	.icon--brand {
-		width: 270px;
-		height: 65px;
-		margin-bottom: 40px;
-	}
-
-	.title {
-		font-size: 42px;
-		line-height: 50px;
-		margin-bottom: 90px;
-		color: $foreground;
-	}
-	*/
-
 	@include media-breakpoint-up(sm) {
 		padding-top: 100px;
 		padding-bottom: 60px;

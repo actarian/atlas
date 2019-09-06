@@ -77,10 +77,13 @@
 	}
 
 	.category {
-		padding-bottom: 50px;
+		@extend %category;
+		/*
 		font-size: 15px;
 		text-transform: uppercase;
+		padding-bottom: 50px;
 		color: $foreground-secondary;
+		*/
 	}
 
 	.icon--made-in-italy {

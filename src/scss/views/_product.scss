@@ -95,6 +95,7 @@
 		.icon--logo {
 			height: 56px;
 			margin-bottom: 56px;
+			max-width: 190px;
 		}
 
 		.title {
@@ -395,10 +396,7 @@
 	text-align: center;
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 20px;
+		@extend %category;
 	}
 
 	.title {
@@ -431,10 +429,7 @@
 	text-align: center;
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 20px;
+		@extend %category;
 	}
 
 	.title {
@@ -471,10 +466,7 @@
 	text-align: center;
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 20px;
+		@extend %category;
 	}
 
 	.title {
@@ -507,10 +499,7 @@
 	text-align: center;
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 20px;
+		@extend %category;
 	}
 
 	.title {
@@ -559,10 +548,6 @@
 
 .section--store {
 
-	&:not(.section--distinct) {
-		border-top: 2px solid $border;
-	}
-
 	.title {
 		color: $foreground;
 	}
@@ -576,18 +561,29 @@
 	}
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 20px;
+		@extend %category;
 	}
 
 	.name {
 		font-weight: $font-semibold;
 	}
 
-	.group--cta {
-		text-align: left;
+	@include media-breakpoint-up(md) {
+		.group--cta {
+			text-align: left;
+		}
+	}
+
+	&:not(.section--distinct) {
+		border-top: 2px solid $border;
+
+		@include media-breakpoint-down(sm) {
+
+			&,
+			.group--cta {
+				text-align: center;
+			}
+		}
 	}
 
 	@include media-breakpoint-up(sm) {
@@ -683,10 +679,7 @@
 	text-align: center;
 
 	.category {
-		font-size: 14px;
-		line-height: 32px;
-		text-transform: uppercase;
-		margin-bottom: 20px;
+		@extend %category;
 	}
 
 	.title {

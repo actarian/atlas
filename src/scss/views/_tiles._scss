@@ -173,9 +173,9 @@
 	}
 
 	.category {
-		padding-bottom: 50px;
 		font-size: 15px;
 		text-transform: uppercase;
+		padding-bottom: 50px;
 		color: $foreground-secondary;
 	}
 

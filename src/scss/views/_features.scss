@@ -7,13 +7,9 @@
 	}
 
 	.category {
-		padding-bottom: 30px;
-		// padding-bottom: 50px;
-		font-size: 14px;
-		text-transform: uppercase;
+		@extend %category;
 		color: $foreground-secondary;
 	}
-
 }
 
 .group--icon {

@@ -106,11 +106,10 @@
 	top: 100px;
 
 	.title {
+		@extend %category;
 		font-size: 14px;
-		line-height: 1.5;
-		text-transform: uppercase;
+		margin-bottom: 40px;
 		color: $foreground-secondary;
-		margin-bottom: 60px;
 	}
 
 	.group--search {
