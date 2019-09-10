@@ -19,6 +19,10 @@
 		height: 39px;
 	}
 
+	.icon--ceramics-made-in-italy {
+		max-width: 100%;
+	}
+
 	.icon--email {
 		max-width: 25px;
 		height: 16px;
@@ -47,7 +51,6 @@
 		}
 	}
 
-	@include media-breakpoint-down(sm) {}
 }
 
 .colophon--primary {
@@ -162,7 +165,16 @@
 
 	@include media-breakpoint-down(lg) {}
 
-	@include media-breakpoint-down(md) {}
+	@include media-breakpoint-down(sm) {
+		justify-content: space-around;
+		align-items: center;
+		font-size: 0;
+		line-height: 0;
+
+		&>li+li {
+			margin-left: auto;
+		}
+	}
 }
 
 .nav--colophon {

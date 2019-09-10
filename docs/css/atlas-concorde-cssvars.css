@@ -3258,9 +3258,27 @@ canvas {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  text-align: left; }
+  text-align: left;
+  /*
+	.section--beinspired & {
+		@include media-breakpoint-up(sm) {
+			&>.listing__item {
+				flex: 0 1 calc(100% / 2 - 60px);
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			&>.listing__item {
+				flex: 0 1 calc(100% / 3 - 60px);
+			}
+		}
+	}
+	*/ }
   @media (max-width: 767.98px) {
     .listing--beinspired {
       width: 100%; }
@@ -3274,17 +3292,17 @@ canvas {
     .listing--beinspired {
       width: calc(100% + 60px); }
       .listing--beinspired > .listing__item {
-        -webkit-box-flex: 1;
-            -ms-flex: 1 1 calc(100% / 2 - 60px);
-                flex: 1 1 calc(100% / 2 - 60px);
+        -webkit-box-flex: 0;
+            -ms-flex: 0 1 calc(100% / 2 - 60px);
+                flex: 0 1 calc(100% / 2 - 60px);
         width: calc(100% / 2 - 60px);
         margin-right: 60px;
         margin-bottom: 60px; } }
   @media (min-width: 1024px) {
     .listing--beinspired > .listing__item {
-      -webkit-box-flex: 1;
-          -ms-flex: 1 1 calc(100% / 3 - 60px);
-              flex: 1 1 calc(100% / 3 - 60px);
+      -webkit-box-flex: 0;
+          -ms-flex: 0 1 calc(100% / 3 - 60px);
+              flex: 0 1 calc(100% / 3 - 60px);
       width: calc(100% / 3 - 60px); } }
 
 .listing--sizes {
@@ -4041,7 +4059,7 @@ page-transition {
     font-size: 0; }
   @media (min-width: 768px) {
     .section--header .icon--brand {
-      width: 282px;
+      width: 312px;
       height: 50px;
       margin-top: 1px; } }
   @media (max-width: 767.98px) {
@@ -4531,6 +4549,8 @@ page-transition {
   .section--footer .ceramics-made-in-italy {
     max-width: 213px;
     height: 39px; }
+  .section--footer .icon--ceramics-made-in-italy {
+    max-width: 100%; }
   .section--footer .icon--email {
     max-width: 25px;
     height: 16px; }
@@ -4650,6 +4670,17 @@ page-transition {
     height: 24px; }
   .nav--social span {
     font-size: 0; }
+  @media (max-width: 1023.98px) {
+    .nav--social {
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      font-size: 0;
+      line-height: 0; }
+      .nav--social > li + li {
+        margin-left: auto; } }
 
 .nav--colophon > li + li {
   margin-left: 20px; }
@@ -6412,8 +6443,7 @@ page-transition {
   .zoomed [swiper-gallery] .swiper-slide img {
     -webkit-transition: opacity ease-in-out 350ms;
     transition: opacity ease-in-out 350ms;
-    width: auto;
-    height: 100%; }
+    width: auto; }
   .zoomed [swiper-gallery] .swiper-slide .title {
     display: block;
     position: relative;
