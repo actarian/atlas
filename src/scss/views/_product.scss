@@ -16,12 +16,6 @@
 
 	}
 
-	/*
-	@include media-breakpoint-down(md) {
-		min-height: 100px;
-	}
-	*/
-
 	@include media-breakpoint-down(sm) {
 		position: fixed;
 		display: flex;
@@ -35,8 +29,13 @@
 		transition: all ease-in-out 350ms;
 
 		.menu--product {
-			overflow: hidden;
 			transition: all ease-in-out 350ms;
+			overflow-x: hidden;
+			overflow-y: auto;
+			height: calc(100% - 60px);
+			flex: 1 0 calc(100% - 60px);
+			display: block;
+			-webkit-overflow-scrolling: touch;
 		}
 
 		&:not(.opened) {
@@ -44,7 +43,6 @@
 			transform: translateY(100%);
 
 			.menu--product {
-				// display: none;
 				max-height: 0;
 			}
 		}

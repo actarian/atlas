@@ -91,6 +91,50 @@
 
 }
 
+.section--segments {
+	padding: 50px 0;
+
+	h1 {
+		font-size: 42px;
+		line-height: 1.2;
+		font-weight: $font-semibold;
+		color: $foreground;
+	}
+
+	.icon {
+		width: 54px;
+		margin-bottom: 10px;
+	}
+
+	.abstract {
+		font-size: 15px;
+		font-weight: $font-semibold;
+		color: $foreground-secondary;
+	}
+
+	@include media-breakpoint-up(md) {
+		.row {
+			.col-sm-8 {
+				margin: 50px 0;
+				padding-right: 40px;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(sm) {
+		h1 {
+			font-size: 32px;
+		}
+
+		.row {
+			.col-sm-8 {
+				margin: 20px 0;
+				padding-right: 40px;
+			}
+		}
+	}
+}
+
 [zoomable] {
 
 	&>.swiper-container {

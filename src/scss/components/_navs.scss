@@ -44,21 +44,6 @@
 	}
 
 	@include media-breakpoint-down(md) {
-		/*
-		flex-wrap: wrap;
-		// margin: 0 auto;
-		// max-width: calc(100vw - 120px);
-
-		&>li {
-			flex: 0 0 20%;
-
-			&>a,
-			&>span {
-				min-height: 50px;
-			}
-		}
-		*/
-
 		&>li {
 
 			&>a,
@@ -71,6 +56,7 @@
 
 	@include media-breakpoint-down(sm) {
 		display: block;
+		margin-bottom: 100px;
 
 		&>li {
 
@@ -268,4 +254,8 @@
 body.droppin-in {
 	overflow: hidden;
 	position: fixed;
+
+	@include media-breakpoint-up(sm) {
+		padding-right: 15px;
+	}
 }
