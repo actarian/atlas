@@ -110,10 +110,18 @@
 
 		.btn--pinterest {
 			opacity: 1;
+
+			@include media-breakpoint-down(sm) {
+				opacity: 0;
+			}
 		}
 
 		.btn--wishlist {
 			opacity: 1;
+
+			@include media-breakpoint-down(sm) {
+				opacity: 0;
+			}
 		}
 
 		.btn--zoom {

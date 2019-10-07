@@ -411,6 +411,18 @@
 		color: $foreground;
 	}
 
+	.control-tiles {
+
+		@include media-breakpoint-up(sm) {
+			display: none;
+		}
+
+		i {
+			margin: 0 10px;
+			font-size: 24px;
+		}
+	}
+
 	@include media-breakpoint-up(sm) {
 		padding-top: 120px;
 

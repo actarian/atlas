@@ -246,9 +246,7 @@
 		width: 20px;
 		height: 20px;
 	}
-
 	// transition: transform ease-in-out 350ms;
-
 	&.scrolled {
 		background: $background-header;
 	}
@@ -265,10 +263,10 @@
 			}
 
 			.nav--primary {
-				&>li {
+				& > li {
 
-					&>a,
-					&>span {
+					& > a,
+					& > span {
 						font-size: 16px;
 					}
 				}
@@ -296,13 +294,15 @@
 	@include media-breakpoint-down(sm) {
 		transition: background ease-in-out 350ms;
 
+		.droppin-in & {
+			background: $background-header;
+		}
+
 		.menu--primary {
 			min-height: 60px;
 			padding: 0;
 		}
-
 	}
-
 }
 
 .header__menu {
