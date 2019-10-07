@@ -24,12 +24,14 @@
 .group--tile {
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	position: relative;
 	padding: 20px 0 50px 0;
 
 	&>div {
 		flex: 1 0 auto;
 		text-align: center;
+		max-width: calc(100% - 60px);
+		line-height: 1.3;
 	}
 }

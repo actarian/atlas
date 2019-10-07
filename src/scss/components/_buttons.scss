@@ -236,9 +236,12 @@ button,
 	position: relative;
 	font-size: 15px;
 	font-weight: 500;
+	padding-bottom: 3px;
+	/*
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	*/
 	max-width: 100%;
 
 	&,
@@ -249,15 +252,26 @@ button,
 		color: $primary;
 	}
 
-	&:after {
+	&:hover {
+
+		background: #ccc;
+	}
+
+	&:before {
 		content: '';
 		position: absolute;
+		display: block;
 		left: 0;
 		bottom: -1px;
 		width: 100%;
 		height: 2px;
 		background: $primary;
 		transition: all ease-out 350ms;
+	}
+
+	& span {
+		display: block;
+		position: relative;
 	}
 
 	&:hover {
@@ -612,12 +626,13 @@ button,
 }
 
 .btn--project {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display: block;
 	height: 50px;
-	font-size: 16px;
+	// font-size: 16px;
 	border-top: 2px solid $border;
+
+	font-size: 13px;
+	font-weight: $font-semibold;
 
 	&,
 	&:link,
@@ -643,6 +658,24 @@ button,
 			// fill: white;
 			fill: $primary;
 		}
+	}
+
+	border-radius: 20px;
+	height: 40px;
+	width: auto;
+	display: inline-block;
+	margin: 0 auto 15px auto;
+	padding: 0 15px;
+	// border: 1px solid #bbb7ad;
+	border: none;
+	background: $background-tertiary;
+	box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+	transform: translateZ(1px);
+
+	.opened & {
+		background: none;
+		box-shadow: none;
+		border-radius: 0;
 	}
 
 }

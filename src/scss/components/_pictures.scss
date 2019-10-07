@@ -172,8 +172,10 @@ $diff: 280px;
 }
 
 .picture--technical {
+	max-width: 380px;
+
 	img {
-		max-width: 380px;
+		max-width: 100%;
 		padding: 10px 0;
 		margin-left: -8px;
 	}

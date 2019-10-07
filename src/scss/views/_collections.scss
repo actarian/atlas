@@ -26,9 +26,6 @@
 
 	@include media-breakpoint-down(sm) {
 		position: fixed;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
 		bottom: 0;
 		width: 100%;
 		height: calc(100% - 60px);
@@ -36,12 +33,6 @@
 		z-index: 100;
 		background: $background-tertiary;
 		transition: all ease-in-out 350ms;
-
-		/*
-		.form--filters {
-			display: none;
-		}
-		*/
 
 		.form--filters {
 			display: block;
@@ -78,9 +69,17 @@
 			}
 		}
 
+		&.opened {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
 		&:not(.opened) {
-			height: 50px;
-			transform: translateY(100%);
+			height: auto;
+			// transform: translateY(100%);
+			background: transparent;
+			text-align: center;
 
 			.form--filters {
 				// display: none;
@@ -88,11 +87,13 @@
 			}
 		}
 
+		/*
 		.scrolled-up & {
 			&:not(.opened) {
 				transform: translateY(0);
 			}
 		}
+		*/
 
 		.nav--select {
 			max-height: 10000px;

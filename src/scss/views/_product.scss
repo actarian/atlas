@@ -18,12 +18,10 @@
 
 	@include media-breakpoint-down(sm) {
 		position: fixed;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
 		bottom: 0;
 		width: 100%;
 		height: calc(100vh - 60px);
+		min-height: 50px;
 		z-index: 100;
 		background: $background-tertiary;
 		transition: all ease-in-out 350ms;
@@ -34,24 +32,36 @@
 			overflow-y: auto;
 			height: calc(100% - 60px);
 			flex: 1 0 calc(100% - 60px);
-			display: block;
 			-webkit-overflow-scrolling: touch;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		&.opened {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 		}
 
 		&:not(.opened) {
-			height: 50px;
-			transform: translateY(100%);
+			height: auto;
+			// transform: translateY(100%);
+			background: transparent;
+			text-align: center;
 
 			.menu--product {
 				max-height: 0;
 			}
 		}
 
+		/*
 		.scrolled-up & {
 			&:not(.opened) {
 				transform: translateY(0);
 			}
 		}
+		*/
 	}
 
 }
