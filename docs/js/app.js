@@ -25513,11 +25513,12 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 
-var _pageTransition = _interopRequireDefault(require("./page-transition"));
+var _pageNoTransition = _interopRequireDefault(require("./page-no-transition"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
+// import PageTransition from './page-transition';
 // Import Quicklink
 // See: https://github.com/GoogleChromeLabs/quicklink
 // import Quicklink from 'quicklink/dist/quicklink.mjs';
@@ -25553,7 +25554,7 @@ class HighwayDirective {
         view: _customRenderer.default
       },
       transitions: {
-        view: _pageTransition.default
+        view: _pageNoTransition.default
       }
     });
     this.H = H;
@@ -25627,7 +25628,7 @@ class HighwayDirective {
 exports.default = HighwayDirective;
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
 
-},{"../gtm/gtm.service":237,"./custom-renderer":238,"./page-transition":240,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],240:[function(require,module,exports){
+},{"../gtm/gtm.service":237,"./custom-renderer":238,"./page-no-transition":240,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25646,61 +25647,48 @@ var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
-class PageTransition extends _highway.default.Transition {
+class PageNoTransition extends _highway.default.Transition {
   in({
     from,
     to,
     done
   }) {
-    // console.log('PageTransition.in');
+    // console.log('PageNoTransition.in');
+    window.scrollTo(0, 0);
     const loader = document.querySelector('.loader--cube');
-    TweenMax.to(loader, 0.45, {
+    TweenMax.set(loader, {
       opacity: 0,
-      ease: Power2.easeInOut,
-      onComplete: () => {
-        TweenMax.set(loader, {
-          display: 'none'
-        });
-      }
+      display: 'none'
     });
+
+    _customRenderer.default.$destroy(from);
+
     TweenMax.set(to, {
       opacity: 0,
       minHeight: from.offsetHeight
     });
-    window.scrollTo(0, 0);
 
-    _customRenderer.default.$destroy(from);
-
-    if (PageTransition.origin) {
-      const left = PageTransition.origin.x / window.innerWidth * 100;
-      const top = PageTransition.origin.y;
+    if (PageNoTransition.origin) {
+      const left = PageNoTransition.origin.x / window.innerWidth * 100;
+      const top = PageNoTransition.origin.y;
       TweenMax.set(to, {
         scale: 1.1,
         transformOrigin: `${left}% ${top}px`
       });
-    } // console.log(PageTransition.origin);
+    }
 
-
-    TweenMax.to(to, 0.6, {
+    TweenMax.set(to, {
       scale: 1,
-      opacity: 1,
-      delay: 0.1,
-      // 0.250,
-      // overwrite: 'all',
-      ease: Power2.easeInOut,
-      onComplete: () => {
-        setTimeout(() => {
-          TweenMax.set(to, {
-            clearProps: 'all'
-          });
-          TweenMax.set(to, {
-            minHeight: 0,
-            opacity: 1
-          });
-        }, 50);
-        done();
-      }
+      opacity: 1
     });
+    TweenMax.set(to, {
+      clearProps: 'all'
+    });
+    TweenMax.set(to, {
+      minHeight: 0,
+      opacity: 1
+    });
+    done();
   }
 
   out({
@@ -25708,30 +25696,19 @@ class PageTransition extends _highway.default.Transition {
     trigger,
     done
   }) {
-    // console.log('PageTransition.out');
+    // console.log('PageNoTransition.out');
     const loader = document.querySelector('.loader--cube');
     TweenMax.set(loader, {
       opacity: 0,
       display: 'block'
     });
-    TweenMax.to(loader, 0.45, {
-      opacity: 1,
-      ease: Power2.easeInOut
+    TweenMax.set(loader, {
+      opacity: 1
     });
     const headerMenu = document.querySelector('.header__menu');
 
     if (headerMenu) {
       headerMenu.classList.remove('opened');
-      /*
-      TweenMax.to(headerMenu, 0.3, {
-      	maxHeight: 0,
-      	delay: 0,
-      	onComplete: () => {
-      		TweenMax.set(headerMenu, { clearProps: 'all' });
-      		// headerMenu.classList.remove('opened');
-      	}
-      });
-      */
     }
 
     let left = 50;
@@ -25741,7 +25718,7 @@ class PageTransition extends _highway.default.Transition {
     if (trigger instanceof HTMLElement) {
       const rect = _rect.default.fromNode(trigger);
 
-      PageTransition.origin = rect.center;
+      PageNoTransition.origin = rect.center;
       top += rect.center.y;
       left = rect.center.x / window.innerWidth * 100;
     }
@@ -25749,22 +25726,16 @@ class PageTransition extends _highway.default.Transition {
     TweenMax.set(from, {
       transformOrigin: `${left}% ${top}px`
     });
-    TweenMax.to(from, 0.6, {
+    TweenMax.set(from, {
       scale: 1.1,
-      opacity: 0,
-      delay: 0,
-      // 0.150,
-      // overwrite: 'all',
-      ease: Power2.easeInOut,
-      onComplete: () => {
-        setTimeout(done, 500);
-      }
+      opacity: 0
     });
+    done();
   }
 
 }
 
-exports.default = PageTransition;
+exports.default = PageNoTransition;
 
 },{"../services/dom.service":250,"../shared/rect":254,"./custom-renderer":238,"@dogstudio/highway":1}],241:[function(require,module,exports){
 "use strict";

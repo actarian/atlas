@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
 import CustomRenderer from './custom-renderer';
-import PageTransition from './page-transition';
+// import PageTransition from './page-transition';
+import PageNoTransition from './page-no-transition';
 
 // Import Quicklink
 // See: https://github.com/GoogleChromeLabs/quicklink
@@ -48,7 +49,7 @@ export default class HighwayDirective {
 				view: CustomRenderer,
 			},
 			transitions: {
-				view: PageTransition,
+				view: PageNoTransition,
 			}
 		});
 		this.H = H;

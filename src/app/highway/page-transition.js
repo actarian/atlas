@@ -9,6 +9,7 @@ export default class PageTransition extends Highway.Transition {
 
 	in ({ from, to, done }) {
 		// console.log('PageTransition.in');
+		window.scrollTo(0, 0);
 		const loader = document.querySelector('.loader--cube');
 		TweenMax.to(loader, 0.45, {
 			opacity: 0,
@@ -17,9 +18,8 @@ export default class PageTransition extends Highway.Transition {
 				TweenMax.set(loader, { display: 'none' });
 			}
 		});
-		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
-		window.scrollTo(0, 0);
 		CustomRenderer.$destroy(from);
+		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
 		if (PageTransition.origin) {
 			const left = PageTransition.origin.x / window.innerWidth * 100;
 			const top = PageTransition.origin.y;
