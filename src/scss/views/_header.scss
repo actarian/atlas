@@ -246,6 +246,7 @@
 		width: 20px;
 		height: 20px;
 	}
+
 	// transition: transform ease-in-out 350ms;
 	&.scrolled {
 		background: $background-header;
@@ -263,10 +264,10 @@
 			}
 
 			.nav--primary {
-				& > li {
+				&>li {
 
-					& > a,
-					& > span {
+					&>a,
+					&>span {
 						font-size: 16px;
 					}
 				}

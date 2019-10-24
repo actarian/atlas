@@ -87,6 +87,11 @@ export default class LazyDirective {
 		} else if (scope.src) {
 			image.removeAttribute('data-src');
 			const src = this.getThronSrc(image, scope.src);
+			/*
+			image.classList.remove('lazying');
+			image.classList.add('lazyed');
+			image.setAttribute('src', src);
+			*/
 			this.onImagePreload(image, src, (srcOrUndefined) => {
 				// image.setAttribute('src', src);
 				image.classList.remove('lazying');

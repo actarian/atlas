@@ -22464,6 +22464,12 @@ class LazyDirective {
     } else if (scope.src) {
       image.removeAttribute('data-src');
       const src = this.getThronSrc(image, scope.src);
+      /*
+      image.classList.remove('lazying');
+      image.classList.add('lazyed');
+      image.setAttribute('src', src);
+      */
+
       this.onImagePreload(image, src, srcOrUndefined => {
         // image.setAttribute('src', src);
         image.classList.remove('lazying');
@@ -23133,9 +23139,13 @@ class ScrollDirective {
       const node = element[0];
       this.$timeout(() => {
         const subscription = this.domService.scrollIntersection$(node).subscribe(event => {
-          scope.$eval(attributes.scroll, {
+          const callback = scope.$eval(attributes.scroll, {
             $event: event
           });
+
+          if (typeof callback === 'function') {
+            callback(event); // scope.$eval(attributes.scroll, { $event: event });
+          }
         });
         element.on('$destroy', () => {
           subscription.unsubscribe();
@@ -27028,14 +27038,16 @@ class DomService {
 
       const rect = _rect.default.fromNode(node);
 
-      const intersection = rect.intersection(windowRect);
-      const response = DomService.rafIntersection_;
-      response.scroll = datas[0];
-      response.windowRect = datas[1];
-      response.rect = rect;
-      response.intersection = intersection;
-      return response;
-    }));
+      if (rect.height) {
+        const intersection = rect.intersection(windowRect);
+        const response = DomService.rafIntersection_;
+        response.scroll = datas[0];
+        response.windowRect = datas[1];
+        response.rect = rect;
+        response.intersection = intersection;
+        return response;
+      }
+    }), (0, _operators.filter)(response => response !== undefined));
   }
 
   scrollIntersection$(node) {
@@ -27045,23 +27057,25 @@ class DomService {
 
       const rect = _rect.default.fromNode(node);
 
-      const intersection = rect.intersection(windowRect);
-      const response = DomService.scrollIntersection_;
-      response.scroll = datas[0];
-      response.windowRect = datas[1];
-      response.rect = rect;
-      response.intersection = intersection;
-      return response;
-    }));
+      if (rect.height) {
+        const intersection = rect.intersection(windowRect);
+        const response = DomService.scrollIntersection_;
+        response.scroll = datas[0];
+        response.windowRect = datas[1];
+        response.rect = rect;
+        response.intersection = intersection;
+        return response;
+      }
+    }), (0, _operators.filter)(response => response !== undefined));
   }
 
   appear$(node, value = 0.0) {
     // -0.5
-    return this.rafIntersection$(node).pipe((0, _operators.filter)(x => x.intersection.y > value), (0, _operators.first)());
+    return this.scrollIntersection$(node).pipe((0, _operators.filter)(x => x.intersection.y > value), (0, _operators.first)());
   }
 
   visibility$(node, value = 0.5) {
-    return this.rafIntersection$(node).pipe((0, _operators.map)(x => x.intersection.y > value), (0, _operators.distinctUntilChanged)());
+    return this.scrollIntersection$(node).pipe((0, _operators.map)(x => x.intersection.y > value), (0, _operators.distinctUntilChanged)());
   }
 
   firstVisibility$(node, value = 0.5) {
@@ -27116,10 +27130,10 @@ DomService.windowRect$ = function () {
     windowRect.width = window.innerWidth;
     windowRect.height = window.innerHeight;
     return windowRect;
-  }), (0, _operators.startWith)(windowRect));
+  }), (0, _operators.startWith)(windowRect), (0, _operators.shareReplay)());
 }();
 
-DomService.rafAndRect$ = (0, _rxjs.combineLatest)(DomService.raf$, DomService.windowRect$);
+DomService.rafAndRect$ = (0, _rxjs.combineLatest)(DomService.raf$, DomService.windowRect$).pipe((0, _operators.shareReplay)());
 
 DomService.scroll$ = function () {
   const target = window;
@@ -27151,12 +27165,12 @@ DomService.scroll$ = function () {
     previousTop = event.scrollTop;
     event.originalEvent = originalEvent;
     return event;
-  }) // ,
+  }), (0, _operators.shareReplay)() // ,
   // filter(event => event.direction !== 0)
   );
 }();
 
-DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$);
+DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$).pipe((0, _operators.shareReplay)());
 
 },{"../shared/rect":254,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],251:[function(require,module,exports){
 "use strict";
@@ -27503,7 +27517,8 @@ class Rect {
     const dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
     const dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
     const x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
-    const y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
+    const y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height; // console.log(this.top, this.height, rect.top, rect.height);
+
     intersection.x = x;
     intersection.y = y;
     return intersection;

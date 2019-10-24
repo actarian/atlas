@@ -19,11 +19,15 @@ export default class ScrollDirective {
 			const node = element[0];
 			this.$timeout(() => {
 				const subscription = this.domService.scrollIntersection$(node).subscribe(event => {
-					scope.$eval(attributes.scroll, { $event: event });
+					const callback = scope.$eval(attributes.scroll, { $event: event });
+					if (typeof callback === 'function') {
+						callback(event);
+						// scope.$eval(attributes.scroll, { $event: event });
+					}
 				});
 				element.on('$destroy', () => {
 					subscription.unsubscribe();
-				});
+				});	
 			});
 		}
 		/*

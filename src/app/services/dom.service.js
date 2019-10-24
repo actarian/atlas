@@ -191,14 +191,17 @@ export default class DomService {
 				// const scrollTop = datas[0];
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
-				const intersection = rect.intersection(windowRect);
-				const response = DomService.rafIntersection_;
-				response.scroll = datas[0];
-				response.windowRect = datas[1];
-				response.rect = rect;
-				response.intersection = intersection;
-				return response;
-			})
+				if (rect.height) {
+					const intersection = rect.intersection(windowRect);
+					const response = DomService.rafIntersection_;
+					response.scroll = datas[0];
+					response.windowRect = datas[1];
+					response.rect = rect;
+					response.intersection = intersection;
+					return response;
+				}
+			}),
+			filter(response => response !== undefined)
 		);
 	}
 
@@ -208,26 +211,29 @@ export default class DomService {
 				// const scrollTop = datas[0];
 				const windowRect = datas[1];
 				const rect = Rect.fromNode(node);
-				const intersection = rect.intersection(windowRect);
-				const response = DomService.scrollIntersection_;
-				response.scroll = datas[0];
-				response.windowRect = datas[1];
-				response.rect = rect;
-				response.intersection = intersection;
-				return response;
-			})
+				if (rect.height) {
+					const intersection = rect.intersection(windowRect);
+					const response = DomService.scrollIntersection_;
+					response.scroll = datas[0];
+					response.windowRect = datas[1];
+					response.rect = rect;
+					response.intersection = intersection;
+					return response;
+				}
+			}),
+			filter(response => response !== undefined)
 		);
 	}
 
 	appear$(node, value = 0.0) { // -0.5
-		return this.rafIntersection$(node).pipe(
+		return this.scrollIntersection$(node).pipe(
 			filter(x => x.intersection.y > value),
 			first()
 		);
 	}
 
 	visibility$(node, value = 0.5) {
-		return this.rafIntersection$(node).pipe(
+		return this.scrollIntersection$(node).pipe(
 			map(x => x.intersection.y > value),
 			distinctUntilChanged()
 		);
@@ -288,10 +294,13 @@ DomService.windowRect$ = function() {
 			windowRect.height = window.innerHeight;
 			return windowRect;
 		}),
-		startWith(windowRect)
+		startWith(windowRect),
+		shareReplay(),
 	);
 }();
-DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$);
+DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$).pipe(
+	shareReplay() 
+);
 DomService.scroll$ = function() {
 	const target = window;
 	let previousTop = DomService.getScrollTop(target);
@@ -324,8 +333,11 @@ DomService.scroll$ = function() {
 			previousTop = event.scrollTop;
 			event.originalEvent = originalEvent;
 			return event;
-		}) // ,
+		}),
+		shareReplay(), // ,
 		// filter(event => event.direction !== 0)
 	);
 }();
-DomService.scrollAndRect$ = combineLatest(DomService.scroll$, DomService.windowRect$);
+DomService.scrollAndRect$ = combineLatest(DomService.scroll$, DomService.windowRect$).pipe(
+	shareReplay() 
+);
