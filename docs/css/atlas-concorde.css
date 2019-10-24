@@ -301,8 +301,6 @@ button,
   max-width: 100%; }
   .btn--category, .btn--category:active, .btn--category:focus, .btn--category:hover, .btn--category:visited {
     color: #b92442; }
-  .btn--category:hover {
-    background: #ccc; }
   .btn--category:before {
     content: '';
     position: absolute;
@@ -2545,10 +2543,18 @@ control-messages {
 [media]:hover .btn--pinterest,
 [video]:hover .btn--pinterest {
   opacity: 1; }
+  @media (max-width: 1023.98px) {
+    [media]:hover .btn--pinterest,
+    [video]:hover .btn--pinterest {
+      opacity: 0; } }
 
 [media]:hover .btn--wishlist,
 [video]:hover .btn--wishlist {
   opacity: 1; }
+  @media (max-width: 1023.98px) {
+    [media]:hover .btn--wishlist,
+    [video]:hover .btn--wishlist {
+      opacity: 0; } }
 
 [media]:hover .btn--zoom,
 [video]:hover .btn--zoom {
@@ -3202,6 +3208,40 @@ canvas {
 
 .listing--sizes {
   text-align: left; }
+  .listing--sizes .picture {
+    overflow: visible !important; }
+  .listing--sizes .group--size {
+    padding-top: 30px; }
+  .listing--sizes .share-buttons {
+    position: relative;
+    top: 40px;
+    background: transparent;
+    height: 30px;
+    margin-top: 0;
+    z-index: 1000;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .listing--sizes .share-buttons .btn {
+      opacity: 1;
+      position: relative;
+      left: initial;
+      top: initial;
+      right: initial;
+      bottom: initial; }
+      .listing--sizes .share-buttons .btn svg {
+        fill: #b92442; }
   .listing--sizes > .listing__item {
     margin-right: 30px;
     margin-bottom: 55px;
@@ -3230,6 +3270,10 @@ canvas {
         width: 100%;
         -o-object-fit: cover;
            object-fit: cover; }
+    .listing--sizes > .listing__item [media]:hover ng-transclude,
+    .listing--sizes > .listing__item [video]:hover ng-transclude {
+      -webkit-transform: none;
+              transform: none; }
     .listing--sizes > .listing__item:not(:hover) .picture {
       -webkit-box-shadow: none;
               box-shadow: none; }
@@ -3347,13 +3391,18 @@ canvas {
         width: 100%; } }
   @media (max-width: 767.98px) {
     .listing--sizes {
-      display: block; }
+      display: block;
+      /*
+		.picture {
+			.overlay,
+			.btn {
+				display: none;
+			}
+		}
+		*/ }
       .listing--sizes > .listing__item {
         display: block;
-        width: 100%; }
-      .listing--sizes .picture .overlay,
-      .listing--sizes .picture .btn {
-        display: none; } }
+        width: 100%; } }
 
 [appear] {
   opacity: 0 !important;
@@ -3994,6 +4043,8 @@ page-transition {
     .section--header {
       -webkit-transition: background ease-in-out 350ms;
       transition: background ease-in-out 350ms; }
+      .droppin-in .section--header {
+        background: #191919; }
       .section--header .menu--primary {
         min-height: 60px;
         padding: 0; } }
@@ -5355,8 +5406,6 @@ page-transition {
     min-height: 50px;
     z-index: 100;
     background: #f8f5f5;
-    -webkit-transition: all ease-in-out 350ms;
-    transition: all ease-in-out 350ms;
     /*
 		.scrolled-up & {
 			&:not(.opened) {
@@ -5368,8 +5417,6 @@ page-transition {
       display: block;
       overflow-x: hidden;
       overflow-y: auto;
-      -webkit-transition: all ease-in-out 350ms;
-      transition: all ease-in-out 350ms;
       max-height: calc(100% - 50px);
       height: calc(100% - 50px);
       -webkit-box-shadow: none;
@@ -5418,6 +5465,8 @@ page-transition {
       text-align: center; }
       .section--filters:not(.opened) .form--filters {
         max-height: 0; }
+      .section--filters:not(.opened) button i {
+        margin-left: 5px; }
     .section--filters .nav--select {
       max-height: 10000px;
       width: calc(100% + 60px);
@@ -5590,6 +5639,12 @@ page-transition {
     font-size: 14px;
     white-space: nowrap;
     text-transform: lowercase; }
+  .form--filters .btn--discover {
+    display: block;
+    text-align: center;
+    margin-top: 10px; }
+    .form--filters .btn--discover span {
+      display: block; }
 
 .form__group {
   cursor: pointer; }
@@ -7222,6 +7277,12 @@ page-transition {
   .section--tiles .title {
     color: #191919; }
   @media (min-width: 768px) {
+    .section--tiles .control-tiles {
+      display: none; } }
+  .section--tiles .control-tiles i {
+    margin: 0 10px;
+    font-size: 24px; }
+  @media (min-width: 768px) {
     .section--tiles {
       padding-top: 120px; }
       .section--tiles .title {
@@ -8481,4 +8542,3 @@ page-transition {
 
 .debug {
   border: 100px solid red; }
-/*# sourceMappingURL=atlas-concorde.css.map */
