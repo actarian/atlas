@@ -1,8 +1,8 @@
 /* jshint esversion: 6 */
 
-import { combineLatest, fromEvent, range } from 'rxjs';
+import { combineLatest, fromEvent, merge, range, Subject } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { auditTime, distinctUntilChanged, filter, first, map, shareReplay, startWith } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, first, map, shareReplay, startWith, tap } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
 export default class DomService {
@@ -112,6 +112,10 @@ export default class DomService {
 		return DomService.scroll$;
 	}
 
+	secondaryScroll$(target) {
+		return DomService.secondaryScroll$(target);
+	}
+
 	scrollAndRect$() {
 		return DomService.scrollAndRect$;
 	}
@@ -206,7 +210,7 @@ export default class DomService {
 	}
 
 	scrollIntersection$(node) {
-		return this.scrollAndRect$().pipe(
+		const o = this.scrollAndRect$().pipe(
 			map(datas => {
 				// const scrollTop = datas[0];
 				const windowRect = datas[1];
@@ -223,6 +227,8 @@ export default class DomService {
 			}),
 			filter(response => response !== undefined)
 		);
+		DomService.secondaryScroll$_.next({ target: window });
+		return o;
 	}
 
 	appear$(node, value = 0.0) { // -0.5
@@ -270,11 +276,23 @@ export default class DomService {
 	}
 
 	static getScrollTop(node) {
+		if (node === document) {
+			return this.getScrollTop(document.scrollingElement || document.documentElement || document.body);
+		}
 		return node.pageYOffset || node.scrollY || node.scrollTop || 0;
 	}
 
 	static getScrollLeft(node) {
+		if (node === document) {
+			return this.getScrollLeft(document.scrollingElement || document.documentElement || document.body);
+		}
 		return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
+	}
+
+	static secondaryScroll$(target) {
+		return fromEvent(target, 'scroll').pipe(
+			tap(event => DomService.secondaryScroll$_.next(event))
+		);
 	}
 
 }
@@ -295,49 +313,43 @@ DomService.windowRect$ = function() {
 			return windowRect;
 		}),
 		startWith(windowRect),
-		shareReplay(),
+		shareReplay()
 	);
 }();
 DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$).pipe(
-	shareReplay() 
+	shareReplay()
 );
+DomService.mainScroll$ = function() {
+	const target = window;
+	return fromEvent(target, 'scroll').pipe(
+		shareReplay()
+	);
+}();
+DomService.secondaryScroll$_ = new Subject();
 DomService.scroll$ = function() {
 	const target = window;
 	let previousTop = DomService.getScrollTop(target);
 	const event = {
-		/*
-		top: target.offsetTop || 0,
-		left: target.offsetLeft || 0,
-		width: target.offsetWidth || target.innerWidth,
-		height: target.offsetHeight || target.innerHeight,
-		*/
 		scrollTop: previousTop,
 		scrollLeft: DomService.getScrollLeft(target),
 		direction: 0,
 		originalEvent: null,
 	};
-	return fromEvent(target, 'scroll').pipe(
-		startWith(event),
-		auditTime(33), // 30 fps
+	return merge(DomService.mainScroll$, DomService.secondaryScroll$_).pipe(
+		auditTime(1000 / 60),
 		map((originalEvent) => {
-			/*
-			event.top = target.offsetTop || 0;
-			event.left = target.offsetLeft || 0;
-			event.width = target.offsetWidth || target.innerWidth;
-			event.height = target.offsetHeight || target.innerHeight;
-			*/
-			event.scrollTop = DomService.getScrollTop(target);
-			event.scrollLeft = DomService.getScrollLeft(target);
+			event.scrollTop = DomService.getScrollTop(originalEvent.target);
+			event.scrollLeft = DomService.getScrollLeft(originalEvent.target);
 			const diff = event.scrollTop - previousTop;
 			event.direction = diff ? diff / Math.abs(diff) : 0;
 			previousTop = event.scrollTop;
 			event.originalEvent = originalEvent;
 			return event;
 		}),
-		shareReplay(), // ,
-		// filter(event => event.direction !== 0)
+		startWith(event),
+		shareReplay()
 	);
 }();
 DomService.scrollAndRect$ = combineLatest(DomService.scroll$, DomService.windowRect$).pipe(
-	shareReplay() 
+	shareReplay()
 );

@@ -26958,6 +26958,10 @@ class DomService {
     return DomService.scroll$;
   }
 
+  secondaryScroll$(target) {
+    return DomService.secondaryScroll$(target);
+  }
+
   scrollAndRect$() {
     return DomService.scrollAndRect$;
   }
@@ -27051,7 +27055,7 @@ class DomService {
   }
 
   scrollIntersection$(node) {
-    return this.scrollAndRect$().pipe((0, _operators.map)(datas => {
+    const o = this.scrollAndRect$().pipe((0, _operators.map)(datas => {
       // const scrollTop = datas[0];
       const windowRect = datas[1];
 
@@ -27067,6 +27071,10 @@ class DomService {
         return response;
       }
     }), (0, _operators.filter)(response => response !== undefined));
+    DomService.secondaryScroll$_.next({
+      target: window
+    });
+    return o;
   }
 
   appear$(node, value = 0.0) {
@@ -27106,11 +27114,23 @@ class DomService {
   }
 
   static getScrollTop(node) {
+    if (node === document) {
+      return this.getScrollTop(document.scrollingElement || document.documentElement || document.body);
+    }
+
     return node.pageYOffset || node.scrollY || node.scrollTop || 0;
   }
 
   static getScrollLeft(node) {
+    if (node === document) {
+      return this.getScrollLeft(document.scrollingElement || document.documentElement || document.body);
+    }
+
     return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
+  }
+
+  static secondaryScroll$(target) {
+    return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.tap)(event => DomService.secondaryScroll$_.next(event)));
   }
 
 }
@@ -27135,39 +27155,31 @@ DomService.windowRect$ = function () {
 
 DomService.rafAndRect$ = (0, _rxjs.combineLatest)(DomService.raf$, DomService.windowRect$).pipe((0, _operators.shareReplay)());
 
+DomService.mainScroll$ = function () {
+  const target = window;
+  return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.shareReplay)());
+}();
+
+DomService.secondaryScroll$_ = new _rxjs.Subject();
+
 DomService.scroll$ = function () {
   const target = window;
   let previousTop = DomService.getScrollTop(target);
   const event = {
-    /*
-    top: target.offsetTop || 0,
-    left: target.offsetLeft || 0,
-    width: target.offsetWidth || target.innerWidth,
-    height: target.offsetHeight || target.innerHeight,
-    */
     scrollTop: previousTop,
     scrollLeft: DomService.getScrollLeft(target),
     direction: 0,
     originalEvent: null
   };
-  return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.startWith)(event), (0, _operators.auditTime)(33), // 30 fps
-  (0, _operators.map)(originalEvent => {
-    /*
-    event.top = target.offsetTop || 0;
-    event.left = target.offsetLeft || 0;
-    event.width = target.offsetWidth || target.innerWidth;
-    event.height = target.offsetHeight || target.innerHeight;
-    */
-    event.scrollTop = DomService.getScrollTop(target);
-    event.scrollLeft = DomService.getScrollLeft(target);
+  return (0, _rxjs.merge)(DomService.mainScroll$, DomService.secondaryScroll$_).pipe((0, _operators.auditTime)(1000 / 60), (0, _operators.map)(originalEvent => {
+    event.scrollTop = DomService.getScrollTop(originalEvent.target);
+    event.scrollLeft = DomService.getScrollLeft(originalEvent.target);
     const diff = event.scrollTop - previousTop;
     event.direction = diff ? diff / Math.abs(diff) : 0;
     previousTop = event.scrollTop;
     event.originalEvent = originalEvent;
     return event;
-  }), (0, _operators.shareReplay)() // ,
-  // filter(event => event.direction !== 0)
-  );
+  }), (0, _operators.startWith)(event), (0, _operators.shareReplay)());
 }();
 
 DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$).pipe((0, _operators.shareReplay)());
@@ -28197,6 +28209,7 @@ class StoreLocatorCtrl {
     this.mapCenter$.pipe((0, _operators.debounceTime)(1000), (0, _operators.takeUntil)(this.unsubscribe)).subscribe(position => {
       this.findNearStores(this.stores, position);
     });
+    this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(event => {});
     $scope.$on('destroy', () => {
       // console.log('destroy');
       this.unsubscribe.next();

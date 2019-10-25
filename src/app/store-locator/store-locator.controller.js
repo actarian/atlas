@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
@@ -54,6 +53,9 @@ class StoreLocatorCtrl {
 		).subscribe(position => {
 			this.findNearStores(this.stores, position);
 		});
+		this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe((event) => {});
 		$scope.$on('destroy', () => {
 			// console.log('destroy');
 			this.unsubscribe.next();
