@@ -7509,7 +7509,9 @@ page-transition {
   position: relative;
   overflow: visible; }
   .section--tile .picture img {
-    display: block; }
+    display: block;
+    min-width: 1px;
+    min-height: 1px; }
   .section--tile .picture .width,
   .section--tile .picture .height {
     position: absolute;
