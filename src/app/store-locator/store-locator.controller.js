@@ -2,9 +2,12 @@
 
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import GtmService from '../gtm/gtm.service';
 
+const GTM_CAT = 'store-locator';
 const ZOOM_LEVEL = 13;
 const SHOW_INFO_WINDOW = false;
+const MAX_DISTANCE = 100;
 let GOOGLE_MAPS = null;
 
 class StoreLocatorCtrl {
@@ -121,26 +124,37 @@ class StoreLocatorCtrl {
 	addMarkers(stores) {
 		const markers = stores.map((store) => {
 			const position = new google.maps.LatLng(store.latitude, store.longitude);
-			const content = `<div class="marker__content">
+			let content = `<div class="marker__content">
 				<div class="title"><span>${store.name}</span></div>
 				<div class="group group--info">
 					<div class="address">
 						${store.address}<br>
-						${store.zip} ${store.city} ${store.cod_provincia} ${store.stato_IT}<br>
-						<span ng-if="store.tel">${store.tel}<br></span>
-						<span ng-if="store.email"><a ng-href="mailto:${store.email}">${store.email}</a></span>
+						${store.zip} ${store.citta} ${store.cod_provincia} ${store.stato}<br>
+						<!--store.tel-->
+						<!--store.email-->
+						<!--store.webSite-->
 					</div>
-					<div class="distance">At approx. <b>${Math.floor(store.distance)} km</b></div>
+					<div class="distance">${window.BOMLabels.store_locator_approx} <b>${Math.floor(store.distance)} km</b></div>
 				</div>
 				<div class="group group--cta">
-					<a href="${store.webSite}" target="_blank" class="btn btn--link" ng-if="store.webSite"><span>More info</span></a>
-					<a href="https://www.google.it/maps/dir/${this.position.lat()},${this.position.lng()}/${store.name}/@${store.latitude},${store.longitude}/" target="_blank" class="btn btn--link"><span>How to reach the store</span></a>
+					<!--store.pageurl-->
+					<a id="locator-marker" href="https://www.google.it/maps/dir/${this.position.lat()},${this.position.lng()}/${store.name}/@${store.latitude},${store.longitude}/" target="_blank" class="btn btn--link"><span>${window.BOMLabels.store_locator_reach_store}</span></a>
 				</div>
 			</div>`;
+
+			if (store.tel)
+				content = content.replace('<!--store.tel-->', `<span>${store.tel}<br></span>`);
+			if (store.email)
+				content = content.replace('<!--store.email-->', `<span><a href="mailto:${store.email}">${store.email}</a><br></span>`);
+			if (store.webSite)
+				content = content.replace('<!--store.webSite-->', `<span><a target="_blank" href="${store.webSite}">${store.webSite}</a></span>`);
+			if (store.pageurl)
+				content = content.replace('<!--store.pageurl-->', `<a id="locator-marker" href="${store.pageurl}" target="_blank" class="btn btn--link"><span>${window.BOMLabels.More_info}</span></a>`);
+
 			const marker = new google.maps.Marker({
 				position: position,
 				// map: this.map,
-				icon: store.importante ? './img/store-locator/store-primary.png' : './img/store-locator/store-secondary.png',
+				icon: store.importante ? '/img/store-locator/store-primary.png' : '/img/store-locator/store-secondary.png',
 				title: store.name,
 				store: store,
 				content: content,
@@ -148,7 +162,14 @@ class StoreLocatorCtrl {
 			marker.addListener('click', () => {
 				this.setMarkerWindow(marker.position, content);
 				this.scrollToStore(store);
+
+				GtmService.push({
+					event: 'dealerlocator',
+					action: 'marker-click',
+					label: store.name
+				});
 			});
+			store.marker = marker;
 			/*
 			marker.addListener('mouseout', () => {
 				this.setMarkerWindow(null);
@@ -168,8 +189,9 @@ class StoreLocatorCtrl {
 			node.addEventListener('mouseover', panTo);
 			*/
 		});
+
 		const markerCluster = new MarkerClusterer(this.map, markers, {
-			imagePath: 'img/store-locator/cluster-',
+			imagePath: '/img/store-locator/cluster-',
 		});
 		const styles = markerCluster.getStyles();
 		styles.forEach(style => style.textColor = '#ffffff');
@@ -239,13 +261,26 @@ class StoreLocatorCtrl {
 
 	findNearStores(stores, position) {
 		if (stores) {
+
+			stores.forEach((store) => {
+				store.distance = this.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
+				store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= MAX_DISTANCE /* Km */ ;
+
+				if (store.visible) {
+					if (store.removed) this.markerCluster.addMarker(store.marker);
+					delete store.removed;
+				} else {
+					this.markerCluster.removeMarker(store.marker);
+					store.removed = true;
+				}
+			});
+
 			stores = stores.slice();
 			stores.sort((a, b) => {
-				const da = this.calculateDistance(a.latitude, a.longitude, position.lat(), position.lng(), 'K');
-				const db = this.calculateDistance(b.latitude, b.longitude, position.lat(), position.lng(), 'K');
-				return da * (a.importante ? 0.5 : 1) - db * (b.importante ? 0.5 : 1);
+				return a.distance * (a.importante ? 0.5 : 1) - b.distance * (b.importante ? 0.5 : 1);
 			});
-			const visibleStores = stores.slice(0, 50);
+
+			const visibleStores = stores.filter(store => store.visible).slice(0, 50);
 			this.$timeout(() => {
 				this.visibleStores = visibleStores;
 			}, 1);
@@ -280,6 +315,20 @@ class StoreLocatorCtrl {
 	onSubmit() {
 		this.error = null;
 		this.busyFind = true;
+
+		const fakeFilter = {
+			'': {
+				value: this.model.address,
+				options: [
+					{
+						value: this.model.address,
+						key: this.model.address
+					}
+				]
+			}
+		};
+		GtmService.pageViewFilters(GTM_CAT, fakeFilter);
+
 		const geocoder = this.geocoder || new google.maps.Geocoder();
 		this.geocoder = geocoder;
 		geocoder.geocode({ address: this.model.address }, (results, status) => {

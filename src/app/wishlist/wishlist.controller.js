@@ -1,4 +1,4 @@
-﻿/* jshint esversion: 6 */
+/* jshint esversion: 6 */
 
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -42,9 +42,20 @@ class WishlistCtrl {
 			takeUntil(this.unsubscribe)
 		).subscribe(
 			success => {
-				console.log('WishlistCtrl.load', success);
+				// console.log('WishlistCtrl.load', success);
 				if (success) {
 					let items = success.data.slice();
+					let wishlist = this.wishlistService.wishlist;
+
+					items.forEach(item => {
+						const index = this.wishlistService.indexOf(item);
+
+						if (index >= 0) {
+							item.name = wishlist[index].name;
+							item.typeName = wishlist[index].typeName;
+						}
+					});
+
 					/* FAKE */
 					/*
 					while (items.length < 200) {
@@ -98,7 +109,7 @@ class WishlistCtrl {
 
 	print() {
 		return window.print();
-
+		/*
 		const iframe = document.createElement('iframe');
 		iframe.onload = function() {
 			console.log('onload');
@@ -108,6 +119,7 @@ class WishlistCtrl {
 		iframe.style.width = '768px';
 		iframe.src = window.location.href + '?printable';
 		document.body.appendChild(iframe);
+		*/
 	}
 
 }

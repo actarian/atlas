@@ -7,9 +7,7 @@ const DEFAULT_SWIPER_OPTIONS = {
 	loop: false,
 	loopAdditionalSlides: 100,
 	speed: 600,
-	autoplay: {
-		delay: 5000,
-	},
+	autoplay: 5000,
 	keyboardControl: true,
 	mousewheelControl: false,
 	onSlideClick: function(swiper) {
@@ -37,14 +35,12 @@ export class SwiperDirective {
 		if (window.matchMedia('print').matches) {
 			return;
 		}
-
 		const onBeforePrint = () => {
 			if (element.swiper) {
 				element.swiper.destroy();
 			}
 		};
 		window.addEventListener('beforeprint', onBeforePrint);
-
 		TweenMax.set(node, { opacity: 0 });
 		scope.$on('lastItem', (slide) => {
 			this.onSwiper(scope, element, attributes);
@@ -250,6 +246,7 @@ export class SwiperProjectsDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			// parallax: true,
+			// autoplay: 5000,
 			// loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
@@ -283,9 +280,7 @@ export class SwiperTileDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			parallax: true,
-			autoplay: {
-				delay: 5000,
-			},
+			autoplay: 5000,
 			// loop: true,
 			spaceBetween: 60,
 			keyboardControl: true,
@@ -320,9 +315,7 @@ export class SwiperTimelineDirective extends SwiperDirective {
 			slidesPerView: 1,
 			spaceBetween: 60,
 			speed: 600,
-			autoplay: {
-				delay: 5000,
-			},
+			autoplay: 5000,
 			keyboardControl: true,
 			mousewheelControl: false,
 			on: {

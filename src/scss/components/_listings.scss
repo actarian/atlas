@@ -35,7 +35,6 @@
 				font-size: 20px;
 				margin-bottom: 2px;
 			}
-
 		}
 
 		@include media-breakpoint-down(xs) {
@@ -48,27 +47,14 @@
 				display: block;
 				line-height: 1;
 			}
-
 		}
 	}
 
-	@include media-breakpoint-down(xs) {
-		display: block;
-		margin-right: -30px;
-		margin-left: -30px;
-		min-width: 100%;
-		padding: 0 15px;
-		white-space: nowrap;
-		overflow-y: hidden;
-		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
+	&.swiper-wrapper {
 
-		/*
 		&>.listing__item {
-			display: inline-block;
+			padding-bottom: 10px;
 		}
-		*/
-
 	}
 }
 
@@ -118,7 +104,6 @@
 		flex-direction: column;
 		text-align: center;
 		cursor: pointer;
-		// border: 1px solid red;
 
 		.picture {
 			flex: 1 1 auto;
@@ -136,14 +121,6 @@
 				transform: scale(1.05, 1.05);
 			}
 		}
-
-		/*
-		&:not(:hover) {
-			.picture {
-				box-shadow: none;
-			}
-		}
-		*/
 
 		.title {
 			font-size: 14px;
@@ -163,12 +140,6 @@
 
 		@include media-breakpoint-up(sm) {
 			padding-bottom: 90px;
-
-			/*
-			.picture {
-				@include aspect-bottom(3, 2);
-			}
-			*/
 		}
 
 		@include media-breakpoint-down(xs) {
@@ -210,22 +181,6 @@
 			width: calc(100% / 3 - 60px);
 		}
 	}
-
-	/*
-	.section--beinspired & {
-		@include media-breakpoint-up(sm) {
-			&>.listing__item {
-				flex: 0 1 calc(100% / 2 - 60px);
-			}
-		}
-
-		@include media-breakpoint-up(md) {
-			&>.listing__item {
-				flex: 0 1 calc(100% / 3 - 60px);
-			}
-		}
-	}
-	*/
 }
 
 .listing--sizes {
@@ -266,19 +221,19 @@
 		}
 	}
 
-	& > .listing__item {
+	&>.listing__item {
 		margin-right: 30px;
 		margin-bottom: 55px;
 		cursor: pointer;
 
-		& > .picture {
+		&>.picture {
 			@include as-aspect-clip();
 			margin-bottom: 20px;
 			background: $background;
 			border: 1px solid #898c8e;
 			transition: all ease-in-out 400ms;
 
-			& > img {
+			&>img {
 				width: 100%;
 				object-fit: cover;
 			}
@@ -316,13 +271,13 @@
 				width: 0.26% * $w;
 				flex: 0 0 0.26% * $w;
 
-				& > .picture {
+				&>.picture {
 					@include as-aspect-clip-size($w, $h);
 				}
 			}
 
 			@include media-breakpoint-down(xs) {
-				& > .picture {
+				&>.picture {
 					@include as-aspect-clip-size($w, $h * (0.36 * $w / 100));
 					width: 0.36% * $w;
 				}
@@ -339,13 +294,13 @@
 		}
 
 		.aspect--90x45 {
-			& > .picture {
+			&>.picture {
 				margin-top: 16.5%;
 			}
 		}
 
-		& > .listing__item {
-			& > .picture {
+		&>.listing__item {
+			&>.picture {
 				width: 100%;
 			}
 		}
@@ -354,18 +309,9 @@
 	@include media-breakpoint-down(xs) {
 		display: block;
 
-		& > .listing__item {
+		&>.listing__item {
 			display: block;
 			width: 100%;
 		}
-
-		/*
-		.picture {
-			.overlay,
-			.btn {
-				display: none;
-			}
-		}
-		*/
 	}
 }

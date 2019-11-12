@@ -27,7 +27,7 @@ export default class ScrollDirective {
 				});
 				element.on('$destroy', () => {
 					subscription.unsubscribe();
-				});	
+				});
 			});
 		}
 		/*

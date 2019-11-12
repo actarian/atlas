@@ -57,8 +57,8 @@ export default class DomService {
 			const canvas = document.createElement('canvas');
 			if (!!window.WebGLRenderingContext) {
 				gl = canvas.getContext('webgl', {
-						failIfMajorPerformanceCaveat: true
-					}) ||
+					failIfMajorPerformanceCaveat: true
+				}) ||
 					canvas.getContext('experimental-webgl', {
 						failIfMajorPerformanceCaveat: true
 					});
@@ -301,7 +301,7 @@ DomService.factory.$inject = [];
 DomService.rafIntersection_ = {};
 DomService.scrollIntersection_ = {};
 DomService.raf$ = range(0, Number.POSITIVE_INFINITY, animationFrame);
-DomService.windowRect$ = function() {
+DomService.windowRect$ = function () {
 	const windowRect = new Rect({
 		width: window.innerWidth,
 		height: window.innerHeight
@@ -319,14 +319,14 @@ DomService.windowRect$ = function() {
 DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$).pipe(
 	shareReplay()
 );
-DomService.mainScroll$ = function() {
+DomService.mainScroll$ = function () {
 	const target = window;
 	return fromEvent(target, 'scroll').pipe(
 		shareReplay()
 	);
 }();
 DomService.secondaryScroll$_ = new Subject();
-DomService.scroll$ = function() {
+DomService.scroll$ = function () {
 	const target = window;
 	let previousTop = DomService.getScrollTop(target);
 	const event = {

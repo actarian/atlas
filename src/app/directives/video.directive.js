@@ -54,7 +54,7 @@ export default class VideoDirective {
 				GtmService.push({
 					event: 'Pinterest',
 					wish_name: scope.item.name || scope.item.coId,
-					wish_type: scope.item.type
+					wish_type: scope.item.typeName || scope.item.type
 				});
 
 				// console.log('VideoDirective.onPin', pin);
@@ -84,9 +84,9 @@ export default class VideoDirective {
 			});
 		};
 		const onPlayGtm = () => {
-			const source = video.querySelector('source');
-			if (source) {
-				const src = source.getAttribute('src');
+			const sources = video.querySelectorAll('source');
+			if (sources.length) {
+				const src = sources[sources.length - 1].getAttribute('src');
 				if (src)
 					GtmService.push({
 						event: 'video play',
@@ -164,9 +164,9 @@ export default class VideoDirective {
 							}
 						} else {
 							const video = itemNode.querySelector('video');
-							const source = video.querySelector('source');
+							const sources = video.querySelectorAll('source');
 							item.poster = video.getAttribute('poster');
-							item.src = source.getAttribute('src');
+							item.src = sources[sources.length - 1].getAttribute('src');
 							item.title = video.getAttribute('alt');
 							const wishlist = itemNode.getAttribute('video');
 							if (wishlist) {
