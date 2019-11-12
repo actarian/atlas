@@ -15,7 +15,7 @@ export default class GtmCollectionDirective {
 		const node = element[0];
 
 		const onClick = () => {
-			const actionField = scope.item.list;
+			const actionField = { list: scope.item.list };
 			const product = Object.assign({}, scope.item);
 			delete product.list;
 

@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 
 import GtmService from '../gtm/gtm.service';
-
 const GTM_CAT = 'collezioni';
 
 class CollectionsCtrl {
@@ -106,9 +105,9 @@ class CollectionsCtrl {
 		this.filteredBrands = [];
 		this.$timeout(() => {
 			this.filteredBrands = filteredBrands;
+			this.updateFilterStates(filteredBrands);
 			this.resultCounts = resultCounts;
 			this.totalCounts = totalCounts;
-			this.updateFilterStates(filteredBrands);
 			// delayer for image update
 		}, 50);
 

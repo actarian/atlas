@@ -89,7 +89,6 @@ class MoodboardCtrl {
 				anyFilter = true;
 			}
 		});
-		// console.log(filters);
 		if (anyFilter) {
 			this.apiService.moodboard.filter(filters).pipe(
 				first()

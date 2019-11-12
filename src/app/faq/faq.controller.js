@@ -19,6 +19,9 @@ class FaqCtrl {
 		this.domService = DomService;
 		this.apiService = ApiService;
 		this.faqCategories = window.faqCategories || [];
+		this.faqCategories.forEach(x => {
+			if (!x.items) x.items = [];
+		});
 		// eliminare!
 		//this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
 		//
@@ -99,7 +102,7 @@ class FaqCtrl {
 				if (query !== '') {
 
 					const fakeFilter = {
-						q: {
+						'': {
 							value: query,
 							options: [
 								{

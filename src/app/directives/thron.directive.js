@@ -9,7 +9,7 @@ export default class ThronDirective {
 	}
 
 	link(scope, element, attributes, controller) {
-		const THRON = window['THRONContentExperience'] || window['THRONPlayer'];
+		const THRON = window.THRONContentExperience || window.THRONPlayer;
 		if (!THRON) {
 			return;
 		}
@@ -19,15 +19,15 @@ export default class ThronDirective {
 			media: node.getAttribute('data-thron'),
 			muted: true,
 			autoplay: false,
-			linkedContent: 'hide',
+			displayLinked: 'close',
 			noSkin: true,
+			lockBitrate: 'max',
 		});
 		player.on('ready', () => {
 			const mediaContainer = player.mediaContainer();
 			const video = mediaContainer.querySelector('video');
 			video.setAttribute('playsinline', 'true');
-			video.setAttribute('loop', 'true');
-			// video.setAttribute('autoplay', 'true');
+			video.setAttribute('autoplay', 'true');
 		});
 		scope.$on('playThron', ($scope, id) => {
 			if (id === node.id) {

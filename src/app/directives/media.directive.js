@@ -16,13 +16,14 @@ export default class MediaDirective {
 	<ng-transclude></ng-transclude>
 </div>
 <div class="overlay" ng-click="onOverlay()"></div>
+<div class="share-buttons">
 <div class="btn btn--pinterest" ng-click="onPin($event)" ng-if="onPin">
 	<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
 </div>
 <div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
 	<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
 	<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
-</div>`;
+</div></div>`;
 		this.scope = {
 			item: '=?media',
 		};
@@ -48,7 +49,7 @@ export default class MediaDirective {
 				GtmService.push({
 					event: 'Pinterest',
 					wish_name: scope.item.name || scope.item.coId,
-					wish_type: scope.item.type
+					wish_type: scope.item.typeName || scope.item.type
 				});
 
 				PinUtils.pinOne(pin);
@@ -116,9 +117,9 @@ export default class MediaDirective {
 							}
 						} else {
 							const video = itemNode.querySelector('video');
-							const source = video.querySelector('source');
+							const sources = video.querySelectorAll('source');
 							item.poster = video.getAttribute('poster');
-							item.src = source.getAttribute('src');
+							item.src = sources[sources.length - 1].getAttribute('src');
 							item.title = video.getAttribute('alt');
 							const wishlist = itemNode.getAttribute('video');
 							if (wishlist) {

@@ -20,7 +20,6 @@ export class MuuriDirective {
 			node.classList.add('printable');
 		};
 		window.addEventListener('beforeprint', onBeforePrint);
-
 		scope.$on('lastItem', (slide) => {
 			// console.log('MuuriDirective.lastItem', slide);
 			this.onMuuri(scope, element, attributes);

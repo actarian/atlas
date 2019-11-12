@@ -29,8 +29,29 @@ export default class ApiService {
 			},
 			moodboard: {
 				filter: (filters) => {
-					// return from($http.post(API_HREF + '/api/moodboard/json', filters));
-					return from($http.get('data/moodboard.json'));
+
+					//var f = function (response) {
+					//	const first = items.length === 0;
+					//	items.push(...response.data);
+					//	if (!first) {
+
+					//		items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
+
+					//		subject.next({ data: items });
+					//		subject.complete();
+					//	}
+					//}
+
+					//const subject = new Subject();
+
+					//const items = [];
+
+					//from($http.post('', filters)).subscribe(f, error => subject.error(error));
+					//from($http.get('data/moodboard.json')).subscribe(f, error => subject.error(error));
+
+					//return subject;
+					return from($http.post('', filters));
+					//return from($http.get('data/moodboard.json'));
 				},
 			},
 			storeLocator: {

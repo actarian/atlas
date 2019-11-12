@@ -1,9 +1,10 @@
 /* jshint esversion: 6 */
 
+
 function push_(event) {
 	const dataLayer = window.dataLayer || [];
 	dataLayer.push(event);
-	// console.log('GtmService.dataLayer', event);
+	console.log('GtmService.dataLayer', event);
 }
 
 export default class GtmService {
@@ -29,6 +30,7 @@ export default class GtmService {
 	static pageViewFilters(cat, filters) {
 
 		const values = [];
+		let any = false;
 
 		for (let key in filters) {
 			let textValue = '';
@@ -41,10 +43,14 @@ export default class GtmService {
 				}
 			}
 
-			values.push(encodeURIComponent(filters[key].key /* se array di filtri */ || key /* se oggetto filtro */ ) + '-' + encodeURIComponent(textValue));
+			if (textValue) any = true;
+
+			let name = filters[key].key /* se array di filtri */ || key /* se oggetto filtro */;
+			if (name) name = encodeURIComponent(name) + '-';
+			values.push(name + encodeURIComponent(textValue));
 		}
 
-		const pathname = `?cat=${cat}&s=${values.join('_')}`;
+		const pathname = any ? `?cat=${cat}&s=${values.join('_')}` : '';
 
 		GtmService.pageView(window.location.pathname + pathname);
 	}

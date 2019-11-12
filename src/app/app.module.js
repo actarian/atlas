@@ -20,7 +20,7 @@ import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
-import ThronDirective from './directives/thron.directive';
+import ThronDirective from './directives/thron.directive';	
 // import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
 import VisibilityDirective from './directives/visibility.directive';
@@ -64,6 +64,8 @@ const app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 
 app.config(['$locationProvider', function($locationProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('*');
+}]).config(['$compileProvider', function ($compileProvider) {
+	$compileProvider.debugInfoEnabled(false);
 }]);
 
 app.factory('ApiService', ApiService.factory)

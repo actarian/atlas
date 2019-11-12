@@ -12,9 +12,9 @@ export default class CustomRenderer extends Highway.Renderer {
 		this.updateGTMData();
 		this.pageView();
 		this.updateBrand();
-        this.updateSearchQuery();
+		this.updateSearchQuery();
 		this.updateMarketsAndLanguages();
-        this.addThis();
+		this.addThis();
 	}
 
 	updateMeta() {
@@ -33,21 +33,29 @@ export default class CustomRenderer extends Highway.Renderer {
 			scope.root.brand = brand;
 			// console.log('CustomRenderer.update', scope);
 		});
-    }
-    
-    updateSearchQuery() {
-        const page = this.properties.page;
-        const dataSearch = [...page.querySelectorAll('[data-search]')];
-        if (dataSearch.length) {
-            const pageDataSearch = [...document.querySelectorAll('[data-search]')];
-            pageDataSearch.forEach(node => {
-                node.setAttribute('data-search', dataSearch[0].getAttribute('data-search'));
-            });
-        }
-    }
+	}
+
+	updateSearchQuery() {
+		const page = this.properties.page;
+		const dataSearch = [...page.querySelectorAll('[data-search]')];
+		if (dataSearch.length) {
+			const pageDataSearch = [...document.querySelectorAll('[data-search]')];
+			pageDataSearch.forEach(node => {
+				node.setAttribute('data-search', dataSearch[0].getAttribute('data-search'));
+			});
+		}
+	}
 
 	updateMarketsAndLanguages() {
 		const page = this.properties.page;
+		const marketSelector = page.getElementById('market-selector');
+		if (marketSelector != null) {
+			try {
+				const marketUrls = angular.fromJson(marketSelector.getAttribute('data-markets'));
+				CustomRenderer.scope.root.marketUrls = marketUrls;
+			} catch (e) {}
+		}
+		/*
 		const marketsAndLanguages = [...page.querySelectorAll('.nav--markets__secondary > li > a')];
 		const anchors = [...document.querySelectorAll('.nav--markets__secondary > li > a')];
 		anchors.forEach(a => {
@@ -57,11 +65,15 @@ export default class CustomRenderer extends Highway.Renderer {
 				console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
 			}
 		});
-		// console.log('updateMarketsAndLanguages', marketsAndLanguages, anchors);
+		*/
 	}
 
 	addThis() {
-		addthis.share('.addthis_inline_share_toolbox');
+		// ci sono estensioni che bloccano questo genere di script
+		if (window.addthis) {
+			if (addthis.share) addthis.share('.addthis_inline_share_toolbox');
+			if (addthis.layers && addthis.layers.refresh) addthis.layers.refresh();
+		}
 	}
 
 	pageView() {
@@ -90,7 +102,7 @@ export default class CustomRenderer extends Highway.Renderer {
 				const view = [...document.querySelectorAll('.view')].pop();
 				// console.log(view.childNodes);
 				const element = angular.element(view.childNodes);
-				const $scope = element.scope();
+				const $scope = CustomRenderer.scope;
 				$scope.root.menuOpened = false;
 				$scope.root.menuProductOpened = false;
 				const $newScope = $scope.$new();

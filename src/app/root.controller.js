@@ -1,4 +1,4 @@
-﻿/* jshint esversion: 6 */
+/* jshint esversion: 6 */
 
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -203,7 +203,7 @@ class RootCtrl {
 		event.preventDefault();
 		event.stopImmediatePropagation();
 	}
-
+	
 	toggleMenuProduct() {
 		this.menuProductOpened = !this.menuProductOpened;
 		if (!this.menuProductOpened) {

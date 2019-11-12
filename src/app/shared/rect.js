@@ -77,7 +77,6 @@ export default class Rect {
 		const dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
 		const x = dx ? (1 - dx / this.width) : ((rect.left + rect.width) - this.left) / this.width;
 		const y = dy ? (1 - dy / this.height) : ((rect.top + rect.height) - this.top) / this.height;
-		// console.log(this.top, this.height, rect.top, rect.height);
 		intersection.x = x;
 		intersection.y = y;
 		return intersection;

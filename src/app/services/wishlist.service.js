@@ -61,10 +61,10 @@ export default class WishlistService {
 			GtmService.push({
 				event: 'addWishlist',
 				wish_name: item.name || item.coId,
-				wish_type: item.type
+				wish_type: item.typeName || item.type
 			});
 
-			wishlist.push({ id: item.id, coId: item.coId, type: item.type, name: item.name });
+			wishlist.push({ id: item.id, coId: item.coId, type: item.type, typeName: item.typeName, name: item.name });
 			this.wishlist = wishlist;
 			promise.resolve(true);
 		});
@@ -78,7 +78,7 @@ export default class WishlistService {
 			GtmService.push({
 				event: 'removeWishlist',
 				wish_name: wishlist[index].name || wishlist[index].coId,
-				wish_type: wishlist[index].type
+				wish_type: wishlist[index].typeName || wishlist[index].type
 			});
 
 			wishlist.splice(index, 1);
@@ -104,15 +104,15 @@ export default class WishlistService {
 	}
 
 	get() {
-		if (window.location.hostname === 'localhost') {
+		if (window.location.host !== 'localhost:6001') {
+			return from(this.$http.post('', this.wishlist).then(success => {
+				return success;
+			}));
+		} else {
 			return from(this.$http.get('data/moodboard.json').then(success => {
 				if (success.data) {
 					this.wishlist = success.data;
 				}
-				return success;
-			}));
-		} else {
-			return from(this.$http.post('', this.wishlist).then(success => {
 				return success;
 			}));
 		}

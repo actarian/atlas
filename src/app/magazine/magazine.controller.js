@@ -1,5 +1,6 @@
 ﻿/* jshint esversion: 6 */
 
+
 export const ITEMS_PER_PAGE = 9;
 
 class MagazineCtrl {
@@ -14,9 +15,9 @@ class MagazineCtrl {
 		this.locationService = LocationService;
 		this.magazine = window.magazine || [];
 		// !!! FAKE
-		while (this.magazine.length < 100) {
-			this.magazine = this.magazine.concat(this.magazine);
-		}
+		//while (this.magazine.length < 100) {
+		//	this.magazine = this.magazine.concat(this.magazine);
+		//}
 		// !!! FAKE
 		this.maxItems = 0;
 		this.visibleItems = [];

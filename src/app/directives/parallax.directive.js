@@ -15,7 +15,7 @@ export default class ParallaxDirective {
 	}
 
 	link(scope, element, attributes, controller) {
-		return false;
+		return false; // !!! rimosso effetto parallasse
 		const node = element[0];
 		const childNode = node.querySelector(isEdge ? 'img' : 'img, video');
 		if (childNode) {

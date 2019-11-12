@@ -1,6 +1,4 @@
 .section--filters {
-	background: transparent;
-
 	.dropdown {
 		.nav--select {
 			margin-top: 95px;
@@ -27,23 +25,21 @@
 	}
 
 	@include media-breakpoint-down(sm) {
-		display: block;
 		position: fixed;
-		bottom: 0;
 		width: 100%;
-		height: calc(100% - 60px);
-		min-height: 50px;
-		z-index: 101;
-		background: $background-tertiary;
-		// transition: all ease-in-out 350ms;
+		height: auto;
+		min-height: 60px;
+		bottom: 0;
+		z-index: 99;
+		background: var(--background-tertiary);
 
+		// transition: all ease-in-out 350ms;
 		.form--filters {
 			display: block;
 			overflow-x: hidden;
 			overflow-y: auto;
-			// transition: all ease-in-out 350ms;
-			max-height: calc(100% - 50px);
-			height: calc(100% - 50px);
+			height: 100%;
+			-webkit-overflow-scrolling: touch;
 			box-shadow: none;
 			position: relative;
 			top: 0;
@@ -76,12 +72,17 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+			top: 0;
+
+			.form--filters {
+				padding-bottom: 200px;
+			}
 		}
 
 		&:not(.opened) {
-			height: auto;
+			height: 60px;
 			// transform: translateY(100%);
-			background: rgba(0, 0, 0, 0.0);
+			background: transparent;
 			text-align: center;
 
 			form {
@@ -93,14 +94,8 @@
 				max-height: 0;
 			}
 
-			button {
-				border: none;
-				backface-visibility: hidden;
-				background-attachment: fixed !important;
-
-				i {
-					margin-left: 5px;
-				}
+			svg {
+				margin-left: 5px;
 			}
 		}
 
@@ -111,7 +106,6 @@
 			}
 		}
 		*/
-
 		.nav--select {
 			max-height: 10000px;
 			width: calc(100% + 60px);
@@ -133,9 +127,7 @@
 				margin-top: 0;
 			}
 		}
-
 	}
-
 }
 
 .btn--filter {

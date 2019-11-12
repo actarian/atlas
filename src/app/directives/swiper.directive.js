@@ -7,9 +7,7 @@ const DEFAULT_SWIPER_OPTIONS = {
 	loop: false,
 	loopAdditionalSlides: 100,
 	speed: 600,
-	autoplay: {
-		delay: 5000,
-	},
+	autoplay: 5000,
 	keyboardControl: true,
 	mousewheelControl: false,
 	onSlideClick: function(swiper) {
@@ -248,6 +246,7 @@ export class SwiperProjectsDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			// parallax: true,
+			// autoplay: 5000,
 			// loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
@@ -281,9 +280,7 @@ export class SwiperTileDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			parallax: true,
-			autoplay: {
-				delay: 5000,
-			},
+			autoplay: 5000,
 			// loop: true,
 			spaceBetween: 60,
 			keyboardControl: true,
@@ -318,9 +315,7 @@ export class SwiperTimelineDirective extends SwiperDirective {
 			slidesPerView: 1,
 			spaceBetween: 60,
 			speed: 600,
-			autoplay: {
-				delay: 5000,
-			},
+			autoplay: 5000,
 			keyboardControl: true,
 			mousewheelControl: false,
 			on: {

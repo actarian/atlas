@@ -127,7 +127,6 @@
 			font-size: 40px;
 			font-weight: $font-extralight;
 		}
-
 	}
 
 	@include media-breakpoint-down(sm) {
@@ -164,8 +163,8 @@
 
 			.width,
 			.height {
-				// background: none;
 
+				// background: none;
 				&>span {
 					font-size: 15px;
 					font-weight: bold;
@@ -234,5 +233,4 @@
 			}
 		}
 	}
-
 }
