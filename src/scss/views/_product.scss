@@ -1,7 +1,7 @@
 .section--product {
 
 	@include media-breakpoint-up(md) {
-		z-index: 100;
+		z-index: 99;
 		min-height: 80px;
 
 		&.sticky {
@@ -22,7 +22,7 @@
 		width: 100%;
 		height: calc(100vh - 60px);
 		min-height: 50px;
-		z-index: 100;
+		z-index: 101;
 		background: $background-tertiary;
 		transition: all ease-in-out 350ms;
 

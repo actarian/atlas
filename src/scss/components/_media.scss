@@ -183,7 +183,6 @@
 	}
 }
 
-
 [video] {
 	cursor: pointer;
 }
@@ -201,29 +200,28 @@ canvas {
 	cursor: pointer;
 }
 
-/*
 [lazy] {
-	object-fit: none;
+	display: inline-block;
+	min-width: 1px;
+	min-height: 1px;
 
-	&.lazyed {
-		object-fit: cover;
+	@media screen {
+		visibility: hidden;
+		opacity: 0;
+		transition: opacity ease-in-out 350ms;
+
+		&.lazyed {
+			visibility: visible;
+			opacity: 1;
+		}
 	}
 }
-*/
 
-[lazy] {
-	/*
-	background: $background-tertiary;
-	.background & {
-		background: $background-negative;
-	}
-	*/
-	visibility: hidden;
-	opacity: 0;
-	transition: opacity ease-in-out 350ms;
+iframe {
+	max-width: 100%;
+	max-height: calc(9 / 16 * 100vw);
+}
 
-	&.lazyed {
-		visibility: visible;
-		opacity: 1;
-	}
+img {
+	max-width: 100%;
 }

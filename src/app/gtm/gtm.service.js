@@ -1,10 +1,9 @@
 /* jshint esversion: 6 */
 
-
 function push_(event) {
 	const dataLayer = window.dataLayer || [];
 	dataLayer.push(event);
-	console.log('GtmService.dataLayer', event);
+	// console.log('GtmService.dataLayer', event);
 }
 
 export default class GtmService {
@@ -42,7 +41,7 @@ export default class GtmService {
 				}
 			}
 
-			values.push(encodeURIComponent(filters[key].key /* se array di filtri */ || key /* se oggetto filtro */) + '-' + encodeURIComponent(textValue));
+			values.push(encodeURIComponent(filters[key].key /* se array di filtri */ || key /* se oggetto filtro */ ) + '-' + encodeURIComponent(textValue));
 		}
 
 		const pathname = `?cat=${cat}&s=${values.join('_')}`;

@@ -95,28 +95,57 @@
 
 	}
 
-	@media (max-width: 767.98px) and (orientation: portrait) {
-		.aspect {
-			@include aspect-grid(375, 600); // 667
+	@media screen {
+
+		@media (max-width: 767.98px) and (orientation: portrait) {
+			.aspect {
+				@include aspect-grid(375, 600); // 667
+			}
 		}
+
+		@media (max-width: 767.98px) and (orientation: landscape) {
+			.aspect {
+				@include aspect-grid(600, 375); // 667
+			}
+		}
+
+		@include media-breakpoint-up(sm) {
+			.aspect {
+				@include aspect-grid(4, 3);
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			.aspect {
+				// @include aspect-grid(1920, 670);
+				@include aspect-grid(1920, 960);
+			}
+		}
+
 	}
 
-	@media (max-width: 767.98px) and (orientation: landscape) {
-		.aspect {
-			@include aspect-grid(600, 375); // 667
-		}
-	}
+	@media print {
 
-	@include media-breakpoint-up(sm) {
-		.aspect {
-			@include aspect-grid(4, 3);
-		}
-	}
+		background: white;
 
-	@include media-breakpoint-up(md) {
-		.aspect {
-			@include aspect-grid(1920, 670);
+		.title {
+			color: $foreground;
 		}
+
+		.abstract {
+			color: $foreground;
+		}
+
+		.category {
+			color: $foreground;
+		}
+
+		video,
+		img,
+		[data-thron] {
+			display: none;
+		}
+
 	}
 
 }
@@ -124,10 +153,11 @@
 .section--hero {
 	@extend %section--hero;
 
+	/*
 	.aspect {
 		pointer-events: none;
 	}
-
+	*/
 }
 
 .section--hero-home {
@@ -186,9 +216,11 @@
 		z-index: 0;
 	}
 
+	/*
 	.aspect {
 		pointer-events: none;
 	}
+	*/
 
 	.container {
 		position: relative;
@@ -228,43 +260,49 @@
 		}
 	}
 
-	/*
-	@include media-breakpoint-down(xs) {
-		.aspect {
-			@include aspect-grid(375, 667);
-		}
-	}
-	*/
+	@media screen {
 
-	@media (max-width: 767.98px) and (orientation: portrait) {
-		.aspect {
-			@include aspect-grid(375, 600); // 667
+		/*
+		@include media-breakpoint-down(xs) {
+			.aspect {
+				@include aspect-grid(375, 667);
+			}
 		}
+		*/
+
+		@media (max-width: 767.98px) and (orientation: portrait) {
+			.aspect {
+				@include aspect-grid(375, 600); // 667
+			}
+		}
+
+		@media (max-width: 767.98px) and (orientation: landscape) {
+			.aspect {
+				@include aspect-grid(600, 375); // 667
+			}
+		}
+
+		@include media-breakpoint-up(sm) {
+			.aspect {
+				@include aspect-grid(4, 3);
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			.aspect {
+				@include aspect-grid(1920, 670);
+				// @include aspect-grid(1920, 960);
+			}
+		}
+
+		@include media-breakpoint-up(xl) {
+			.title {
+				font-size: 100px;
+			}
+		}
+
 	}
 
-	@media (max-width: 767.98px) and (orientation: landscape) {
-		.aspect {
-			@include aspect-grid(600, 375); // 667
-		}
-	}
-
-	@include media-breakpoint-up(sm) {
-		.aspect {
-			@include aspect-grid(4, 3);
-		}
-	}
-
-	@include media-breakpoint-up(md) {
-		.aspect {
-			@include aspect-grid(1920, 670);
-		}
-	}
-
-	@include media-breakpoint-up(xl) {
-		.title {
-			font-size: 100px;
-		}
-	}
 }
 
 .section--negative {
@@ -285,4 +323,26 @@
 	.description {
 		color: $foreground-negative;
 	}
+
+	@media print {
+
+		&,
+		&:not(.section--full),
+		& .background {
+			background: white;
+		}
+
+		.title {
+			color: $foreground;
+		}
+
+		.abstract {
+			color: $foreground;
+		}
+
+		.category {
+			color: $foreground;
+		}
+	}
+
 }

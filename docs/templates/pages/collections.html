@@ -417,7 +417,7 @@
 			</div>
 			-->
 		</form>
-		<button type="button" class="btn btn--project hidden-md-up" ng-click="root.menuProductOpened = !root.menuProductOpened">
+		<button type="button" class="btn btn--project hidden-md-up" ng-click="root.toggleMenuProduct()">
 			<span ng-if="!root.menuProductOpened">Filter</span>
 			<svg class="icon icon--close" ng-if="root.menuProductOpened"><use xlink:href="#close"></use></svg>
 		</button>
@@ -589,6 +589,15 @@
 		</section>
 	</div>
 	<div class="section--collections-results" ng-if="collectionsCtrl.filteredBrands">
+		<section class="section section--collections" ng-if="collectionsCtrl.resultCounts">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4">
+						<div class="category">collezioni trovate nella ricerca {{collectionsCtrl.resultCounts}} di {{collectionsCtrl.totalCounts}}</div>
+					</div>
+				</div>
+			</div>
+		</section>
 		<section class="section section--collections" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
 			<div class="container">
 				<div class="row">

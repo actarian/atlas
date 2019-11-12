@@ -8,9 +8,22 @@ export class MuuriDirective {
 	}
 
 	link(scope, element, attributes, controller) {
+		const node = element[0];
+		if (window.matchMedia('print').matches) {
+			node.classList.add('printable');
+			return;
+		}
 		scope.$on('lastItem', (slide) => {
 			// console.log('MuuriDirective.lastItem', slide);
 			this.onMuuri(scope, element, attributes);
+		});
+		scope.$on('lazyImage', (slide) => {
+			// console.log('lazyImage', element.muuri);
+			if (element.muuri) {
+				const node = element[0];
+				const items = [...node.querySelectorAll('.listing__item')];
+				element.muuri.refreshItems(items).layout();
+			}
 		});
 		element.on('$destroy', () => {
 			if (element.muuri) {

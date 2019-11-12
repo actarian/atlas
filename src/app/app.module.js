@@ -20,6 +20,7 @@ import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
+import ThronDirective from './directives/thron.directive';
 // import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
 import VisibilityDirective from './directives/visibility.directive';
@@ -90,6 +91,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('lastItem', LastItemDirective.factory)
 	.directive('lazy', LazyDirective.factory)
 	.directive('lazyScript', LazyScriptDirective.factory)
+	.directive('thron', ThronDirective.factory)
 	.directive('media', MediaDirective.factory)
 	.directive('moodboardDropdown', MoodboardDropdownDirective.factory)
 	.directive('moodboardSearch', MoodboardSearchDirective.factory)

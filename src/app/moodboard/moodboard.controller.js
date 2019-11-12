@@ -36,7 +36,7 @@ class MoodboardCtrl {
 
 	deserializeFilters() {
 		const locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {};
-		console.log('MoodboardCtrl.deserializeFilters', filters);
+		// console.log('MoodboardCtrl.deserializeFilters', filters);
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -89,7 +89,7 @@ class MoodboardCtrl {
 				anyFilter = true;
 			}
 		});
-		console.log(filters);
+		// console.log(filters);
 		if (anyFilter) {
 			this.apiService.moodboard.filter(filters).pipe(
 				first()

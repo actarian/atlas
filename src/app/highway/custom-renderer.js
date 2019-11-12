@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import Highway from '@dogstudio/highway';
 import GtmService from '../gtm/gtm.service';
 
@@ -13,7 +12,9 @@ export default class CustomRenderer extends Highway.Renderer {
 		this.updateGTMData();
 		this.pageView();
 		this.updateBrand();
+        this.updateSearchQuery();
 		this.updateMarketsAndLanguages();
+        this.addThis();
 	}
 
 	updateMeta() {
@@ -32,7 +33,18 @@ export default class CustomRenderer extends Highway.Renderer {
 			scope.root.brand = brand;
 			// console.log('CustomRenderer.update', scope);
 		});
-	}
+    }
+    
+    updateSearchQuery() {
+        const page = this.properties.page;
+        const dataSearch = [...page.querySelectorAll('[data-search]')];
+        if (dataSearch.length) {
+            const pageDataSearch = [...document.querySelectorAll('[data-search]')];
+            pageDataSearch.forEach(node => {
+                node.setAttribute('data-search', dataSearch[0].getAttribute('data-search'));
+            });
+        }
+    }
 
 	updateMarketsAndLanguages() {
 		const page = this.properties.page;
@@ -48,6 +60,10 @@ export default class CustomRenderer extends Highway.Renderer {
 		// console.log('updateMarketsAndLanguages', marketsAndLanguages, anchors);
 	}
 
+	addThis() {
+		addthis.share('.addthis_inline_share_toolbox');
+	}
+
 	pageView() {
 		const page = this.properties.page;
 		if (!page.getElementById(GtmService.FILTERS_SCRIPT_ID)) {
@@ -61,8 +77,7 @@ export default class CustomRenderer extends Highway.Renderer {
 		if (script && script.text) {
 			try {
 				new Function(script.text)();
-			} catch (error) {
-			}
+			} catch (error) {}
 		}
 	}
 

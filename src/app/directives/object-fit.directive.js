@@ -21,7 +21,7 @@ export default class ObjectFitDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
-		console.log('ObjectFitDirective', node);
+		// console.log('ObjectFitDirective', node);
 
 		// if the page is being rendered on the server, don't continue
 		if (typeof window === 'undefined') {

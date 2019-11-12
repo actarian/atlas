@@ -15,6 +15,10 @@ export default class AppearDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
+		if (window.matchMedia('print').matches) {
+			return node.classList.add('appeared');
+		}
+
 		const section = this.getSection(node);
 		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
 		const subscription = this.domService.appear$(node).subscribe(event => { // -0.05
@@ -29,17 +33,15 @@ export default class AppearDirective {
 					node.classList.add('appeared');
 				}
 			}, timeout); // (i - firstVisibleIndex));
-			/*
-			if (index > 0) {
-				setTimeout(() => {
-					node.classList.add('appeared');
-				}, timeout); // (i - firstVisibleIndex));
-			} else {
-				node.classList.add('appeared');
-			}
-			*/
 		});
+		const onBeforePrint = () => {
+			node.classList.add('appeared');
+			subscription.unsubscribe();
+		};
+		window.addEventListener('beforeprint', onBeforePrint);
+
 		element.on('$destroy', () => {
+			window.removeEventListener('beforeprint', onBeforePrint);
 			subscription.unsubscribe();
 		});
 	}

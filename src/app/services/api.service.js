@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 import { from } from 'rxjs';
 
 const API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';

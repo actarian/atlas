@@ -1,4 +1,6 @@
 .section--filters {
+	background: transparent;
+
 	.dropdown {
 		.nav--select {
 			margin-top: 95px;
@@ -6,7 +8,7 @@
 	}
 
 	@include media-breakpoint-up(md) {
-		z-index: 100;
+		z-index: 99;
 		min-height: 97px;
 
 		&.sticky {
@@ -25,12 +27,13 @@
 	}
 
 	@include media-breakpoint-down(sm) {
+		display: block;
 		position: fixed;
 		bottom: 0;
 		width: 100%;
 		height: calc(100% - 60px);
 		min-height: 50px;
-		z-index: 100;
+		z-index: 101;
 		background: $background-tertiary;
 		// transition: all ease-in-out 350ms;
 
@@ -78,8 +81,12 @@
 		&:not(.opened) {
 			height: auto;
 			// transform: translateY(100%);
-			background: transparent;
+			background: rgba(0, 0, 0, 0.0);
 			text-align: center;
+
+			form {
+				display: none;
+			}
 
 			.form--filters {
 				// display: none;
@@ -87,6 +94,9 @@
 			}
 
 			button {
+				border: none;
+				backface-visibility: hidden;
+				background-attachment: fixed !important;
 
 				i {
 					margin-left: 5px;
@@ -367,7 +377,7 @@
 	}
 
 	@include media-breakpoint-up(sm) {
-		padding-top: 120px;
+		padding-top: 70px;
 
 		.title {
 			font-size: 42px;
@@ -377,7 +387,7 @@
 	}
 
 	@include media-breakpoint-down(xs) {
-		padding-top: 80px;
+		padding-top: 70px;
 
 		.title {
 			font-size: 36px;

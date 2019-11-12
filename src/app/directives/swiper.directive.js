@@ -7,7 +7,9 @@ const DEFAULT_SWIPER_OPTIONS = {
 	loop: false,
 	loopAdditionalSlides: 100,
 	speed: 600,
-	autoplay: 5000,
+	autoplay: {
+		delay: 5000,
+	},
 	keyboardControl: true,
 	mousewheelControl: false,
 	onSlideClick: function(swiper) {
@@ -16,6 +18,10 @@ const DEFAULT_SWIPER_OPTIONS = {
 	pagination: {
 		el: '.swiper-pagination',
 		clickable: true,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
 	},
 };
 
@@ -28,17 +34,29 @@ export class SwiperDirective {
 
 	link(scope, element, attributes, controller) {
 		const node = element[0];
+		if (window.matchMedia('print').matches) {
+			return;
+		}
+
+		const onBeforePrint = () => {
+			if (element.swiper) {
+				element.swiper.destroy();
+			}
+		};
+		window.addEventListener('beforeprint', onBeforePrint);
+
 		TweenMax.set(node, { opacity: 0 });
 		scope.$on('lastItem', (slide) => {
-			this.onSwiper(element, attributes);
+			this.onSwiper(scope, element, attributes);
 		});
 		element.on('$destroy', () => {
+			window.removeEventListener('beforeprint', onBeforePrint);
 			if (element.swiper) {
 				element.swiper.destroy();
 			}
 		});
 		scope.$watch('$viewContentLoaded', () => {
-			this.onSwiper(element, attributes);
+			this.onSwiper(scope, element, attributes);
 		});
 		scope.$on('onResize', ($scope) => {
 			this.onResize(scope, element, attributes);
@@ -52,13 +70,14 @@ export class SwiperDirective {
 		}
 	}
 
-	onSwiper(element, attributes) {
+	onSwiper(scope, element, attributes) {
 		const node = element[0];
 		//const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
 		if (element.swiper) {
 			element.swiper.update();
 		} else {
 			//this.options.initialSlide = initialSlide;
+			let swiper_;
 			const on = this.options.on || (this.options.on = {});
 			const callback = on.init;
 			if (!on.init || !on.init.swiperDirectiveInit) {
@@ -67,18 +86,21 @@ export class SwiperDirective {
 						opacity: 1,
 						ease: Power2.easeOut,
 					});
-					if (typeof callback === 'function') {
-						callback.call(this);
-					}
+					setTimeout(() => {
+						if (typeof callback === 'function') {
+							callback.apply(this, [swiper_, element, scope]);
+						}
+					}, 1);
 				};
 				on.init.swiperDirectiveInit = true;
 			}
 			if (attributes.noLoop !== undefined) {
 				this.options.loop = false;
 			}
-			console.log('attributes.noLoop', attributes.noLoop);
+			// console.log('attributes.noLoop', attributes.noLoop);
 			TweenMax.set(node, { opacity: 1 });
-			element.swiper = new Swiper(element, this.options);
+			swiper_ = new Swiper(element, this.options);
+			element.swiper = swiper_;
 			element.swiper._opening = true;
 			element.addClass('swiper-init');
 		}
@@ -114,6 +136,10 @@ export class SwiperGalleryDirective extends SwiperDirective {
 				el: '.swiper-pagination',
 				clickable: true,
 			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
 		};
 	}
 
@@ -145,21 +171,68 @@ export class SwiperHeroDirective extends SwiperDirective {
 
 	constructor() {
 		super();
+		let swiper_, element_, scope_;
 		this.options = {
 			speed: 600,
 			parallax: true,
-			autoplay: 5000,
+			autoplay: {
+				delay: 10000,
+			},
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
 			onSlideClick: function(swiper) {
 				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
 			},
+			on: {
+				init: (swiper, element, scope) => {
+					swiper_ = swiper;
+					element_ = element;
+					scope_ = scope;
+					this.toggleVideo(element, scope);
+					swiper.autoplay.start();
+				},
+				slideChangeTransitionStart: () => {
+					// console.log('slideChangeTransitionStart');
+					this.toggleVideo(element_, scope_);
+				},
+				slideChangeTransitionEnd: () => {
+					// console.log('slideChangeTransitionEnd');
+					// this.toggleVideo(element_, scope_);
+				}
+			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
 			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
 		};
+	}
+
+	toggleVideo(element, scope) {
+		const slides = [...element[0].querySelectorAll('.swiper-slide')];
+		slides.forEach(slide => {
+			const node = slide.querySelector('video, [data-thron]');
+			if (node) {
+				if (slide.classList.contains('swiper-slide-active')) {
+					// console.log('playing node', node);
+					if (node.hasAttribute('data-thron')) {
+						scope.$emit('playThron', node.id);
+					} else {
+						node.play();
+					}
+				} else {
+					if (node.hasAttribute('data-thron')) {
+						scope.$emit('pauseThron', node.id);
+					} else {
+						node.pause();
+					}
+				}
+			}
+		});
 	}
 
 	static factory() {
@@ -177,7 +250,6 @@ export class SwiperProjectsDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			// parallax: true,
-			// autoplay: 5000,
 			// loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
@@ -211,7 +283,9 @@ export class SwiperTileDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			parallax: true,
-			autoplay: 5000,
+			autoplay: {
+				delay: 5000,
+			},
 			// loop: true,
 			spaceBetween: 60,
 			keyboardControl: true,
@@ -222,6 +296,10 @@ export class SwiperTileDirective extends SwiperDirective {
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
 			},
 		};
 	}
@@ -242,7 +320,9 @@ export class SwiperTimelineDirective extends SwiperDirective {
 			slidesPerView: 1,
 			spaceBetween: 60,
 			speed: 600,
-			autoplay: 5000,
+			autoplay: {
+				delay: 5000,
+			},
 			keyboardControl: true,
 			mousewheelControl: false,
 			on: {

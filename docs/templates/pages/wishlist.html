@@ -25,6 +25,11 @@
 				<div class="col-md-8 offset-md-4" appear ng-if="wishlistCtrl.count > 0">
 					<div class="abstract"><b>A wishlist full of creativity and innovations,</b><br> just yours.</div>
 					<div class="group group--cta">
+						<button type="button" ng-click="wishlistCtrl.print()" class="btn btn--gallery">
+							<svg class="icon icon--gallery">
+								<use xlink:href="#gallery"></use>
+							</svg> <span><b>Print Wishlist</b></span>
+						</button>
 						<button type="button" class="btn btn--link" ng-click="wishlistCtrl.clearAll()"><span><b>Clear All</b></span></button>
 					</div>
 				</div>

@@ -42,7 +42,7 @@ class WishlistCtrl {
 			takeUntil(this.unsubscribe)
 		).subscribe(
 			success => {
-				// console.log('WishlistCtrl.load', success);
+				console.log('WishlistCtrl.load', success);
 				if (success) {
 					let items = success.data.slice();
 					/* FAKE */
@@ -94,6 +94,20 @@ class WishlistCtrl {
 				}, 0);
 			}
 		}
+	}
+
+	print() {
+		return window.print();
+
+		const iframe = document.createElement('iframe');
+		iframe.onload = function() {
+			console.log('onload');
+			this.contentWindow.print();
+			iframe.parentNode.removeChild(iframe);
+		};
+		iframe.style.width = '768px';
+		iframe.src = window.location.href + '?printable';
+		document.body.appendChild(iframe);
 	}
 
 }

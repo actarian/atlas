@@ -104,12 +104,18 @@ export default class WishlistService {
 	}
 
 	get() {
-		return from(this.$http/*.get('data/moodboard.json')*/.post('', this.wishlist).then(success => {
-			//if (success.data) {
-			//	this.wishlist = success.data;
-			//}
-			return success;
-		}));
+		if (window.location.hostname === 'localhost') {
+			return from(this.$http.get('data/moodboard.json').then(success => {
+				if (success.data) {
+					this.wishlist = success.data;
+				}
+				return success;
+			}));
+		} else {
+			return from(this.$http.post('', this.wishlist).then(success => {
+				return success;
+			}));
+		}
 	}
 
 	static factory($http, PromiseService, StorageService, ApiService) {

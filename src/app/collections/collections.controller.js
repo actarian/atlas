@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
 
 import GtmService from '../gtm/gtm.service';
+
 const GTM_CAT = 'collezioni';
 
 class CollectionsCtrl {
@@ -78,6 +79,8 @@ class CollectionsCtrl {
 		if (serialize !== false) this.serializeFilters();
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
 		const filteredBrands = filters.length ? [] : this.brands;
+		let resultCounts = 0,
+			totalCounts = 0;
 		if (filters.length) {
 			this.brands.map(x => Object.assign({}, x)).forEach(brand => {
 				const filteredCollections = [];
@@ -88,7 +91,9 @@ class CollectionsCtrl {
 					});
 					if (has) {
 						filteredCollections.push(collection);
+						resultCounts++;
 					}
+					totalCounts++;
 				});
 				// console.log(has, collection, filters);
 				if (filteredCollections.length) {
@@ -101,6 +106,8 @@ class CollectionsCtrl {
 		this.filteredBrands = [];
 		this.$timeout(() => {
 			this.filteredBrands = filteredBrands;
+			this.resultCounts = resultCounts;
+			this.totalCounts = totalCounts;
 			this.updateFilterStates(filteredBrands);
 			// delayer for image update
 		}, 50);

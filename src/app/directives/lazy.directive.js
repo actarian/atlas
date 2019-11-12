@@ -23,42 +23,50 @@ export default class LazyDirective {
 
 	link(scope, element, attributes, controller) {
 		const image = element[0];
+		if (window.matchMedia('print').matches) {
+			return this.immediate(scope, image);
+		}
+
 		image.classList.remove('lazying', 'lazyed');
-		// image.index = INDEX++;
-		// empty picture
-		// image.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+
 		const subscription = this.domService.appear$(image).subscribe(event => {
 			if (!image.classList.contains('lazying')) {
 				image.classList.add('lazying');
 				this.onAppearsInViewport(image, scope, attributes);
 			}
 		});
-		/*
-		element.subscription = this.lazy$(image).subscribe(intersection => {
-			if (intersection.y > -0.5) {
-				if (!image.classList.contains('lazyed')) {
-					image.classList.add('lazyed');
-					this.onAppearsInViewport(image, scope, attributes);
-					setTimeout(() => {
-						element.subscription.unsubscribe();
-						element.subscription = null;
-					}, 1);
-				}
-			}
-		});
-		*/
+
+		const onBeforePrint = () => {
+			this.immediate(scope, image);
+			subscription.unsubscribe();
+		};
+		window.addEventListener('beforeprint', onBeforePrint);
+
 		element.on('$destroy', () => {
+			window.removeEventListener('beforeprint', onBeforePrint);
 			subscription.unsubscribe();
 		});
 	}
 
+	immediate(scope, image) {
+		// this.onAppearsInViewport(image, scope, attributes);
+		const src = this.getThronSrc(image, scope.src);
+		image.src = src;
+		image.removeAttribute('data-src');
+		image.classList.remove('lazying');
+		image.classList.add('lazyed');
+		scope.$emit('lazyImage', image);
+	}
+
 	getThronSrc(image, src) {
+		const node = image.parentNode;
 		const splitted = src.split('/std/');
 		if (splitted.length > 1) {
 			// Contenuto Thron
 			if (splitted[1].match(/^0x0\//)) {
 				// se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
-				src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
+				// src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
+				src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
 				if (!src.match(/[&?]scalemode=?/)) {
 					src += src.indexOf('?') !== -1 ? '&' : '?';
 					src += 'scalemode=auto';
@@ -85,8 +93,8 @@ export default class LazyDirective {
 			image.classList.remove('lazying');
 			image.classList.add('lazyed');
 		} else if (scope.src) {
-			image.removeAttribute('data-src');
 			const src = this.getThronSrc(image, scope.src);
+			image.removeAttribute('data-src');
 			/*
 			image.classList.remove('lazying');
 			image.classList.add('lazyed');
@@ -96,6 +104,7 @@ export default class LazyDirective {
 				// image.setAttribute('src', src);
 				image.classList.remove('lazying');
 				image.classList.add('lazyed');
+				scope.$emit('lazyImage', image);
 			});
 		} else if (scope.backgroundSrc) {
 			image.setStyle('background-image', `url(${this.getThronSrc(image, scope.backgroundSrc)})`);

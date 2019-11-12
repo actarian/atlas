@@ -12,7 +12,7 @@
 					<ul class="nav nav--markets">
 						<li ng-class="{ active: root.market == 1 }">
 							<span ng-click="root.market = root.market == 1 ? -1 : 1">International</span>
-							<div class="sub" ng-show="root.market == 1" appear>
+							<div class="sub" ng-if="root.market == 1" appear>
 								<div class="title">Select your Language</div>
 								<ul class="nav nav--markets__secondary">
 									<li><a id="m-1-l-1" href="/atlas/it/" data-router-disabled><span>Italiano</span></a></li>
@@ -26,7 +26,7 @@
 						</li>
 						<li ng-class="{ active: root.market == 2 }">
 							<span ng-click="root.market = root.market == 2 ? -1 : 2">Usa</span>
-							<div class="sub" ng-show="root.market == 2" appear>
+							<div class="sub" ng-if="root.market == 2" appear>
 								<div class="title">Select your Language</div>
 								<ul class="nav nav--markets__secondary">
 									<li><a id="m-2-l-1" href="/atlas/en-us/" data-router-disabled><span></span>English</a></li>
@@ -35,7 +35,7 @@
 						</li>
 						<li ng-class="{ active: root.market == 3 }">
 							<span ng-click="root.market = root.market == 3 ? -1 : 3">Russia</span>
-							<div class="sub" ng-show="root.market == 3" appear>
+							<div class="sub" ng-if="root.market == 3" appear>
 								<div class="title">Select your Language</div>
 								<ul class="nav nav--markets__secondary">
 									<li><a id="m-3-l-1" href="/atlas/ru-ru/" data-router-disabled><span></span>Pусский</a></li>

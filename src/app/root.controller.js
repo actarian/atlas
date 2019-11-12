@@ -30,6 +30,13 @@ class RootCtrl {
 		});
 	}
 
+	onSearch(query) {
+		// console.log('onSearch', query);
+		this.searchOpened = false;
+		const url = document.querySelector('[data-search]').getAttribute('data-search');
+		window.location.href = url.replace('##query##', query);
+	}
+
 	onScroll(event) {
 		const scrolled = event.scroll.scrollTop > 40;
 		const direction = event.scroll.direction;
@@ -195,6 +202,18 @@ class RootCtrl {
 		this.brand = brands[i];
 		event.preventDefault();
 		event.stopImmediatePropagation();
+	}
+
+	toggleMenuProduct() {
+		this.menuProductOpened = !this.menuProductOpened;
+		if (!this.menuProductOpened) {
+			const results = document.querySelector('.section--filters');
+			const bottom = this.domService.scrollTop + results.getBoundingClientRect().bottom;
+			setTimeout(() => {
+				window.scroll(0, bottom - 80);
+				// console.log('toggleMenuProduct', results, bottom, this.domService.scrollTop);
+			}, 500);
+		}
 	}
 
 	pad(index) {

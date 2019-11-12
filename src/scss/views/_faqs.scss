@@ -1,8 +1,17 @@
 .section--faq {
 	min-height: 100vh;
-	padding: 130px 0;
+
+	.category {
+		text-align: center;
+	}
+
+	@include media-breakpoint-up(md) {
+		padding: 130px 0;
+	}
 
 	@include media-breakpoint-down(sm) {
+		padding: 70px 0;
+
 		.col--primary {
 			order: 2;
 		}
@@ -22,6 +31,7 @@
 			font-size: 42px;
 			margin-bottom: 50px;
 			color: $foreground;
+			text-align: left;
 		}
 	}
 }

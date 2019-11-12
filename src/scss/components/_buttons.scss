@@ -13,6 +13,9 @@ button,
 	cursor: pointer;
 	transition: ease-in-out 350ms;
 	transition-property: background-color, color, border, opacity;
+	appearance: none;
+	background: none;
+	backface-visibility: hidden;
 
 	&,
 	&:active,
@@ -65,20 +68,22 @@ button,
 		}
 	}
 
-	.section--negative & {
-		span {
-			color: $foreground-negative;
-			border-color: $foreground-negative;
-		}
-
-		&,
-		&:active,
-		&:focus,
-		&:hover,
-		&:visited {
+	@media screen {
+		.section--negative & {
 			span {
 				color: $foreground-negative;
 				border-color: $foreground-negative;
+			}
+
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				span {
+					color: $foreground-negative;
+					border-color: $foreground-negative;
+				}
 			}
 		}
 	}
@@ -93,7 +98,10 @@ button,
 	justify-content: flex-start;
 	align-items: center;
 	text-align: left;
+	padding: 0;
 	font-size: 14px;
+	font-weight: $font-semibold;
+	line-height: 1.6;
 	color: $primary;
 
 	svg {
@@ -108,6 +116,11 @@ button,
 		color: $primary;
 	}
 
+	span,
+	b {
+		display: inline-block;
+	}
+
 	b {
 		margin-left: 5px;
 		position: relative;
@@ -117,7 +130,7 @@ button,
 			content: '';
 			position: absolute;
 			left: 0;
-			bottom: -4px;
+			bottom: -8px;
 			width: 100%;
 			height: 2px;
 			background: $primary;
@@ -137,28 +150,32 @@ button,
 		width: 18px;
 		height: 14px;
 		margin-right: 10px;
+		margin-bottom: 3px;
+		transform: translateY(2px);
 	}
 
-	.section--negative & {
+	@media screen {
+		.section--negative & {
 
-		svg {
-			fill: $foreground-negative;
-		}
-
-		&,
-		&:active,
-		&:focus,
-		&:hover,
-		&:visited {
-			color: $foreground-negative;
-		}
-
-		b {
-			&:after {
-				background: $foreground-negative;
+			svg {
+				fill: $foreground-negative;
 			}
-		}
 
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				color: $foreground-negative;
+			}
+
+			b {
+				&:after {
+					background: $foreground-negative;
+				}
+			}
+
+		}
 	}
 
 	@include media-breakpoint-down(xs) {
@@ -172,8 +189,14 @@ button,
 %btn--link {
 	position: relative;
 	padding: 0;
-	font-size: 15px;
+	font-size: 14px;
 	font-weight: $font-semibold;
+	line-height: 1.6;
+
+	span,
+	b {
+		display: inline-block;
+	}
 
 	&,
 	&:active,
@@ -187,7 +210,7 @@ button,
 		content: '';
 		position: absolute;
 		left: 0;
-		bottom: -3px;
+		bottom: -8px;
 		width: 100%;
 		height: 2px;
 		background: $primary;
@@ -201,26 +224,29 @@ button,
 		}
 	}
 
-	.section--negative & {
+	@media screen {
+		.section--negative & {
 
-		&,
-		&:active,
-		&:focus,
-		&:hover,
-		&:visited {
-			color: $foreground-negative;
-		}
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				color: $foreground-negative;
+			}
 
-		&:after {
-			background: $foreground-negative;
-		}
-
-		&:hover {
 			&:after {
-				background: $primary;
+				background: $foreground-negative;
+			}
+
+			&:hover {
+				&:after {
+					background: $primary;
+				}
 			}
 		}
 	}
+
 }
 
 .btn--link {
@@ -276,23 +302,25 @@ button,
 		}
 	}
 
-	.section--negative & {
+	@media screen {
+		.section--negative & {
 
-		&,
-		&:active,
-		&:focus,
-		&:hover,
-		&:visited {
-			color: $foreground-negative;
-		}
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				color: $foreground-negative;
+			}
 
-		&:after {
-			background: $foreground-negative;
-		}
-
-		&:hover {
 			&:after {
-				background: $primary;
+				background: $foreground-negative;
+			}
+
+			&:hover {
+				&:after {
+					background: $primary;
+				}
 			}
 		}
 	}
@@ -597,24 +625,26 @@ button,
 		}
 	}
 
-	.section--negative & {
-		border-color: $foreground-negative;
+	@media screen {
+		.section--negative & {
+			border-color: $foreground-negative;
 
-		&,
-		&:active,
-		&:focus,
-		&:hover,
-		&:visited {
-			color: $foreground-negative;
-		}
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				color: $foreground-negative;
+			}
 
-		&>span:after {
-			background: $foreground-negative;
-		}
-
-		&:hover {
 			&>span:after {
-				background: $primary;
+				background: $foreground-negative;
+			}
+
+			&:hover {
+				&>span:after {
+					background: $primary;
+				}
 			}
 		}
 	}
@@ -625,9 +655,9 @@ button,
 	height: 50px;
 	// font-size: 16px;
 	border-top: 2px solid $border;
-
 	font-size: 13px;
 	font-weight: $font-semibold;
+	backface-visibility: hidden;
 
 	&,
 	&:link,
@@ -664,8 +694,8 @@ button,
 	// border: 1px solid #bbb7ad;
 	border: none;
 	background: $background-tertiary;
-	box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-	transform: translateZ(1px);
+	// box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+	// transform: translateZ(1px);
 
 	.opened & {
 		background: none;
@@ -722,30 +752,62 @@ button,
 		}
 	}
 
-	.section--negative & {
+	@media screen {
+		.section--negative & {
 
-		.icon--pin {
-			fill: $foreground-negative;
-		}
+			.icon--pin {
+				fill: $foreground-negative;
+			}
 
-		&,
-		&:active,
-		&:focus,
-		&:hover,
-		&:visited {
-			color: $foreground-negative;
-		}
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				color: $foreground-negative;
+			}
 
-		&>span:after {
-			background: $foreground-negative;
-		}
-
-		&:hover {
 			&>span:after {
-				background: $primary;
+				background: $foreground-negative;
+			}
+
+			&:hover {
+				&>span:after {
+					background: $primary;
+				}
 			}
 		}
 	}
+}
+
+.btn--share {
+	display: inline-flex;
+	align-items: center;
+	margin-bottom: 40px;
+	margin: 40px 0;
+	padding: 0;
+	font-size: 16px;
+	line-height: 1;
+	transition: all ease-in-out 350ms;
+
+	.label {
+		margin: 0 40px 6px 0;
+	}
+
+	.addthis_inline_share_toolbox {
+		display: inline-block;
+		line-height: 0;
+		transition: all ease-in-out 350ms;
+
+		div {
+			display: inline-block !important;
+		}
+
+		a {
+			outline: none !important;
+		}
+	}
+
 }
 
 @mixin center {
@@ -766,12 +828,6 @@ button,
 	z-index: 2;
 	margin-top: 4px;
 	animation: ball .45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
-	/*
-	background: $primary;
-	.section--negative & {
-		background: $foreground-negative;
-	}
-	*/
 }
 
 .btn--busy {

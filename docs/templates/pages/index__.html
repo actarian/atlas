@@ -44,6 +44,116 @@
 	</div>
 </section>
 
+<section class="section section--hero-home section--negative">
+	<div class="swiper-container" swiper-hero ng-cloak>
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<div class="background" parallax>
+					<div data-thron="https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getContentDetail?clientId=gruppoconcorde&xcontentId=b8bc4fea-9ff5-440c-a8ac-d9fa84350a37&pkey=yz1hpd"></div>
+					<!--
+					<video oncanplay="this.muted = true;" autoplay muted playsinline loop poster="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/f307cc98-fb6a-4067-8ba0-9e765560586c/yz1hpd/std/1920x844/AtlasConcorde_Cersaie2019_02.jpg?scalemode=auto" data-object-fit="cover">
+						<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/9ffd8d57-907b-499a-8e96-35c5a76036e3/yz1hpd/WEB/Atlas Concorde Cerasie 2019 reportage.mp4">
+						<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/9ffd8d57-907b-499a-8e96-35c5a76036e3/yz1hpd/STREAMHTTPIOSHD/Atlas Concorde Cerasie 2019 reportage.m3u8">
+					</video>
+					-->
+				</div>
+				<div class="aspect">
+					<div class="container">
+						<div class="group group--cta" appear> <a href="/it/news/events/le-novita-di-atlas-concorde-al-cersaie-2019/" class="btn btn--discover"> <span>Atlas Concorde al Cersaie 2019: leggi la news</span> </a> </div>
+					</div>
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<div class="background" parallax>
+					<div data-thron="https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getContentDetail?clientId=gruppoconcorde&xcontentId=f0918166-8f58-4258-b00e-216e9842a154&pkey=szqvdp"></div>
+					<!--
+					<video oncanplay="this.muted = true;" autoplay muted playsinline loop poster="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/83b79044-0f9c-4847-b08b-4c16fbe2a6b0/yz1hpd/std/1920x844/AtlasConcorde_MarvelDream_M01_03.jpg?scalemode=auto" data-object-fit="cover">
+						<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/b37eff6d-56e2-4a98-94a7-605d04295af3/yz1hpd/WEB/AtlasConcorde_MarvelDream_001_Short_03.mp4">
+						<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/b37eff6d-56e2-4a98-94a7-605d04295af3/yz1hpd/STREAMHTTPIOSHD/AtlasConcorde_MarvelDream_001_Short_03.m3u8">
+					</video>
+					-->
+				</div>
+				<div class="aspect">
+					<div class="container">
+						<div class="group group--cta" appear> <a href="/it/collezioni/ac/marvel-dream/" class="btn btn--discover"> <span>Scopri Marvel Dream</span> </a> </div>
+					</div>
+				</div>
+			</div>
+			<div class="swiper-slide" last-item>
+				<div class="background" parallax>
+					<div data-thron="https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getContentDetail?clientId=gruppoconcorde&xcontentId=f0918166-8f58-4258-b00e-216e9842a154&pkey=szqvdp"></div>
+					<!--
+					<video oncanplay="this.muted = true;" autoplay muted playsinline loop poster="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/f307cc98-fb6a-4067-8ba0-9e765560586c/yz1hpd/std/1920x844/AtlasConcorde_Cersaie2019_02.jpg?scalemode=auto" data-object-fit="cover">
+						<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/4bba25ae-06a0-4704-acfe-983497e46a97/yz1hpd/WEB/Atlas Concorde Cersaie 2019 booth.mp4">
+						<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/4bba25ae-06a0-4704-acfe-983497e46a97/yz1hpd/STREAMHTTPIOSHD/Atlas Concorde Cersaie 2019 booth.m3u8">
+					</video>
+					-->
+				</div>
+				<div class="aspect">
+					<div class="container">
+						<div class="group group--cta" appear> <a href="/it/news/events/le-novita-di-atlas-concorde-al-cersaie-2019/" class="btn btn--discover"> <span>Atlas Concorde al Cersaie 2019: leggi la news</span> </a> </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-pagination swiper-pagination-white"></div>
+	</div>
+</section>
+
+<section class="section section--hero-home section--negative">
+	<div class="swiper-container" swiper-hero ng-cloak ng-if="!root.webglEnabled">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide" last-item ng-repeat="item in [1,2,3] track by $index">
+				<div class="background" parallax>
+					<img lazy data-src="img/index/hero.jpg?width=1920&height=844&mode=crop" alt="title" />
+				</div>
+				<div class="aspect">
+					<div class="container">
+						<!--
+						<div class="title">Marvel Edge</div>
+						<div class="abstract">Coloured body porcelain tiles</div>
+						-->
+						<div class="group group--cta" appear>
+							<a href="/atlas/product-project.html" class="btn btn--discover">
+								<span>Discover Marvel Edge</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Add Pagination -->
+		<div class="swiper-pagination swiper-pagination-white"></div>
+		<!-- Add Navigation -->
+		<!--
+		<div class="swiper-button-prev swiper-button-white"></div>
+		<div class="swiper-button-next swiper-button-white"></div>
+		-->
+	</div>
+	<!--
+	<div class="background" parallax>
+		<video onloadeddata="this.play();" muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop" data-object-fit="cover">
+			<source src="img/product/marvel/living.mp4" type="video/mp4">
+		</video>
+	</div>
+	-->
+	<!--
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop" alt="title" />
+	</div>
+	-->
+	<!--
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<video onloadeddata="this.play();" muted playsinline autoplay loop poster="img/product/marvel/hero.jpg?width=1920&height=844&mode=crop" data-object-fit="cover">
+			<source src="img/product/marvel/living.mp4" type="video/mp4">
+		</video>
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/product/marvel/living.mp4" with-video class="glsl-canvas"></canvas>
+	</div>
+	-->
+</section>
+
 <section class="section section--intro-centered">
 	<div class="container">
 		<div class="row">
