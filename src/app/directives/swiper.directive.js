@@ -37,14 +37,12 @@ export class SwiperDirective {
 		if (window.matchMedia('print').matches) {
 			return;
 		}
-
 		const onBeforePrint = () => {
 			if (element.swiper) {
 				element.swiper.destroy();
 			}
 		};
 		window.addEventListener('beforeprint', onBeforePrint);
-
 		TweenMax.set(node, { opacity: 0 });
 		scope.$on('lastItem', (slide) => {
 			this.onSwiper(scope, element, attributes);

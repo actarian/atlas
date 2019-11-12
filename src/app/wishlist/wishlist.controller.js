@@ -98,7 +98,6 @@ class WishlistCtrl {
 
 	print() {
 		return window.print();
-
 		const iframe = document.createElement('iframe');
 		iframe.onload = function() {
 			console.log('onload');

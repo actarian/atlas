@@ -22732,6 +22732,15 @@ class MuuriDirective {
       return;
     }
 
+    const onBeforePrint = () => {
+      if (element.muuri) {
+        element.muuri.destroy();
+      }
+
+      node.classList.add('printable');
+    };
+
+    window.addEventListener('beforeprint', onBeforePrint);
     scope.$on('lastItem', slide => {
       // console.log('MuuriDirective.lastItem', slide);
       this.onMuuri(scope, element, attributes);
@@ -22745,6 +22754,8 @@ class MuuriDirective {
       }
     });
     element.on('$destroy', () => {
+      window.removeEventListener('beforeprint', onBeforePrint);
+
       if (element.muuri) {
         element.muuri.destroy();
       }
