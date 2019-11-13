@@ -152,7 +152,15 @@ button,
 		margin-right: 10px;
 		margin-bottom: 3px;
 		transform: translateY(2px);
-	}
+    }
+    
+    .icon--print {
+        width: 21px;
+        height: 21px;
+        margin-right: 10px;
+        margin-top: -10px;
+        transform: translateY(4px);
+    }
 
 	@media screen {
 		.section--negative & {

@@ -21317,6 +21317,8 @@ const MODULE_NAME = 'app';
 const app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
+}]).config(['$compileProvider', function ($compileProvider) {
+  $compileProvider.debugInfoEnabled(false);
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
 app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('cookies', _cookies.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('gtmCollection', _gtmCollection.default.factory).directive('gtmDealerLocator', _gtmDealerlocator.default.factory).directive('gtmForm', _gtmForm.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('thron', _thron.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('objectFit', _objectFit.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperTimeline', _swiper.SwiperTimelineDirective.factory) // .directive('transition', TransitionDirective.factory)
@@ -21454,9 +21456,9 @@ class CollectionsCtrl {
     this.filteredBrands = [];
     this.$timeout(() => {
       this.filteredBrands = filteredBrands;
+      this.updateFilterStates(filteredBrands);
       this.resultCounts = resultCounts;
-      this.totalCounts = totalCounts;
-      this.updateFilterStates(filteredBrands); // delayer for image update
+      this.totalCounts = totalCounts; // delayer for image update
     }, 50);
 
     _gtm.default.pageViewFilters(GTM_CAT, this.filters);
@@ -21580,9 +21582,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 /* jshint esversion: 6 */
-// Import Polyfills
-// See: https://github.com/w3c/IntersectionObserver/tree/master/polyfill
-// import 'intersection-observer';
 class AppearDirective {
   constructor(DomService) {
     this.domService = DomService;
@@ -21608,10 +21607,20 @@ class AppearDirective {
       const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
       const timeout = index * 50;
       setTimeout(() => {
-        if (node) {
+        if (node.classList) {
           node.classList.add('appeared');
         }
       }, timeout); // (i - firstVisibleIndex));
+
+      /*
+      if (index > 0) {
+      	setTimeout(() => {
+      		node.classList.add('appeared');
+      	}, timeout); // (i - firstVisibleIndex));
+      } else {
+      	node.classList.add('appeared');
+      }
+      */
     });
 
     const onBeforePrint = () => {
@@ -22385,6 +22394,8 @@ exports.default = void 0;
 
 var _operators = require("rxjs/operators");
 
+var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
+
 var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -22412,7 +22423,7 @@ class LazyDirective {
 
     image.classList.remove('lazying', 'lazyed');
     const subscription = this.domService.appear$(image).subscribe(event => {
-      if (!image.classList.contains('lazying')) {
+      if ((image.width > 0 || image.height > 0 || !image.classList.contains('nav--primary--image')) && !image.classList.contains('lazying')) {
         image.classList.add('lazying');
         this.onAppearsInViewport(image, scope, attributes);
       }
@@ -22452,15 +22463,13 @@ class LazyDirective {
         src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
 
         if (!src.match(/[&?]scalemode=?/)) {
-          src += src.indexOf('?') !== -1 ? '&' : '?';
-          src += 'scalemode=auto';
+          src += src.indexOf('?') !== -1 ? '&' : '?'; // src += 'scalemode=auto';
         }
-      }
+      } //if (window.devicePixelRatio > 1) {
+      //	src += src.indexOf('?') !== -1 ? '&' : '?';
+      //	src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
+      //}
 
-      if (window.devicePixelRatio > 1) {
-        src += src.indexOf('?') !== -1 ? '&' : '?';
-        src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
-      }
     }
 
     return src;
@@ -22483,12 +22492,6 @@ class LazyDirective {
     } else if (scope.src) {
       const src = this.getThronSrc(image, scope.src);
       image.removeAttribute('data-src');
-      /*
-      image.classList.remove('lazying');
-      image.classList.add('lazyed');
-      image.setAttribute('src', src);
-      */
-
       this.onImagePreload(image, src, srcOrUndefined => {
         // image.setAttribute('src', src);
         image.classList.remove('lazying');
@@ -22527,6 +22530,13 @@ class LazyDirective {
 
     image.onerror = function (e) {
       image.onload = image.onerror = null;
+
+      _gtm.default.push({
+        event: 'img error',
+        imageurl: image.src,
+        pageurl: window.location.href
+      });
+
       image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAC/CAMAAAA1kLK0AAAATlBMVEX////MzMyZmZn39/fHx8fPz8+Ojo7FxcXDw8Pn5+fS0tLq6url5eX8/PyUlJTi4uLX19fv7++JiYm9vb3d3d2FhYWtra2qqqqAgICdnZ2sCR5lAAAJUElEQVR4nO2d6YKzKgyGa7VaN1zqdL7e/42eigERkGobrM7J+2umM3V5DEkICKeQxHUKT6SnCASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgE6NsgynFcvvzqhXwNRBk2RVdnQRBEXM8fsrormm/x+AqIsqnqAO5+Iv5ZXTVfgLE9iLDoIegIpjiCutj8srYFUaaZG8III0s3tYtNQTT1MgqCRd1sd20bgkiDZDmFQUmQbnV1m4Go5owhimTYsP612ub6NgKRWm60v/lL1nVF+lQfSi+BjUcUbWIVm4BogshkUKdmlCybtL4YNKJgA1+xAYiwjjQKQZc78qYw7/T4GtX+r9I7CK1VPCm8zpfKppsakf/24RtEmUWT+8nyhdlBmU9jbZT5TSs8g2jUm4lWWnhYT7/t1VP4BVFdlRtJ1jf0sEsUFFefkdQriFrJoK7v+btQPUZSY1+hciJ/IErF30XR26cJlfYRBd4chT8QoWLUyUdGXSlG8T7QF/IGIlSf44fnCFXb8nW9nkAoHJLuY3suu8Q3CU8gVA45xgFz3zbhB0Sp+Aek4yvNI/LhMf2AUJwbij30Ki8jXaxjKvIC4qIGDDQS42GjC9oxpXyA6Cb9pSseCdlviTq0Ywp5AJFqFTkfJBL0zig+iMaoTCKSkK0jwe6BoYMoFUcp/QTa81PSduTQgQ5ClqOiskjwScgEJULugGGDaFTbTT2QkCdALk8ggyind17IegReFB3pojYOZBAicgrDHUngeUzR+HBjKC6IUDwtmQWPfgKNhMzfE9RLRwWRiZse22+FT6IRZpYhHbAXKgiRQkw8ugcSonFgJhOoIKRnnLgxfD8xdm5xjtcLE4Q0CC1WpmPsQIqiInIgmgQmiMvcczJINGnuUPr6ksTx8LqhiCCkQZgNQCdR/cQOtffF58IzCUQQtcOX6ySK+OxQ/NqXiH4oWqKNB0LkEPbUN9VyTCcJ9tokRA0TLZfAA1FFzmarZ1ZOEgtMAhwS2oQaPBCBPWRIGSTaj0wiFSEU6fLRQMh6zGxXSM+sUgeJ9qUTFN07LHeJBgK6W66ekG4T+c/w+PtIwTQSr01iwQnXCAuEeECW0Zfq9tTQGrQcM29Zy36vWV1n19/nj2rjuE1lugJZosHpjWOBEJd1MS8raBlj7dAa9HzipnjFJmBKY2ETtRZXcJlF/9YNIIGAmGFz4hceH+wkNNVsJpbElljkOOUbwgKRzYf1AQSExFf9juvUg8Zs8B42ECJxwemMI4EIHcEMQJxjfuc2EmpzStnoKtj5kha3dgaEDNg4d4ADonG4cAHizHQS3EbK2/33936TE9CbhyTx4J9l8QwIETdQAigSiAKuyZYRShBAQqny83/vemf6jKD3Yvj/5gwkYsD6y+wgIM2OCow7QAIBNSNr5j+CMEkMNjL4Bdbeh6/n8AUGR8tmQICTwBnhQAIhQpn1b0okGDymkllxEpBZnSHInmrwmHBpdWwHcXL3btYJB4RIp6wOXAUBUVTJrCYkzv8GM7+z0bvy3+wgRK0YI6XCARG60t0JCCOfuPJbz8EGHj/c8zX8V/bg36/nnKX0lii3gAJCBA1rajAFYWZWnEQqQwt/vDc2hM+6aa6z4VP0QFHCBg4IuCJ7T1ADcW75GedIxNzPCAsR3TE7COjxoszcxwFROYKGAWIweINEMYkVj+l37CBE2MBIsnFAQGNNrF5LA8Gu8HmqeUwgEfPsNGELQJSJwzWtFA6I2hE9DR8hn1+a2Eiw3/7nql0A4oRYwf0CiP6EIaeh5xODn+BtIzwmCBHQrX/UQMT9Z+mPlmNCPsEjBA8r8RIQrvRlpbYHwfrPungmx2xFF2OJj/gTIMzMSpD4v4GYyazy+P8CgvsI3sGcyTEH93FMH7E+aii9Kp1EdeCosT6P+B1IDDZgqd4dNI9YlVkm/YcBpJEaiasgcT1mZrm+rxGKctzQz0h0Egfta6zrfXIfGU1q2zoJzUUcpve5ph5xZrf+01LYvp1EvsRH7K8esaJCdRZD3c3PQ7UQo3rXvgaxvwrV8polN4lhqLv4B7//OKt3DhD7q1kurmJzPdoh3uVi/FsnIXLMVyD2V8VeOq4h72so24d3QNEOmVUyJZEyN4g9jmssG+kaG8cZ/Ftx76uSjLXcu+SzJA4z0rVo7FMl8ZBDnfUw9snbea5XapgLxB7HPpeMhk9JMGuo1at3srZ9lNHwBfMjdLVX819NEuAxDzM/4vWMGVMxs3k5g0Q7B2KfM2bC+VA2B+JpFExdaisfZoxZSVhAlPucQ+WYVTcPoh//VmfVDTmm4jF5POgHQi0gdjqrzjHt0QWCwxjnWQ6ZVa5lVo11WsBO51k6Zt5e9MmkDg2ZlUKCt5aGmSB2O/N2fi524Hw5Q9O/IbPSs21znuVu52LPz87PL9kKDRZlkDDw7nd2vnxfA2dNGaNmNZV4M3qH72vICi5OgqNHUU2iB77DN3iw37NykpAv8Ozxna75t/zek4uE+Msu3/IbTQL57U6TRIpuEH7eBMZaKCrXqndCpSSEc55e/t8N/0R6ZgXa/bvhttUCPpOVxP5XC7CsH/Gp9MzqdIz1I4wVRT6X6SeOsKKIvsYMhoyK7iHWmPGxKNB07SLZy933qkPqOlRoB1bHO6SD2Ps6VGPjQFyodyShLAe495XJFNvFy39HjyltY/dr1SnPD6kf2ksncYTVC5X1LL2ROMZ6ln6WIh2j6HFWOFXWvI0s74q/KWUd5MOseassFPXx4uBCoWIQx1kFebJOOnIN81DrYtNK6cqBae18cWTaTQFE+2tITXdLeetEYX1Vj4F9hcqJfILQ9uDpVp8qrP/GHjy0K9MofZ+uevk+Xdlf2qfrRDu3Kaew7uU3++/lX93L72Tf3fEyt7ujudflX9ndsdf8fp+12O+z+x/s99mLdoCVoj2BpWiXaCnaN1w5I+0kL1U2FY+SBg7+WV29zrjw9RUQvcqw6bfIDkTYeP7Qh9LGsWuyV30NBKgMpb5EAPRtELsRgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAPUGQuP4DT2RwhyUkgc4AAAAASUVORK5CYII='; // setTimeout(() => {
 
       callback(); // }, 10);
@@ -22544,7 +22554,7 @@ class LazyDirective {
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../shared/rect":255,"rxjs/operators":198}],214:[function(require,module,exports){
+},{"../gtm/gtm.service":238,"../shared/rect":255,"rxjs/operators":198}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22567,13 +22577,14 @@ class MediaDirective {
 	<ng-transclude></ng-transclude>
 </div>
 <div class="overlay" ng-click="onOverlay()"></div>
+<div class="share-buttons">
 <div class="btn btn--pinterest" ng-click="onPin($event)" ng-if="onPin">
 	<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
 </div>
 <div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
 	<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
 	<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
-</div>`;
+</div></div>`;
     this.scope = {
       item: '=?media'
     };
@@ -22599,7 +22610,7 @@ class MediaDirective {
         _gtm.default.push({
           event: 'Pinterest',
           wish_name: scope.item.name || scope.item.coId,
-          wish_type: scope.item.type
+          wish_type: scope.item.typeName || scope.item.type
         });
 
         PinUtils.pinOne(pin);
@@ -22673,9 +22684,9 @@ class MediaDirective {
               }
             } else {
               const video = itemNode.querySelector('video');
-              const source = video.querySelector('source');
+              const sources = video.querySelectorAll('source');
               item.poster = video.getAttribute('poster');
-              item.src = source.getAttribute('src');
+              item.src = sources[sources.length - 1].getAttribute('src');
               item.title = video.getAttribute('alt');
               const wishlist = itemNode.getAttribute('video');
 
@@ -23099,7 +23110,8 @@ class ParallaxDirective {
   }
 
   link(scope, element, attributes, controller) {
-    return false;
+    return false; // !!! rimosso effetto parallasse
+
     const node = element[0];
     const childNode = node.querySelector(isEdge ? 'img' : 'img, video');
 
@@ -23344,9 +23356,7 @@ const DEFAULT_SWIPER_OPTIONS = {
   loop: false,
   loopAdditionalSlides: 100,
   speed: 600,
-  autoplay: {
-    delay: 5000
-  },
+  autoplay: 5000,
   keyboardControl: true,
   mousewheelControl: false,
   onSlideClick: function (swiper) {
@@ -23535,11 +23545,17 @@ class SwiperHeroDirective extends SwiperDirective {
       },
       on: {
         init: (swiper, element, scope) => {
-          swiper_ = swiper;
-          element_ = element;
-          scope_ = scope;
-          this.toggleVideo(element, scope);
-          swiper.autoplay.start();
+          if (!swiper_) {
+            swiper_ = swiper;
+            element_ = element;
+            scope_ = scope;
+          }
+
+          this.toggleVideo(element_, scope_);
+
+          if (swiper_.autoplay) {
+            swiper_.autoplay.start();
+          }
         },
         slideChangeTransitionStart: () => {
           // console.log('slideChangeTransitionStart');
@@ -23599,6 +23615,7 @@ class SwiperProjectsDirective extends SwiperDirective {
     this.options = {
       speed: 600,
       // parallax: true,
+      // autoplay: 5000,
       // loop: true,
       spaceBetween: 0,
       keyboardControl: true,
@@ -23632,9 +23649,7 @@ class SwiperTileDirective extends SwiperDirective {
     this.options = {
       speed: 600,
       parallax: true,
-      autoplay: {
-        delay: 5000
-      },
+      autoplay: 5000,
       // loop: true,
       spaceBetween: 60,
       keyboardControl: true,
@@ -23669,9 +23684,7 @@ class SwiperTimelineDirective extends SwiperDirective {
       slidesPerView: 1,
       spaceBetween: 60,
       speed: 600,
-      autoplay: {
-        delay: 5000
-      },
+      autoplay: 5000,
       keyboardControl: true,
       mousewheelControl: false,
       on: {
@@ -23731,7 +23744,7 @@ class ThronDirective {
   }
 
   link(scope, element, attributes, controller) {
-    const THRON = window['THRONContentExperience'] || window['THRONPlayer'];
+    const THRON = window.THRONContentExperience || window.THRONPlayer;
 
     if (!THRON) {
       return;
@@ -23743,14 +23756,15 @@ class ThronDirective {
       media: node.getAttribute('data-thron'),
       muted: true,
       autoplay: false,
-      linkedContent: 'hide',
-      noSkin: true
+      displayLinked: 'close',
+      noSkin: true,
+      lockBitrate: 'max'
     });
     player.on('ready', () => {
       const mediaContainer = player.mediaContainer();
       const video = mediaContainer.querySelector('video');
       video.setAttribute('playsinline', 'true');
-      video.setAttribute('loop', 'true'); // video.setAttribute('autoplay', 'true');
+      video.setAttribute('autoplay', 'true');
     });
     scope.$on('playThron', ($scope, id) => {
       if (id === node.id) {
@@ -23847,7 +23861,7 @@ class VideoDirective {
         _gtm.default.push({
           event: 'Pinterest',
           wish_name: scope.item.name || scope.item.coId,
-          wish_type: scope.item.type
+          wish_type: scope.item.typeName || scope.item.type
         }); // console.log('VideoDirective.onPin', pin);
 
 
@@ -23882,10 +23896,10 @@ class VideoDirective {
     };
 
     const onPlayGtm = () => {
-      const source = video.querySelector('source');
+      const sources = video.querySelectorAll('source');
 
-      if (source) {
-        const src = source.getAttribute('src');
+      if (sources.length) {
+        const src = sources[sources.length - 1].getAttribute('src');
         if (src) _gtm.default.push({
           event: 'video play',
           video_name: src
@@ -23967,9 +23981,9 @@ class VideoDirective {
               }
             } else {
               const video = itemNode.querySelector('video');
-              const source = video.querySelector('source');
+              const sources = video.querySelectorAll('source');
               item.poster = video.getAttribute('poster');
-              item.src = source.getAttribute('src');
+              item.src = sources[sources.length - 1].getAttribute('src');
               item.title = video.getAttribute('alt');
               const wishlist = itemNode.getAttribute('video');
 
@@ -24492,7 +24506,10 @@ class FaqCtrl {
     this.$timeout = $timeout;
     this.domService = DomService;
     this.apiService = ApiService;
-    this.faqCategories = window.faqCategories || []; // eliminare!
+    this.faqCategories = window.faqCategories || [];
+    this.faqCategories.forEach(x => {
+      if (!x.items) x.items = [];
+    }); // eliminare!
     //this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
     //
 
@@ -24578,7 +24595,7 @@ class FaqCtrl {
 
       if (query !== '') {
         const fakeFilter = {
-          q: {
+          '': {
             value: query,
             options: [{
               value: query,
@@ -25349,7 +25366,9 @@ class GtmCollectionDirective {
     const node = element[0];
 
     const onClick = () => {
-      const actionField = scope.item.list;
+      const actionField = {
+        list: scope.item.list
+      };
       const product = Object.assign({}, scope.item);
       delete product.list;
 
@@ -25475,7 +25494,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* jshint esversion: 6 */
 function push_(event) {
   const dataLayer = window.dataLayer || [];
-  dataLayer.push(event); // console.log('GtmService.dataLayer', event);
+  dataLayer.push(event);
+  console.log('GtmService.dataLayer', event);
 }
 
 class GtmService {
@@ -25495,6 +25515,7 @@ class GtmService {
 
   static pageViewFilters(cat, filters) {
     const values = [];
+    let any = false;
 
     for (let key in filters) {
       let textValue = '';
@@ -25508,14 +25529,17 @@ class GtmService {
         }
       }
 
-      values.push(encodeURIComponent(filters[key].key
+      if (textValue) any = true;
+      let name = filters[key].key
       /* se array di filtri */
       || key
       /* se oggetto filtro */
-      ) + '-' + encodeURIComponent(textValue));
+      ;
+      if (name) name = encodeURIComponent(name) + '-';
+      values.push(name + encodeURIComponent(textValue));
     }
 
-    const pathname = `?cat=${cat}&s=${values.join('_')}`;
+    const pathname = any ? `?cat=${cat}&s=${values.join('_')}` : '';
     GtmService.pageView(window.location.pathname + pathname);
   }
 
@@ -25588,20 +25612,34 @@ class CustomRenderer extends _highway.default.Renderer {
 
   updateMarketsAndLanguages() {
     const page = this.properties.page;
+    const marketSelector = page.getElementById('market-selector');
+
+    if (marketSelector != null) {
+      try {
+        const marketUrls = angular.fromJson(marketSelector.getAttribute('data-markets'));
+        CustomRenderer.scope.root.marketUrls = marketUrls;
+      } catch (e) {}
+    }
+    /*
     const marketsAndLanguages = [...page.querySelectorAll('.nav--markets__secondary > li > a')];
     const anchors = [...document.querySelectorAll('.nav--markets__secondary > li > a')];
     anchors.forEach(a => {
-      const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
+    	const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
+    	if (marketAndLanguage) {
+    		a.href = marketAndLanguage.href;
+    		console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
+    	}
+    });
+    */
 
-      if (marketAndLanguage) {
-        a.href = marketAndLanguage.href;
-        console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
-      }
-    }); // console.log('updateMarketsAndLanguages', marketsAndLanguages, anchors);
   }
 
   addThis() {
-    addthis.share('.addthis_inline_share_toolbox');
+    // ci sono estensioni che bloccano questo genere di script
+    if (window.addthis) {
+      if (addthis.share) addthis.share('.addthis_inline_share_toolbox');
+      if (addthis.layers && addthis.layers.refresh) addthis.layers.refresh();
+    }
   }
 
   pageView() {
@@ -25632,7 +25670,7 @@ class CustomRenderer extends _highway.default.Renderer {
         const view = [...document.querySelectorAll('.view')].pop(); // console.log(view.childNodes);
 
         const element = angular.element(view.childNodes);
-        const $scope = element.scope();
+        const $scope = CustomRenderer.scope;
         $scope.root.menuOpened = false;
         $scope.root.menuProductOpened = false;
         const $newScope = $scope.$new();
@@ -25879,7 +25917,6 @@ class PageTransition extends _highway.default.Transition {
     done
   }) {
     // console.log('PageTransition.in');
-    window.scrollTo(0, 0);
     const loader = document.querySelector('.loader--cube');
     TweenMax.to(loader, 0.45, {
       opacity: 0,
@@ -25890,13 +25927,13 @@ class PageTransition extends _highway.default.Transition {
         });
       }
     });
-
-    _customRenderer.default.$destroy(from);
-
     TweenMax.set(to, {
       opacity: 0,
       minHeight: from.offsetHeight
     });
+    window.scrollTo(0, 0);
+
+    _customRenderer.default.$destroy(from);
 
     if (PageTransition.origin) {
       const left = PageTransition.origin.x / window.innerWidth * 100;
@@ -26011,11 +26048,10 @@ class MagazineCtrl {
     this.$timeout = $timeout;
     this.locationService = LocationService;
     this.magazine = window.magazine || []; // !!! FAKE
-
-    while (this.magazine.length < 100) {
-      this.magazine = this.magazine.concat(this.magazine);
-    } // !!! FAKE
-
+    //while (this.magazine.length < 100) {
+    //	this.magazine = this.magazine.concat(this.magazine);
+    //}
+    // !!! FAKE
 
     this.maxItems = 0;
     this.visibleItems = [];
@@ -26374,7 +26410,7 @@ class MoodboardCtrl {
         filters[key] = v;
         anyFilter = true;
       }
-    }); // console.log(filters);
+    });
 
     if (anyFilter) {
       this.apiService.moodboard.filter(filters).pipe((0, _operators.first)()).subscribe(success => {
@@ -27031,8 +27067,21 @@ class ApiService {
       },
       moodboard: {
         filter: filters => {
-          // return from($http.post(API_HREF + '/api/moodboard/json', filters));
-          return (0, _rxjs.from)($http.get('data/moodboard.json'));
+          //var f = function (response) {
+          //	const first = items.length === 0;
+          //	items.push(...response.data);
+          //	if (!first) {
+          //		items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
+          //		subject.next({ data: items });
+          //		subject.complete();
+          //	}
+          //}
+          //const subject = new Subject();
+          //const items = [];
+          //from($http.post('', filters)).subscribe(f, error => subject.error(error));
+          //from($http.get('data/moodboard.json')).subscribe(f, error => subject.error(error));
+          //return subject;
+          return (0, _rxjs.from)($http.post('', filters)); //return from($http.get('data/moodboard.json'));
         }
       },
       storeLocator: {
@@ -27484,13 +27533,14 @@ class WishlistService {
       _gtm.default.push({
         event: 'addWishlist',
         wish_name: item.name || item.coId,
-        wish_type: item.type
+        wish_type: item.typeName || item.type
       });
 
       wishlist.push({
         id: item.id,
         coId: item.coId,
         type: item.type,
+        typeName: item.typeName,
         name: item.name
       });
       this.wishlist = wishlist;
@@ -27506,7 +27556,7 @@ class WishlistService {
       _gtm.default.push({
         event: 'removeWishlist',
         wish_name: wishlist[index].name || wishlist[index].coId,
-        wish_type: wishlist[index].type
+        wish_type: wishlist[index].typeName || wishlist[index].type
       });
 
       wishlist.splice(index, 1);
@@ -27532,16 +27582,16 @@ class WishlistService {
   }
 
   get() {
-    if (window.location.hostname === 'localhost') {
+    if (window.location.host !== 'localhost:6001') {
+      return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(success => {
+        return success;
+      }));
+    } else {
       return (0, _rxjs.from)(this.$http.get('data/moodboard.json').then(success => {
         if (success.data) {
           this.wishlist = success.data;
         }
 
-        return success;
-      }));
-    } else {
-      return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(success => {
         return success;
       }));
     }
@@ -27767,8 +27817,7 @@ class Rect {
     const dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
     const dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
     const x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
-    const y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height; // console.log(this.top, this.height, rect.top, rect.height);
-
+    const y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
     intersection.x = x;
     intersection.y = y;
     return intersection;
@@ -28403,9 +28452,15 @@ var _rxjs = require("rxjs");
 
 var _operators = require("rxjs/operators");
 
+var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /* jshint esversion: 6 */
+const GTM_CAT = 'store-locator';
 const ZOOM_LEVEL = 13;
 const SHOW_INFO_WINDOW = false;
+const MAX_DISTANCE = 100;
 let GOOGLE_MAPS = null;
 
 class StoreLocatorCtrl {
@@ -28578,26 +28633,31 @@ class StoreLocatorCtrl {
   addMarkers(stores) {
     const markers = stores.map(store => {
       const position = new google.maps.LatLng(store.latitude, store.longitude);
-      const content = `<div class="marker__content">
+      let content = `<div class="marker__content">
 				<div class="title"><span>${store.name}</span></div>
 				<div class="group group--info">
 					<div class="address">
 						${store.address}<br>
-						${store.zip} ${store.city} ${store.cod_provincia} ${store.stato_IT}<br>
-						<span ng-if="store.tel">${store.tel}<br></span>
-						<span ng-if="store.email"><a ng-href="mailto:${store.email}">${store.email}</a></span>
+						${store.zip} ${store.citta} ${store.cod_provincia} ${store.stato}<br>
+						<!--store.tel-->
+						<!--store.email-->
+						<!--store.webSite-->
 					</div>
-					<div class="distance">At approx. <b>${Math.floor(store.distance)} km</b></div>
+					<div class="distance">${window.BOMLabels.store_locator_approx} <b>${Math.floor(store.distance)} km</b></div>
 				</div>
 				<div class="group group--cta">
-					<a href="${store.webSite}" target="_blank" class="btn btn--link" ng-if="store.webSite"><span>More info</span></a>
-					<a href="https://www.google.it/maps/dir/${this.position.lat()},${this.position.lng()}/${store.name}/@${store.latitude},${store.longitude}/" target="_blank" class="btn btn--link"><span>How to reach the store</span></a>
+					<!--store.pageurl-->
+					<a id="locator-marker" href="https://www.google.it/maps/dir/${this.position.lat()},${this.position.lng()}/${store.name}/@${store.latitude},${store.longitude}/" target="_blank" class="btn btn--link"><span>${window.BOMLabels.store_locator_reach_store}</span></a>
 				</div>
 			</div>`;
+      if (store.tel) content = content.replace('<!--store.tel-->', `<span>${store.tel}<br></span>`);
+      if (store.email) content = content.replace('<!--store.email-->', `<span><a href="mailto:${store.email}">${store.email}</a><br></span>`);
+      if (store.webSite) content = content.replace('<!--store.webSite-->', `<span><a target="_blank" href="${store.webSite}">${store.webSite}</a></span>`);
+      if (store.pageurl) content = content.replace('<!--store.pageurl-->', `<a id="locator-marker" href="${store.pageurl}" target="_blank" class="btn btn--link"><span>${window.BOMLabels.More_info}</span></a>`);
       const marker = new google.maps.Marker({
         position: position,
         // map: this.map,
-        icon: store.importante ? './img/store-locator/store-primary.png' : './img/store-locator/store-secondary.png',
+        icon: store.importante ? '/img/store-locator/store-primary.png' : '/img/store-locator/store-secondary.png',
         title: store.name,
         store: store,
         content: content
@@ -28605,7 +28665,14 @@ class StoreLocatorCtrl {
       marker.addListener('click', () => {
         this.setMarkerWindow(marker.position, content);
         this.scrollToStore(store);
+
+        _gtm.default.push({
+          event: 'dealerlocator',
+          action: 'marker-click',
+          label: store.name
+        });
       });
+      store.marker = marker;
       /*
       marker.addListener('mouseout', () => {
       	this.setMarkerWindow(null);
@@ -28627,7 +28694,7 @@ class StoreLocatorCtrl {
       */
     });
     const markerCluster = new MarkerClusterer(this.map, markers, {
-      imagePath: 'img/store-locator/cluster-'
+      imagePath: '/img/store-locator/cluster-'
     });
     const styles = markerCluster.getStyles();
     styles.forEach(style => style.textColor = '#ffffff');
@@ -28697,13 +28764,25 @@ class StoreLocatorCtrl {
 
   findNearStores(stores, position) {
     if (stores) {
+      stores.forEach(store => {
+        store.distance = this.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
+        store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= MAX_DISTANCE
+        /* Km */
+        ;
+
+        if (store.visible) {
+          if (store.removed) this.markerCluster.addMarker(store.marker);
+          delete store.removed;
+        } else {
+          this.markerCluster.removeMarker(store.marker);
+          store.removed = true;
+        }
+      });
       stores = stores.slice();
       stores.sort((a, b) => {
-        const da = this.calculateDistance(a.latitude, a.longitude, position.lat(), position.lng(), 'K');
-        const db = this.calculateDistance(b.latitude, b.longitude, position.lat(), position.lng(), 'K');
-        return da * (a.importante ? 0.5 : 1) - db * (b.importante ? 0.5 : 1);
+        return a.distance * (a.importante ? 0.5 : 1) - b.distance * (b.importante ? 0.5 : 1);
       });
-      const visibleStores = stores.slice(0, 50);
+      const visibleStores = stores.filter(store => store.visible).slice(0, 50);
       this.$timeout(() => {
         this.visibleStores = visibleStores;
       }, 1); // console.log('findNearStores', visibleStores);
@@ -28738,6 +28817,18 @@ class StoreLocatorCtrl {
   onSubmit() {
     this.error = null;
     this.busyFind = true;
+    const fakeFilter = {
+      '': {
+        value: this.model.address,
+        options: [{
+          value: this.model.address,
+          key: this.model.address
+        }]
+      }
+    };
+
+    _gtm.default.pageViewFilters(GTM_CAT, fakeFilter);
+
     const geocoder = this.geocoder || new google.maps.Geocoder();
     this.geocoder = geocoder;
     geocoder.geocode({
@@ -28815,7 +28906,7 @@ StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = StoreLocatorCtrl;
 exports.default = _default;
 
-},{"rxjs":2,"rxjs/operators":198}],260:[function(require,module,exports){
+},{"../gtm/gtm.service":238,"rxjs":2,"rxjs/operators":198}],260:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29011,10 +29102,18 @@ class WishlistCtrl {
 
   load() {
     this.wishlistService.get().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(success => {
-      console.log('WishlistCtrl.load', success);
-
+      // console.log('WishlistCtrl.load', success);
       if (success) {
         let items = success.data.slice();
+        let wishlist = this.wishlistService.wishlist;
+        items.forEach(item => {
+          const index = this.wishlistService.indexOf(item);
+
+          if (index >= 0) {
+            item.name = wishlist[index].name;
+            item.typeName = wishlist[index].typeName;
+          }
+        });
         /* FAKE */
 
         /*
@@ -29063,17 +29162,17 @@ class WishlistCtrl {
 
   print() {
     return window.print();
+    /*
     const iframe = document.createElement('iframe');
-
-    iframe.onload = function () {
-      console.log('onload');
-      this.contentWindow.print();
-      iframe.parentNode.removeChild(iframe);
+    iframe.onload = function() {
+    	console.log('onload');
+    	this.contentWindow.print();
+    	iframe.parentNode.removeChild(iframe);
     };
-
     iframe.style.width = '768px';
     iframe.src = window.location.href + '?printable';
     document.body.appendChild(iframe);
+    */
   }
 
 }

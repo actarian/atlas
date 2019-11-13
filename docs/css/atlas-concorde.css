@@ -260,6 +260,13 @@ button,
     margin-bottom: 3px;
     -webkit-transform: translateY(2px);
             transform: translateY(2px); }
+  .btn--gallery .icon--print {
+    width: 21px;
+    height: 21px;
+    margin-right: 10px;
+    margin-top: -10px;
+    -webkit-transform: translateY(4px);
+            transform: translateY(4px); }
   @media screen {
     .section--negative .btn--gallery svg {
       fill: #ffffff; }
@@ -3852,9 +3859,11 @@ page-transition {
     margin-left: 30px; } }
 
 @media (max-width: 1439.98px) {
-  .nav--primary > li > a,
-  .nav--primary > li > span {
-    font-size: 16px; }
+  .nav--primary > li {
+    white-space: nowrap; }
+    .nav--primary > li > a,
+    .nav--primary > li > span {
+      font-size: 16px; }
   .nav--primary > li + li {
     margin-left: 15px; } }
 
@@ -3936,12 +3945,21 @@ page-transition {
     line-height: 0;
     font-size: 0; }
   @media (min-width: 768px) {
-    .section--header .icon--brand {
+    .section--header .icon--brand,
+    .section--header .icon--brand-positive {
+      width: 218px;
+      height: 35px;
+      margin-right: 25px;
+      margin-top: 1px; } }
+  @media (min-width: 1440px) {
+    .section--header .icon--brand,
+    .section--header .icon--brand-positive {
       width: 312px;
       height: 50px;
       margin-top: 1px; } }
   @media (max-width: 767.98px) {
-    .section--header .icon--brand {
+    .section--header .icon--brand,
+    .section--header .icon--brand-positive {
       width: 58vw;
       height: 10vw; } }
   .section--header .icon--wishlist {
@@ -3993,8 +4011,6 @@ page-transition {
       .section--header .icon--brand {
         display: none; }
       .section--header .icon--brand-positive {
-        width: 312px;
-        height: 50px;
         margin-top: 1px; }
       .section--header .menu--primary .container {
         -webkit-box-pack: center;
@@ -4033,7 +4049,7 @@ page-transition {
 .menu--primary .group--search {
   position: relative;
   white-space: nowrap;
-  max-width: 60px;
+  max-width: 20px;
   -webkit-transition: all ease-in-out 350ms;
   transition: all ease-in-out 350ms;
   margin-bottom: 0; }
@@ -4071,7 +4087,11 @@ page-transition {
       font-size: 16px; }
   .menu--primary .group--search .icon--search {
     fill: #b2afb0;
-    pointer-events: none; }
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -6px; }
 
 .menu--secondary .group--search {
   /*

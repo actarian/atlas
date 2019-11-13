@@ -101,6 +101,7 @@
 
 	@include media-breakpoint-down(md) {
 		&>li {
+			white-space: nowrap;
 
 			&>a,
 			&>span {
@@ -219,8 +220,17 @@
 		font-size: 0;
 	}
 
-	.icon--brand {
+	.icon--brand,
+	.icon--brand-positive {
+
 		@include media-breakpoint-up(sm) {
+			width: 218px;
+			height: 35px;
+			margin-right: 25px;
+			margin-top: 1px;
+		}
+
+		@include media-breakpoint-up(lg) {
 			width: 312px;
 			height: 50px;
 			margin-top: 1px;
@@ -326,8 +336,6 @@
 		}
 
 		.icon--brand-positive {
-			width: 312px;
-			height: 50px;
 			margin-top: 1px;
 		}
 
@@ -386,7 +394,7 @@
 	.group--search {
 		position: relative;
 		white-space: nowrap;
-		max-width: 60px;
+		max-width: 20px;
 		transition: all ease-in-out 350ms;
 		margin-bottom: 0;
 
@@ -423,6 +431,10 @@
 		.icon--search {
 			fill: $nav-header;
 			pointer-events: none;
+			position: absolute;
+			right: 0;
+			top: 50%;
+			margin-top: -6px;
 		}
 	}
 }

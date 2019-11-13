@@ -182,11 +182,15 @@ export class SwiperHeroDirective extends SwiperDirective {
 			},
 			on: {
 				init: (swiper, element, scope) => {
-					swiper_ = swiper;
-					element_ = element;
-					scope_ = scope;
-					this.toggleVideo(element, scope);
-					swiper.autoplay.start();
+					if (!swiper_) {
+						swiper_ = swiper;
+						element_ = element;
+						scope_ = scope;
+					}
+					this.toggleVideo(element_, scope_);
+					if (swiper_.autoplay) {
+						swiper_.autoplay.start();
+					}
 				},
 				slideChangeTransitionStart: () => {
 					// console.log('slideChangeTransitionStart');
