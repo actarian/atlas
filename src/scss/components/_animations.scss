@@ -1,0 +1,140 @@
+@keyframes ball {
+	from {
+		transform: translateY(0) scaleY(.8);
+	}
+
+	to {
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes ripple {
+	0% {
+		opacity: 1;
+		transform: scale(0.01, 0.01);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(1, 1);
+	}
+}
+
+@keyframes cube--fold {
+
+	0%,
+	10% {
+		transform: perspective(77px) rotateX(-180deg);
+		opacity: 0;
+	}
+
+	25%,
+	75% {
+		transform: perspective(77px) rotateX(0deg);
+		opacity: 1;
+	}
+
+	90%,
+	100% {
+		transform: perspective(77px) rotateY(180deg);
+		opacity: 0;
+	}
+}
+
+@keyframes activated {
+	0% {
+		opacity: 0;
+		transform: scale(2.0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: scale(1.0);
+	}
+}
+
+@keyframes deactivated {
+	0% {
+		opacity: 1;
+		transform: scale(1.0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(1.5);
+	}
+}
+
+@keyframes bounce-top {
+	0% {
+		transform: translateY(-45px);
+		animation-timing-function: ease-in;
+		opacity: 1;
+	}
+
+	12% {
+		opacity: 1;
+	}
+
+	20% {
+		transform: translateY(-24px);
+		animation-timing-function: ease-in;
+	}
+
+	32% {
+		transform: translateY(-12px);
+		animation-timing-function: ease-in;
+	}
+
+	41% {
+		transform: translateY(-6px);
+		animation-timing-function: ease-in;
+	}
+
+	47% {
+		transform: translateY(-4px);
+		animation-timing-function: ease-in;
+	}
+
+	12%,
+	27%,
+	37%,
+	43% {
+		transform: translateY(0px);
+		animation-timing-function: ease-out;
+	}
+
+	50% {
+		transform: translateY(0px);
+		animation-timing-function: ease-out;
+		opacity: 1;
+	}
+}
+
+@keyframes heartbeat {
+	from {
+		transform: scale(1);
+		transform-origin: center center;
+		animation-timing-function: ease-out;
+	}
+
+	10% {
+		transform: scale(0.91);
+		animation-timing-function: ease-in;
+	}
+
+	17% {
+		transform: scale(0.98);
+		animation-timing-function: ease-out;
+	}
+
+	33% {
+		transform: scale(0.87);
+		animation-timing-function: ease-in;
+	}
+
+	45% {
+		transform: scale(1);
+		animation-timing-function: ease-out;
+	}
+}

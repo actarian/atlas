@@ -80,24 +80,3 @@
 	}
 
 }
-
-@keyframes cube--fold {
-
-	0%,
-	10% {
-		transform: perspective(77px) rotateX(-180deg);
-		opacity: 0;
-	}
-
-	25%,
-	75% {
-		transform: perspective(77px) rotateX(0deg);
-		opacity: 1;
-	}
-
-	90%,
-	100% {
-		transform: perspective(77px) rotateY(180deg);
-		opacity: 0;
-	}
-}

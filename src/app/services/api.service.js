@@ -2,7 +2,7 @@
 
 import { from } from 'rxjs';
 
-const API_DEV = window.location.port === '6001';
+const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
 const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
 export default class ApiService {
@@ -65,3 +65,5 @@ export default class ApiService {
 }
 
 ApiService.factory.$inject = ['$http'];
+
+ApiService.API_DEV = API_DEV;

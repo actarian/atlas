@@ -27104,7 +27104,7 @@ exports.default = void 0;
 var _rxjs = require("rxjs");
 
 /* jshint esversion: 6 */
-const API_DEV = window.location.port === '6001';
+const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
 const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
 class ApiService {
@@ -27166,6 +27166,7 @@ class ApiService {
 
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
+ApiService.API_DEV = API_DEV;
 
 },{"rxjs":2}],251:[function(require,module,exports){
 "use strict";
@@ -27647,7 +27648,7 @@ class WishlistService {
   }
 
   get() {
-    if (window.location.port !== '6001') {
+    if (!ApiService.API_DEV) {
       return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(success => {
         return success;
       }));

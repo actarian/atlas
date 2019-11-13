@@ -104,7 +104,7 @@ export default class WishlistService {
 	}
 
 	get() {
-		if (window.location.port !== '6001') {
+		if (!ApiService.API_DEV) {
 			return from(this.$http.post('', this.wishlist).then(success => {
 				return success;
 			}));
