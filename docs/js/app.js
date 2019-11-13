@@ -23534,9 +23534,12 @@ class SwiperHeroDirective extends SwiperDirective {
     this.options = {
       speed: 600,
       parallax: true,
+
+      /*
       autoplay: {
-        delay: 10000
+      	delay: 10000,
       },
+      */
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
@@ -23551,18 +23554,26 @@ class SwiperHeroDirective extends SwiperDirective {
             scope_ = scope;
           }
 
-          this.toggleVideo(element_, scope_);
-
+          scope_.$on('onThronCanPlay', ($scope, id) => {
+            console.log('SwiperHeroDirective,onThronCanPlay', id);
+            this.toggleVideo(element_, scope_, id);
+          });
+          scope_.$on('onThronComplete', ($scope, id) => {
+            console.log('SwiperHeroDirective,onThronComplete', id);
+            swiper_.slideNext();
+          });
+          /*
           if (swiper_.autoplay) {
-            swiper_.autoplay.start();
+          	swiper_.autoplay.start();
           }
+          */
         },
         slideChangeTransitionStart: () => {
-          // console.log('slideChangeTransitionStart');
+          console.log('SwiperHeroDirective.slideChangeTransitionStart');
           this.toggleVideo(element_, scope_);
         },
-        slideChangeTransitionEnd: () => {// console.log('slideChangeTransitionEnd');
-          // this.toggleVideo(element_, scope_);
+        slideChangeTransitionEnd: () => {
+          console.log('SwiperHeroDirective.slideChangeTransitionEnd'); // this.toggleVideo(element_, scope_);
         }
       },
       pagination: {
@@ -23576,7 +23587,7 @@ class SwiperHeroDirective extends SwiperDirective {
     };
   }
 
-  toggleVideo(element, scope) {
+  toggleVideo(element, scope, id) {
     const slides = [...element[0].querySelectorAll('.swiper-slide')];
     slides.forEach(slide => {
       const node = slide.querySelector('video, [data-thron]');
@@ -23585,13 +23596,19 @@ class SwiperHeroDirective extends SwiperDirective {
         if (slide.classList.contains('swiper-slide-active')) {
           // console.log('playing node', node);
           if (node.hasAttribute('data-thron')) {
-            scope.$emit('playThron', node.id);
+            console.log(id, node.id, id === node.id);
+
+            if (id && id === node.id) {
+              scope.$broadcast('playThron', node.id);
+            } else if (!id) {
+              scope.$broadcast('playThron', node.id);
+            }
           } else {
             node.play();
           }
         } else {
           if (node.hasAttribute('data-thron')) {
-            scope.$emit('pauseThron', node.id);
+            scope.$broadcast('pauseThron', node.id);
           } else {
             node.pause();
           }
@@ -23760,33 +23777,78 @@ class ThronDirective {
       noSkin: true,
       lockBitrate: 'max'
     });
-    player.on('ready', () => {
+
+    const onReady = function () {
+      console.log('ThronDirective.onReady', node.id);
       const mediaContainer = player.mediaContainer();
       const video = mediaContainer.querySelector('video');
       video.setAttribute('playsinline', 'true');
-      video.setAttribute('autoplay', 'true');
-    });
-    scope.$on('playThron', ($scope, id) => {
-      if (id === node.id) {
-        const status = player.status();
+      scope.$emit('onThronReady', node.id); // video.setAttribute('autoplay', 'true');
+    };
 
-        if (status && status.ready && !status.playing) {
-          // console.log('playThron', status);
-          player.play();
-        }
+    const onCanPlay = function () {
+      console.log('ThronDirective.onCanPlay', node.id);
+      scope.$emit('onThronCanPlay', node.id);
+    };
+
+    const onPlaying = function () {
+      player.off('playing', onPlaying);
+      const qualities = player.qualityLevels();
+      console.log('ThronDirective.onPlaying', node.id, qualities);
+
+      if (qualities.length) {
+        const highestQuality = qualities[qualities.length - 1].index;
+        const lowestQuality = qualities[0].index;
+        player.currentQuality(highestQuality);
+        console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
+      }
+    };
+
+    const onComplete = function () {
+      console.log('ThronDirective.onComplete', node.id);
+      scope.$emit('onThronComplete', node.id);
+    };
+
+    const playVideo = function () {
+      const status = player.status();
+      console.log('ThronDirective.playVideo', node.id, status);
+
+      if (status && !status.playing) {
+        player.play();
+      }
+    };
+
+    const pauseVideo = function () {
+      const status = player.status();
+      console.log('ThronDirective.pauseVideo', node.id, status);
+
+      if (status && status.playing) {
+        player.pause();
+      }
+    };
+
+    player.on('ready', onReady);
+    player.on('canPlay', onCanPlay);
+    player.on('playing', onPlaying);
+    player.on('complete', onComplete);
+    scope.$on('playThron', ($scope, id) => {
+      // console.log('ThronDirective.playThron', id, node.id, id === node.id);
+      if (id === node.id) {
+        playVideo();
       }
     });
     scope.$on('pauseThron', ($scope, id) => {
+      // console.log('ThronDirective.pauseThron', id, node.id, id === node.id);
       if (id === node.id) {
-        const status = player.status();
-
-        if (status && status.playing) {
-          // console.log('pauseThron', status);
-          player.pause();
-        }
+        pauseVideo();
       }
     });
-    element.on('$destroy', () => {});
+    element.on('$destroy', () => {
+      player.off('ready', onReady);
+      player.off('canPlay', onCanPlay);
+      player.off('playing', onPlaying);
+      player.off('complete', onComplete);
+    });
   }
 
   static factory() {
@@ -27042,7 +27104,8 @@ exports.default = void 0;
 var _rxjs = require("rxjs");
 
 /* jshint esversion: 6 */
-const API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';
+const API_DEV = window.location.port === '6001';
+const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
 class ApiService {
   constructor($http) {
@@ -27055,7 +27118,15 @@ class ApiService {
       },
       wishlist: {
         get: () => {
-          return (0, _rxjs.from)($http.get('data/moodboard.json'));
+          if (!API_DEV) {
+            return (0, _rxjs.from)(this.$http.post('', this.wishlist));
+          } else {
+            return (0, _rxjs.from)(this.$http.get('data/moodboard.json').then(success => {
+              if (success.data) {
+                return success.data;
+              }
+            }));
+          }
         },
         toggle: item => {
           item.added = !item.added;
@@ -27067,26 +27138,20 @@ class ApiService {
       },
       moodboard: {
         filter: filters => {
-          //var f = function (response) {
-          //	const first = items.length === 0;
-          //	items.push(...response.data);
-          //	if (!first) {
-          //		items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-          //		subject.next({ data: items });
-          //		subject.complete();
-          //	}
-          //}
-          //const subject = new Subject();
-          //const items = [];
-          //from($http.post('', filters)).subscribe(f, error => subject.error(error));
-          //from($http.get('data/moodboard.json')).subscribe(f, error => subject.error(error));
-          //return subject;
-          return (0, _rxjs.from)($http.post('', filters)); //return from($http.get('data/moodboard.json'));
+          if (!API_DEV) {
+            return (0, _rxjs.from)($http.post('', filters));
+          } else {
+            return (0, _rxjs.from)($http.get('data/moodboard.json'));
+          }
         }
       },
       storeLocator: {
         all: () => {
-          return $http.get(API_HREF + '/api/store/json'); // return $http.get('data/store-locator.json');
+          if (!API_DEV) {
+            return $http.get(API_HREF + '/api/store/json');
+          } else {
+            return $http.get('data/store-locator.json');
+          }
         }
       }
     };
@@ -27582,7 +27647,7 @@ class WishlistService {
   }
 
   get() {
-    if (window.location.host !== 'localhost:6001') {
+    if (window.location.port !== '6001') {
       return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(success => {
         return success;
       }));

@@ -2,7 +2,8 @@
 
 import { from } from 'rxjs';
 
-const API_HREF = window.location.port === '6001' ? 'https://atlasconcorde.wslabs.it' : '';
+const API_DEV = window.location.port === '6001';
+const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
 export default class ApiService {
 
@@ -17,7 +18,15 @@ export default class ApiService {
 			},
 			wishlist: {
 				get: () => {
-					return from($http.get('data/moodboard.json'));
+					if (!API_DEV) {
+						return from(this.$http.post('', this.wishlist));
+					} else {
+						return from(this.$http.get('data/moodboard.json').then(success => {
+							if (success.data) {
+								return success.data;
+							}
+						}));
+					}
 				},
 				toggle: (item) => {
 					item.added = !item.added;
@@ -29,35 +38,20 @@ export default class ApiService {
 			},
 			moodboard: {
 				filter: (filters) => {
-
-					//var f = function (response) {
-					//	const first = items.length === 0;
-					//	items.push(...response.data);
-					//	if (!first) {
-
-					//		items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-
-					//		subject.next({ data: items });
-					//		subject.complete();
-					//	}
-					//}
-
-					//const subject = new Subject();
-
-					//const items = [];
-
-					//from($http.post('', filters)).subscribe(f, error => subject.error(error));
-					//from($http.get('data/moodboard.json')).subscribe(f, error => subject.error(error));
-
-					//return subject;
-					return from($http.post('', filters));
-					//return from($http.get('data/moodboard.json'));
+					if (!API_DEV) {
+						return from($http.post('', filters));
+					} else {
+						return from($http.get('data/moodboard.json'));
+					}
 				},
 			},
 			storeLocator: {
 				all: () => {
-					return $http.get(API_HREF + '/api/store/json');
-					// return $http.get('data/store-locator.json');
+					if (!API_DEV) {
+						return $http.get(API_HREF + '/api/store/json');
+					} else {
+						return $http.get('data/store-locator.json');
+					}
 				},
 			},
 		};

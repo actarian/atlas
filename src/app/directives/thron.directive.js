@@ -23,31 +23,69 @@ export default class ThronDirective {
 			noSkin: true,
 			lockBitrate: 'max',
 		});
-		player.on('ready', () => {
+		const onReady = function() {
+			console.log('ThronDirective.onReady', node.id);
 			const mediaContainer = player.mediaContainer();
 			const video = mediaContainer.querySelector('video');
 			video.setAttribute('playsinline', 'true');
-			video.setAttribute('autoplay', 'true');
-		});
+			scope.$emit('onThronReady', node.id);
+			// video.setAttribute('autoplay', 'true');
+		};
+		const onCanPlay = function() {
+			console.log('ThronDirective.onCanPlay', node.id);
+			scope.$emit('onThronCanPlay', node.id);
+		}
+		const onPlaying = function() {
+			player.off('playing', onPlaying);
+			const qualities = player.qualityLevels();
+			console.log('ThronDirective.onPlaying', node.id, qualities);
+			if (qualities.length) {
+				const highestQuality = qualities[qualities.length - 1].index;
+				const lowestQuality = qualities[0].index;
+				player.currentQuality(highestQuality);
+				console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
+			}
+		};
+		const onComplete = function() {
+			console.log('ThronDirective.onComplete', node.id);
+			scope.$emit('onThronComplete', node.id);
+		};
+		const playVideo = function() {
+			const status = player.status();
+			console.log('ThronDirective.playVideo', node.id, status);
+			if (status && !status.playing) {
+				player.play();
+			}
+		};
+		const pauseVideo = function() {
+			const status = player.status();
+			console.log('ThronDirective.pauseVideo', node.id, status);
+			if (status && status.playing) {
+				player.pause();
+			}
+		};
+		player.on('ready', onReady);
+		player.on('canPlay', onCanPlay);
+		player.on('playing', onPlaying);
+		player.on('complete', onComplete);
 		scope.$on('playThron', ($scope, id) => {
+			// console.log('ThronDirective.playThron', id, node.id, id === node.id);
 			if (id === node.id) {
-				const status = player.status();
-				if (status && status.ready && !status.playing) {
-					// console.log('playThron', status);
-					player.play();
-				}
+				playVideo();
 			}
 		});
 		scope.$on('pauseThron', ($scope, id) => {
+			// console.log('ThronDirective.pauseThron', id, node.id, id === node.id);
 			if (id === node.id) {
-				const status = player.status();
-				if (status && status.playing) {
-					// console.log('pauseThron', status);
-					player.pause();
-				}
+				pauseVideo();
 			}
 		});
-		element.on('$destroy', () => {});
+		element.on('$destroy', () => {
+			player.off('ready', onReady);
+			player.off('canPlay', onCanPlay);
+			player.off('playing', onPlaying);
+			player.off('complete', onComplete);
+		});
 	}
 
 	static factory() {

@@ -171,9 +171,11 @@ export class SwiperHeroDirective extends SwiperDirective {
 		this.options = {
 			speed: 600,
 			parallax: true,
+			/*
 			autoplay: {
 				delay: 10000,
 			},
+			*/
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
@@ -187,17 +189,26 @@ export class SwiperHeroDirective extends SwiperDirective {
 						element_ = element;
 						scope_ = scope;
 					}
-					this.toggleVideo(element_, scope_);
+					scope_.$on('onThronCanPlay', ($scope, id) => {
+						console.log('SwiperHeroDirective,onThronCanPlay', id);
+						this.toggleVideo(element_, scope_, id);
+					});
+					scope_.$on('onThronComplete', ($scope, id) => {
+						console.log('SwiperHeroDirective,onThronComplete', id);
+						swiper_.slideNext();
+					});
+					/*
 					if (swiper_.autoplay) {
 						swiper_.autoplay.start();
 					}
+					*/
 				},
 				slideChangeTransitionStart: () => {
-					// console.log('slideChangeTransitionStart');
+					console.log('SwiperHeroDirective.slideChangeTransitionStart');
 					this.toggleVideo(element_, scope_);
 				},
 				slideChangeTransitionEnd: () => {
-					// console.log('slideChangeTransitionEnd');
+					console.log('SwiperHeroDirective.slideChangeTransitionEnd');
 					// this.toggleVideo(element_, scope_);
 				}
 			},
@@ -212,7 +223,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 		};
 	}
 
-	toggleVideo(element, scope) {
+	toggleVideo(element, scope, id) {
 		const slides = [...element[0].querySelectorAll('.swiper-slide')];
 		slides.forEach(slide => {
 			const node = slide.querySelector('video, [data-thron]');
@@ -220,13 +231,18 @@ export class SwiperHeroDirective extends SwiperDirective {
 				if (slide.classList.contains('swiper-slide-active')) {
 					// console.log('playing node', node);
 					if (node.hasAttribute('data-thron')) {
-						scope.$emit('playThron', node.id);
+						console.log(id, node.id, id === node.id);
+						if (id && id === node.id) {
+							scope.$broadcast('playThron', node.id);
+						} else if (!id) {
+							scope.$broadcast('playThron', node.id);
+						}
 					} else {
 						node.play();
 					}
 				} else {
 					if (node.hasAttribute('data-thron')) {
-						scope.$emit('pauseThron', node.id);
+						scope.$broadcast('pauseThron', node.id);
 					} else {
 						node.pause();
 					}

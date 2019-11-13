@@ -97,6 +97,52 @@
 
 	@media screen {
 
+		@include media-breakpoint-up(sm) {
+
+			height: calc(100vh - 150px);
+
+			// height: auto;
+			.aspect {
+				height: 100%;
+			}
+
+			.container {
+				height: 100%;
+			}
+
+			.swiper-container {
+				position: relative;
+				// height: auto;
+			}
+
+			.swiper-pagination-bullet {
+				&:before {
+					width: 8px;
+					height: 8px;
+					border-radius: 4px;
+					background: rgba(255, 255, 255, 0.5);
+				}
+			}
+
+			.swiper-pagination-bullet-active {
+
+				&:before,
+				&:hover:before {
+					background: rgba(255, 255, 255, 1.0);
+				}
+			}
+
+			.swiper-slide {
+
+				// height: auto;
+				.aspect {
+					height: calc(100% - 60px);
+				}
+			}
+
+		}
+
+		/*
 		@media (max-width: 767.98px) and (orientation: portrait) {
 			.aspect {
 				@include aspect-grid(375, 600); // 667
@@ -121,6 +167,7 @@
 				@include aspect-grid(1920, 960);
 			}
 		}
+		*/
 
 	}
 
@@ -163,20 +210,11 @@
 .section--hero-home {
 	@extend %section--hero;
 
-	.swiper-container {
-		position: relative;
-		height: auto;
-	}
-
-	.swiper-slide {
-		height: auto;
-	}
-
 	.swiper-pagination-bullets {
 
 		&,
 		.swiper-container-horizontal>& {
-			background: white;
+			background: transparent;
 		}
 	}
 
