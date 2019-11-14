@@ -332,7 +332,9 @@ button,
       border-color: var(--foreground-negative); } }
   @media (max-width: 767.98px) {
     .btn--discover {
-      display: block; } }
+      display: block; }
+      .btn--discover span {
+        padding: 12px 24px; } }
 
 .btn--gallery {
   display: -webkit-inline-box;
@@ -3015,6 +3017,11 @@ img {
   opacity: 1; }
   .swiper-pagination-bullet-active:before {
     background: var(--foreground-secondary); }
+
+.swiper-button-prev:focus, .swiper-button-prev:active,
+.swiper-button-next:focus,
+.swiper-button-next:active {
+  outline: none !important; }
 
 .swiper-button-prev,
 .swiper-container-rtl .swiper-button-next {

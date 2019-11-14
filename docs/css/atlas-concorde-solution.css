@@ -211,7 +211,9 @@ button,
       border-color: #ffffff; } }
   @media (max-width: 767.98px) {
     .btn--discover {
-      display: block; } }
+      display: block; }
+      .btn--discover span {
+        padding: 12px 24px; } }
 
 .btn--gallery {
   display: -webkit-inline-box;
@@ -2894,6 +2896,11 @@ img {
   opacity: 1; }
   .swiper-pagination-bullet-active:before {
     background: #868887; }
+
+.swiper-button-prev:focus, .swiper-button-prev:active,
+.swiper-button-next:focus,
+.swiper-button-next:active {
+  outline: none !important; }
 
 .swiper-button-prev,
 .swiper-container-rtl .swiper-button-next {

@@ -90,7 +90,12 @@ button,
 
 	@include media-breakpoint-down(xs) {
 		display: block;
+
+		span {
+			padding: 12px 24px;
+		}
 	}
+
 }
 
 .btn--gallery {
