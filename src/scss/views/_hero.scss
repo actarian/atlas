@@ -97,51 +97,49 @@
 
 	@media screen {
 
-		@include media-breakpoint-up(sm) {
+		// height: auto;
+		.aspect {
+			height: 100%;
+		}
 
-			height: calc(100vh - 35px);
+		.container {
+			height: 100%;
+		}
 
+		.swiper-container {
+			position: relative;
 			// height: auto;
-			.aspect {
-				height: 100%;
-			}
+		}
 
-			.container {
-				height: 100%;
-			}
+		.swiper-pagination-bullets {
 
-			.swiper-container {
+			&,
+			.swiper-container-horizontal>& {
 				position: relative;
-				// height: auto;
+				height: 60px;
+				padding: 0;
 			}
+		}
 
-			.swiper-pagination-bullets {
-
-				&,
-				.swiper-container-horizontal>& {
-					position: relative;
-					height: 60px;
-					bottom: 160px;
-					padding: 0;
-				}
+		.swiper-pagination-bullet {
+			&:before {
+				width: 8px;
+				height: 8px;
+				border-radius: 4px;
+				background: rgba(255, 255, 255, 0.5);
 			}
+		}
 
-			.swiper-pagination-bullet {
-				&:before {
-					width: 8px;
-					height: 8px;
-					border-radius: 4px;
-					background: rgba(255, 255, 255, 0.5);
-				}
+		.swiper-pagination-bullet-active {
+
+			&:before,
+			&:hover:before {
+				background: rgba(255, 255, 255, 1.0);
 			}
+		}
 
-			.swiper-pagination-bullet-active {
-
-				&:before,
-				&:hover:before {
-					background: rgba(255, 255, 255, 1.0);
-				}
-			}
+		@include media-breakpoint-up(sm) {
+			height: calc(100vh - 35px);
 
 			.swiper-slide {
 
@@ -152,6 +150,38 @@
 
 			}
 
+			.swiper-pagination-bullets {
+
+				&,
+				.swiper-container-horizontal>& {
+					bottom: 160px;
+				}
+			}
+		}
+
+		@include media-breakpoint-down(xs) {
+			height: 70vh;
+
+			.container {
+				padding-top: 0;
+			}
+
+			.swiper-slide {
+
+				// height: auto;
+				.aspect {
+					height: 100%;
+				}
+
+			}
+
+			.swiper-pagination-bullets {
+
+				&,
+				.swiper-container-horizontal>& {
+					bottom: 60px;
+				}
+			}
 		}
 
 		/*
@@ -232,13 +262,29 @@
 
 	.container {
 		align-items: center;
-		justify-content: flex-end;
 		padding-bottom: 0;
 	}
 
 	.margin--cta {
 		padding: 40px 0 50px 0;
 	}
+
+	@include media-breakpoint-up(sm) {
+		.container {
+			justify-content: flex-end;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		.container {
+			justify-content: center;
+		}
+
+		.scroll__indicator {
+			display: none;
+		}
+	}
+
 }
 
 .section--hero-secondary {
