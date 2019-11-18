@@ -821,6 +821,15 @@ button,
 		}
 	}
 
+	@include media-breakpoint-down(xs) {
+		.label {
+			margin: 0 40px 0 0;
+			font-weight: $font-semibold;
+			color: $foreground;
+			font-size: 12px;
+		}
+	}
+
 }
 
 @mixin center {
