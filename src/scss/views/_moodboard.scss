@@ -394,11 +394,18 @@ $moodboard-gutter: 60px;
 }
 
 .mood__item {
-	width: 100%;
 
 	.btn--link {
 		text-transform: none;
 		margin-top: 30px;
+	}
+
+	@include media-breakpoint-up(sm) {
+		width: 100%;
+	}
+
+	@include media-breakpoint-down(xs) {
+		width: auto;
 	}
 }
 

@@ -19,6 +19,36 @@ export default class DomService {
 		return DomService.getScrollLeft(window);
 	}
 
+	traverseUp(node, callback, i = 0) {
+		if (!node) {
+			return;
+		}
+		const result = callback(node, i);
+		if (result) {
+			return result;
+		}
+		return this.traverseUp(node.parentNode, callback, i + 1);
+	}
+
+	traverseDown(node, callback, i = 0) {
+		if (!node) {
+			return;
+		}
+		let result = callback(node, i);
+		if (result) {
+			return result;
+		}
+		if (node.nodeType === 1) {
+			let j = 0,
+				t = node.childNodes.length;
+			while (j < t && !result) {
+				result = this.traverseDown(node.childNodes[j], callback, i + 1);
+				j++;
+			}
+		}
+		return result;
+	}
+
 	hasWebglSupport() {
 		if (this.isIE()) {
 			return false;
@@ -57,8 +87,8 @@ export default class DomService {
 			const canvas = document.createElement('canvas');
 			if (!!window.WebGLRenderingContext) {
 				gl = canvas.getContext('webgl', {
-					failIfMajorPerformanceCaveat: true
-				}) ||
+						failIfMajorPerformanceCaveat: true
+					}) ||
 					canvas.getContext('experimental-webgl', {
 						failIfMajorPerformanceCaveat: true
 					});
@@ -276,14 +306,14 @@ export default class DomService {
 	}
 
 	static getScrollTop(node) {
-		if (node === document) {
+		if (node === document || node === window) {
 			return this.getScrollTop(document.scrollingElement || document.documentElement || document.body);
 		}
 		return node.pageYOffset || node.scrollY || node.scrollTop || 0;
 	}
 
 	static getScrollLeft(node) {
-		if (node === document) {
+		if (node === document || node === window) {
 			return this.getScrollLeft(document.scrollingElement || document.documentElement || document.body);
 		}
 		return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
@@ -301,7 +331,7 @@ DomService.factory.$inject = [];
 DomService.rafIntersection_ = {};
 DomService.scrollIntersection_ = {};
 DomService.raf$ = range(0, Number.POSITIVE_INFINITY, animationFrame);
-DomService.windowRect$ = function () {
+DomService.windowRect$ = function() {
 	const windowRect = new Rect({
 		width: window.innerWidth,
 		height: window.innerHeight
@@ -319,14 +349,14 @@ DomService.windowRect$ = function () {
 DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$).pipe(
 	shareReplay()
 );
-DomService.mainScroll$ = function () {
+DomService.mainScroll$ = function() {
 	const target = window;
 	return fromEvent(target, 'scroll').pipe(
 		shareReplay()
 	);
 }();
 DomService.secondaryScroll$_ = new Subject();
-DomService.scroll$ = function () {
+DomService.scroll$ = function() {
 	const target = window;
 	let previousTop = DomService.getScrollTop(target);
 	const event = {

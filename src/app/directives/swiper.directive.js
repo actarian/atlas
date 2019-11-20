@@ -21,6 +21,10 @@ const DEFAULT_SWIPER_OPTIONS = {
 		nextEl: '.swiper-button-next',
 		prevEl: '.swiper-button-prev',
 	},
+	keyboard: {
+		enabled: true,
+		onlyInViewport: true,
+	},
 };
 
 export class SwiperDirective {
@@ -136,6 +140,10 @@ export class SwiperGalleryDirective extends SwiperDirective {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
 			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
+			},
 		};
 	}
 
@@ -152,7 +160,7 @@ export class SwiperGalleryDirective extends SwiperDirective {
 				}
 			}
 		}
-		console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
+		// console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
 	}
 
 	static factory() {
@@ -176,6 +184,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 				delay: 10000,
 			},
 			*/
+			loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
@@ -184,17 +193,18 @@ export class SwiperHeroDirective extends SwiperDirective {
 			},
 			on: {
 				init: (swiper, element, scope) => {
+					// console.log('SwiperHeroDirective.init');
 					if (!swiper_) {
 						swiper_ = swiper;
 						element_ = element;
 						scope_ = scope;
 					}
 					scope_.$on('onThronCanPlay', ($scope, id) => {
-						console.log('SwiperHeroDirective,onThronCanPlay', id);
-						this.toggleVideo(element_, scope_, id);
+						// console.log('SwiperHeroDirective,onThronCanPlay', id);
+						this.toggleVideo(element, scope, id);
 					});
 					scope_.$on('onThronComplete', ($scope, id) => {
-						console.log('SwiperHeroDirective,onThronComplete', id);
+						// console.log('SwiperHeroDirective,onThronComplete', id);
 						swiper_.slideNext();
 					});
 					/*
@@ -204,12 +214,17 @@ export class SwiperHeroDirective extends SwiperDirective {
 					*/
 				},
 				slideChangeTransitionStart: () => {
-					console.log('SwiperHeroDirective.slideChangeTransitionStart');
-					this.toggleVideo(element_, scope_);
+					// console.log('SwiperHeroDirective.slideChangeTransitionStart');
+					if (element_) {
+						this.toggleVideo(element_, scope_);
+					}
 				},
 				slideChangeTransitionEnd: () => {
-					console.log('SwiperHeroDirective.slideChangeTransitionEnd');
-					// this.toggleVideo(element_, scope_);
+					// console.log('SwiperHeroDirective.slideChangeTransitionEnd');
+					if (element_) {
+						// this.toggleVideo(element_, scope_);
+						this.checkAutoplay(element_, scope_, swiper_);
+					}
 				}
 			},
 			pagination: {
@@ -219,6 +234,10 @@ export class SwiperHeroDirective extends SwiperDirective {
 			navigation: {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
 			},
 		};
 	}
@@ -231,7 +250,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 				if (slide.classList.contains('swiper-slide-active')) {
 					// console.log('playing node', node);
 					if (node.hasAttribute('data-thron')) {
-						console.log(id, node.id, id === node.id);
+						// console.log(id, node.id, id === node.id);
 						if (id && id === node.id) {
 							scope.$broadcast('playThron', node.id);
 						} else if (!id) {
@@ -249,6 +268,15 @@ export class SwiperHeroDirective extends SwiperDirective {
 				}
 			}
 		});
+	}
+
+	checkAutoplay(element, scope, swiper) {
+		const video = element[0].querySelector('.swiper-slide-active video, .swiper-slide-active [data-thron]');
+		if (!video) {
+			setTimeout(() => {
+				swiper.slideNext();
+			}, 5000);
+		}
 	}
 
 	static factory() {
@@ -281,6 +309,10 @@ export class SwiperProjectsDirective extends SwiperDirective {
 			navigation: {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
 			},
 		};
 	}
@@ -315,6 +347,10 @@ export class SwiperTileDirective extends SwiperDirective {
 			navigation: {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
 			},
 		};
 	}
@@ -366,6 +402,10 @@ export class SwiperTimelineDirective extends SwiperDirective {
 			pagination: {
 				el: '.swiper-pagination',
 				dynamicBullets: true,
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
 			},
 		};
 	}

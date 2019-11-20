@@ -127,20 +127,8 @@ button,
 	}
 
 	b {
-		margin-left: 5px;
 		position: relative;
 		text-transform: uppercase;
-
-		&:after {
-			content: '';
-			position: absolute;
-			left: 0;
-			bottom: -8px;
-			width: 100%;
-			height: 2px;
-			background: $primary;
-			transition: all ease-out 350ms;
-		}
 	}
 
 	&:hover {
@@ -191,11 +179,36 @@ button,
 		}
 	}
 
+	@include media-breakpoint-up(sm) {
+		b {
+			margin-left: 5px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				left: 0;
+				bottom: -8px;
+				width: 100%;
+				height: 2px;
+				background: $primary;
+				transition: all ease-out 350ms;
+			}
+		}
+
+	}
+
 	@include media-breakpoint-down(xs) {
 		justify-content: flex-start;
 		align-items: center;
 		text-align: left;
 		line-height: 1.2;
+
+		b {
+			line-height: 2;
+			display: inline;
+			padding-bottom: 3px;
+			border-bottom: 2px solid $primary;
+		}
 	}
 }
 

@@ -21624,7 +21624,7 @@ class AppearDirective {
     });
 
     const onBeforePrint = () => {
-      node.classList.add('appeared');
+      node.classList.add('appeared', 'print');
       subscription.unsubscribe();
     };
 
@@ -22443,12 +22443,14 @@ class LazyDirective {
 
   immediate(scope, image) {
     // this.onAppearsInViewport(image, scope, attributes);
-    const src = this.getThronSrc(image, scope.src);
-    image.src = src;
-    image.removeAttribute('data-src');
-    image.classList.remove('lazying');
-    image.classList.add('lazyed');
-    scope.$emit('lazyImage', image);
+    if (!image.classList.contains('lazyed')) {
+      const src = this.getThronSrc(image, scope.src);
+      image.src = src;
+      image.removeAttribute('data-src');
+      image.classList.remove('lazying');
+      image.classList.add('lazyed');
+      scope.$emit('lazyImage', image);
+    }
   }
 
   getThronSrc(image, src) {
@@ -23258,8 +23260,12 @@ class StickyDirective {
     const node = element[0];
     const content = node.querySelector('[sticky-content]');
 
-    const onClick = () => {
-      if (window.innerWidth > 860) {
+    const onClick = event => {
+      const isChild = this.domService.traverseUp(event.target, node => {
+        return node.classList && node.classList.contains('form__group');
+      });
+
+      if (isChild && window.innerWidth > 860) {
         // console.log('StickyDirective.onClick');
         const top = this.domService.scrollTop + node.getBoundingClientRect().top;
         window.scroll({
@@ -23369,6 +23375,10 @@ const DEFAULT_SWIPER_OPTIONS = {
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev'
+  },
+  keyboard: {
+    enabled: true,
+    onlyInViewport: true
   }
 };
 
@@ -23495,6 +23505,10 @@ class SwiperGalleryDirective extends SwiperDirective {
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
       }
     };
   }
@@ -23513,9 +23527,8 @@ class SwiperGalleryDirective extends SwiperDirective {
           element.swiper.slideTo(initialSlide, 0);
         }
       }
-    }
+    } // console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
 
-    console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
   }
 
   static factory() {
@@ -23540,6 +23553,7 @@ class SwiperHeroDirective extends SwiperDirective {
       	delay: 10000,
       },
       */
+      loop: true,
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
@@ -23548,6 +23562,7 @@ class SwiperHeroDirective extends SwiperDirective {
       },
       on: {
         init: (swiper, element, scope) => {
+          // console.log('SwiperHeroDirective.init');
           if (!swiper_) {
             swiper_ = swiper;
             element_ = element;
@@ -23555,11 +23570,11 @@ class SwiperHeroDirective extends SwiperDirective {
           }
 
           scope_.$on('onThronCanPlay', ($scope, id) => {
-            console.log('SwiperHeroDirective,onThronCanPlay', id);
-            this.toggleVideo(element_, scope_, id);
+            // console.log('SwiperHeroDirective,onThronCanPlay', id);
+            this.toggleVideo(element, scope, id);
           });
           scope_.$on('onThronComplete', ($scope, id) => {
-            console.log('SwiperHeroDirective,onThronComplete', id);
+            // console.log('SwiperHeroDirective,onThronComplete', id);
             swiper_.slideNext();
           });
           /*
@@ -23569,11 +23584,17 @@ class SwiperHeroDirective extends SwiperDirective {
           */
         },
         slideChangeTransitionStart: () => {
-          console.log('SwiperHeroDirective.slideChangeTransitionStart');
-          this.toggleVideo(element_, scope_);
+          // console.log('SwiperHeroDirective.slideChangeTransitionStart');
+          if (element_) {
+            this.toggleVideo(element_, scope_);
+          }
         },
         slideChangeTransitionEnd: () => {
-          console.log('SwiperHeroDirective.slideChangeTransitionEnd'); // this.toggleVideo(element_, scope_);
+          // console.log('SwiperHeroDirective.slideChangeTransitionEnd');
+          if (element_) {
+            // this.toggleVideo(element_, scope_);
+            this.checkAutoplay(element_, scope_, swiper_);
+          }
         }
       },
       pagination: {
@@ -23583,6 +23604,10 @@ class SwiperHeroDirective extends SwiperDirective {
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
       }
     };
   }
@@ -23596,8 +23621,7 @@ class SwiperHeroDirective extends SwiperDirective {
         if (slide.classList.contains('swiper-slide-active')) {
           // console.log('playing node', node);
           if (node.hasAttribute('data-thron')) {
-            console.log(id, node.id, id === node.id);
-
+            // console.log(id, node.id, id === node.id);
             if (id && id === node.id) {
               scope.$broadcast('playThron', node.id);
             } else if (!id) {
@@ -23615,6 +23639,16 @@ class SwiperHeroDirective extends SwiperDirective {
         }
       }
     });
+  }
+
+  checkAutoplay(element, scope, swiper) {
+    const video = element[0].querySelector('.swiper-slide-active video, .swiper-slide-active [data-thron]');
+
+    if (!video) {
+      setTimeout(() => {
+        swiper.slideNext();
+      }, 5000);
+    }
   }
 
   static factory() {
@@ -23647,6 +23681,10 @@ class SwiperProjectsDirective extends SwiperDirective {
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
       }
     };
   }
@@ -23681,6 +23719,10 @@ class SwiperTileDirective extends SwiperDirective {
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
       }
     };
   }
@@ -23731,6 +23773,10 @@ class SwiperTimelineDirective extends SwiperDirective {
       pagination: {
         el: '.swiper-pagination',
         dynamicBullets: true
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
       }
     };
   }
@@ -23779,7 +23825,7 @@ class ThronDirective {
     });
 
     const onReady = function () {
-      console.log('ThronDirective.onReady', node.id);
+      // console.log('ThronDirective.onReady', node.id);
       const mediaContainer = player.mediaContainer();
       const video = mediaContainer.querySelector('video');
       video.setAttribute('playsinline', 'true');
@@ -23787,31 +23833,28 @@ class ThronDirective {
     };
 
     const onCanPlay = function () {
-      console.log('ThronDirective.onCanPlay', node.id);
+      // console.log('ThronDirective.onCanPlay', node.id);
       scope.$emit('onThronCanPlay', node.id);
     };
 
     const onPlaying = function () {
       player.off('playing', onPlaying);
-      const qualities = player.qualityLevels();
-      console.log('ThronDirective.onPlaying', node.id, qualities);
+      const qualities = player.qualityLevels(); // console.log('ThronDirective.onPlaying', node.id, qualities);
 
       if (qualities.length) {
         const highestQuality = qualities[qualities.length - 1].index;
         const lowestQuality = qualities[0].index;
-        player.currentQuality(highestQuality);
-        console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
+        player.currentQuality(highestQuality); // console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
       }
     };
 
     const onComplete = function () {
-      console.log('ThronDirective.onComplete', node.id);
+      // console.log('ThronDirective.onComplete', node.id);
       scope.$emit('onThronComplete', node.id);
     };
 
     const playVideo = function () {
-      const status = player.status();
-      console.log('ThronDirective.playVideo', node.id, status);
+      const status = player.status(); // console.log('ThronDirective.playVideo', node.id, status);
 
       if (status && !status.playing) {
         player.play();
@@ -23819,8 +23862,7 @@ class ThronDirective {
     };
 
     const pauseVideo = function () {
-      const status = player.status();
-      console.log('ThronDirective.pauseVideo', node.id, status);
+      const status = player.status(); // console.log('ThronDirective.pauseVideo', node.id, status);
 
       if (status && status.playing) {
         player.pause();
@@ -24148,7 +24190,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
 class WishlistDirective {
   constructor($timeout, WishlistService) {
     this.$timeout = $timeout;
@@ -25972,6 +26013,8 @@ var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
+let wasProduct = false;
+
 class PageTransition extends _highway.default.Transition {
   in({
     from,
@@ -25993,7 +26036,20 @@ class PageTransition extends _highway.default.Transition {
       opacity: 0,
       minHeight: from.offsetHeight
     });
-    window.scrollTo(0, 0);
+    setTimeout(() => {
+      const sectionProduct = to.querySelector('.section--product');
+
+      if (wasProduct && sectionProduct && window.innerWidth > 860) {
+        const top = sectionProduct.getBoundingClientRect().top; // console.log(sectionProduct, top);
+
+        window.scrollTo(0, top + _dom.default.getScrollTop(window));
+      } else {
+        window.scrollTo(0, 0);
+      } // console.log(wasProduct, sectionProduct);
+
+
+      wasProduct = Boolean(sectionProduct);
+    }, 100);
 
     _customRenderer.default.$destroy(from);
 
@@ -27099,13 +27155,15 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.API_HREF = exports.API_DEV = void 0;
 
 var _rxjs = require("rxjs");
 
 /* jshint esversion: 6 */
 const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
+exports.API_DEV = API_DEV;
 const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
+exports.API_HREF = API_HREF;
 
 class ApiService {
   constructor($http) {
@@ -27196,6 +27254,44 @@ class DomService {
 
   get scrollLeft() {
     return DomService.getScrollLeft(window);
+  }
+
+  traverseUp(node, callback, i = 0) {
+    if (!node) {
+      return;
+    }
+
+    const result = callback(node, i);
+
+    if (result) {
+      return result;
+    }
+
+    return this.traverseUp(node.parentNode, callback, i + 1);
+  }
+
+  traverseDown(node, callback, i = 0) {
+    if (!node) {
+      return;
+    }
+
+    let result = callback(node, i);
+
+    if (result) {
+      return result;
+    }
+
+    if (node.nodeType === 1) {
+      let j = 0,
+          t = node.childNodes.length;
+
+      while (j < t && !result) {
+        result = this.traverseDown(node.childNodes[j], callback, i + 1);
+        j++;
+      }
+    }
+
+    return result;
   }
 
   hasWebglSupport() {
@@ -27462,7 +27558,7 @@ class DomService {
   }
 
   static getScrollTop(node) {
-    if (node === document) {
+    if (node === document || node === window) {
       return this.getScrollTop(document.scrollingElement || document.documentElement || document.body);
     }
 
@@ -27470,7 +27566,7 @@ class DomService {
   }
 
   static getScrollLeft(node) {
-    if (node === document) {
+    if (node === document || node === window) {
       return this.getScrollLeft(document.scrollingElement || document.documentElement || document.body);
     }
 
@@ -27543,6 +27639,8 @@ exports.default = void 0;
 var _rxjs = require("rxjs");
 
 var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
+
+var _api = require("./api.service");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27648,7 +27746,7 @@ class WishlistService {
   }
 
   get() {
-    if (!ApiService.API_DEV) {
+    if (!_api.API_DEV) {
       return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(success => {
         return success;
       }));
@@ -27673,7 +27771,7 @@ exports.default = WishlistService;
 WishlistService.count$ = new _rxjs.BehaviorSubject(0);
 WishlistService.factory.$inject = ['$http', 'PromiseService', 'LocalStorageService', 'ApiService'];
 
-},{"../gtm/gtm.service":238,"rxjs":2}],253:[function(require,module,exports){
+},{"../gtm/gtm.service":238,"./api.service":250,"rxjs":2}],253:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

@@ -2,6 +2,7 @@
 
 import { BehaviorSubject, from } from "rxjs";
 import GtmService from '../gtm/gtm.service';
+import { API_DEV } from './api.service';
 
 export default class WishlistService {
 
@@ -104,7 +105,7 @@ export default class WishlistService {
 	}
 
 	get() {
-		if (!ApiService.API_DEV) {
+		if (!API_DEV) {
 			return from(this.$http.post('', this.wishlist).then(success => {
 				return success;
 			}));

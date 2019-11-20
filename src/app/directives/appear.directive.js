@@ -40,7 +40,7 @@ export default class AppearDirective {
 			*/
 		});
 		const onBeforePrint = () => {
-			node.classList.add('appeared');
+			node.classList.add('appeared', 'print');
 			subscription.unsubscribe();
 		};
 		window.addEventListener('beforeprint', onBeforePrint);

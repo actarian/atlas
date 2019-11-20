@@ -2,8 +2,8 @@
 
 import { from } from 'rxjs';
 
-const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
-const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
+export const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
+export const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
 export default class ApiService {
 

@@ -51,12 +51,14 @@ export default class LazyDirective {
 
 	immediate(scope, image) {
 		// this.onAppearsInViewport(image, scope, attributes);
-		const src = this.getThronSrc(image, scope.src);
-		image.src = src;
-		image.removeAttribute('data-src');
-		image.classList.remove('lazying');
-		image.classList.add('lazyed');
-		scope.$emit('lazyImage', image);
+		if (!image.classList.contains('lazyed')) {
+			const src = this.getThronSrc(image, scope.src);
+			image.src = src;
+			image.removeAttribute('data-src');
+			image.classList.remove('lazying');
+			image.classList.add('lazyed');
+			scope.$emit('lazyImage', image);
+		}
 	}
 
 	getThronSrc(image, src) {

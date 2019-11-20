@@ -446,19 +446,15 @@
 .scroll__indicator {
 	position: absolute;
 	left: 50%;
-	bottom: 1em;
+	bottom: 30px;
 	transform: translateX(-50%);
 	z-index: 10;
 
 	svg {
-		width: 4vw;
-		height: 4vw;
-		min-width: 40px;
-		min-height: 40px;
-		max-width: 60px;
-		max-height: 60px;
+		width: 40px;
+		height: 40px;
 		fill: white;
-		// animation: heartbeat 1.5s ease-in-out infinite both;
-		animation: bounce-top 1.8s both infinite;
+		animation: down-soft 1.8s both infinite;
+		animation-delay: 3s;
 	}
 }

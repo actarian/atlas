@@ -7,6 +7,10 @@
 		width: 100%;
 	}
 
+	.abstract {
+		white-space: normal;
+	}
+
 	@include media-breakpoint-up(md) {
 		position: fixed;
 		top: 0;

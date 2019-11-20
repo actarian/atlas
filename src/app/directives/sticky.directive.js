@@ -17,8 +17,11 @@ export default class StickyDirective {
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		const content = node.querySelector('[sticky-content]');
-		const onClick = () => {
-			if (window.innerWidth > 860) {
+		const onClick = (event) => {
+			const isChild = this.domService.traverseUp(event.target, (node) => {
+				return node.classList && node.classList.contains('form__group');
+			});
+			if (isChild && window.innerWidth > 860) {
 				// console.log('StickyDirective.onClick');
 				const top = this.domService.scrollTop + node.getBoundingClientRect().top;
 				window.scroll({

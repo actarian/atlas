@@ -5,6 +5,8 @@ import DomService from '../services/dom.service';
 import Rect from '../shared/rect';
 import CustomRenderer from './custom-renderer';
 
+let wasProduct = false;
+
 export default class PageTransition extends Highway.Transition {
 
 	in ({ from, to, done }) {
@@ -18,7 +20,20 @@ export default class PageTransition extends Highway.Transition {
 			}
 		});
 		TweenMax.set(to, { opacity: 0, minHeight: from.offsetHeight });
-		window.scrollTo(0, 0);
+
+		setTimeout(() => {
+			const sectionProduct = to.querySelector('.section--product');
+			if (wasProduct && sectionProduct && window.innerWidth > 860) {
+				const top = sectionProduct.getBoundingClientRect().top;
+				// console.log(sectionProduct, top);
+				window.scrollTo(0, top + DomService.getScrollTop(window));
+			} else {
+				window.scrollTo(0, 0);
+			}
+			// console.log(wasProduct, sectionProduct);
+			wasProduct = Boolean(sectionProduct);
+		}, 100);
+
 		CustomRenderer.$destroy(from);
 		if (PageTransition.origin) {
 			const left = PageTransition.origin.x / window.innerWidth * 100;
