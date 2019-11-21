@@ -184,7 +184,6 @@ export class SwiperHeroDirective extends SwiperDirective {
 				delay: 10000,
 			},
 			*/
-			loop: true,
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
@@ -205,7 +204,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 					});
 					scope_.$on('onThronComplete', ($scope, id) => {
 						// console.log('SwiperHeroDirective,onThronComplete', id);
-						swiper_.slideNext();
+						this.next(swiper_);
 					});
 					/*
 					if (swiper_.autoplay) {
@@ -274,8 +273,17 @@ export class SwiperHeroDirective extends SwiperDirective {
 		const video = element[0].querySelector('.swiper-slide-active video, .swiper-slide-active [data-thron]');
 		if (!video) {
 			setTimeout(() => {
-				swiper.slideNext();
+				this.next(swiper);
+				// swiper.slideNext();
 			}, 5000);
+		}
+	}
+
+	next(swiper) {
+		if (swiper.realIndex = swiper.slides.length - 1) {
+			swiper.slideTo(0);
+		} else {
+			swiper.slideNext();
 		}
 	}
 
