@@ -43,11 +43,14 @@
 }
 
 .swiper-pagination-bullets {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	text-align: center;
 	background: transparent;
+
+	&:not(.swiper-pagination-bullets-dynamic) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
 	.swiper-pagination-bullet {
 		width: auto;

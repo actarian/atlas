@@ -389,7 +389,8 @@
 	}
 }
 
-.section--collections+.section--collections {
+.section--collections+.section--collections,
+.section--collections+.section--collections-results {
 	border-top: 2px solid $border;
 }
 
@@ -462,6 +463,27 @@ $collection-gutter: 70px;
 			margin: 0;
 		}
 
+		&:hover {
+			.btn--link-secondary {
+				&:after {
+					transform: scale(0, 1);
+					background: $primary;
+				}
+			}
+		}
+
+		@media screen {
+			.section--negative & {
+				&:hover {
+					.btn--link-secondary {
+						&:after {
+							background: $primary;
+						}
+					}
+				}
+			}
+		}
+
 		@include media-breakpoint-up(md) {
 			flex: 0 0 calc(33% - #{$collection-gutter});
 			width: calc(33% - #{$collection-gutter});
@@ -482,6 +504,10 @@ $collection-gutter: 70px;
 
 		}
 
+	}
+
+	&>.listing__item--with-logo {
+		text-align: center;
 	}
 
 }

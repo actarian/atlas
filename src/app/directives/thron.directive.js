@@ -47,7 +47,7 @@ export default class ThronDirective {
 			}
 		};
 		const onComplete = function() {
-			// console.log('ThronDirective.onComplete', node.id);
+			console.log('ThronDirective.onComplete', node.id);
 			scope.$emit('onThronComplete', node.id);
 		};
 		const playVideo = function() {

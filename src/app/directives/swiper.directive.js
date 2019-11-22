@@ -199,11 +199,11 @@ export class SwiperHeroDirective extends SwiperDirective {
 						scope_ = scope;
 					}
 					scope_.$on('onThronCanPlay', ($scope, id) => {
-						// console.log('SwiperHeroDirective,onThronCanPlay', id);
+						// console.log('SwiperHeroDirective.onThronCanPlay', id);
 						this.toggleVideo(element, scope, id);
 					});
 					scope_.$on('onThronComplete', ($scope, id) => {
-						// console.log('SwiperHeroDirective,onThronComplete', id);
+						// console.log('SwiperHeroDirective.onThronComplete', id);
 						this.next(swiper_);
 					});
 					/*
@@ -280,7 +280,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 	}
 
 	next(swiper) {
-		if (swiper.realIndex = swiper.slides.length - 1) {
+		if (swiper.realIndex == swiper.slides.length - 1) {
 			swiper.slideTo(0);
 		} else {
 			swiper.slideNext();
@@ -351,6 +351,7 @@ export class SwiperTileDirective extends SwiperDirective {
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
+				dynamicBullets: true,
 			},
 			navigation: {
 				nextEl: '.swiper-button-next',

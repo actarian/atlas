@@ -1,0 +1,802 @@
+<script type="text/javascript" lazy-script>
+	window.filters = {
+		collections: {
+			label: 'Collections',
+			placeholder: 'all collections',
+			options: [{
+				label: 'Marvel Edge',
+				value: 11,
+			}, {
+				label: 'Boost',
+				value: 12,
+			}, {
+				label: 'Klif',
+				value: 13,
+			}, {
+				label: 'Realm',
+				value: 14,
+			}, {
+				label: 'Block Next',
+				value: 15,
+			}, {
+				label: 'Peak Floor',
+				value: 16,
+			}, {
+				label: 'Cliff',
+				value: 17,
+			}]
+		},
+		looks: {
+			label: 'Look',
+			placeholder: 'all looks',
+			options: [{
+				label: 'Wood look',
+				value: 21,
+				image: 'img/collections/looks/01.jpg',
+			}, {
+				label: 'Marble look',
+				value: 22,
+				image: 'img/collections/looks/02.jpg',
+			}, {
+				label: 'Stone look',
+				value: 23,
+				image: 'img/collections/looks/03.jpg',
+			}, {
+				label: 'Concrete look',
+				value: 24,
+				image: 'img/collections/looks/04.jpg',
+			}, {
+				label: 'Textile look',
+				value: 25,
+				image: 'img/collections/looks/05.jpg',
+			}, {
+				label: 'Colour look',
+				value: 26,
+				image: 'img/collections/looks/06.jpg',
+			}, {
+				label: '3D',
+				value: 27,
+				image: 'img/collections/looks/07.jpg',
+			}]
+		},
+		typologies: {
+			label: 'Typology',
+			placeholder: 'all typologies',
+			options: [{
+				label: 'Porcelain tiles',
+				value: 31,
+			}, {
+				label: 'Wall tiles',
+				value: 32,
+			}]
+		},
+		categories: {
+			label: 'Category',
+			placeholder: 'all categories',
+			options: [{
+				label: 'Outdoor',
+				value: 41,
+			}, {
+				label: '3D Wall Design',
+				value: 42,
+			}, {
+				label: 'XL Extra large size porcelain tiles',
+				value: 43,
+			}]
+		}
+	};
+	window.brands = [{
+		brand: 'atlas-concorde',
+		collections: [{
+			url: 'product-project.html',
+			id: 11,
+			images: [{
+				url: 'img/collections/01.jpg',
+				features: [31],
+			}, {
+				url: 'img/collections/01.jpg',
+				features: [32],
+			}],
+			look: 'marble look',
+			title: 'Marvel Edge',
+			abstract: 'The contemporary feel of timeless marble-look tiles.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/01.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/02.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/03.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/04.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/05.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/06.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/07.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/08.jpg'
+				}]
+			}, {
+				category: 'Wall tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/01.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/02.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/03.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/04.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/05.jpg'
+				}]
+			}],
+			features: [22, 31, 32, 41],
+		}, {
+			url: 'product-project.html',
+			id: 12,
+			images: [{
+				url: 'img/collections/02.jpg',
+				features: [31],
+			}, {
+				url: 'img/collections/02.jpg',
+				features: [32],
+			}],
+			look: 'concrete look',
+			title: 'Boost',
+			abstract: 'The new soul of the concrete effect: industrial style becomes sophisticated elegance.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/09.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/10.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/11.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/12.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/13.jpg'
+				}]
+			}, {
+				category: 'Wall tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/09.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/10.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/11.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/12.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/13.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/14.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/15.jpg'
+				}]
+			}],
+			features: [24, 31, 32, 42],
+		}, {
+			url: 'product-project.html',
+			id: 13,
+			images: [{
+				url: 'img/collections/03.jpg',
+				features: [31],
+			}, {
+				url: 'img/collections/03.jpg',
+				features: [32],
+			}],
+			look: 'stone look',
+			title: 'Klif',
+			abstract: 'The decisive character of the stone effect in a porcelain tile inspired by nature.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/16.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/17.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/18.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/19.jpg'
+				}]
+			}, {
+				category: 'Wall tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/16.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/17.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/18.jpg'
+				}]
+			}],
+			features: [23, 31, 32, 43],
+		}]
+	}, {
+		brand: 'atlas-concorde-russia',
+		collections: [{
+			url: 'product-project-russia.html',
+			id: 17,
+			images: [{
+				url: 'img/collections/04.jpg',
+				features: [31],
+			}],
+			look: 'concrete look',
+			title: 'Cliff',
+			abstract: 'A marked impact and neutral colors, for a contemporary taste.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/19.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/20.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/21.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/22.jpg'
+				}]
+			}],
+			features: [24, 31, 41, 42],
+		}]
+	}, {
+		brand: 'atlas-concorde-solution',
+		collections: [{
+			url: 'product-project.html',
+			id: 14,
+			images: [{
+				url: 'img/collections/04.jpg',
+				features: [31],
+			}],
+			look: 'concrete look',
+			title: 'Realm',
+			abstract: 'A marked impact and neutral colors, for a contemporary taste.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/19.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/20.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/21.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/22.jpg'
+				}]
+			}],
+			features: [24, 31, 41, 42],
+		}, {
+			url: 'product-project.html',
+			id: 15,
+			images: [{
+				url: 'img/collections/05.jpg',
+				features: [31],
+			}],
+			look: 'stone look',
+			title: 'Block Next',
+			abstract: 'A touch of authenticity that also interprets the warmest and most welcoming moods.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/23.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/24.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/25.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/26.jpg'
+				}]
+			}],
+			features: [23, 31, 41, 42],
+		}, {
+			url: 'product-project.html',
+			id: 16,
+			images: [{
+				url: 'img/collections/06.jpg',
+				features: [31],
+			}],
+			look: 'stone look',
+			title: 'Peak Floor',
+			abstract: 'Perfect for making the most of any residential and commercial space, even outdoors.',
+			categories: [{
+				category: 'Porcelain tiles',
+				tiles: [{
+					name: '',
+					image: 'img/collections/tiles/27.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/28.jpg'
+				}, {
+					name: '',
+					image: 'img/collections/tiles/29.jpg'
+				}]
+			}],
+			features: [23, 31, 41, 42],
+		}]
+	}];
+
+</script>
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="img/collections/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/collections/hero-secondary.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 offset-md-2">
+					<div class="category">Explore our collections</div>
+					<div class="title"><b>More than 30 collections</b> for every need</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<div ng-controller="CollectionsCtrl as collectionsCtrl">
+	<section class="section section--filters" ng-class="{ opened: root.menuProductOpened }" sticky="61">
+		<form class="form form--filters" sticky-content>
+			<div class="form__group" ng-repeat="(key, filter) in collectionsCtrl.filters track by $index">
+				<div select-with-autocomplete="filter" handler="collectionsCtrl" ng-if="key == 'collections'"></div>
+				<div has-dropdown=".control" ng-if="key != 'collections'">
+					<div class="dropdown">
+						<ul class="nav nav--select">
+							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
+								<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="collectionsCtrl.setFilter(item, filter)">
+									<img ng-src="{{item.image}}" ng-if="item.image" />
+									<span ng-bind="item.label"></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<label class="label" ng-bind="filter.label"></label>
+					<div class="control control--select" ng-class="{ selected: filter.value }">
+						<div class="input">
+							<svg class="icon icon--close" ng-if="filter.value" ng-click="collectionsCtrl.removeFilter(filter)"><use xlink:href="#close"></use></svg>
+							<div class="value" ng-bind="filter.placeholder"></div>
+							<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a href="advanced-search.html" class="btn btn--filter"><span>Advanced Search</span></a>
+			<!--
+			<div class="form__group form__group--distinct" ng-click="selected = null">
+				<label class="label">Find your product</label>
+				<div class="group group--control">
+					<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+					<input class="control" placeholder="I'm looking for...">
+					<button class="btn btn--search" type="button">Advanced Search</button>
+				</div>
+			</div>
+			-->
+		</form>
+		<button type="button" class="btn btn--project hidden-md-up" ng-click="root.toggleMenuProduct()">
+			<span ng-if="!root.menuProductOpened">Filter</span>
+			<svg class="icon icon--close" ng-if="root.menuProductOpened"><use xlink:href="#close"></use></svg>
+		</button>
+	</section>
+
+	<section class="section section--collections">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-4" appear>
+					<div class="category">New inspirations</div>
+					<div class="title">Be inspired to create the space of your dreams.</div>
+				</div>
+			</div>
+			<div class="listing listing--collections">
+				<a href="product-project.html" class="listing__item listing__item--with-logo" appear>
+					<div class="picture picture--with-logo">
+						<img lazy data-src="img/usa-collections/coastal-logo.png" alt="title" />
+					</div>
+					<div class="abstract">Atlas Concorde USA is proud to introduce our newest collection inspired by the ocean and the joy of life by the sea.</div>
+					<div class="group group--cta">
+						<div class="btn btn--link-secondary"><span>Find out more</span></div>
+					</div>
+				</a>
+				<a href="product-project.html" class="listing__item listing__item--with-logo" appear>
+					<div class="picture picture--with-logo">
+						<img lazy data-src="img/usa-collections/mood-logo.png" alt="title" />
+					</div>
+					<div class="abstract">With the expertise of Laurie, we not only offer premium product, we now provide guidance to create a home that is an expression of your style.</div>
+					<div class="group group--cta">
+						<div class="btn btn--link-secondary"><span>Find out more</span></div>
+					</div>
+				</a>
+				<a href="product-project.html" class="listing__item listing__item--with-logo" appear>
+					<div class="picture picture--with-logo">
+						<img lazy data-src="img/usa-collections/in-store-design-logo.png" alt="title" />
+					</div>
+					<div class="abstract">Atlas Concorde USA offers multiple solutions to meet the needs of customers and their unique spaces, from simple to elaborate.</div>
+					<div class="group group--cta">
+						<div class="btn btn--link-secondary"><span>Find out more</span></div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--mood atlas-concorde-usa">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-4" appear>
+					<div class="title">Traditional Kitchen</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="listing--moods">
+						<div class="listing__item mood--tile">
+							<div class="listing__content">
+								<a class="mood__item" href="https://atlasconcorde.wslabs.it/it/collezioni/ac/evolve/gres-decors/evolve-white-brick_mattrettificato__30x60/">
+									<div class="picture picture--square" media="item">
+										<img lazy data-src="img/usa-collections/mood-01-b.jpg" alt="" />
+									</div>
+									<div class="btn btn--link">
+										<span>BEACON Drift 7 6/8" x 39 3/8"</span>
+									</div>
+								</a>
+							</div>
+						</div>
+						<div class="listing__item mood--decor">
+							<div class="listing__content">
+								<a class="mood__item" href="https://atlasconcorde.wslabs.it/it/collezioni/ac/evolve/gres-decors/evolve-white-brick_mattrettificato__30x60/">
+									<div class="picture picture--square picture--decors" media="item">
+										<img lazy data-src="img/usa-collections/mood-01-c.png" alt="" />
+									</div>
+									<div class="btn btn--link">
+										<span>LIBERTY Franklin Gray Chevron Mosaic</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="picture picture--horizontal" media="{ id: 1015, coId: 101 }" parallax appear>
+						<img lazy data-src="img/usa-collections/mood-01-a.jpg" alt="title" />
+					</div>
+					<!--
+					<div class="group group--cta" appear>
+						<a href="product-gallery-detail.html" class="btn btn--gallery">
+							<svg class="icon icon--gallery">
+								<use xlink:href="#gallery"></use>
+							</svg>
+							<span>view our <b>Exclusive Living Gallery</b></span>
+						</a>
+					</div>
+					-->
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--mood atlas-concorde-usa">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-4" appear>
+					<div class="title">Traditional Master Bathroom</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="listing--moods">
+						<div class="listing__item mood--tile">
+							<div class="listing__content">
+								<a class="mood__item" href="https://atlasconcorde.wslabs.it/it/collezioni/ac/evolve/gres-decors/evolve-white-brick_mattrettificato__30x60/">
+									<div class="picture picture--square" media="item">
+										<img lazy data-src="img/usa-collections/mood-02-b.jpg" alt="" />
+									</div>
+									<div class="btn btn--link">
+										<span>EON Carrara 11 3/4" x 23 5/8"</span>
+									</div>
+								</a>
+							</div>
+						</div>
+						<div class="listing__item mood--decor">
+							<div class="listing__content">
+								<a class="mood__item" href="https://atlasconcorde.wslabs.it/it/collezioni/ac/evolve/gres-decors/evolve-white-brick_mattrettificato__30x60/">
+									<div class="picture picture--square picture--decors" media="item">
+										<img lazy data-src="img/usa-collections/mood-02-c.jpg" alt="" />
+									</div>
+									<div class="btn btn--link">
+										<span>EON Carrara Honeycomb Mosaic</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="picture picture--horizontal" media="{ id: 1015, coId: 101 }" parallax appear>
+						<img lazy data-src="img/usa-collections/mood-02-a.jpg" alt="title" />
+					</div>
+					<!--
+					<div class="group group--cta" appear>
+						<a href="product-gallery-detail.html" class="btn btn--gallery">
+							<svg class="icon icon--gallery">
+									<use xlink:href="#gallery"></use>
+								</svg>
+							<span>view our <b>Exclusive Living Gallery</b></span>
+						</a>
+					</div>
+					-->
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!--
+	BEACON Drift 7 6/8" x 39 3/8"
+	20x100 cm - 7 6/8" x 39 3/8"
+
+
+	LIBERTY Franklin Gray Chevron Mosaic
+	19x31.5 cm 7"x12"
+
+
+	Traditional Master Bathroom
+
+
+	EON Carrara 11 3/4" x 23 5/8"
+	30x60 cm - 11 3/4”x23 5/8”
+
+	EON Carrara Honeycomb Mosaic
+	24x30 cm9.5"x12"
+	-->
+
+	<div class="section--collections-results" ng-if="!collectionsCtrl.filteredBrands">
+		<section class="section section--collections atlas-concorde">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4" appear>
+						<div class="category">Brand</div>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
+						<!--
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
+						-->
+					</div>
+				</div>
+				<div class="listing listing--collections">
+					<a href="product-project.html" class="listing__item" appear>
+						<div class="picture picture--with-category">
+							<img lazy data-src="img/collections/01.jpg" alt="title" />
+							<span class="category">marble look</span>
+						</div>
+						<div class="title">Marvel Edge</div>
+						<div class="abstract">The contemporary feel of timeless marble-look tiles.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/06.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/07.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/08.jpg" />
+							</div>
+						</div>
+						<div class="group group--tiles">
+							<div class="category">Wall tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/01.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/02.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/03.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/04.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/05.jpg" />
+							</div>
+						</div>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
+						<div class="picture picture--with-category">
+							<img lazy data-src="img/collections/02.jpg" alt="title" />
+							<span class="category">concrete look</span>
+						</div>
+						<div class="title">Boost</div>
+						<div class="abstract">The new soul of the concrete effect: industrial style becomes sophisticated elegance.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/09.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/10.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/11.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/12.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/13.jpg" />
+							</div>
+						</div>
+						<div class="group group--tiles">
+							<div class="category">Wall tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/09.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/10.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/11.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/12.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/14.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/15.jpg" />
+							</div>
+						</div>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
+						<div class="picture picture--with-category">
+							<img lazy data-src="img/collections/03.jpg" alt="title" />
+							<span class="category">stone look</span>
+						</div>
+						<div class="title">Klif</div>
+						<div class="abstract">The decisive character of the stone effect in a porcelain tile inspired by nature.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/16.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/17.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/19.jpg" />
+							</div>
+						</div>
+						<div class="group group--tiles">
+							<div class="category">Wall tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/16.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/17.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/18.jpg" />
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
+		<section class="section section--collections atlas-concorde-solution">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4" appear>
+						<div class="category">Brand</div>
+						<svg class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+					</div>
+				</div>
+				<div class="listing listing--collections">
+					<a href="product-project.html" class="listing__item" appear>
+						<div class="picture picture--with-category">
+							<img lazy data-src="img/collections/01.jpg" alt="title" />
+							<span class="category">concrete look</span>
+						</div>
+						<div class="title">Realm</div>
+						<div class="abstract">A marked impact and neutral colors, for a contemporary taste.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/19.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/20.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/21.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/22.jpg" />
+							</div>
+						</div>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
+						<div class="picture picture--with-category">
+							<img lazy data-src="img/collections/02.jpg" alt="title" />
+							<span class="category">stone look</span>
+						</div>
+						<div class="title">Block Next</div>
+						<div class="abstract">A touch of authenticity that also interprets the warmest and most welcoming moods.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/23.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/24.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/25.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/26.jpg" />
+							</div>
+						</div>
+					</a>
+					<a href="product-project.html" class="listing__item" appear>
+						<div class="picture picture--with-category">
+							<img lazy data-src="img/collections/03.jpg" alt="title" />
+							<span class="category">stone look</span>
+						</div>
+						<div class="title">Peak Floor</div>
+						<div class="abstract">Perfect for making the most of any residential and commercial space, even outdoors.</div>
+						<div class="group group--tiles">
+							<div class="category">Porcelain tiles</div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="img/collections/tiles/27.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/28.jpg" />
+								<img class="tiles__item" lazy data-src="img/collections/tiles/29.jpg" />
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div class="section--collections-results" ng-if="collectionsCtrl.filteredBrands">
+		<section class="section section--collections" ng-if="collectionsCtrl.resultCounts">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4">
+						<div class="category">collezioni trovate nella ricerca {{collectionsCtrl.resultCounts}} di {{collectionsCtrl.totalCounts}}</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="section section--collections" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 offset-md-4" appear>
+						<div class="category">Brand</div>
+						<svg ng-if="brand.brand === 'atlas-concorde'" class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
+						<svg ng-if="brand.brand === 'atlas-concorde-solution'" class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
+						<svg ng-if="brand.brand === 'atlas-concorde-usa'" class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>
+						<svg ng-if="brand.brand === 'atlas-concorde-russia'" class="icon icon--brand"><use xlink:href="#atlas-concorde-russia"></use></svg>
+					</div>
+				</div>
+				<div class="listing listing--collections">
+					<a ng-href="{{collection.url}}" class="listing__item" appear ng-repeat="collection in brand.collections track by $index">
+						<div class="picture picture--with-category">
+							<img lazy data-src="{{collection.images | imageWithFeatures : [collectionsCtrl.filters.typologies.value] }}" alt="title" />
+							<span class="category" ng-bind="collection.look"></span>
+						</div>
+						<div class="title" ng-bind="collection.title"></div>
+						<div class="abstract" ng-bind="collection.abstract"></div>
+						<div class="group group--tiles" ng-repeat="category in collection.categories track by $index">
+							<div class="category" ng-bind="category.category"></div>
+							<div calss="tiles">
+								<img class="tiles__item" lazy data-src="{{tile.image}}" ng-repeat="tile in category.tiles track by $index" />
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
+	</div>
+	</section>
+	<ng-include src="'templates/shared/store.html'"></ng-include>

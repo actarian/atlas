@@ -89,7 +89,7 @@
 	}
 
 	img {
-		max-width: 100%;
+		width: 100%;
 		backface-visibility: hidden;
 	}
 
@@ -188,6 +188,7 @@ $diff: 280px;
 .picture--decors {
 	box-shadow: none;
 	background: none;
+	overflow: visible;
 
 	&>.media {
 		overflow: visible;
@@ -197,6 +198,7 @@ $diff: 280px;
 		canvas,
 		ng-transclude {
 			object-fit: contain;
+			max-height: 375px;
 		}
 
 	}
@@ -232,4 +234,17 @@ $diff: 280px;
 
 [parallax] {
 	overflow: hidden;
+}
+
+.picture--with-logo {
+	min-height: 210px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	img {
+		width: auto;
+		height: auto;
+		max-width: calc(100% - 60px);
+	}
 }
