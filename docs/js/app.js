@@ -23924,11 +23924,11 @@ class ThronDirective {
     const player = THRON(node.id, {
       media: node.getAttribute('data-thron'),
       loop: node.hasAttribute('loop'),
+      autoplay: node.hasAttribute('autoplay'),
       muted: true,
-      autoplay: false,
       displayLinked: 'close',
-      noSkin: true,
-      lockBitrate: 'max'
+      noSkin: true // lockBitrate: 'max',
+
     });
 
     const onReady = function () {
@@ -23956,7 +23956,7 @@ class ThronDirective {
     };
 
     const onComplete = function () {
-      console.log('ThronDirective.onComplete', node.id);
+      // console.log('ThronDirective.onComplete', node.id);
       scope.$emit('onThronComplete', node.id);
     };
 

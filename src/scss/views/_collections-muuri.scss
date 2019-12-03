@@ -107,7 +107,7 @@ $collection-gutter: 0px;
 			color: #fff;
 			margin: 0;
 			text-shadow: 0 8px 5px rgba(0, 0, 0, 0.2);
-			font-weight: $font-bold;
+			font-weight: $font-light;
 		}
 
 		.category {
@@ -164,13 +164,12 @@ $collection-gutter: 0px;
 		}
 
 		@include media-breakpoint-down(md) {
-
 			&.listing__item-size-1 {
 				flex: 0 0 calc(100% / 3);
 				width: calc(100% / 3);
 
 				.title {
-					font-size: 1vw;
+					font-size: 2vw;
 				}
 			}
 
@@ -179,7 +178,7 @@ $collection-gutter: 0px;
 				width: calc(100% / 3);
 
 				.title {
-					font-size: 1vw;
+					font-size: 2vw;
 				}
 			}
 
@@ -188,19 +187,38 @@ $collection-gutter: 0px;
 				width: calc(100% / 3 * 2);
 
 				.title {
-					font-size: 2vw;
+					font-size: 3vw;
 				}
 			}
 		}
 
-		@include media-breakpoint-down(xs) {
-			flex: 0 0 100%;
-			width: 100%;
+		@include media-breakpoint-down(sm) {
+			&.listing__item-size-1 {
+				flex: 0 0 100%;
+				width: 100%;
 
-			.title {
-				font-size: 16px;
+				.title {
+					font-size: 2vw;
+				}
 			}
 
+			&.listing__item-size-2 {
+				flex: 0 0 100%;
+				width: 100%;
+
+				.title {
+					font-size: 2vw;
+				}
+			}
+
+			&.listing__item-size-3 {
+				flex: 0 0 100%;
+				width: 100%;
+
+				.title {
+					font-size: 2vw;
+				}
+			}
 		}
 
 	}
