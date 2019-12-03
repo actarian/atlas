@@ -23,6 +23,9 @@ class RootCtrl {
 		).subscribe(count => {
 			this.wishlistCount = count;
 		});
+		$scope.$on('onMuuri', () => {
+			this.domService.scrollEmitter$.next({ target: window });
+		});
 		$scope.$on('destroy', () => {
 			// console.log('destroy');
 			this.unsubscribe.next();
@@ -203,7 +206,7 @@ class RootCtrl {
 		event.preventDefault();
 		event.stopImmediatePropagation();
 	}
-	
+
 	toggleMenuProduct() {
 		this.menuProductOpened = !this.menuProductOpened;
 		if (!this.menuProductOpened) {

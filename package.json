@@ -34,7 +34,7 @@
 		"gsap": "^2.1.2",
 		"jquery": "^3.4.1",
 		"jsonformatter": "~0.7.0",
-		"muuri": "^0.7.1",
+		"muuri": "~0.8.0",
 		"promise-polyfill": "^8.1.0",
 		"rxjs": "~6.4.0",
 		"swiper": "~4.5.0",

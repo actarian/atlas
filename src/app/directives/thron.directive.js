@@ -17,6 +17,7 @@ export default class ThronDirective {
 		node.id = `thron-${++ID}`;
 		const player = THRON(node.id, {
 			media: node.getAttribute('data-thron'),
+			loop: node.hasAttribute('loop'),
 			muted: true,
 			autoplay: false,
 			displayLinked: 'close',

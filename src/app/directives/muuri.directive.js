@@ -26,6 +26,7 @@ export class MuuriDirective {
 		});
 		scope.$on('lazyImage', (slide) => {
 			// console.log('lazyImage', element.muuri);
+			return;
 			if (element.muuri) {
 				const node = element[0];
 				const items = [...node.querySelectorAll('.listing__item')];
@@ -58,7 +59,7 @@ export class MuuriDirective {
 			// element.muuri.refreshItems(items).layout();
 		} else {
 			element.muuri = new Muuri(element[0], {
-				layoutDuration: 400,
+				layoutDuration: 0, // 400,
 				layoutEasing: 'ease',
 				layout: {
 					fillGaps: true,
@@ -69,6 +70,7 @@ export class MuuriDirective {
 				}
 			});
 			element.addClass('muuri-init');
+			scope.$emit('onMuuri');
 		}
 	}
 

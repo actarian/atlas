@@ -75,18 +75,7 @@ class NewsCtrl {
 
 	applyFilters(serialize) {
 		if (serialize !== false) this.serializeFilters();
-		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		let filteredItems = this.news.slice();
-		// console.log(filteredItems);
-		if (filters.length) {
-			filteredItems = filteredItems.filter(reference => {
-				let has = true;
-				filters.forEach(filter => {
-					has = has && filter.doFilter(reference, filter.value);
-				});
-				return has;
-			});
-		}
+		const { filteredItems } = this.getFilteredItems(this.news);
 		// console.log(filteredItems, filters);
 		this.filteredItems = [];
 		this.visibleItems = [];
@@ -94,24 +83,40 @@ class NewsCtrl {
 		this.$timeout(() => {
 			this.filteredItems = filteredItems;
 			this.visibleItems = filteredItems.slice(0, this.maxItems);
-			this.updateFilterStates(filteredItems);
+			this.updateFilterStates(this.news);
 			// delayer for image update
 		}, 50);
-
 		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
-	updateFilterStates(news) {
-		// console.log('updateFilterStates', news);
+	getFilteredItems(items, skipFilter) {
+		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
+		let filteredItems = items.slice();
+		if (filters.length) {
+			filteredItems = filteredItems.filter(item => {
+				let has = true;
+				filters.forEach(filter => {
+					if (filter !== skipFilter) {
+						has = has && filter.doFilter(item, filter.value);
+					}
+				});
+				return has;
+			});
+		}
+		return { filteredItems };
+	}
+
+	updateFilterStates(items) {
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
+			const { filteredItems } = this.getFilteredItems(items, filter);
 			filter.options.forEach(option => {
 				let has = false;
 				if (option.value) {
 					let i = 0;
-					while (i < news.length && !has) {
-						const reference = news[i];
-						has = filter.doFilter(reference, option.value);
+					while (i < filteredItems.length && !has) {
+						const item = filteredItems[i];
+						has = filter.doFilter(item, option.value);
 						i++;
 					}
 				} else {
@@ -119,7 +124,6 @@ class NewsCtrl {
 				}
 				option.disabled = !has;
 			});
-			// console.log(filter.options);
 		});
 	}
 

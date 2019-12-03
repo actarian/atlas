@@ -38,6 +38,7 @@
 		position: relative;
 		height: 60px;
 		bottom: 60px;
+		margin-bottom: -60px;
 		padding: 0;
 	}
 }
@@ -204,124 +205,108 @@
 }
 
 [swiper-gallery] {
-	height: 100%;
 
-	.picture {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		overflow: hidden;
-		max-height: calc(100vh - 140px);
-	}
+	*:not(.zoomed) & {
+		margin-bottom: 60px;
 
-	video {
-		object-fit: cover;
-	}
+		.swiper-slide {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			background: transparent;
 
-	.swiper-slide {
-		text-align: center;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: auto;
-		background: transparent;
+			&:not(.swiper-slide-active) {
+				.picture {
+					opacity: 0.5;
+				}
+			}
 
-		img,
-		video {
-			max-width: 100%;
-			max-height: 500px;
+		}
+
+		.picture {
+			position: relative;
+			overflow: hidden;
+			max-height: calc(100vh - 140px);
+			transition: opacity ease-in-out 350ms;
+			opacity: 1;
 		}
 
 		.title {
 			display: none;
 		}
 
-		.picture {
-			transition: opacity ease-in-out 350ms;
-			opacity: 1;
-		}
-
-		&:not(.swiper-slide-active) {
-			.picture {
-				opacity: 0.5;
-			}
-		}
-
-		/*
-		img {
-			transition: opacity ease-in-out 350ms;
-			height: calc(100vh - 220px);
-			max-height: 500px;
-		}
-		*/
-	}
-
-	.zoomed & {
-
-		.swiper-container {
-			display: flex;
-			flex-direction: column;
-
-			.swiper-wrapper {
-				height: calc(100vh - 60px);
-				flex: 1 1 calc(100vh - 60px);
-			}
-
-			.swiper-pagination {
-				flex: 0 0 auto;
-			}
-		}
-
-		.swiper-slide {
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			// justify-content: flex-end;
-			background: white;
-
-			.picture {
-				flex: 0 1 auto;
-				margin-top: 20px;
-				margin-bottom: 20px;
-				overflow: hidden;
-			}
-
-			.media {
+		@include media-breakpoint-up(sm) {
+			.swiper-slide {
+				display: flex;
 				width: auto;
-				height: 100%;
+				height: 560px;
 			}
 
+			img,
+			video {
+				width: auto;
+				max-width: 100%;
+				max-height: 560px;
+				object-fit: cover;
+			}
+
+		}
+
+		@include media-breakpoint-down(xs) {
+			.swiper-slide {
+				display: flex;
+				width: 100%;
+				height: 400px;
+			}
+
+			.picture,
+			.media,
 			ng-transclude {
-				display: block;
-				width: auto;
+				width: 100%;
 				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 			}
 
 			img,
 			video {
 				width: 100%;
-				max-width: 100%;
-				max-height: 100%;
-				transition: opacity ease-in-out 350ms;
-				// height: 100%;
+				height: 100%;
+				object-fit: cover;
 			}
+		}
 
-			.title {
-				// position: absolute;
-				// bottom: 0;
-				// padding: 10px 10px 0 10px;
-				// transition: opacity ease-in-out 350ms;
-				// opacity: 0;
-				// background: rgba(255, 255, 255, 0.9);
-				display: block;
-				position: relative;
-				opacity: 1;
-				padding: 9px 15px;
-				max-width: 1200px;
-				font-size: 16px;
-				line-height: 1.35;
-			}
+	}
+
+	.zoomed & {
+
+		/*
+		.swiper-wrapper {
+			flex: 1 1 100%;
+			// height: calc(100vh - 60px);
+			// flex: 1 1 calc(100vh - 60px);
+		}
+
+		.swiper-pagination {
+			flex: 0 0 auto;
+		}
+		*/
+
+		.swiper-button-prev,
+		.swiper-button-next {
+			mix-blend-mode: difference;
+		}
+
+		.swiper-slide {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: auto;
+			text-align: center;
+			background: white;
 
 			&:hover {
 				.title {
@@ -330,26 +315,120 @@
 			}
 		}
 
-		.swiper-container-horizontal>.swiper-pagination-bullets,
-		.swiper-pagination-bullets {
-			position: absolute;
-			bottom: 0;
+		.picture {
+			flex: 0 1 auto;
+			margin-bottom: 20px;
+			overflow: hidden;
+			background: none;
+			box-shadow: none;
+		}
+
+		.media {
+			width: auto;
+			height: 100%;
+		}
+
+		ng-transclude {
+			display: block;
+			width: auto;
+			height: 100%;
+		}
+
+		.title {
+			display: block;
+			position: relative;
+			opacity: 1;
+			padding: 9px 15px;
+			max-width: 1200px;
+			font-size: 16px;
+			line-height: 1.35;
+			margin-bottom: 20px;
 		}
 
 		@include media-breakpoint-up(sm) {
+			position: absolute;
+			display: flex;
+			flex-direction: column;
+			top: 30px;
+			left: 30px;
+			right: 30px;
+			bottom: 30px;
+			width: auto;
+			height: auto;
+
+			&.swiper-container-horizontal>.swiper-pagination-bullets,
+			.swiper-pagination-bullets {
+				position: absolute;
+				bottom: 30px;
+				margin-bottom: -60px;
+			}
+
 			.swiper-slide {
 				height: calc(100vh - 60px);
 			}
 
 			.picture {
-				max-width: calc(100% - 40px);
+				width: 100%;
+				max-width: 100%;
 				max-height: 100%;
 			}
+
+			img,
+			video {
+				width: auto;
+				max-height: 100%;
+				transition: opacity ease-in-out 350ms;
+			}
+
 		}
 
 		@include media-breakpoint-down(xs) {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			height: 100%;
+
+			&.swiper-container-horizontal>.swiper-pagination-bullets,
+			.swiper-pagination-bullets {
+				position: absolute;
+				bottom: 60px;
+				margin-bottom: -60px;
+			}
+
+			.swiper-slide {
+				height: calc(100vh - 60px);
+			}
+
 			.picture {
-				max-width: 100vw;
+				margin-bottom: 0;
+			}
+
+			.title {
+				position: absolute;
+				padding: 0 15px;
+				font-size: 15px;
+				margin-bottom: 0;
+				bottom: 0;
+				background: rgba(255, 255, 255, 0.5);
+			}
+
+			.picture,
+			.media,
+			ng-transclude {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			img,
+			video {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+				object-fit: unset;
 			}
 
 			.overlay {
@@ -396,12 +475,6 @@
 			height: 100%;
 			background: white;
 			z-index: 100000;
-			/*
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			*/
 		}
 
 		&>.zoomable__close {
@@ -455,4 +528,9 @@
 			}
 		}
 	}
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+	margin-top: -44px;
 }

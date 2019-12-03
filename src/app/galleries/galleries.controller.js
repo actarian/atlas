@@ -76,43 +76,48 @@ class GalleriesCtrl {
 
 	applyFilters(serialize) {
 		if (serialize !== false) this.serializeFilters();
-		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		let filteredItems = this.galleries.slice();
-		// console.log(filteredItems);
-		if (filters.length) {
-			filteredItems = filteredItems.filter(reference => {
-				let has = true;
-				filters.forEach(filter => {
-					has = has && filter.doFilter(reference, filter.value);
-				});
-				return has;
-			});
-		}
-		// console.log(filteredItems, filters);
+		const { filteredItems } = this.getFilteredItems(this.galleries);
 		this.filteredItems = [];
 		this.visibleItems = [];
 		this.maxItems = ITEMS_PER_PAGE;
 		this.$timeout(() => {
 			this.filteredItems = filteredItems;
 			this.visibleItems = filteredItems.slice(0, this.maxItems);
-			this.updateFilterStates(filteredItems);
+			this.updateFilterStates(this.galleries);
 			// delayer for image update
 		}, 50);
 
 		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
-	updateFilterStates(galleries) {
-		// console.log('updateFilterStates', galleries);
+	getFilteredItems(items, skipFilter) {
+		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
+		let filteredItems = items.slice();
+		if (filters.length) {
+			filteredItems = filteredItems.filter(item => {
+				let has = true;
+				filters.forEach(filter => {
+					if (filter !== skipFilter) {
+						has = has && filter.doFilter(item, filter.value);
+					}
+				});
+				return has;
+			});
+		}
+		return { filteredItems };
+	}
+
+	updateFilterStates(items) {
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
+			const { filteredItems } = this.getFilteredItems(items, filter);
 			filter.options.forEach(option => {
 				let has = false;
 				if (option.value) {
 					let i = 0;
-					while (i < galleries.length && !has) {
-						const reference = galleries[i];
-						has = filter.doFilter(reference, option.value);
+					while (i < filteredItems.length && !has) {
+						const item = filteredItems[i];
+						has = filter.doFilter(item, option.value);
 						i++;
 					}
 				} else {
@@ -120,7 +125,6 @@ class GalleriesCtrl {
 				}
 				option.disabled = !has;
 			});
-			// console.log(filter.options);
 		});
 	}
 

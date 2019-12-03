@@ -71,40 +71,44 @@ class ReferencesCtrl {
 
 	applyFilters(serialize) {
 		if (serialize !== false) this.serializeFilters();
+		const { filteredItems } = this.getFilteredItems(this.references);
+		this.filteredReferences = [];
+		this.$timeout(() => {
+			this.filteredReferences = filteredItems;
+			this.updateFilterStates(this.references, filteredItems);
+			// delayer for image update
+		}, 50);
+		GtmService.pageViewFilters(GTM_CAT, this.filters);
+	}
+
+	getFilteredItems(items, skipFilter) {
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		let filteredReferences = this.references.slice();
-		// console.log(filteredReferences);
+		let filteredItems = items.slice();
 		if (filters.length) {
-			filteredReferences = filteredReferences.filter(reference => {
+			filteredItems = filteredItems.filter(item => {
 				let has = true;
 				filters.forEach(filter => {
-					has = has && filter.doFilter(reference, filter.value);
+					if (filter !== skipFilter) {
+						has = has && filter.doFilter(item, filter.value);
+					}
 				});
 				return has;
 			});
 		}
-		// console.log(filteredReferences, filters);
-		this.filteredReferences = [];
-		this.$timeout(() => {
-			this.filteredReferences = filteredReferences;
-			this.updateFilterStates(filteredReferences);
-			// delayer for image update
-		}, 50);
-
-		GtmService.pageViewFilters(GTM_CAT, this.filters);
+		return { filteredItems };
 	}
 
-	updateFilterStates(references) {
-		// console.log('updateFilterStates', references);
+	updateFilterStates(items) {
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
+			const { filteredItems } = this.getFilteredItems(items, filter);
 			filter.options.forEach(option => {
 				let has = false;
 				if (option.value) {
 					let i = 0;
-					while (i < references.length && !has) {
-						const reference = references[i];
-						has = filter.doFilter(reference, option.value);
+					while (i < filteredItems.length && !has) {
+						const item = filteredItems[i];
+						has = filter.doFilter(item, option.value);
 						i++;
 					}
 				} else {
@@ -112,7 +116,6 @@ class ReferencesCtrl {
 				}
 				option.disabled = !has;
 			});
-			// console.log(filter.options);
 		});
 	}
 

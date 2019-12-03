@@ -252,10 +252,17 @@
 }
 
 body.droppin-in {
+	/*
 	overflow: hidden;
 	position: fixed;
 
 	@include media-breakpoint-up(sm) {
 		padding-right: 15px;
+	}
+	*/
+
+	@include media-breakpoint-down(xs) {
+		overflow: hidden;
+		position: fixed;
 	}
 }

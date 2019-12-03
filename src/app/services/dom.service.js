@@ -8,7 +8,7 @@ import Rect from '../shared/rect';
 export default class DomService {
 
 	constructor() {
-
+		this.scrollEmitter$ = DomService.scrollEmitter$;
 	}
 
 	get scrollTop() {
@@ -257,7 +257,7 @@ export default class DomService {
 			}),
 			filter(response => response !== undefined)
 		);
-		DomService.secondaryScroll$_.next({ target: window });
+		DomService.scrollEmitter$.next({ target: window });
 		return o;
 	}
 
@@ -321,7 +321,7 @@ export default class DomService {
 
 	static secondaryScroll$(target) {
 		return fromEvent(target, 'scroll').pipe(
-			tap(event => DomService.secondaryScroll$_.next(event))
+			tap(event => DomService.scrollEmitter$.next(event))
 		);
 	}
 
@@ -355,7 +355,7 @@ DomService.mainScroll$ = function() {
 		shareReplay()
 	);
 }();
-DomService.secondaryScroll$_ = new Subject();
+DomService.scrollEmitter$ = new Subject();
 DomService.scroll$ = function() {
 	const target = window;
 	let previousTop = DomService.getScrollTop(target);
@@ -365,7 +365,7 @@ DomService.scroll$ = function() {
 		direction: 0,
 		originalEvent: null,
 	};
-	return merge(DomService.mainScroll$, DomService.secondaryScroll$_).pipe(
+	return merge(DomService.mainScroll$, DomService.scrollEmitter$).pipe(
 		auditTime(1000 / 60),
 		map((originalEvent) => {
 			event.scrollTop = DomService.getScrollTop(originalEvent.target);

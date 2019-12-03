@@ -21358,9 +21358,14 @@ class CollectionsCtrl {
     this.initialFilters = window.initialFilters || null;
     this.deserializeFilters(this.initialFilters);
     this.applyFilters(false); // this.filteredReferences = this.references.slice();
-    // this.updateFilterStates(this.filteredReferences);
+    // this.updateFilterStates();
     // console.log(this.filters);
     // console.log(this.brands);
+  }
+
+  test() {
+    this.test = true;
+    this.applyFilters(false);
   }
 
   deserializeFilters(initialFilter) {
@@ -21423,6 +21428,64 @@ class CollectionsCtrl {
     }).filter(x => x.value !== null);
     */
     if (serialize !== false) this.serializeFilters();
+    const {
+      filteredBrands,
+      resultCounts,
+      totalCounts
+    } = this.getFilteredBrands(); // console.log(filteredBrands, filters);
+
+    if (this.test) {
+      filteredBrands.forEach(brand => brand.collections.forEach(collection => {
+        collection.size = 1 + Math.floor(Math.random() * 6);
+
+        if (collection.size < 4) {
+          collection.size = 1;
+        } else if (collection.size < 6) {
+          collection.size = 2;
+        } else {
+          collection.size = 3;
+        }
+      }));
+    }
+    /*
+    const order = [3, 2, 2, 1, 1, 1];
+    let i = 0;
+    filteredBrands.forEach(brand => {
+    	brand.collections.sort((a, b) => {
+    		const size = order[i % order.length];
+    		console.log(size);
+    		if (a.size === size) {
+    			i++;
+    			return -1;
+    		}
+    		if (b.size === size) {
+    			i++;
+    			return 1;
+    		}
+    		return 0;
+    	});
+    	// console.log(brand.collections.map(x => x.size).join(','));
+    });
+    */
+
+
+    filteredBrands.forEach(brand => {
+      brand.collections.sort((a, b) => {
+        return b.size - a.size;
+      }); // console.log(brand.collections.map(x => x.size).join(','));
+    });
+    this.filteredBrands = [];
+    this.$timeout(() => {
+      this.filteredBrands = filteredBrands;
+      this.resultCounts = resultCounts;
+      this.totalCounts = totalCounts;
+      this.updateFilterStates(); // delayer for image update
+    }, 50);
+
+    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+  }
+
+  getFilteredBrands(skipFilter) {
     const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
     const filteredBrands = filters.length ? [] : this.brands;
     let resultCounts = 0,
@@ -21434,7 +21497,9 @@ class CollectionsCtrl {
         brand.collections.forEach(collection => {
           let has = true;
           filters.forEach(filter => {
-            has = has && filter.doFilter(collection, filter.value);
+            if (filter !== skipFilter) {
+              has = has && filter.doFilter(collection, filter.value);
+            }
           });
 
           if (has) {
@@ -21450,24 +21515,24 @@ class CollectionsCtrl {
           filteredBrands.push(brand);
         }
       });
-    } // console.log(filteredBrands, filters);
+    }
 
-
-    this.filteredBrands = [];
-    this.$timeout(() => {
-      this.filteredBrands = filteredBrands;
-      this.updateFilterStates(filteredBrands);
-      this.resultCounts = resultCounts;
-      this.totalCounts = totalCounts; // delayer for image update
-    }, 50);
-
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    return {
+      filteredBrands,
+      resultCounts,
+      totalCounts
+    };
   }
 
-  updateFilterStates(brands) {
-    const collections = [].concat.apply([], brands.map(x => x.collections));
+  updateFilterStates() {
     Object.keys(this.filters).forEach(x => {
       const filter = this.filters[x];
+      const {
+        filteredBrands,
+        resultCounts,
+        totalCounts
+      } = this.getFilteredBrands(filter);
+      const collections = [].concat.apply([], filteredBrands.map(x => x.collections));
       filter.options.forEach(option => {
         let has = false;
 
@@ -22760,6 +22825,8 @@ class MuuriDirective {
     });
     scope.$on('lazyImage', slide => {
       // console.log('lazyImage', element.muuri);
+      return;
+
       if (element.muuri) {
         const node = element[0];
         const items = [...node.querySelectorAll('.listing__item')];
@@ -22792,7 +22859,8 @@ class MuuriDirective {
       element.muuri.add(newItems); // element.muuri.refreshItems(items).layout();
     } else {
       element.muuri = new Muuri(element[0], {
-        layoutDuration: 400,
+        layoutDuration: 0,
+        // 400,
         layoutEasing: 'ease',
         layout: {
           fillGaps: true,
@@ -22803,6 +22871,7 @@ class MuuriDirective {
         }
       });
       element.addClass('muuri-init');
+      scope.$emit('onMuuri');
     }
   }
 
@@ -23825,6 +23894,7 @@ class ThronDirective {
     node.id = `thron-${++ID}`;
     const player = THRON(node.id, {
       media: node.getAttribute('data-thron'),
+      loop: node.hasAttribute('loop'),
       muted: true,
       autoplay: false,
       displayLinked: 'close',
@@ -25368,45 +25438,57 @@ class GalleriesCtrl {
 
   applyFilters(serialize) {
     if (serialize !== false) this.serializeFilters();
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredItems = this.galleries.slice(); // console.log(filteredItems);
-
-    if (filters.length) {
-      filteredItems = filteredItems.filter(reference => {
-        let has = true;
-        filters.forEach(filter => {
-          has = has && filter.doFilter(reference, filter.value);
-        });
-        return has;
-      });
-    } // console.log(filteredItems, filters);
-
-
+    const {
+      filteredItems
+    } = this.getFilteredItems(this.galleries);
     this.filteredItems = [];
     this.visibleItems = [];
     this.maxItems = ITEMS_PER_PAGE;
     this.$timeout(() => {
       this.filteredItems = filteredItems;
       this.visibleItems = filteredItems.slice(0, this.maxItems);
-      this.updateFilterStates(filteredItems); // delayer for image update
+      this.updateFilterStates(this.galleries); // delayer for image update
     }, 50);
 
     _gtm.default.pageViewFilters(GTM_CAT, this.filters);
   }
 
-  updateFilterStates(galleries) {
-    // console.log('updateFilterStates', galleries);
+  getFilteredItems(items, skipFilter) {
+    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
+    let filteredItems = items.slice();
+
+    if (filters.length) {
+      filteredItems = filteredItems.filter(item => {
+        let has = true;
+        filters.forEach(filter => {
+          if (filter !== skipFilter) {
+            has = has && filter.doFilter(item, filter.value);
+          }
+        });
+        return has;
+      });
+    }
+
+    return {
+      filteredItems
+    };
+  }
+
+  updateFilterStates(items) {
     Object.keys(this.filters).forEach(x => {
       const filter = this.filters[x];
+      const {
+        filteredItems
+      } = this.getFilteredItems(items, filter);
       filter.options.forEach(option => {
         let has = false;
 
         if (option.value) {
           let i = 0;
 
-          while (i < galleries.length && !has) {
-            const reference = galleries[i];
-            has = filter.doFilter(reference, option.value);
+          while (i < filteredItems.length && !has) {
+            const item = filteredItems[i];
+            has = filter.doFilter(item, option.value);
             i++;
           }
         } else {
@@ -25414,7 +25496,7 @@ class GalleriesCtrl {
         }
 
         option.disabled = !has;
-      }); // console.log(filter.options);
+      });
     });
   }
 
@@ -26666,19 +26748,9 @@ class NewsCtrl {
 
   applyFilters(serialize) {
     if (serialize !== false) this.serializeFilters();
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredItems = this.news.slice(); // console.log(filteredItems);
-
-    if (filters.length) {
-      filteredItems = filteredItems.filter(reference => {
-        let has = true;
-        filters.forEach(filter => {
-          has = has && filter.doFilter(reference, filter.value);
-        });
-        return has;
-      });
-    } // console.log(filteredItems, filters);
-
+    const {
+      filteredItems
+    } = this.getFilteredItems(this.news); // console.log(filteredItems, filters);
 
     this.filteredItems = [];
     this.visibleItems = [];
@@ -26686,25 +26758,48 @@ class NewsCtrl {
     this.$timeout(() => {
       this.filteredItems = filteredItems;
       this.visibleItems = filteredItems.slice(0, this.maxItems);
-      this.updateFilterStates(filteredItems); // delayer for image update
+      this.updateFilterStates(this.news); // delayer for image update
     }, 50);
 
     _gtm.default.pageViewFilters(GTM_CAT, this.filters);
   }
 
-  updateFilterStates(news) {
-    // console.log('updateFilterStates', news);
+  getFilteredItems(items, skipFilter) {
+    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
+    let filteredItems = items.slice();
+
+    if (filters.length) {
+      filteredItems = filteredItems.filter(item => {
+        let has = true;
+        filters.forEach(filter => {
+          if (filter !== skipFilter) {
+            has = has && filter.doFilter(item, filter.value);
+          }
+        });
+        return has;
+      });
+    }
+
+    return {
+      filteredItems
+    };
+  }
+
+  updateFilterStates(items) {
     Object.keys(this.filters).forEach(x => {
       const filter = this.filters[x];
+      const {
+        filteredItems
+      } = this.getFilteredItems(items, filter);
       filter.options.forEach(option => {
         let has = false;
 
         if (option.value) {
           let i = 0;
 
-          while (i < news.length && !has) {
-            const reference = news[i];
-            has = filter.doFilter(reference, option.value);
+          while (i < filteredItems.length && !has) {
+            const item = filteredItems[i];
+            has = filter.doFilter(item, option.value);
             i++;
           }
         } else {
@@ -26712,7 +26807,7 @@ class NewsCtrl {
         }
 
         option.disabled = !has;
-      }); // console.log(filter.options);
+      });
     });
   }
 
@@ -26838,42 +26933,54 @@ class ReferencesCtrl {
 
   applyFilters(serialize) {
     if (serialize !== false) this.serializeFilters();
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredReferences = this.references.slice(); // console.log(filteredReferences);
-
-    if (filters.length) {
-      filteredReferences = filteredReferences.filter(reference => {
-        let has = true;
-        filters.forEach(filter => {
-          has = has && filter.doFilter(reference, filter.value);
-        });
-        return has;
-      });
-    } // console.log(filteredReferences, filters);
-
-
+    const {
+      filteredItems
+    } = this.getFilteredItems(this.references);
     this.filteredReferences = [];
     this.$timeout(() => {
-      this.filteredReferences = filteredReferences;
-      this.updateFilterStates(filteredReferences); // delayer for image update
+      this.filteredReferences = filteredItems;
+      this.updateFilterStates(this.references, filteredItems); // delayer for image update
     }, 50);
 
     _gtm.default.pageViewFilters(GTM_CAT, this.filters);
   }
 
-  updateFilterStates(references) {
-    // console.log('updateFilterStates', references);
+  getFilteredItems(items, skipFilter) {
+    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
+    let filteredItems = items.slice();
+
+    if (filters.length) {
+      filteredItems = filteredItems.filter(item => {
+        let has = true;
+        filters.forEach(filter => {
+          if (filter !== skipFilter) {
+            has = has && filter.doFilter(item, filter.value);
+          }
+        });
+        return has;
+      });
+    }
+
+    return {
+      filteredItems
+    };
+  }
+
+  updateFilterStates(items) {
     Object.keys(this.filters).forEach(x => {
       const filter = this.filters[x];
+      const {
+        filteredItems
+      } = this.getFilteredItems(items, filter);
       filter.options.forEach(option => {
         let has = false;
 
         if (option.value) {
           let i = 0;
 
-          while (i < references.length && !has) {
-            const reference = references[i];
-            has = filter.doFilter(reference, option.value);
+          while (i < filteredItems.length && !has) {
+            const item = filteredItems[i];
+            has = filter.doFilter(item, option.value);
             i++;
           }
         } else {
@@ -26881,7 +26988,7 @@ class ReferencesCtrl {
         }
 
         option.disabled = !has;
-      }); // console.log(filter.options);
+      });
     });
   }
 
@@ -26926,6 +27033,11 @@ class RootCtrl {
     this.unsubscribe = new _rxjs.Subject();
     this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(count => {
       this.wishlistCount = count;
+    });
+    $scope.$on('onMuuri', () => {
+      this.domService.scrollEmitter$.next({
+        target: window
+      });
     });
     $scope.$on('destroy', () => {
       // console.log('destroy');
@@ -27254,7 +27366,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /* jshint esversion: 6 */
 class DomService {
-  constructor() {}
+  constructor() {
+    this.scrollEmitter$ = DomService.scrollEmitter$;
+  }
 
   get scrollTop() {
     return DomService.getScrollTop(window);
@@ -27523,7 +27637,7 @@ class DomService {
         return response;
       }
     }), (0, _operators.filter)(response => response !== undefined));
-    DomService.secondaryScroll$_.next({
+    DomService.scrollEmitter$.next({
       target: window
     });
     return o;
@@ -27582,7 +27696,7 @@ class DomService {
   }
 
   static secondaryScroll$(target) {
-    return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.tap)(event => DomService.secondaryScroll$_.next(event)));
+    return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.tap)(event => DomService.scrollEmitter$.next(event)));
   }
 
 }
@@ -27612,7 +27726,7 @@ DomService.mainScroll$ = function () {
   return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.shareReplay)());
 }();
 
-DomService.secondaryScroll$_ = new _rxjs.Subject();
+DomService.scrollEmitter$ = new _rxjs.Subject();
 
 DomService.scroll$ = function () {
   const target = window;
@@ -27623,7 +27737,7 @@ DomService.scroll$ = function () {
     direction: 0,
     originalEvent: null
   };
-  return (0, _rxjs.merge)(DomService.mainScroll$, DomService.secondaryScroll$_).pipe((0, _operators.auditTime)(1000 / 60), (0, _operators.map)(originalEvent => {
+  return (0, _rxjs.merge)(DomService.mainScroll$, DomService.scrollEmitter$).pipe((0, _operators.auditTime)(1000 / 60), (0, _operators.map)(originalEvent => {
     event.scrollTop = DomService.getScrollTop(originalEvent.target);
     event.scrollLeft = DomService.getScrollLeft(originalEvent.target);
     const diff = event.scrollTop - previousTop;

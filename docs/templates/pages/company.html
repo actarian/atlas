@@ -1,9 +1,6 @@
-<section class="section section--hero-secondary section--negative" data-component-id="9261">
-	<div class="background" ng-if="!root.webglEnabled" parallax>
+<section class="section section--hero-full section--negative" data-component-id="9261">
+	<div class="background" parallax>
 		<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/0b2699aa-0206-4ecf-9b9e-7852a89a1f6c/yz1hpd/std/0x0/Company_p25b.jpg" alt="Chi siamo" />
-	</div>
-	<div class="background" ng-if="root.webglEnabled">
-		<canvas glsl-canvas="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/0b2699aa-0206-4ecf-9b9e-7852a89a1f6c/yz1hpd/std/0x0/Company_p25b.jpg" class="glsl-canvas"></canvas>
 	</div>
 	<div class="aspect">
 		<div class="container">
@@ -14,6 +11,9 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="scroll__indicator">
+		<svg><use xlink:href="#result-indicator"></use></svg>
 	</div>
 </section>
 <section class="section section--picture-text" data-component-id="9277">
