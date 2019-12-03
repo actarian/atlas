@@ -21470,9 +21470,7 @@ class CollectionsCtrl {
 
 
     filteredBrands.forEach(brand => {
-      brand.collections.sort((a, b) => {
-        return b.size - a.size;
-      }); // console.log(brand.collections.map(x => x.size).join(','));
+      brand.collections = this.getSortedPattern(brand.collections);
     });
     this.filteredBrands = [];
     this.$timeout(() => {
@@ -21483,6 +21481,37 @@ class CollectionsCtrl {
     }, 50);
 
     _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+  }
+
+  getSortedSize(items) {
+    items.sort((a, b) => {
+      return b.size - a.size;
+    }); // console.log(items.map(x => x.size).join(','));
+
+    return items;
+  }
+
+  getSortedPattern(items) {
+    const order = [3, 2, 1, 2, 1, 1, 1, 2, 3, 1, 2, 1];
+    let sorted = [],
+        i = 0;
+
+    while (items.length) {
+      const size = order[i % order.length];
+      const item = items.find(x => x.size === size);
+
+      if (item) {
+        items.splice(items.indexOf(item), 1);
+        sorted.push(item);
+      } else {
+        sorted.push(items.shift());
+      }
+
+      i++;
+    }
+
+    console.log(sorted.map(x => x.size).join(','));
+    return sorted;
   }
 
   getFilteredBrands(skipFilter) {
