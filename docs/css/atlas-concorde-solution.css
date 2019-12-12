@@ -7469,7 +7469,7 @@ page-transition {
     .section--intro {
       padding: 70px 0; }
       .section--intro .icon--logo {
-        height: 56px;
+        height: auto;
         margin-bottom: 56px;
         max-width: 190px; }
       .section--intro .title {

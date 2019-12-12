@@ -43,6 +43,10 @@ class RootCtrl {
 	onScroll(event) {
 		const scrolled = event.scroll.scrollTop > 40;
 		const direction = event.scroll.direction;
+		// console.log(this.$scope.hasDropdown, Object.keys(this).filter(x => typeof this[x] === 'boolean').map(x => `${x}: ${this[x]}`).join(','));
+		if (this.droppedIn) {
+			this.$scope.$broadcast('onCloseDropdown');
+		}
 		if (event.scroll.direction) {
 			if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
 				this.$timeout(() => {
@@ -62,6 +66,7 @@ class RootCtrl {
 			// console.log(top);
 		});
 		*/
+		// console.log('onInit');
 		this.$timeout(() => {
 			this.init = true;
 			const view = document.querySelector('.view');
@@ -119,6 +124,7 @@ class RootCtrl {
 	onDroppedOut(node) {
 		// console.log('onDroppedOut', node);
 		if (node) {
+			this.droppedIn = false;
 			if (this.droppinIn) {
 				TweenMax.set(node, { height: 0 });
 				return Promise.resolve();
@@ -164,8 +170,8 @@ class RootCtrl {
 	}
 
 	onDroppedIn(node) {
-		// console.log('onDroppedIn', node);
 		return new Promise((resolve, reject) => {
+			this.droppedIn = true;
 			this.droppinIn = true;
 			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
 			TweenMax.set(items, { opacity: 0 });

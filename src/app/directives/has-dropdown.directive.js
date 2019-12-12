@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 export default class HasDropdownDirective {
 
 	constructor(
@@ -52,7 +51,9 @@ export default class HasDropdownDirective {
 				addDocumentListeners();
 				if (consumer) {
 					const dropdown = node.querySelector('[dropdown]');
-					consumer.onDroppedIn(dropdown);
+					consumer.onDroppedIn(dropdown).then((success) => {
+						// console.log('success');
+					});
 					/*
 					if (scope.hasDropdown === uid) {
 						// consumer.onDroppedOut(dropdown);

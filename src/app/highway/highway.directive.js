@@ -4,6 +4,7 @@ import Highway from '@dogstudio/highway';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
+import DomService from '../services/dom.service';
 import CustomRenderer from './custom-renderer';
 import PageTransition from './page-transition';
 // import PageNoTransition from './page-no-transition';
@@ -40,6 +41,30 @@ export default class HighwayDirective {
 		CustomRenderer.$compile = this.$compile;
 		CustomRenderer.$timeout = this.$timeout;
 		CustomRenderer.scope = scope;
+
+		let wasProduct = false;
+
+		const onProductMenu = () => {
+			setTimeout(() => {
+				let top = 0;
+				const sectionProduct = element[0].querySelector('.section--product');
+				if (wasProduct && sectionProduct && window.innerWidth > 860) {
+					const anchors = [...sectionProduct.querySelectorAll('a')];
+					let selectedAnchor = anchors.find(x => window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length);
+					// console.log(anchors, selectedAnchor);
+					if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
+						const sectionProductTop = sectionProduct.getBoundingClientRect().top;
+						top = sectionProductTop + DomService.getScrollTop(window);
+					}
+				}
+				window.scrollTo(0, top);
+				// console.log('wasProduct', wasProduct);
+				// console.log(wasProduct, sectionProduct);
+				wasProduct = Boolean(sectionProduct);
+				// console.log('isProduct', wasProduct);
+			}, 100);
+		}
+
 		/*
 		Highway.Core.prototype.pushState_ = Highway.Core.prototype.pushState;
 		Highway.Core.prototype.pushState = () => {};
@@ -81,10 +106,11 @@ export default class HighwayDirective {
 		H.on('NAVIGATE_IN', ({ to, trigger, location }) => {
 			// console.log('NAVIGATE_IN');
 			H.detach(H.links);
+			onProductMenu();
 		});
 		/*
 		H.on('NAVIGATE_END', ({ to, trigger, location }) => {
-			console.log(document.title);
+			console.log('NAVIGATE_END', document.title);
 			// H.pushState_();
 		});
 		*/
@@ -99,6 +125,8 @@ export default class HighwayDirective {
 			return pushState.apply(history, args);
 		};
 		*/
+
+		setTimeout(onProductMenu, 1000);
 
 		if (!H.properties.page.getElementById(GtmService.FILTERS_SCRIPT_ID)) {
 			GtmService.pageView();

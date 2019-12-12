@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-
 export default class TransitionDirective {
 
 	constructor(
@@ -25,7 +24,7 @@ export default class TransitionDirective {
 
 	init(scope, element, attributes, controller) {
 		scope.$on('onNavigationShouldFetch', (scope, { title, href }) => {
-			console.log('onNavigationShouldFetch', title, href);
+			// console.log('onNavigationShouldFetch', title, href);
 			this.menuOpened = false;
 			this.menuProductOpened = false;
 			// window.location.assign(href);

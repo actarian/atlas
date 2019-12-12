@@ -22133,7 +22133,8 @@ class HasDropdownDirective {
 
         if (consumer) {
           const dropdown = node.querySelector('[dropdown]');
-          consumer.onDroppedIn(dropdown);
+          consumer.onDroppedIn(dropdown).then(success => {// console.log('success');
+          });
           /*
           if (scope.hasDropdown === uid) {
           	// consumer.onDroppedOut(dropdown);
@@ -25800,7 +25801,6 @@ class CustomRenderer extends _highway.default.Renderer {
     this.updateBrand();
     this.updateSearchQuery();
     this.updateMarketsAndLanguages();
-    this.addThis();
   }
 
   updateMeta() {
@@ -25854,14 +25854,6 @@ class CustomRenderer extends _highway.default.Renderer {
     });
     */
 
-  }
-
-  addThis() {
-    // ci sono estensioni che bloccano questo genere di script
-    if (window.addthis) {
-      if (addthis.share) addthis.share('.addthis_inline_share_toolbox');
-      if (addthis.layers && addthis.layers.refresh) addthis.layers.refresh();
-    }
   }
 
   pageView() {
@@ -25996,6 +25988,8 @@ var _operators = require("rxjs/operators");
 
 var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
+var _dom = _interopRequireDefault(require("../services/dom.service"));
+
 var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 
 var _pageTransition = _interopRequireDefault(require("./page-transition"));
@@ -26029,10 +26023,34 @@ class HighwayDirective {
     _customRenderer.default.$compile = this.$compile;
     _customRenderer.default.$timeout = this.$timeout;
     _customRenderer.default.scope = scope;
+    let wasProduct = false;
+
+    const onProductMenu = () => {
+      setTimeout(() => {
+        let top = 0;
+        const sectionProduct = element[0].querySelector('.section--product');
+
+        if (wasProduct && sectionProduct && window.innerWidth > 860) {
+          const anchors = [...sectionProduct.querySelectorAll('a')];
+          let selectedAnchor = anchors.find(x => window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length); // console.log(anchors, selectedAnchor);
+
+          if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
+            const sectionProductTop = sectionProduct.getBoundingClientRect().top;
+            top = sectionProductTop + _dom.default.getScrollTop(window);
+          }
+        }
+
+        window.scrollTo(0, top); // console.log('wasProduct', wasProduct);
+        // console.log(wasProduct, sectionProduct);
+
+        wasProduct = Boolean(sectionProduct); // console.log('isProduct', wasProduct);
+      }, 100);
+    };
     /*
     Highway.Core.prototype.pushState_ = Highway.Core.prototype.pushState;
     Highway.Core.prototype.pushState = () => {};
     */
+
 
     const H = new _highway.default.Core({
       renderers: {
@@ -26079,10 +26097,11 @@ class HighwayDirective {
     }) => {
       // console.log('NAVIGATE_IN');
       H.detach(H.links);
+      onProductMenu();
     });
     /*
     H.on('NAVIGATE_END', ({ to, trigger, location }) => {
-    	console.log(document.title);
+    	console.log('NAVIGATE_END', document.title);
     	// H.pushState_();
     });
     */
@@ -26099,6 +26118,8 @@ class HighwayDirective {
     };
     */
 
+    setTimeout(onProductMenu, 1000);
+
     if (!H.properties.page.getElementById(_gtm.default.FILTERS_SCRIPT_ID)) {
       _gtm.default.pageView();
     }
@@ -26113,7 +26134,7 @@ class HighwayDirective {
 exports.default = HighwayDirective;
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
 
-},{"../gtm/gtm.service":238,"./custom-renderer":239,"./page-transition":241,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],241:[function(require,module,exports){
+},{"../gtm/gtm.service":238,"../services/dom.service":251,"./custom-renderer":239,"./page-transition":241,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],241:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26132,8 +26153,6 @@ var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* jshint esversion: 6 */
-let wasProduct = false;
-
 class PageTransition extends _highway.default.Transition {
   in({
     from,
@@ -26155,20 +26174,6 @@ class PageTransition extends _highway.default.Transition {
       opacity: 0,
       minHeight: from.offsetHeight
     });
-    setTimeout(() => {
-      const sectionProduct = to.querySelector('.section--product');
-
-      if (wasProduct && sectionProduct && window.innerWidth > 860) {
-        const top = sectionProduct.getBoundingClientRect().top; // console.log(sectionProduct, top);
-
-        window.scrollTo(0, top + _dom.default.getScrollTop(window));
-      } else {
-        window.scrollTo(0, 0);
-      } // console.log(wasProduct, sectionProduct);
-
-
-      wasProduct = Boolean(sectionProduct);
-    }, 100);
 
     _customRenderer.default.$destroy(from);
 
@@ -26198,7 +26203,12 @@ class PageTransition extends _highway.default.Transition {
             minHeight: 0,
             opacity: 1
           });
-        }, 50);
+        }, 50); // ci sono estensioni che bloccano questo genere di script
+
+        if (addthis.layers && addthis.layers.refresh) {
+          addthis.layers.refresh();
+        }
+
         done();
       }
     });
@@ -27084,7 +27094,11 @@ class RootCtrl {
 
   onScroll(event) {
     const scrolled = event.scroll.scrollTop > 40;
-    const direction = event.scroll.direction;
+    const direction = event.scroll.direction; // console.log(this.$scope.hasDropdown, Object.keys(this).filter(x => typeof this[x] === 'boolean').map(x => `${x}: ${this[x]}`).join(','));
+
+    if (this.droppedIn) {
+      this.$scope.$broadcast('onCloseDropdown');
+    }
 
     if (event.scroll.direction) {
       if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
@@ -27106,6 +27120,7 @@ class RootCtrl {
     	// console.log(top);
     });
     */
+    // console.log('onInit');
 
     this.$timeout(() => {
       this.init = true;
@@ -27169,6 +27184,8 @@ class RootCtrl {
   onDroppedOut(node) {
     // console.log('onDroppedOut', node);
     if (node) {
+      this.droppedIn = false;
+
       if (this.droppinIn) {
         TweenMax.set(node, {
           height: 0
@@ -27219,8 +27236,8 @@ class RootCtrl {
   }
 
   onDroppedIn(node) {
-    // console.log('onDroppedIn', node);
     return new Promise((resolve, reject) => {
+      this.droppedIn = true;
       this.droppinIn = true;
       const items = [].slice.call(node.querySelectorAll('.submenu__item'));
       TweenMax.set(items, {

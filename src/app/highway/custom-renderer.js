@@ -14,7 +14,6 @@ export default class CustomRenderer extends Highway.Renderer {
 		this.updateBrand();
 		this.updateSearchQuery();
 		this.updateMarketsAndLanguages();
-		this.addThis();
 	}
 
 	updateMeta() {
@@ -66,14 +65,6 @@ export default class CustomRenderer extends Highway.Renderer {
 			}
 		});
 		*/
-	}
-
-	addThis() {
-		// ci sono estensioni che bloccano questo genere di script
-		if (window.addthis) {
-			if (addthis.share) addthis.share('.addthis_inline_share_toolbox');
-			if (addthis.layers && addthis.layers.refresh) addthis.layers.refresh();
-		}
 	}
 
 	pageView() {
