@@ -16,6 +16,7 @@ class Collections02Ctrl {
 		this.filters = window.filters || {};
 		this.brands = window.brands || [];
 		// sorting alphabetically
+		/*
 		this.brands.forEach(brand => {
 			if (brand.collections) {
 				brand.collections.sort(function(a, b) {
@@ -25,6 +26,7 @@ class Collections02Ctrl {
 				})
 			}
 		});
+		*/
 		this.initialFilters = window.initialFilters || null;
 		this.deserializeFilters(this.initialFilters);
 		this.applyFilters(false);

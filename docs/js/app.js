@@ -21358,21 +21358,18 @@ class Collections02Ctrl {
     this.filters = window.filters || {};
     this.brands = window.brands || []; // sorting alphabetically
 
+    /*
     this.brands.forEach(brand => {
-      if (brand.collections) {
-        brand.collections.sort(function (a, b) {
-          if (a.title < b.title) {
-            return -1;
-          }
-
-          if (a.title > b.title) {
-            return 1;
-          }
-
-          return 0;
-        });
-      }
+    	if (brand.collections) {
+    		brand.collections.sort(function(a, b) {
+    			if (a.title < b.title) { return -1; }
+    			if (a.title > b.title) { return 1; }
+    			return 0;
+    		})
+    	}
     });
+    */
+
     this.initialFilters = window.initialFilters || null;
     this.deserializeFilters(this.initialFilters);
     this.applyFilters(false); // this.filteredReferences = this.references.slice();
