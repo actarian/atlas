@@ -127,9 +127,9 @@
 		width: 100%;
 
 		&>.listing__item {
-			flex: 1 1 33.33%;
-			width: 33.33%;
-			max-width: 33.33%;
+			flex: 1 1 33.333333%;
+			width: 33.333333%;
+			max-width: 33.333333%;
 			padding-right: 40px;
 		}
 	}
@@ -166,7 +166,7 @@
 
 		&>.listing__item {
 			max-width: 100%;
-			flex: 1 1 33.33%;
+			flex: 1 1 33.333333%;
 			margin-right: 0;
 		}
 	}
@@ -175,8 +175,8 @@
 		width: calc(100% + 40px);
 
 		&>.listing__item {
-			max-width: calc(33.33% - 40px);
-			flex: 1 1 33.33%;
+			max-width: calc(33.333333% - 40px);
+			flex: 1 1 33.333333%;
 			margin-right: 40px;
 		}
 	}
@@ -222,9 +222,9 @@
 		width: 100%;
 
 		&>.listing__item {
-			flex: 1 1 33.33%;
-			width: 33.33%;
-			max-width: 33.33%;
+			flex: 1 1 33.333333%;
+			width: 33.333333%;
+			max-width: 33.333333%;
 		}
 	}
 

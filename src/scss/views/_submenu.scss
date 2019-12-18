@@ -158,8 +158,8 @@
 		width: calc(100% + 64px);
 
 		&>.submenu__item {
-			max-width: calc(33.33% - 64px);
-			flex: 1 1 33.33%;
+			max-width: calc(33.333333% - 64px);
+			flex: 1 1 33.333333%;
 			margin-right: 64px;
 		}
 	}

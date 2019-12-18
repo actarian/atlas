@@ -114,6 +114,7 @@
 			img {
 				max-width: 760px;
 				max-height: calc(80vh - 320px);
+				object-fit: contain;
 			}
 		}
 

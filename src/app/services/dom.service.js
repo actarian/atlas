@@ -82,6 +82,7 @@ export default class DomService {
 	}
 
 	hasWebgl() {
+		return false;
 		let gl, debugInfo, vendor, renderer, has = false;
 		try {
 			const canvas = document.createElement('canvas');

@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
 
 import AdvancedSearchCtrl from './advanced-search/advanced-search.controller';
+import Collections02Ctrl from './collections/collections-02.controller';
 import CollectionsCtrl from './collections/collections.controller';
 import ContactsCtrl from './contacts/contacts.controller';
 import AppearDirective from './directives/appear.directive';
@@ -20,7 +21,7 @@ import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
-import ThronDirective from './directives/thron.directive';	
+import ThronDirective from './directives/thron.directive';
 // import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
 import VisibilityDirective from './directives/visibility.directive';
@@ -64,7 +65,7 @@ const app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 
 app.config(['$locationProvider', function($locationProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('*');
-}]).config(['$compileProvider', function ($compileProvider) {
+}]).config(['$compileProvider', function($compileProvider) {
 	$compileProvider.debugInfoEnabled(false);
 }]);
 
@@ -120,6 +121,7 @@ app.directive('appear', AppearDirective.factory)
 app.controller('RootCtrl', RootCtrl)
 	.controller('AdvancedSearchCtrl', AdvancedSearchCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
+	.controller('Collections02Ctrl', Collections02Ctrl)
 	.controller('ContactsCtrl', ContactsCtrl)
 	.controller('FaqCtrl', FaqCtrl)
 	.controller('GalleriesCtrl', GalleriesCtrl)

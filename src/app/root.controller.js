@@ -45,6 +45,7 @@ class RootCtrl {
 		const direction = event.scroll.direction;
 		// console.log(this.$scope.hasDropdown, Object.keys(this).filter(x => typeof this[x] === 'boolean').map(x => `${x}: ${this[x]}`).join(','));
 		if (this.droppedIn) {
+			// console.log('onScroll.onCloseDropdown');
 			this.$scope.$broadcast('onCloseDropdown');
 		}
 		if (event.scroll.direction) {

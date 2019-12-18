@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+import { distinctUntilChanged } from "rxjs/operators";
 
 export default class ScrollDirective {
 
@@ -18,7 +19,14 @@ export default class ScrollDirective {
 		if (attributes.scroll !== undefined) {
 			const node = element[0];
 			this.$timeout(() => {
-				const subscription = this.domService.scrollIntersection$(node).subscribe(event => {
+				let previous;
+				const subscription = this.domService.scrollIntersection$(node).pipe(
+					distinctUntilChanged((a, b) => {
+						const differs = b.scroll.scrollTop !== previous;
+						previous = b.scroll.scrollTop;
+						return !differs;
+					})
+				).subscribe(event => {
 					const callback = scope.$eval(attributes.scroll, { $event: event });
 					if (typeof callback === 'function') {
 						callback(event);

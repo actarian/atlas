@@ -485,8 +485,8 @@ $collection-gutter: 70px;
 		}
 
 		@include media-breakpoint-up(md) {
-			flex: 0 0 calc(33% - #{$collection-gutter});
-			width: calc(33% - #{$collection-gutter});
+			flex: 0 0 calc(33.333333% - #{$collection-gutter});
+			width: calc(33.333333% - #{$collection-gutter});
 		}
 
 		@include media-breakpoint-down(sm) {
@@ -497,6 +497,148 @@ $collection-gutter: 70px;
 		@include media-breakpoint-down(xs) {
 			flex: 0 0 calc(100% - #{$collection-gutter});
 			width: calc(100% - #{$collection-gutter});
+
+			.title {
+				font-size: 16px;
+			}
+
+		}
+
+	}
+
+	&>.listing__item--with-logo {
+		text-align: center;
+	}
+
+}
+
+.section--collections {
+	.container-fluid {
+		padding: 80px;
+	}
+}
+
+.listing--looks {
+	margin-bottom: 35px;
+
+	&>.listing__item {
+		&>.title {
+			background-repeat: none;
+			background-size: cover;
+			padding: 10px;
+			font-size: 42px;
+			font-weight: 100;
+			margin: 0 0 30px 0;
+		}
+	}
+}
+
+.listing--look {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	text-align: left;
+	margin-right: -15px;
+	margin-left: -15px;
+	margin-bottom: 50px;
+	min-width: 100%;
+
+	&>.listing__item {
+		display: block;
+		padding-left: 15px;
+		padding-right: 15px;
+		margin-bottom: 35px;
+
+		.picture {
+			transition: all ease-in-out 400ms;
+			margin-bottom: 25px;
+		}
+
+		&:not(:hover) {
+			.picture {
+				box-shadow: none;
+			}
+		}
+
+		.title {
+			font-size: 30px;
+			font-weight: 100;
+			line-height: 1;
+			margin: 0;
+		}
+
+		.category {
+			font-weight: 300;
+			text-transform: none;
+			font-size: 18px;
+			color: #4e5256;
+		}
+
+		.abstract {
+			font-size: 16px;
+			line-height: 24px;
+			margin-bottom: 15px;
+			min-height: 60px;
+			color: $foreground-secondary;
+		}
+
+		.group--location {
+			display: flex;
+			align-items: center;
+			font-size: 14px;
+			color: $foreground-secondary;
+
+			.icon--pin-outline {
+				width: 13px;
+				height: 16px;
+				fill: $foreground;
+				margin-right: 10px;
+			}
+
+			.city {
+				font-weight: $font-semibold;
+				color: $foreground;
+			}
+		}
+
+		.group--cta {
+			margin: 0;
+		}
+
+		&:hover {
+			.btn--link-secondary {
+				&:after {
+					transform: scale(0, 1);
+					background: $primary;
+				}
+			}
+		}
+
+		@media screen {
+			.section--negative & {
+				&:hover {
+					.btn--link-secondary {
+						&:after {
+							background: $primary;
+						}
+					}
+				}
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			flex: 0 0 33.333333%;
+			width: 33.333333%;
+		}
+
+		@include media-breakpoint-down(sm) {
+			flex: 0 0 50%;
+			width: 50%;
+		}
+
+		@include media-breakpoint-down(xs) {
+			flex: 0 0 100%;
+			width: 100%;
 
 			.title {
 				font-size: 16px;

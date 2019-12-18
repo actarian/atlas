@@ -78,6 +78,12 @@ class FaqCtrl {
 	}
 
 	navTo(category, event) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		if (!category.slug) {
+			throw ('Missing category slug');
+			return;
+		}
 		const node = document.querySelector(`#${category.slug}`);
 		const top = this.domService.scrollTop + node.getBoundingClientRect().top - 100;
 		window.scroll({
@@ -85,8 +91,6 @@ class FaqCtrl {
 			left: 0,
 			behavior: 'smooth'
 		});
-		event.preventDefault();
-		event.stopImmediatePropagation();
 	}
 
 	search$() {

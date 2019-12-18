@@ -252,8 +252,8 @@
 		}
 
 		@include media-breakpoint-up(lg) {
-			flex: 0 0 calc(33% - 60px);
-			width: calc(33% - 60px);
+			flex: 0 0 calc(33.333333% - 60px);
+			width: calc(33.333333% - 60px);
 			max-width: 365px;
 			margin-right: 60px;
 
