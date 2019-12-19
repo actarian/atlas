@@ -808,7 +808,7 @@ Ground track
 				</div>
 			</div>
 		</section>
-		<section class="section section--collections" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
+		<section class="section section--collections section--collections-v2" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-8 offset-md-4" appear>
@@ -830,7 +830,6 @@ Ground track
 									<img lazy data-src="{{collection.images | imageWithFeatures : [collectionsCtrl.filters.typologies.value] }}" alt="title" />
 								</div>
 								<div class="title" ng-bind="collection.title"></div>
-								<span class="category" ng-bind="collection.look"></span>
 							</a>
 						</div>
 					</div>
