@@ -531,27 +531,17 @@ $collection-gutter: 70px;
 		&>.title {
 			background-repeat: none;
 			background-size: cover;
-			padding: 10px;
 			font-size: 42px;
 			font-weight: 100;
-			margin: 0 0 30px 0;
-		}
-	}
+			margin: 0 0 10px 0;
+			padding: 0;
 
-	.section--collections-v2 & {
-		&>.listing__item {
-			&>.title {
-				margin: 0 0 10px 0;
-				padding: 0;
-
-				span {
-					display: block;
-					padding: 10px;
-					background: rgba(255, 255, 255, 0.2);
-				}
+			span {
+				display: block;
+				padding: 10px;
+				background: rgba(255, 255, 255, 0.5);
 			}
 		}
-
 	}
 }
 
