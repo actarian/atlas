@@ -6626,6 +6626,8 @@ page-transition {
       display: block;
       padding: 10px;
       background: rgba(255, 255, 255, 0.5); }
+    .listing--looks > .listing__item > .title.title--uppercase {
+      text-transform: uppercase; }
 
 .listing--look {
   display: -webkit-box;
