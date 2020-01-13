@@ -73,9 +73,9 @@
 			image: "https://atlasconcorde.com/media/immagini/164_t_05.jpg",
 			banner: "https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/0ab25112-09e4-42af-a5f6-93e5a01a4903/yz1hpd/std/1920x160/AtlasConcorde_Room_White_60x60_Matte_AZW6.jpg?scalemode=auto&cropmode=pixel&cropx=1&cropy=1&cropw=1920&croph=160",
 		}, {
-			key: "Altri Effetti",
+			key: "Altre Collezioni",
 			value: 100000,
-			label: "Altri Effetti"
+			label: "Altre Collezioni"
 		}]
 	};
 	filters.looks.placeholder = "Tutti gli effetti";
@@ -761,7 +761,7 @@ Ground track
 				<div has-dropdown=".control" ng-if="key != 'collections'">
 					<div class="dropdown">
 						<ul class="nav nav--select">
-							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
+							<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }" ng-if="item.image || key != 'looks'">
 								<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="collectionsCtrl.setFilter(item, filter)">
 									<img ng-src="{{item.image}}" ng-if="item.image" />
 									<span ng-bind="item.label"></span>
