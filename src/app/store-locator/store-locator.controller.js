@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';

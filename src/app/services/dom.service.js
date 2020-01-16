@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { combineLatest, fromEvent, merge, range, Subject } from 'rxjs';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';

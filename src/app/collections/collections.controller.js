@@ -1,6 +1,5 @@
-/* jshint esversion: 6 */
-
 import GtmService from '../gtm/gtm.service';
+
 const GTM_CAT = 'collezioni';
 
 class CollectionsCtrl {
@@ -15,6 +14,18 @@ class CollectionsCtrl {
 		this.locationService = LocationService;
 		this.filters = window.filters || {};
 		this.brands = window.brands || [];
+		// sorting alphabetically
+		/*
+		this.brands.forEach(brand => {
+			if (brand.collections) {
+				brand.collections.sort(function(a, b) {
+					if (a.title < b.title) { return -1; }
+					if (a.title > b.title) { return 1; }
+					return 0;
+				})
+			}
+		});
+		*/
 		this.initialFilters = window.initialFilters || null;
 		this.deserializeFilters(this.initialFilters);
 		this.applyFilters(false);
@@ -22,11 +33,6 @@ class CollectionsCtrl {
 		// this.updateFilterStates();
 		// console.log(this.filters);
 		// console.log(this.brands);
-	}
-
-	test() {
-		this.test = true;
-		this.applyFilters(false);
 	}
 
 	deserializeFilters(initialFilter) {
@@ -83,44 +89,6 @@ class CollectionsCtrl {
 		if (serialize !== false) this.serializeFilters();
 		const { filteredBrands, resultCounts, totalCounts } = this.getFilteredBrands();
 		// console.log(filteredBrands, filters);
-		if (this.test) {
-			filteredBrands.forEach(brand => brand.collections.forEach(collection => {
-				collection.size = (1 + Math.floor(Math.random() * 6));
-				if (collection.size < 4) {
-					collection.size = 1;
-				} else if (collection.size < 6) {
-					collection.size = 2;
-				} else {
-					collection.size = 3;
-				}
-			}));
-		}
-
-		/*
-		const order = [3, 2, 2, 1, 1, 1];
-		let i = 0;
-		filteredBrands.forEach(brand => {
-			brand.collections.sort((a, b) => {
-				const size = order[i % order.length];
-				console.log(size);
-				if (a.size === size) {
-					i++;
-					return -1;
-				}
-				if (b.size === size) {
-					i++;
-					return 1;
-				}
-				return 0;
-			});
-			// console.log(brand.collections.map(x => x.size).join(','));
-		});
-		*/
-
-		filteredBrands.forEach(brand => {
-			brand.collections = this.getSortedPattern(brand.collections);
-		});
-
 		this.filteredBrands = [];
 		this.$timeout(() => {
 			this.filteredBrands = filteredBrands;
@@ -132,61 +100,38 @@ class CollectionsCtrl {
 		GtmService.pageViewFilters(GTM_CAT, this.filters);
 	}
 
-	getSortedSize(items) {
-		items.sort((a, b) => {
-			return b.size - a.size;
-		});
-		// console.log(items.map(x => x.size).join(','));
-		return items;
-	}
-
-	getSortedPattern(items) {
-		const order = [3, 2, 1, 2, 1, 1, 1, 2, 3, 1, 2, 1];
-		let sorted = [],
-			i = 0;
-		while (items.length) {
-			const size = order[i % order.length];
-			const item = items.find(x => x.size === size);
-			if (item) {
-				items.splice(items.indexOf(item), 1);
-				sorted.push(item);
-			} else {
-				sorted.push(items.shift());
-			}
-			i++;
-		}
-		console.log(sorted.map(x => x.size).join(','));
-		return sorted;
-	}
-
 	getFilteredBrands(skipFilter) {
 		const filters = Object.keys(this.filters).map((x) => this.filters[x]).filter(x => x.value !== null);
-		const filteredBrands = filters.length ? [] : this.brands;
-		let resultCounts = 0,
-			totalCounts = 0;
-		if (filters.length) {
-			this.brands.map(x => Object.assign({}, x)).forEach(brand => {
-				const filteredCollections = [];
-				brand.collections.forEach(collection => {
-					let has = true;
+		const filteredBrands = [];
+		let resultCounts = 0;
+		const totalCounts = this.brands.reduce((total, brand) => {
+			return total + brand.collections.length;
+		}, 0);
+		const looks = this.filters.looks.options.filter(x => x.value);
+		this.brands.map(x => Object.assign({}, x)).forEach(brand => {
+			const collections = [];
+			brand.looks = looks.map(x => {
+				const look = Object.assign({}, x);
+				look.collections = brand.collections.filter(collection => {
+					let has = this.filters.looks.doFilter(collection, look.value);
 					filters.forEach(filter => {
 						if (filter !== skipFilter) {
 							has = has && filter.doFilter(collection, filter.value);
 						}
 					});
-					if (has) {
-						filteredCollections.push(collection);
-						resultCounts++;
+					if (has && collections.indexOf(collection) === -1) {
+						collections.push(collection);
 					}
-					totalCounts++;
+					return has;
 				});
-				// console.log(has, collection, filters);
-				if (filteredCollections.length) {
-					brand.collections = filteredCollections;
-					filteredBrands.push(brand);
-				}
-			});
-		}
+				return look;
+			}); // .filter(x => x.collections.length)
+			// console.log(has, collection, filters);
+			resultCounts += collections.length;
+			if (brand.looks.length) {
+				filteredBrands.push(brand);
+			}
+		});
 		return { filteredBrands, resultCounts, totalCounts };
 	}
 

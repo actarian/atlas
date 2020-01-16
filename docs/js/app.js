@@ -1,8 +1,10 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
 (function webpackUniversalModuleDefinition(root, factory) {
-  if (typeof exports === 'object' && typeof module === 'object') module.exports = factory();else if (typeof define === 'function' && define.amd) define("Highway", [], factory);else if (typeof exports === 'object') exports["Highway"] = factory();else root["Highway"] = factory();
+  if ((typeof exports === "undefined" ? "undefined" : _typeof2(exports)) === 'object' && (typeof module === "undefined" ? "undefined" : _typeof2(module)) === 'object') module.exports = factory();else if (typeof define === 'function' && define.amd) define("Highway", [], factory);else if ((typeof exports === "undefined" ? "undefined" : _typeof2(exports)) === 'object') exports["Highway"] = factory();else root["Highway"] = factory();
 })(window, function () {
   return (
     /******/
@@ -169,7 +171,7 @@
         if (mode & 8) return value;
         /******/
 
-        if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
+        if (mode & 4 && _typeof2(value) === 'object' && value && value.__esModule) return value;
         /******/
 
         var ns = Object.create(null);
@@ -185,9 +187,11 @@
         });
         /******/
 
-        if (mode & 2 && typeof value != 'string') for (var key in value) __webpack_require__.d(ns, key, function (key) {
-          return value[key];
-        }.bind(null, key));
+        if (mode & 2 && typeof value != 'string') for (var key in value) {
+          __webpack_require__.d(ns, key, function (key) {
+            return value[key];
+          }.bind(null, key));
+        }
         /******/
 
         return ns;
@@ -265,12 +269,12 @@
 
       var uid = __webpack_require__(15);
 
-      var Symbol = __webpack_require__(1).Symbol;
+      var _Symbol = __webpack_require__(1).Symbol;
 
-      var USE_SYMBOL = typeof Symbol == 'function';
+      var USE_SYMBOL = typeof _Symbol == 'function';
 
       var $exports = module.exports = function (name) {
-        return store[name] || (store[name] = USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+        return store[name] || (store[name] = USE_SYMBOL && _Symbol[name] || (USE_SYMBOL ? _Symbol : uid)('Symbol.' + name));
       };
 
       $exports.store = store;
@@ -292,7 +296,7 @@
     /***/
     function (module, exports) {
       module.exports = function (it) {
-        return typeof it === 'object' ? it !== null : typeof it === 'function';
+        return _typeof2(it) === 'object' ? it !== null : typeof it === 'function';
       };
       /***/
 
@@ -317,7 +321,7 @@
       // Thank's IE8 for his funny defineProperty
       module.exports = !__webpack_require__(7)(function () {
         return Object.defineProperty({}, 'a', {
-          get: function () {
+          get: function get() {
             return 7;
           }
         }).a != 7;
@@ -450,7 +454,7 @@
 
       var PROTOTYPE = 'prototype';
 
-      var $export = function (type, name, source) {
+      var $export = function $export(type, name, source) {
         var IS_FORCED = type & $export.F;
         var IS_GLOBAL = type & $export.G;
         var IS_STATIC = type & $export.S;
@@ -703,7 +707,7 @@
       var $Promise = global[PROMISE];
       var isNode = classof(process) == 'process';
 
-      var empty = function () {
+      var empty = function empty() {
         /* empty */
       };
 
@@ -728,12 +732,12 @@
         }
       }(); // helpers
 
-      var isThenable = function (it) {
+      var isThenable = function isThenable(it) {
         var then;
         return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
       };
 
-      var notify = function (promise, isReject) {
+      var notify = function notify(promise, isReject) {
         if (promise._n) return;
         promise._n = true;
         var chain = promise._c;
@@ -742,7 +746,7 @@
           var ok = promise._s == 1;
           var i = 0;
 
-          var run = function (reaction) {
+          var run = function run(reaction) {
             var handler = ok ? reaction.ok : reaction.fail;
             var resolve = reaction.resolve;
             var reject = reaction.reject;
@@ -778,7 +782,9 @@
             }
           };
 
-          while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
+          while (chain.length > i) {
+            run(chain[i++]);
+          } // variable length - can't use forEach
 
 
           promise._c = [];
@@ -787,7 +793,7 @@
         });
       };
 
-      var onUnhandled = function (promise) {
+      var onUnhandled = function onUnhandled(promise) {
         task.call(global, function () {
           var value = promise._v;
           var unhandled = isUnhandled(promise);
@@ -815,11 +821,11 @@
         });
       };
 
-      var isUnhandled = function (promise) {
+      var isUnhandled = function isUnhandled(promise) {
         return promise._h !== 1 && (promise._a || promise._c).length === 0;
       };
 
-      var onHandleUnhandled = function (promise) {
+      var onHandleUnhandled = function onHandleUnhandled(promise) {
         task.call(global, function () {
           var handler;
 
@@ -834,7 +840,7 @@
         });
       };
 
-      var $reject = function (value) {
+      var $reject = function $reject(value) {
         var promise = this;
         if (promise._d) return;
         promise._d = true;
@@ -846,7 +852,7 @@
         notify(promise, true);
       };
 
-      var $resolve = function (value) {
+      var $resolve = function $resolve(value) {
         var promise = this;
         var then;
         if (promise._d) return;
@@ -929,19 +935,19 @@
             return reaction.promise;
           },
           // 25.4.5.1 Promise.prototype.catch(onRejected)
-          'catch': function (onRejected) {
+          'catch': function _catch(onRejected) {
             return this.then(undefined, onRejected);
           }
         });
 
-        OwnPromiseCapability = function () {
+        OwnPromiseCapability = function OwnPromiseCapability() {
           var promise = new Internal();
           this.promise = promise;
           this.resolve = ctx($resolve, promise, 1);
           this.reject = ctx($reject, promise, 1);
         };
 
-        newPromiseCapabilityModule.f = newPromiseCapability = function (C) {
+        newPromiseCapabilityModule.f = newPromiseCapability = function newPromiseCapability(C) {
           return C === $Promise || C === Wrapper ? new OwnPromiseCapability(C) : newGenericPromiseCapability(C);
         };
       }
@@ -1157,7 +1163,9 @@
       var redefine = __webpack_require__(8);
 
       module.exports = function (target, src, safe) {
-        for (var key in src) redefine(target, key, src[key], safe);
+        for (var key in src) {
+          redefine(target, key, src[key], safe);
+        }
 
         return target;
       };
@@ -1186,7 +1194,7 @@
         return isExtensible(Object.preventExtensions({}));
       });
 
-      var setMeta = function (it) {
+      var setMeta = function setMeta(it) {
         setDesc(it, META, {
           value: {
             i: 'O' + ++id,
@@ -1197,9 +1205,9 @@
         });
       };
 
-      var fastKey = function (it, create) {
+      var fastKey = function fastKey(it, create) {
         // return primitive with prefix
-        if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+        if (!isObject(it)) return _typeof2(it) == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
 
         if (!has(it, META)) {
           // can't set metadata to uncaught frozen object
@@ -1213,7 +1221,7 @@
         return it[META].i;
       };
 
-      var getWeak = function (it, create) {
+      var getWeak = function getWeak(it, create) {
         if (!has(it, META)) {
           // can't set metadata to uncaught frozen object
           if (!isExtensible(it)) return true; // not necessary to add metadata
@@ -1227,7 +1235,7 @@
       }; // add metadata on freeze-family methods calling
 
 
-      var onFreeze = function (it) {
+      var onFreeze = function onFreeze(it) {
         if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
         return it;
       };
@@ -1276,13 +1284,13 @@
 
       var IE_PROTO = __webpack_require__(32)('IE_PROTO');
 
-      var Empty = function () {
+      var Empty = function Empty() {
         /* empty */
       };
 
       var PROTOTYPE = 'prototype'; // Create object with fake `null` prototype: use iframe Object with cleared prototype
 
-      var createDict = function () {
+      var _createDict = function createDict() {
         // Thrash, waste and sodomy: IE GC bug
         var iframe = __webpack_require__(24)('iframe');
 
@@ -1302,11 +1310,13 @@
         iframeDocument.open();
         iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
         iframeDocument.close();
-        createDict = iframeDocument.F;
+        _createDict = iframeDocument.F;
 
-        while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+        while (i--) {
+          delete _createDict[PROTOTYPE][enumBugKeys[i]];
+        }
 
-        return createDict();
+        return _createDict();
       };
 
       module.exports = Object.create || function create(O, Properties) {
@@ -1318,7 +1328,7 @@
           Empty[PROTOTYPE] = null; // add "__proto__" for Object.getPrototypeOf polyfill
 
           result[IE_PROTO] = O;
-        } else result = createDict();
+        } else result = _createDict();
 
         return Properties === undefined ? result : dPs(result, Properties);
       };
@@ -1377,7 +1387,7 @@
     function (module, exports, __webpack_require__) {
       module.exports = !__webpack_require__(4) && !__webpack_require__(7)(function () {
         return Object.defineProperty(__webpack_require__(24)('div'), 'a', {
-          get: function () {
+          get: function get() {
             return 7;
           }
         }).a != 7;
@@ -1395,7 +1405,7 @@
 
       var anObject = __webpack_require__(3);
 
-      var check = function (O, proto) {
+      var check = function check(O, proto) {
         anObject(O);
         if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
       };
@@ -1464,7 +1474,7 @@
         return arguments;
       }()) == 'Arguments'; // fallback for IE11 Script Access Denied error
 
-      var tryGet = function (it, key) {
+      var tryGet = function tryGet(it, key) {
         try {
           return it[key];
         } catch (e) {
@@ -1535,7 +1545,7 @@
       var ONREADYSTATECHANGE = 'onreadystatechange';
       var defer, channel, port;
 
-      var run = function () {
+      var run = function run() {
         var id = +this; // eslint-disable-next-line no-prototype-builtins
 
         if (queue.hasOwnProperty(id)) {
@@ -1545,7 +1555,7 @@
         }
       };
 
-      var listener = function (event) {
+      var listener = function listener(event) {
         run.call(event.data);
       }; // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
 
@@ -1555,7 +1565,9 @@
           var args = [];
           var i = 1;
 
-          while (arguments.length > i) args.push(arguments[i++]);
+          while (arguments.length > i) {
+            args.push(arguments[i++]);
+          }
 
           queue[++counter] = function () {
             // eslint-disable-next-line no-new-func
@@ -1572,12 +1584,12 @@
 
 
         if (__webpack_require__(14)(process) == 'process') {
-          defer = function (id) {
+          defer = function defer(id) {
             process.nextTick(ctx(run, id, 1));
           }; // Sphere (JS game engine) Dispatch API
 
         } else if (Dispatch && Dispatch.now) {
-          defer = function (id) {
+          defer = function defer(id) {
             Dispatch.now(ctx(run, id, 1));
           }; // Browsers with MessageChannel, includes WebWorkers
 
@@ -1588,13 +1600,13 @@
           defer = ctx(port.postMessage, port, 1); // Browsers with postMessage, skip WebWorkers
           // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
         } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
-          defer = function (id) {
+          defer = function defer(id) {
             global.postMessage(id + '', '*');
           };
 
           global.addEventListener('message', listener, false); // IE8-
         } else if (ONREADYSTATECHANGE in cel('script')) {
-          defer = function (id) {
+          defer = function defer(id) {
             html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
               html.removeChild(this);
               run.call(id);
@@ -1602,7 +1614,7 @@
           }; // Rest old browsers
 
         } else {
-          defer = function (id) {
+          defer = function defer(id) {
             setTimeout(ctx(run, id, 1), 0);
           };
         }
@@ -1666,7 +1678,7 @@
         var C = global[KEY];
         if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
           configurable: true,
-          get: function () {
+          get: function get() {
             return this;
           }
         });
@@ -1746,7 +1758,7 @@
         var iteratorSymbol = $Symbol.iterator || "@@iterator";
         var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
         var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-        var inModule = typeof module === "object";
+        var inModule = _typeof2(module) === "object";
         var runtime = global.regeneratorRuntime;
 
         if (runtime) {
@@ -1891,7 +1903,7 @@
               var result = record.arg;
               var value = result.value;
 
-              if (value && typeof value === "object" && hasOwn.call(value, "__await")) {
+              if (value && _typeof2(value) === "object" && hasOwn.call(value, "__await")) {
                 return Promise.resolve(value.__await).then(function (value) {
                   invoke("next", value, resolve, reject);
                 }, function (err) {
@@ -2253,7 +2265,7 @@
 
         Context.prototype = {
           constructor: Context,
-          reset: function (skipTempReset) {
+          reset: function reset(skipTempReset) {
             this.prev = 0;
             this.next = 0; // Resetting context._sent for legacy support of Babel's
             // function.sent implementation.
@@ -2274,7 +2286,7 @@
               }
             }
           },
-          stop: function () {
+          stop: function stop() {
             this.done = true;
             var rootEntry = this.tryEntries[0];
             var rootRecord = rootEntry.completion;
@@ -2285,7 +2297,7 @@
 
             return this.rval;
           },
-          dispatchException: function (exception) {
+          dispatchException: function dispatchException(exception) {
             if (this.done) {
               throw exception;
             }
@@ -2342,7 +2354,7 @@
               }
             }
           },
-          abrupt: function (type, arg) {
+          abrupt: function abrupt(type, arg) {
             for (var i = this.tryEntries.length - 1; i >= 0; --i) {
               var entry = this.tryEntries[i];
 
@@ -2370,7 +2382,7 @@
 
             return this.complete(record);
           },
-          complete: function (record, afterLoc) {
+          complete: function complete(record, afterLoc) {
             if (record.type === "throw") {
               throw record.arg;
             }
@@ -2387,7 +2399,7 @@
 
             return ContinueSentinel;
           },
-          finish: function (finallyLoc) {
+          finish: function finish(finallyLoc) {
             for (var i = this.tryEntries.length - 1; i >= 0; --i) {
               var entry = this.tryEntries[i];
 
@@ -2398,7 +2410,7 @@
               }
             }
           },
-          "catch": function (tryLoc) {
+          "catch": function _catch(tryLoc) {
             for (var i = this.tryEntries.length - 1; i >= 0; --i) {
               var entry = this.tryEntries[i];
 
@@ -2418,7 +2430,7 @@
 
             throw new Error("illegal catch attempt");
           },
-          delegateYield: function (iterable, resultName, nextLoc) {
+          delegateYield: function delegateYield(iterable, resultName, nextLoc) {
             this.delegate = {
               iterator: values(iterable),
               resultName: resultName,
@@ -2511,11 +2523,15 @@
         var result = [];
         var key;
 
-        for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key); // Don't enum bug & hidden keys
+        for (key in O) {
+          if (key != IE_PROTO) has(O, key) && result.push(key);
+        } // Don't enum bug & hidden keys
 
 
-        while (names.length > i) if (has(O, key = names[i++])) {
-          ~arrayIndexOf(result, key) || result.push(key);
+        while (names.length > i) {
+          if (has(O, key = names[i++])) {
+            ~arrayIndexOf(result, key) || result.push(key);
+          }
         }
 
         return result;
@@ -2634,14 +2650,14 @@
       var KEYS = 'keys';
       var VALUES = 'values';
 
-      var returnThis = function () {
+      var returnThis = function returnThis() {
         return this;
       };
 
       module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
         $iterCreate(Constructor, NAME, next);
 
-        var getMethod = function (kind) {
+        var getMethod = function getMethod(kind) {
           if (!BUGGY && kind in proto) return proto[kind];
 
           switch (kind) {
@@ -3297,7 +3313,7 @@
 
       NAME in FProto || __webpack_require__(4) && dP(FProto, NAME, {
         configurable: true,
-        get: function () {
+        get: function get() {
           try {
             return ('' + this).match(nameRE)[1];
           } catch (e) {
@@ -3391,13 +3407,13 @@
       }
 
       function _typeof(obj) {
-        if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
           _typeof = function _typeof(obj) {
-            return typeof obj;
+            return _typeof2(obj);
           };
         } else {
           _typeof = function _typeof(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
           };
         }
 
@@ -4105,7 +4121,7 @@
       module.exports = function () {
         var head, last, notify;
 
-        var flush = function () {
+        var flush = function flush() {
           var parent, fn;
           if (isNode && (parent = process.domain)) parent.exit();
 
@@ -4127,7 +4143,7 @@
 
 
         if (isNode) {
-          notify = function () {
+          notify = function notify() {
             process.nextTick(flush);
           }; // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
 
@@ -4138,7 +4154,7 @@
             characterData: true
           }); // eslint-disable-line no-new
 
-          notify = function () {
+          notify = function notify() {
             node.data = toggle = !toggle;
           }; // environments with maybe non-completely correct, but existent Promise
 
@@ -4146,7 +4162,7 @@
           // Promise.resolve without an argument throws an error in LG WebOS 2
           var promise = Promise.resolve(undefined);
 
-          notify = function () {
+          notify = function notify() {
             promise.then(flush);
           }; // for other environments - macrotask based on:
           // - setImmediate
@@ -4156,7 +4172,7 @@
           // - setTimeout
 
         } else {
-          notify = function () {
+          notify = function notify() {
             // strange IE + webpack dev server bug - use .call(global)
             macrotask.call(global, flush);
           };
@@ -4248,7 +4264,7 @@
       var TO_STRING = 'toString';
       var $toString = /./[TO_STRING];
 
-      var define = function (fn) {
+      var define = function define(fn) {
         __webpack_require__(8)(RegExp.prototype, TO_STRING, fn, true);
       }; // 21.2.5.14 RegExp.prototype.toString()
 
@@ -4308,7 +4324,7 @@
 
       var quot = /"/g; // B.2.3.2.1 CreateHTML(string, tag, attribute, value)
 
-      var createHTML = function (string, tag, attribute, value) {
+      var createHTML = function createHTML(string, tag, attribute, value) {
         var S = String(defined(string));
         var p1 = '<' + tag;
         if (attribute !== '') p1 += ' ' + attribute + '="' + String(value).replace(quot, '&quot;') + '"';
@@ -4413,7 +4429,7 @@
 
       var setSymbolDesc = DESCRIPTORS && $fails(function () {
         return _create(dP({}, 'a', {
-          get: function () {
+          get: function get() {
             return dP(this, 'a', {
               value: 7
             }).a;
@@ -4426,15 +4442,15 @@
         if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
       } : dP;
 
-      var wrap = function (tag) {
+      var wrap = function wrap(tag) {
         var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
 
         sym._k = tag;
         return sym;
       };
 
-      var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
-        return typeof it == 'symbol';
+      var isSymbol = USE_NATIVE && _typeof2($Symbol.iterator) == 'symbol' ? function (it) {
+        return _typeof2(it) == 'symbol';
       } : function (it) {
         return it instanceof $Symbol;
       };
@@ -4469,7 +4485,9 @@
         var l = keys.length;
         var key;
 
-        while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+        while (l > i) {
+          $defineProperty(it, key = keys[i++], P[key]);
+        }
 
         return it;
       };
@@ -4522,11 +4540,11 @@
 
 
       if (!USE_NATIVE) {
-        $Symbol = function Symbol() {
+        $Symbol = function _Symbol2() {
           if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
           var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
 
-          var $set = function (value) {
+          var $set = function $set(value) {
             if (this === ObjectProto) $set.call(OPSymbols, value);
             if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
             setSymbolDesc(this, tag, createDesc(1, value));
@@ -4562,25 +4580,31 @@
       });
 
       for (var es6Symbols = // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-      'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'.split(','), j = 0; es6Symbols.length > j;) wks(es6Symbols[j++]);
+      'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'.split(','), j = 0; es6Symbols.length > j;) {
+        wks(es6Symbols[j++]);
+      }
 
-      for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+      for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) {
+        wksDefine(wellKnownSymbols[k++]);
+      }
 
       $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
         // 19.4.2.1 Symbol.for(key)
-        'for': function (key) {
+        'for': function _for(key) {
           return has(SymbolRegistry, key += '') ? SymbolRegistry[key] : SymbolRegistry[key] = $Symbol(key);
         },
         // 19.4.2.5 Symbol.keyFor(sym)
         keyFor: function keyFor(sym) {
           if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
 
-          for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
+          for (var key in SymbolRegistry) {
+            if (SymbolRegistry[key] === sym) return key;
+          }
         },
-        useSetter: function () {
+        useSetter: function useSetter() {
           setter = true;
         },
-        useSimple: function () {
+        useSimple: function useSimple() {
           setter = false;
         }
       });
@@ -4613,12 +4637,14 @@
           var i = 1;
           var replacer, $replacer;
 
-          while (arguments.length > i) args.push(arguments[i++]);
+          while (arguments.length > i) {
+            args.push(arguments[i++]);
+          }
 
           $replacer = replacer = args[1];
           if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
 
-          if (!isArray(replacer)) replacer = function (key, value) {
+          if (!isArray(replacer)) replacer = function replacer(key, value) {
             if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
             if (!isSymbol(value)) return value;
           };
@@ -4657,7 +4683,9 @@
           var i = 0;
           var key;
 
-          while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+          while (symbols.length > i) {
+            if (isEnum.call(it, key = symbols[i++])) result.push(key);
+          }
         }
 
         return result;
@@ -4689,8 +4717,10 @@
             value = O[index++]; // eslint-disable-next-line no-self-compare
 
             if (value != value) return true; // Array#indexOf ignores holes, Array#includes - not
-          } else for (; length > index; index++) if (IS_INCLUDES || index in O) {
-            if (O[index] === el) return IS_INCLUDES || index || 0;
+          } else for (; length > index; index++) {
+            if (IS_INCLUDES || index in O) {
+              if (O[index] === el) return IS_INCLUDES || index || 0;
+            }
           }
           return !IS_INCLUDES && -1;
         };
@@ -4744,7 +4774,9 @@
         var i = 0;
         var P;
 
-        while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+        while (length > i) {
+          dP.f(O, P = keys[i++], Properties[P]);
+        }
 
         return O;
       };
@@ -4760,9 +4792,9 @@
       var gOPN = __webpack_require__(53).f;
 
       var toString = {}.toString;
-      var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [];
+      var windowNames = (typeof window === "undefined" ? "undefined" : _typeof2(window)) == 'object' && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [];
 
-      var getWindowNames = function (it) {
+      var getWindowNames = function getWindowNames(it) {
         try {
           return gOPN(it);
         } catch (e) {
@@ -4845,7 +4877,9 @@
           if (!proto[ITERATOR]) hide(proto, ITERATOR, ArrayValues);
           if (!proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
           Iterators[NAME] = ArrayValues;
-          if (explicit) for (key in $iterators) if (!proto[key]) redefine(proto, key, $iterators[key], true);
+          if (explicit) for (key in $iterators) {
+            if (!proto[key]) redefine(proto, key, $iterators[key], true);
+          }
         }
       }
       /***/
@@ -4994,7 +5028,7 @@
 
       var SIZE = DESCRIPTORS ? '_s' : 'size';
 
-      var getEntry = function (that, key) {
+      var getEntry = function getEntry(that, key) {
         // fast case
         var index = fastKey(key);
         var entry;
@@ -5006,7 +5040,7 @@
       };
 
       module.exports = {
-        getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
+        getConstructor: function getConstructor(wrapper, NAME, IS_MAP, ADDER) {
           var C = wrapper(function (that, iterable) {
             anInstance(that, C, NAME, '_i');
             that._t = NAME; // collection type
@@ -5036,7 +5070,7 @@
             },
             // 23.1.3.3 Map.prototype.delete(key)
             // 23.2.3.4 Set.prototype.delete(value)
-            'delete': function (key) {
+            'delete': function _delete(key) {
               var that = validate(this, NAME);
               var entry = getEntry(that, key);
 
@@ -5066,7 +5100,9 @@
               while (entry = entry ? entry.n : this._f) {
                 f(entry.v, entry.k, this); // revert to the last existing entry
 
-                while (entry && entry.r) entry = entry.p;
+                while (entry && entry.r) {
+                  entry = entry.p;
+                }
               }
             },
             // 23.1.3.7 Map.prototype.has(key)
@@ -5076,13 +5112,13 @@
             }
           });
           if (DESCRIPTORS) dP(C.prototype, 'size', {
-            get: function () {
+            get: function get() {
               return validate(this, NAME)[SIZE];
             }
           });
           return C;
         },
-        def: function (that, key, value) {
+        def: function def(that, key, value) {
           var entry = getEntry(that, key);
           var prev, index; // change existing entry
 
@@ -5113,7 +5149,7 @@
           return that;
         },
         getEntry: getEntry,
-        setStrong: function (C, NAME, IS_MAP) {
+        setStrong: function setStrong(C, NAME, IS_MAP) {
           // add .keys, .values, .entries, [@@iterator]
           // 23.1.3.4, 23.1.3.8, 23.1.3.11, 23.1.3.12, 23.2.3.5, 23.2.3.8, 23.2.3.10, 23.2.3.11
           $iterDefine(C, NAME, function (iterated, kind) {
@@ -5127,7 +5163,9 @@
             var kind = that._k;
             var entry = that._l; // revert to the last existing entry
 
-            while (entry && entry.r) entry = entry.p; // get next entry
+            while (entry && entry.r) {
+              entry = entry.p;
+            } // get next entry
 
 
             if (!that._t || !(that._l = entry = entry ? entry.n : that._t._f)) {
@@ -5184,7 +5222,7 @@
         var proto = C && C.prototype;
         var O = {};
 
-        var fixMethod = function (KEY) {
+        var fixMethod = function fixMethod(KEY) {
           var fn = proto[KEY];
           redefine(proto, KEY, KEY == 'delete' ? function (a) {
             return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
@@ -5227,7 +5265,9 @@
             var $instance = new C();
             var index = 5;
 
-            while (index--) $instance[ADDER](index, index);
+            while (index--) {
+              $instance[ADDER](index, index);
+            }
 
             return !$instance.has(-0);
           });
@@ -5293,7 +5333,7 @@
       }
 
       E.prototype = {
-        on: function (name, callback, ctx) {
+        on: function on(name, callback, ctx) {
           var e = this.e || (this.e = {});
           (e[name] || (e[name] = [])).push({
             fn: callback,
@@ -5301,7 +5341,7 @@
           });
           return this;
         },
-        once: function (name, callback, ctx) {
+        once: function once(name, callback, ctx) {
           var self = this;
 
           function listener() {
@@ -5313,7 +5353,7 @@
           listener._ = callback;
           return this.on(name, listener, ctx);
         },
-        emit: function (name) {
+        emit: function emit(name) {
           var data = [].slice.call(arguments, 1);
           var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
           var i = 0;
@@ -5325,7 +5365,7 @@
 
           return this;
         },
-        off: function (name, callback) {
+        off: function off(name, callback) {
           var e = this.e || (this.e = {});
           var evts = e[name];
           var liveEvents = [];
@@ -5366,7 +5406,7 @@
           var NPCG = /()??/.exec('')[1] === undefined; // nonparticipating capturing group
           // based on es5-shim implementation, need to rework it
 
-          $split = function (separator, limit) {
+          $split = function $split(separator, limit) {
             var string = String(this);
             if (separator === undefined && limit === 0) return []; // If `separator` is not a regex, use native split
 
@@ -5390,7 +5430,9 @@
                 // eslint-disable-next-line no-loop-func
 
                 if (!NPCG && match[LENGTH] > 1) match[0].replace(separator2, function () {
-                  for (i = 1; i < arguments[LENGTH] - 2; i++) if (arguments[i] === undefined) match[i] = undefined;
+                  for (i = 1; i < arguments[LENGTH] - 2; i++) {
+                    if (arguments[i] === undefined) match[i] = undefined;
+                  }
                 });
                 if (match[LENGTH] > 1 && match.index < string[LENGTH]) $push.apply(output, match.slice(1));
                 lastLength = match[0][LENGTH];
@@ -5409,7 +5451,7 @@
           }; // Chakra, V8
 
         } else if ('0'[$SPLIT](undefined, 0)[LENGTH]) {
-          $split = function (separator, limit) {
+          $split = function $split(separator, limit) {
             return separator === undefined && limit === 0 ? [] : _split.call(this, separator, limit);
           };
         } // 21.1.3.17 String.prototype.split(separator, limit)
@@ -5636,7 +5678,9 @@
 
       exports.default = Transition;
       /***/
-    }])
+    }
+    /******/
+    ])
   );
 });
 
@@ -5864,20 +5908,22 @@ exports.config = config_1.config;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -5952,20 +5998,22 @@ exports.AsyncSubject = AsyncSubject;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -5994,7 +6042,7 @@ var BehaviorSubject = function (_super) {
   }
 
   Object.defineProperty(BehaviorSubject.prototype, "value", {
-    get: function () {
+    get: function get() {
       return this.getValue();
     },
     enumerable: true,
@@ -6034,20 +6082,22 @@ exports.BehaviorSubject = BehaviorSubject;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -6367,35 +6417,37 @@ var hostReportError_1 = require("./util/hostReportError");
 
 exports.empty = {
   closed: true,
-  next: function (value) {},
-  error: function (err) {
+  next: function next(value) {},
+  error: function error(err) {
     if (config_1.config.useDeprecatedSynchronousErrorHandling) {
       throw err;
     } else {
       hostReportError_1.hostReportError(err);
     }
   },
-  complete: function () {}
+  complete: function complete() {}
 };
 
 },{"./config":16,"./util/hostReportError":175}],9:[function(require,module,exports){
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -6439,20 +6491,22 @@ exports.OuterSubscriber = OuterSubscriber;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -6653,20 +6707,22 @@ exports.Scheduler = Scheduler;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -6881,20 +6937,22 @@ exports.AnonymousSubject = AnonymousSubject;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -6951,21 +7009,25 @@ exports.SubjectSubscription = SubjectSubscription;
 },{"./Subscription":15}],14:[function(require,module,exports){
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -7013,7 +7075,7 @@ var Subscriber = function (_super) {
           break;
         }
 
-        if (typeof destinationOrNext === 'object') {
+        if (_typeof(destinationOrNext) === 'object') {
           if (destinationOrNext instanceof Subscriber) {
             _this.syncErrorThrowable = destinationOrNext.syncErrorThrowable;
             _this.destination = destinationOrNext;
@@ -7201,7 +7263,7 @@ var SafeSubscriber = function (_super) {
       var _parentSubscriber = this._parentSubscriber;
 
       if (this._complete) {
-        var wrappedComplete = function () {
+        var wrappedComplete = function wrappedComplete() {
           return _this._complete.call(_this._context);
         };
 
@@ -7270,6 +7332,8 @@ exports.SafeSubscriber = SafeSubscriber;
 
 },{"../internal/symbol/rxSubscriber":167,"./Observer":8,"./Subscription":15,"./config":16,"./util/hostReportError":175,"./util/isFunction":180}],15:[function(require,module,exports){
 "use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -7363,7 +7427,7 @@ var Subscription = function () {
   Subscription.prototype.add = function (teardown) {
     var subscription = teardown;
 
-    switch (typeof teardown) {
+    switch (_typeof(teardown)) {
       case 'function':
         subscription = new Subscription(teardown);
 
@@ -7485,20 +7549,22 @@ exports.config = {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -7724,20 +7790,22 @@ var RefCountSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -7877,7 +7945,7 @@ function bindCallback(callbackFunc, resultSelector, scheduler) {
         if (!subject) {
           subject = new AsyncSubject_1.AsyncSubject();
 
-          var handler = function () {
+          var handler = function handler() {
             var innerArgs = [];
 
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -7929,7 +7997,7 @@ function dispatch(state) {
   if (!subject) {
     subject = params.subject = new AsyncSubject_1.AsyncSubject();
 
-    var handler = function () {
+    var handler = function handler() {
       var innerArgs = [];
 
       for (var _i = 0; _i < arguments.length; _i++) {
@@ -8027,7 +8095,7 @@ function bindNodeCallback(callbackFunc, resultSelector, scheduler) {
         if (!subject) {
           subject = params.subject = new AsyncSubject_1.AsyncSubject();
 
-          var handler = function () {
+          var handler = function handler() {
             var innerArgs = [];
 
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -8084,7 +8152,7 @@ function dispatch(state) {
   if (!subject) {
     subject = params.subject = new AsyncSubject_1.AsyncSubject();
 
-    var handler = function () {
+    var handler = function handler() {
       var innerArgs = [];
 
       for (var _i = 0; _i < arguments.length; _i++) {
@@ -8138,20 +8206,22 @@ function dispatchError(arg) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -8379,20 +8449,22 @@ exports.emptyScheduled = emptyScheduled;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -8517,6 +8589,8 @@ var ForkJoinSubscriber = function (_super) {
 },{"../Observable":7,"../OuterSubscriber":9,"../operators/map":87,"../util/isArray":177,"../util/subscribeToResult":196,"./empty":24}],26:[function(require,module,exports){
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -8562,7 +8636,7 @@ function from(input, scheduler) {
     }
   }
 
-  throw new TypeError((input !== null && typeof input || input) + ' is not observable');
+  throw new TypeError((input !== null && _typeof(input) || input) + ' is not observable');
 }
 
 exports.from = from;
@@ -8657,21 +8731,21 @@ function setupSubscription(sourceObj, eventName, handler, subscriber, options) {
     var source_1 = sourceObj;
     sourceObj.addEventListener(eventName, handler, options);
 
-    unsubscribe = function () {
+    unsubscribe = function unsubscribe() {
       return source_1.removeEventListener(eventName, handler, options);
     };
   } else if (isJQueryStyleEventEmitter(sourceObj)) {
     var source_2 = sourceObj;
     sourceObj.on(eventName, handler);
 
-    unsubscribe = function () {
+    unsubscribe = function unsubscribe() {
       return source_2.off(eventName, handler);
     };
   } else if (isNodeStyleEventEmitter(sourceObj)) {
     var source_3 = sourceObj;
     sourceObj.addListener(eventName, handler);
 
-    unsubscribe = function () {
+    unsubscribe = function unsubscribe() {
       return source_3.removeListener(eventName, handler);
     };
   } else if (sourceObj && sourceObj.length) {
@@ -8720,7 +8794,7 @@ function fromEventPattern(addHandler, removeHandler, resultSelector) {
   }
 
   return new Observable_1.Observable(function (subscriber) {
-    var handler = function () {
+    var handler = function handler() {
       var e = [];
 
       for (var _i = 0; _i < arguments.length; _i++) {
@@ -8840,17 +8914,17 @@ function fromObservable(input, scheduler) {
       sub.add(scheduler.schedule(function () {
         var observable = input[observable_1.observable]();
         sub.add(observable.subscribe({
-          next: function (value) {
+          next: function next(value) {
             sub.add(scheduler.schedule(function () {
               return subscriber.next(value);
             }));
           },
-          error: function (err) {
+          error: function error(err) {
             sub.add(scheduler.schedule(function () {
               return subscriber.error(err);
             }));
           },
-          complete: function () {
+          complete: function complete() {
             sub.add(scheduler.schedule(function () {
               return subscriber.complete();
             }));
@@ -9280,12 +9354,12 @@ function onErrorResumeNext() {
   }
 
   return new Observable_1.Observable(function (subscriber) {
-    var subNext = function () {
+    var subNext = function subNext() {
       return subscriber.add(onErrorResumeNext.apply(void 0, remainder).subscribe(subscriber));
     };
 
     return from_1.from(first).subscribe({
-      next: function (value) {
+      next: function next(value) {
         subscriber.next(value);
       },
       error: subNext,
@@ -9370,20 +9444,22 @@ exports.dispatch = dispatch;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -9737,20 +9813,22 @@ exports.using = using;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10056,20 +10134,22 @@ var ZipBufferIterator = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10201,20 +10281,22 @@ exports.auditTime = auditTime;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10282,20 +10364,22 @@ var BufferSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10436,20 +10520,22 @@ var BufferSkipCountSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10685,20 +10771,22 @@ function dispatchBufferClose(arg) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10855,20 +10943,22 @@ var BufferToggleSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -10992,20 +11082,22 @@ var BufferWhenSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11211,20 +11303,22 @@ exports.concatMapTo = concatMapTo;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11309,20 +11403,22 @@ var CountSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11439,20 +11535,22 @@ var DebounceSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11553,20 +11651,22 @@ function dispatchNext(subscriber) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11637,20 +11737,22 @@ var DefaultIfEmptySubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11788,20 +11890,22 @@ var DelayMessage = function () {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -11991,20 +12095,22 @@ var SubscriptionDelaySubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12056,20 +12162,22 @@ var DeMaterializeSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12172,20 +12280,22 @@ exports.DistinctSubscriber = DistinctSubscriber;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12376,20 +12486,22 @@ exports.endWith = endWith;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12472,20 +12584,22 @@ var EverySubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12563,20 +12677,22 @@ var SwitchFirstSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12707,20 +12823,22 @@ var ExhaustMapSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12881,20 +12999,22 @@ exports.ExpandSubscriber = ExpandSubscriber;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -12965,20 +13085,22 @@ var FilterSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13034,20 +13156,22 @@ var FinallySubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13193,20 +13317,22 @@ exports.first = first;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13463,20 +13589,22 @@ var InnerRefCountSubscription = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13526,20 +13654,22 @@ var IgnoreElementsSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13633,20 +13763,22 @@ exports.last = last;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13721,20 +13853,22 @@ var MapSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13791,20 +13925,22 @@ var MapToSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -13934,20 +14070,22 @@ exports.mergeAll = mergeAll;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -14130,20 +14268,22 @@ exports.mergeMapTo = mergeMapTo;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -14356,20 +14496,22 @@ exports.MulticastOperator = MulticastOperator;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -14479,20 +14621,22 @@ exports.ObserveOnMessage = ObserveOnMessage;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -14614,20 +14758,22 @@ var OnErrorResumeNextSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -14733,7 +14879,7 @@ function pluck() {
 exports.pluck = pluck;
 
 function plucker(props, length) {
-  var mapper = function (x) {
+  var mapper = function mapper(x) {
     var currentProp = x;
 
     for (var i = 0; i < length; i++) {
@@ -14900,20 +15046,22 @@ exports.reduce = reduce;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15007,20 +15155,22 @@ var RefCountSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15103,20 +15253,22 @@ var RepeatSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15247,20 +15399,22 @@ var RepeatWhenSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15335,20 +15489,22 @@ var RetrySubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15466,20 +15622,22 @@ var RetryWhenSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15557,20 +15715,22 @@ var SampleSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15657,20 +15817,22 @@ function dispatchNotification(state) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15732,10 +15894,10 @@ var ScanSubscriber = function (_super) {
   }
 
   Object.defineProperty(ScanSubscriber.prototype, "seed", {
-    get: function () {
+    get: function get() {
       return this._seed;
     },
-    set: function (value) {
+    set: function set(value) {
       this.hasSeed = true;
       this._seed = value;
     },
@@ -15773,20 +15935,22 @@ var ScanSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -15971,6 +16135,8 @@ exports.share = share;
 },{"../Subject":12,"./multicast":97,"./refCount":109}],119:[function(require,module,exports){
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -15980,7 +16146,7 @@ var ReplaySubject_1 = require("../ReplaySubject");
 function shareReplay(configOrBufferSize, windowTime, scheduler) {
   var config;
 
-  if (configOrBufferSize && typeof configOrBufferSize === 'object') {
+  if (configOrBufferSize && _typeof(configOrBufferSize) === 'object') {
     config = configOrBufferSize;
   } else {
     config = {
@@ -16017,14 +16183,14 @@ function shareReplayOperator(_a) {
       hasError = false;
       subject = new ReplaySubject_1.ReplaySubject(bufferSize, windowTime, scheduler);
       subscription = source.subscribe({
-        next: function (value) {
+        next: function next(value) {
           subject.next(value);
         },
-        error: function (err) {
+        error: function error(err) {
           hasError = true;
           subject.error(err);
         },
-        complete: function () {
+        complete: function complete() {
           isComplete = true;
           subject.complete();
         }
@@ -16049,20 +16215,22 @@ function shareReplayOperator(_a) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16161,20 +16329,22 @@ var SingleSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16234,20 +16404,22 @@ var SkipSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16327,20 +16499,22 @@ var SkipLastSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16419,20 +16593,22 @@ var SkipUntilSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16606,20 +16782,22 @@ exports.switchAll = switchAll;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16765,20 +16943,22 @@ exports.switchMapTo = switchMapTo;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16858,20 +17038,22 @@ var TakeSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -16968,20 +17150,22 @@ var TakeLastSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17051,20 +17235,22 @@ var TakeUntilSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17152,20 +17338,22 @@ var TakeWhileSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17272,20 +17460,22 @@ var TapSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17423,20 +17613,22 @@ var ThrottleSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17570,10 +17762,10 @@ exports.throwIfEmpty = function (errorFactory) {
 
   return tap_1.tap({
     hasValue: false,
-    next: function () {
+    next: function next() {
       this.hasValue = true;
     },
-    complete: function () {
+    complete: function complete() {
       if (!this.hasValue) {
         throw errorFactory();
       }
@@ -17670,20 +17862,22 @@ exports.timeout = timeout;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17848,20 +18042,22 @@ exports.toArray = toArray;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -17968,20 +18164,22 @@ var WindowSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -18099,20 +18297,22 @@ var WindowCountSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -18196,7 +18396,7 @@ var CountedSubject = function (_super) {
   };
 
   Object.defineProperty(CountedSubject.prototype, "numberOfNextedValues", {
-    get: function () {
+    get: function get() {
       return this._numberOfNextedValues;
     },
     enumerable: true,
@@ -18357,20 +18557,22 @@ function dispatchWindowClose(state) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -18556,20 +18758,22 @@ var WindowToggleSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -18696,20 +18900,22 @@ var WindowSubscriber = function (_super) {
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -18873,20 +19079,22 @@ exports.zipAll = zipAll;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -18926,20 +19134,22 @@ exports.Action = Action;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19007,20 +19217,22 @@ exports.AnimationFrameAction = AnimationFrameAction;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19078,20 +19290,22 @@ exports.AnimationFrameScheduler = AnimationFrameScheduler;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19159,20 +19373,22 @@ exports.AsapAction = AsapAction;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19230,20 +19446,22 @@ exports.AsapScheduler = AsapScheduler;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19378,20 +19596,22 @@ exports.AsyncAction = AsyncAction;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19478,20 +19698,22 @@ exports.AsyncScheduler = AsyncScheduler;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19558,20 +19780,22 @@ exports.QueueAction = QueueAction;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19603,20 +19827,22 @@ exports.QueueScheduler = QueueScheduler;
 "use strict";
 
 var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     } instanceof Array && function (d, b) {
       d.__proto__ = b;
     } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    return extendStatics(d, b);
+    return _extendStatics(d, b);
   };
 
   return function (d, b) {
-    extendStatics(d, b);
+    _extendStatics(d, b);
 
     function __() {
       this.constructor = d;
@@ -19907,7 +20133,7 @@ function runIfPresent(handle) {
 }
 
 exports.Immediate = {
-  setImmediate: function (cb) {
+  setImmediate: function setImmediate(cb) {
     var handle = nextHandle++;
     tasksByHandle[handle] = cb;
     Promise.resolve().then(function () {
@@ -19915,7 +20141,7 @@ exports.Immediate = {
     });
     return handle;
   },
-  clearImmediate: function (handle) {
+  clearImmediate: function clearImmediate(handle) {
     delete tasksByHandle[handle];
   }
 };
@@ -20128,12 +20354,14 @@ exports.isNumeric = isNumeric;
 },{"./isArray":177}],184:[function(require,module,exports){
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 function isObject(x) {
-  return x !== null && typeof x === 'object';
+  return x !== null && _typeof(x) === 'object';
 }
 
 exports.isObject = isObject;
@@ -20897,14 +21125,31 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-//import { of } from "rxjs";
-const ITEMS_PER_PAGE = 20;
-exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
-const GTM_CAT = 'ricerca-avanzata';
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-class AdvancedSearchCtrl {
-  constructor($scope, $timeout, LocationService, ApiService) {
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+//import { of } from "rxjs";
+var ITEMS_PER_PAGE = 20;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
+var GTM_CAT = 'ricerca-avanzata';
+
+var AdvancedSearchCtrl =
+/*#__PURE__*/
+function () {
+  function AdvancedSearchCtrl($scope, $timeout, LocationService, ApiService) {
+    _classCallCheck(this, AdvancedSearchCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -20927,265 +21172,328 @@ class AdvancedSearchCtrl {
     //);
   }
 
-  deserializeFilters() {
-    const locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('AdvancedSearchCtrl.deserializeFilters', filters);
+  _createClass(AdvancedSearchCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters() {
+      var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('AdvancedSearchCtrl.deserializeFilters', filters);
 
-    this.filters.forEach(filter => {
-      //if (filter.type === 'minimal') {
-      //	filter.doFilter = (item, value) => {
-      //		let has = false;
-      //		(item.minimals || [item]).forEach(x => {
-      //			has = has || x.features.indexOf(value) !== -1;
-      //		});
-      //		return has;
-      //	};
-      //} else {
-      filter.doFilter = (item, value) => {
-        return item.features.indexOf(value) !== -1;
-      }; //}
-      //switch (filter.key) {
-      //	case 'finish':
-      //		filter.doFilter = (item, value) => {
-      //			let has = false;
-      //			const size = this.filters.find(x => x.key == 'size' && x.value !== null);
-      //			item.minimals.forEach(x => {
-      //				has = has || (x.finish.id === value && (!size || x.size.id === size.value));
-      //			});
-      //			return has;
-      //		};
-      //		break;
-      //	case 'size':
-      //		filter.doFilter = (item, value) => {
-      //			let has = false;
-      //			const finish = this.filters.find(x => x.key == 'finish' && x.value !== null);
-      //			item.minimals.forEach(x => {
-      //				has = has || (x.size.id === value && (!finish || x.finish.id === finish.value));
-      //			});
-      //			return has;
-      //		};
-      //		break;
-      //	default:
-      //		filter.doFilter = (item, value) => {
-      //			return item.features.indexOf(value) !== -1;
-      //		};
-      //}
+      this.filters.forEach(function (filter) {
+        //if (filter.type === 'minimal') {
+        //	filter.doFilter = (item, value) => {
+        //		let has = false;
+        //		(item.minimals || [item]).forEach(x => {
+        //			has = has || x.features.indexOf(value) !== -1;
+        //		});
+        //		return has;
+        //	};
+        //} else {
+        filter.doFilter = function (item, value) {
+          return item.features.indexOf(value) !== -1;
+        }; //}
+        //switch (filter.key) {
+        //	case 'finish':
+        //		filter.doFilter = (item, value) => {
+        //			let has = false;
+        //			const size = this.filters.find(x => x.key == 'size' && x.value !== null);
+        //			item.minimals.forEach(x => {
+        //				has = has || (x.finish.id === value && (!size || x.size.id === size.value));
+        //			});
+        //			return has;
+        //		};
+        //		break;
+        //	case 'size':
+        //		filter.doFilter = (item, value) => {
+        //			let has = false;
+        //			const finish = this.filters.find(x => x.key == 'finish' && x.value !== null);
+        //			item.minimals.forEach(x => {
+        //				has = has || (x.size.id === value && (!finish || x.finish.id === finish.value));
+        //			});
+        //			return has;
+        //		};
+        //		break;
+        //	default:
+        //		filter.doFilter = (item, value) => {
+        //			return item.features.indexOf(value) !== -1;
+        //		};
+        //}
 
-      /*
-      filter.options.unshift({
-      	label: filter.placeholder,
-      	value: null,
-      });
-      */
-
-
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[filter.key] || null)));
-
-      if (selectedOption) {
-        filter.value = selectedOption.value;
-        filter.placeholder = selectedOption.label;
-      } else {
-        filter.value = null;
-        filter.placeholder = null;
-      } // console.log(x, filters[x], filter.value);
-
-    });
-    return this.filters;
-  }
-
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    this.filters.forEach(filter => {
-      if (filter.value !== null) {
-        filters[filter.key] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('AdvancedSearchCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    // console.log('AdvancedSearchCtrl.applyFilters', this.filters);
-    if (serialize !== false) this.serializeFilters();
-    const selectedFilters = this.filters.filter(x => x.value !== null); //const finishFilter = this.filters.find(x => x.key == 'finish' && x.value !== null);
-    //const sizeFilter = this.filters.find(x => x.key == 'size' && x.value !== null);
-
-    let filteredItems;
-
-    if (selectedFilters.length) {
-      filteredItems = this.items.map(x => {
-        // duplico i prodotti e minimal
-        const item = Object.assign({}, x);
-        item.minimals = [...x.minimals];
-        return item;
-      }).filter(item => {
-        // filtro tutti i minimal con tutti i filtri contemporeamente
-        selectedFilters.forEach(filter => {
-          item.minimals = item.minimals.filter(minimal => {
-            return filter.doFilter(minimal, filter.value);
-          });
+        /*
+        filter.options.unshift({
+        	label: filter.placeholder,
+        	value: null,
         });
-        return item.minimals.length > 0;
-      }); //item.minimals = item.minimals.filter(x => {
-      //	let has = true;
-      //	has = has && (!finishFilter || x.finish.id === finishFilter.value) && (!sizeFilter || x.size.id === sizeFilter.value);
-      //	return has;
-      //});
-    } else {
-      filteredItems = this.items.slice();
+        */
+
+
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[filter.key] || null));
+        });
+
+        if (selectedOption) {
+          filter.value = selectedOption.value;
+          filter.placeholder = selectedOption.label;
+        } else {
+          filter.value = null;
+          filter.placeholder = null;
+        } // console.log(x, filters[x], filter.value);
+
+      });
+      return this.filters;
     }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var filters = {};
+      var any = false;
+      this.filters.forEach(function (filter) {
+        if (filter.value !== null) {
+          filters[filter.key] = filter.value;
+          any = true;
+        }
+      });
 
-    this.selectedFilters = selectedFilters;
-    this.filteredItems = [];
-    this.visibleItems = [];
-    this.maxItems = ITEMS_PER_PAGE;
-    this.$timeout(() => {
-      this.filteredItems = filteredItems;
-      this.visibleItems = filteredItems.slice(0, this.maxItems);
-      this.updateFilterStates(filteredItems);
-    }, 50);
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('AdvancedSearchCtrl.serializeFilters', filters);
 
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
 
-  updateFilterStates(brands) {
-    this.filters.forEach(filter => {
-      filter.options.forEach(option => {
-        let has = false;
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this = this;
 
-        if (option.value) {
-          for (const item of this.filteredItems) {
-            for (const minimal of item.minimals) {
-              if (filter.doFilter(minimal, option.value)) {
-                has = true;
-                break;
+      // console.log('AdvancedSearchCtrl.applyFilters', this.filters);
+      if (serialize !== false) this.serializeFilters();
+      var selectedFilters = this.filters.filter(function (x) {
+        return x.value !== null;
+      }); //const finishFilter = this.filters.find(x => x.key == 'finish' && x.value !== null);
+      //const sizeFilter = this.filters.find(x => x.key == 'size' && x.value !== null);
+
+      var filteredItems;
+
+      if (selectedFilters.length) {
+        filteredItems = this.items.map(function (x) {
+          // duplico i prodotti e minimal
+          var item = Object.assign({}, x);
+          item.minimals = _toConsumableArray(x.minimals);
+          return item;
+        }).filter(function (item) {
+          // filtro tutti i minimal con tutti i filtri contemporeamente
+          selectedFilters.forEach(function (filter) {
+            item.minimals = item.minimals.filter(function (minimal) {
+              return filter.doFilter(minimal, filter.value);
+            });
+          });
+          return item.minimals.length > 0;
+        }); //item.minimals = item.minimals.filter(x => {
+        //	let has = true;
+        //	has = has && (!finishFilter || x.finish.id === finishFilter.value) && (!sizeFilter || x.size.id === sizeFilter.value);
+        //	return has;
+        //});
+      } else {
+        filteredItems = this.items.slice();
+      }
+
+      this.selectedFilters = selectedFilters;
+      this.filteredItems = [];
+      this.visibleItems = [];
+      this.maxItems = ITEMS_PER_PAGE;
+      this.$timeout(function () {
+        _this.filteredItems = filteredItems;
+        _this.visibleItems = filteredItems.slice(0, _this.maxItems);
+
+        _this.updateFilterStates(filteredItems);
+      }, 50);
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates(brands) {
+      var _this2 = this;
+
+      this.filters.forEach(function (filter) {
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = _this2.filteredItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var item = _step.value;
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+
+                try {
+                  for (var _iterator2 = item.minimals[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var minimal = _step2.value;
+
+                    if (filter.doFilter(minimal, option.value)) {
+                      has = true;
+                      break;
+                    }
+                  }
+                } catch (err) {
+                  _didIteratorError2 = true;
+                  _iteratorError2 = err;
+                } finally {
+                  try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                      _iterator2.return();
+                    }
+                  } finally {
+                    if (_didIteratorError2) {
+                      throw _iteratorError2;
+                    }
+                  }
+                }
+
+                if (has) break;
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
               }
             }
-
-            if (has) break;
+          } else {
+            has = true;
           }
-        } else {
-          has = true;
-        }
 
-        option.disabled = !has;
-      }); // console.log(filter.options);
-    });
-  }
-
-  setFilter(item, filter) {
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
-
-  removeFilter(filter) {
-    filter.value = null;
-    filter.placeholder = null;
-    this.applyFilters();
-  }
-
-  removeAll() {
-    this.filters.forEach(filter => {
+          option.disabled = !has;
+        }); // console.log(filter.options);
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
       filter.value = null;
       filter.placeholder = null;
-    });
-    this.applyFilters();
-  }
-
-  onScroll(event) {
-    if (event.rect.bottom < event.windowRect.bottom) {
-      // console.log('more!');
-      if (!this.busy && this.maxItems < this.filteredItems.length) {
-        this.$timeout(() => {
-          this.busy = true;
-          this.$timeout(() => {
-            this.maxItems += ITEMS_PER_PAGE;
-            this.visibleItems = this.filteredItems.slice(0, this.maxItems);
-            this.busy = false; // console.log(this.visibleItems.length);
-          }, 1000);
-        }, 0);
-      }
+      this.applyFilters();
     }
-  } //fakeSearch$(count = 2000) {
-  //	const items = [];
-  //	const collections = ['Marvel Dream', 'Marvel Edge', 'Boost'];
-  //	const tiles = ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Agata Azul', 'Gold Onyx', 'Red Luxury', 'Gris Clair'];
-  //	const finishes = this.filters.find(x => x.key === 'finish').options;
-  //	const sizes = this.filters.find(x => x.key === 'size').options;
-  //	let UID = 1;
-  //	while (items.length < count) {
-  //		const collectionIndex = Math.floor(Math.random() * collections.length);
-  //		const collectionName = collections[collectionIndex];
-  //		const tileIndex = Math.floor(Math.random() * tiles.length);
-  //		const tileName = tiles[tileIndex];
-  //		const tileImage = `img/advanced-search/tile-0${tileIndex+1}.jpg`;
-  //		const minimals = [];
-  //		const count = 1 + Math.floor(Math.random() * 15);
-  //		while (minimals.length < count) {
-  //			const finish = finishes[Math.floor(Math.random() * finishes.length)];
-  //			const size = sizes[Math.floor(Math.random() * sizes.length)];
-  //			minimals.push({
-  //				id: minimals.length + 1,
-  //				url: '#',
-  //				finish: {
-  //					id: finish.value,
-  //					name: finish.label
-  //				},
-  //				size: {
-  //					id: size.value,
-  //					name: size.label
-  //				},
-  //			});
-  //		}
-  //		const features = [];
-  //		this.filters.forEach(filter => {
-  //			if (filter.key !== 'finish' && filter.key !== 'size') {
-  //				features.push(filter.options[Math.floor(Math.random() * filter.options.length)].value);
-  //			}
-  //		});
-  //		items.push({
-  //			id: UID++,
-  //			collection: {
-  //				id: collectionIndex + 1,
-  //				name: collectionName,
-  //			},
-  //			tile: {
-  //				id: tileIndex + 1,
-  //				name: tileName,
-  //				image: tileImage
-  //			},
-  //			minimals,
-  //			features,
-  //		});
-  //	}
-  //	// console.log(JSON.stringify(items));
-  //	return of({ data: items });
-  //}
+  }, {
+    key: "removeAll",
+    value: function removeAll() {
+      this.filters.forEach(function (filter) {
+        filter.value = null;
+        filter.placeholder = null;
+      });
+      this.applyFilters();
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this3 = this;
 
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.filteredItems.length) {
+          this.$timeout(function () {
+            _this3.busy = true;
 
-}
+            _this3.$timeout(function () {
+              _this3.maxItems += ITEMS_PER_PAGE;
+              _this3.visibleItems = _this3.filteredItems.slice(0, _this3.maxItems);
+              _this3.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
+      }
+    } //fakeSearch$(count = 2000) {
+    //	const items = [];
+    //	const collections = ['Marvel Dream', 'Marvel Edge', 'Boost'];
+    //	const tiles = ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Agata Azul', 'Gold Onyx', 'Red Luxury', 'Gris Clair'];
+    //	const finishes = this.filters.find(x => x.key === 'finish').options;
+    //	const sizes = this.filters.find(x => x.key === 'size').options;
+    //	let UID = 1;
+    //	while (items.length < count) {
+    //		const collectionIndex = Math.floor(Math.random() * collections.length);
+    //		const collectionName = collections[collectionIndex];
+    //		const tileIndex = Math.floor(Math.random() * tiles.length);
+    //		const tileName = tiles[tileIndex];
+    //		const tileImage = `img/advanced-search/tile-0${tileIndex+1}.jpg`;
+    //		const minimals = [];
+    //		const count = 1 + Math.floor(Math.random() * 15);
+    //		while (minimals.length < count) {
+    //			const finish = finishes[Math.floor(Math.random() * finishes.length)];
+    //			const size = sizes[Math.floor(Math.random() * sizes.length)];
+    //			minimals.push({
+    //				id: minimals.length + 1,
+    //				url: '#',
+    //				finish: {
+    //					id: finish.value,
+    //					name: finish.label
+    //				},
+    //				size: {
+    //					id: size.value,
+    //					name: size.label
+    //				},
+    //			});
+    //		}
+    //		const features = [];
+    //		this.filters.forEach(filter => {
+    //			if (filter.key !== 'finish' && filter.key !== 'size') {
+    //				features.push(filter.options[Math.floor(Math.random() * filter.options.length)].value);
+    //			}
+    //		});
+    //		items.push({
+    //			id: UID++,
+    //			collection: {
+    //				id: collectionIndex + 1,
+    //				name: collectionName,
+    //			},
+    //			tile: {
+    //				id: tileIndex + 1,
+    //				name: tileName,
+    //				image: tileImage
+    //			},
+    //			minimals,
+    //			features,
+    //		});
+    //	}
+    //	// console.log(JSON.stringify(items));
+    //	return of({ data: items });
+    //}
+
+  }]);
+
+  return AdvancedSearchCtrl;
+}();
 
 AdvancedSearchCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = AdvancedSearchCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239}],200:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],200:[function(require,module,exports){
 "use strict";
 
 var _appModule = _interopRequireDefault(require("./app.module.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
 // console.log('bootstrap', document);
 angular.bootstrap(document, [_appModule.default]);
 
@@ -21199,7 +21507,7 @@ exports.default = void 0;
 
 var _advancedSearch = _interopRequireDefault(require("./advanced-search/advanced-search.controller"));
 
-var _collections = _interopRequireDefault(require("./collections/collections-02.controller"));
+var _collections = _interopRequireDefault(require("./collections/collections-01.controller"));
 
 var _collections2 = _interopRequireDefault(require("./collections/collections.controller"));
 
@@ -21231,6 +21539,8 @@ var _muuri = require("./directives/muuri.directive");
 
 var _objectFit = _interopRequireDefault(require("./directives/object-fit.directive"));
 
+var _overOn = _interopRequireDefault(require("./directives/over-on.directive"));
+
 var _parallax = _interopRequireDefault(require("./directives/parallax.directive"));
 
 var _scroll = _interopRequireDefault(require("./directives/scroll.directive"));
@@ -21250,6 +21560,8 @@ var _wishlist = _interopRequireDefault(require("./directives/wishlist.directive"
 var _world = _interopRequireDefault(require("./directives/world.directive"));
 
 var _zoomable = _interopRequireDefault(require("./directives/zoomable.directive"));
+
+var _effects = _interopRequireDefault(require("./effects/effects.controller"));
 
 var _faq = _interopRequireDefault(require("./faq/faq.controller"));
 
@@ -21313,19 +21625,18 @@ var _wishlist3 = _interopRequireDefault(require("./wishlist/wishlist.controller"
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
 // import TransitionDirective from './directives/transition.directive';
-const MODULE_NAME = 'app';
-const app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
+var MODULE_NAME = 'app';
+var app = angular.module(MODULE_NAME, ['ngSanitize', 'jsonFormatter']);
 app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('*');
 }]).config(['$compileProvider', function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
 }]);
 app.factory('ApiService', _api.default.factory).factory('DomService', _dom.default.factory).factory('LocationService', _location.default.factory).factory('PromiseService', _promise.default.factory).factory('StateService', _state.default.factory).factory('CookieService', _storage.CookieService.factory).factory('LocalStorageService', _storage.LocalStorageService.factory).factory('SessionStorageService', _storage.SessionStorageService.factory).factory('WishlistService', _wishlist2.default.factory);
-app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('cookies', _cookies.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('gtmCollection', _gtmCollection.default.factory).directive('gtmDealerLocator', _gtmDealerlocator.default.factory).directive('gtmForm', _gtmForm.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('thron', _thron.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('objectFit', _objectFit.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperTimeline', _swiper.SwiperTimelineDirective.factory) // .directive('transition', TransitionDirective.factory)
+app.directive('appear', _appear.default.factory).directive('control', _control.default.factory).directive('controlMessages', _controlMessages.default.factory).directive('cookies', _cookies.default.factory).directive('glslCanvas', _glslCanvas.default.factory).directive('gtmCollection', _gtmCollection.default.factory).directive('gtmDealerLocator', _gtmDealerlocator.default.factory).directive('gtmForm', _gtmForm.default.factory).directive('hasDropdown', _hasDropdown.default.factory).directive('highway', _highway.default.factory).directive('hilight', _hilight.default.factory).directive('href', _href.default.factory).directive('lastItem', _lastItem.LastItemDirective.factory).directive('lazy', _lazy.default.factory).directive('lazyScript', _lazyScript.default.factory).directive('thron', _thron.default.factory).directive('media', _media.default.factory).directive('moodboardDropdown', _moodboardDropdown.default.factory).directive('moodboardSearch', _moodboardSearch.default.factory).directive('muuri', _muuri.MuuriDirective.factory).directive('parallax', _parallax.default.factory).directive('objectFit', _objectFit.default.factory).directive('overOn', _overOn.default.factory).directive('scroll', _scroll.default.factory).directive('selectWithAutocomplete', _autocomplete.default.factory).directive('sticky', _sticky.default.factory).directive('swiperGallery', _swiper.SwiperGalleryDirective.factory).directive('swiperHero', _swiper.SwiperHeroDirective.factory).directive('swiperFocus', _swiper.SwiperFocusDirective.factory).directive('swiperProjects', _swiper.SwiperProjectsDirective.factory).directive('swiperReferences', _swiper.SwiperReferencesDirective.factory).directive('swiperTile', _swiper.SwiperTileDirective.factory).directive('swiperTimeline', _swiper.SwiperTimelineDirective.factory) // .directive('transition', TransitionDirective.factory)
 .directive('validate', _validate.default.factory).directive('video', _video.default.factory).directive('visibility', _visibility.default.factory).directive('wishlist', _wishlist.default.factory).directive('world', _world.default.factory).directive('zoomable', _zoomable.default.factory);
-app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections2.default).controller('Collections02Ctrl', _collections.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('GalleriesCtrl', _galleries.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default).controller('StoresCtrl', _stores.default).controller('WishlistCtrl', _wishlist3.default);
+app.controller('RootCtrl', _root.default).controller('AdvancedSearchCtrl', _advancedSearch.default).controller('CollectionsCtrl', _collections2.default).controller('Collections01Ctrl', _collections.default).controller('EffectsCtrl', _effects.default).controller('ContactsCtrl', _contacts.default).controller('FaqCtrl', _faq.default).controller('GalleriesCtrl', _galleries.default).controller('MagazineCtrl', _magazine.default).controller('MoodboardCtrl', _moodboard.default).controller('MoodboardSectionCtrl', _moodboardSection.default).controller('NewsCtrl', _news.default).controller('ReferencesCtrl', _references.default).controller('StoreLocatorCtrl', _storeLocator.default).controller('StoresCtrl', _stores.default).controller('WishlistCtrl', _wishlist3.default);
 app.filter('imageWithFeatures', [_imageWithFeatures.ImageWithFeatures]).filter('notIn', ['$filter', _notIn.NotInFilter]).filter('trusted', ['$sce', _trusted.TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
 
 app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $rootScope) {
@@ -21335,7 +21646,7 @@ app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $ro
 var _default = MODULE_NAME;
 exports.default = _default;
 
-},{"./advanced-search/advanced-search.controller":199,"./collections/collections-02.controller":202,"./collections/collections.controller":203,"./contacts/contacts.controller":204,"./directives/appear.directive":205,"./directives/autocomplete.directive":206,"./directives/cookies.directive":207,"./directives/glsl-canvas.directive":208,"./directives/has-dropdown.directive":209,"./directives/hilight.directive":210,"./directives/href.directive":211,"./directives/last-item.directive":212,"./directives/lazy-script.directive":213,"./directives/lazy.directive":214,"./directives/media.directive":215,"./directives/muuri.directive":216,"./directives/object-fit.directive":217,"./directives/parallax.directive":218,"./directives/scroll.directive":219,"./directives/sticky.directive":220,"./directives/swiper.directive":221,"./directives/thron.directive":222,"./directives/video.directive":223,"./directives/visibility.directive":224,"./directives/wishlist.directive":225,"./directives/world.directive":226,"./directives/zoomable.directive":227,"./faq/faq.controller":228,"./filters/image-with-features.filter":229,"./filters/notIn.filter":230,"./filters/trusted.filter":231,"./forms/control-messages.directive":232,"./forms/control.directive":233,"./forms/validate.directive":234,"./galleries/galleries.controller":235,"./gtm/gtm-collection.directive":236,"./gtm/gtm-dealerlocator.directive":237,"./gtm/gtm-form.directive":238,"./highway/highway.directive":241,"./magazine/magazine.controller":243,"./moodboard/moodboard-dropdown.directive":244,"./moodboard/moodboard-search.directive":245,"./moodboard/moodboard-section.controller":246,"./moodboard/moodboard.controller":247,"./news/news.controller":248,"./references/references.controller":249,"./root.controller":250,"./services/api.service":251,"./services/dom.service":252,"./services/wishlist.service":253,"./shared/location.service":254,"./shared/promise.service":255,"./shared/state.service":258,"./shared/storage.service":259,"./store-locator/store-locator.controller":260,"./store-locator/stores.controller":261,"./wishlist/wishlist.controller":262}],202:[function(require,module,exports){
+},{"./advanced-search/advanced-search.controller":199,"./collections/collections-01.controller":202,"./collections/collections.controller":203,"./contacts/contacts.controller":204,"./directives/appear.directive":205,"./directives/autocomplete.directive":206,"./directives/cookies.directive":207,"./directives/glsl-canvas.directive":208,"./directives/has-dropdown.directive":209,"./directives/hilight.directive":210,"./directives/href.directive":211,"./directives/last-item.directive":212,"./directives/lazy-script.directive":213,"./directives/lazy.directive":214,"./directives/media.directive":215,"./directives/muuri.directive":216,"./directives/object-fit.directive":217,"./directives/over-on.directive":218,"./directives/parallax.directive":219,"./directives/scroll.directive":220,"./directives/sticky.directive":221,"./directives/swiper.directive":222,"./directives/thron.directive":223,"./directives/video.directive":224,"./directives/visibility.directive":225,"./directives/wishlist.directive":226,"./directives/world.directive":227,"./directives/zoomable.directive":228,"./effects/effects.controller":229,"./faq/faq.controller":230,"./filters/image-with-features.filter":231,"./filters/notIn.filter":232,"./filters/trusted.filter":233,"./forms/control-messages.directive":234,"./forms/control.directive":235,"./forms/validate.directive":236,"./galleries/galleries.controller":237,"./gtm/gtm-collection.directive":238,"./gtm/gtm-dealerlocator.directive":239,"./gtm/gtm-form.directive":240,"./highway/highway.directive":243,"./magazine/magazine.controller":245,"./moodboard/moodboard-dropdown.directive":246,"./moodboard/moodboard-search.directive":247,"./moodboard/moodboard-section.controller":248,"./moodboard/moodboard.controller":249,"./news/news.controller":250,"./references/references.controller":251,"./root.controller":252,"./services/api.service":253,"./services/dom.service":254,"./services/wishlist.service":255,"./shared/location.service":256,"./shared/promise.service":257,"./shared/state.service":260,"./shared/storage.service":261,"./store-locator/store-locator.controller":262,"./store-locator/stores.controller":263,"./wishlist/wishlist.controller":264}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21347,11 +21658,343 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const GTM_CAT = 'collezioni';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class Collections02Ctrl {
-  constructor($scope, $timeout, LocationService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'collezioni';
+
+var Collections01Ctrl =
+/*#__PURE__*/
+function () {
+  function Collections01Ctrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, Collections01Ctrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.locationService = LocationService;
+    this.filters = window.filters || {};
+    this.brands = window.brands || [];
+    this.initialFilters = window.initialFilters || null;
+    this.deserializeFilters(this.initialFilters);
+    this.applyFilters(false); // this.filteredReferences = this.references.slice();
+    // this.updateFilterStates();
+    // console.log(this.filters);
+    // console.log(this.brands);
+  }
+
+  _createClass(Collections01Ctrl, [{
+    key: "test",
+    value: function test() {
+      this.test = true;
+      this.applyFilters(false);
+    }
+  }, {
+    key: "deserializeFilters",
+    value: function deserializeFilters(initialFilter) {
+      var _this = this;
+
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
+
+        switch (x) {
+          case 'collections':
+            filter.doFilter = function (item, value) {
+              return item.id === value;
+            };
+
+            break;
+
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
+
+        }
+
+        filter.options.unshift({
+          label: filter.placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
+      });
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
+
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
+
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('CollectionsCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      /*
+      const filters = Object.keys(this.filters).map((x) => {
+      	return Object.assign({ type: x }, this.filters[x]);
+      }).filter(x => x.value !== null);
+      */
+      if (serialize !== false) this.serializeFilters();
+
+      var _this$getFilteredBran = this.getFilteredBrands(),
+          filteredBrands = _this$getFilteredBran.filteredBrands,
+          resultCounts = _this$getFilteredBran.resultCounts,
+          totalCounts = _this$getFilteredBran.totalCounts; // console.log(filteredBrands, filters);
+
+
+      if (this.test) {
+        filteredBrands.forEach(function (brand) {
+          return brand.collections.forEach(function (collection) {
+            collection.size = 1 + Math.floor(Math.random() * 6);
+
+            if (collection.size < 4) {
+              collection.size = 1;
+            } else if (collection.size < 6) {
+              collection.size = 2;
+            } else {
+              collection.size = 3;
+            }
+          });
+        });
+      }
+      /*
+      const order = [3, 2, 2, 1, 1, 1];
+      let i = 0;
+      filteredBrands.forEach(brand => {
+      	brand.collections.sort((a, b) => {
+      		const size = order[i % order.length];
+      		console.log(size);
+      		if (a.size === size) {
+      			i++;
+      			return -1;
+      		}
+      		if (b.size === size) {
+      			i++;
+      			return 1;
+      		}
+      		return 0;
+      	});
+      	// console.log(brand.collections.map(x => x.size).join(','));
+      });
+      */
+
+
+      filteredBrands.forEach(function (brand) {
+        brand.collections = _this3.getSortedPattern(brand.collections);
+      });
+      this.filteredBrands = [];
+      this.$timeout(function () {
+        _this3.filteredBrands = filteredBrands;
+        _this3.resultCounts = resultCounts;
+        _this3.totalCounts = totalCounts;
+
+        _this3.updateFilterStates(); // delayer for image update
+
+      }, 50);
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "getSortedSize",
+    value: function getSortedSize(items) {
+      items.sort(function (a, b) {
+        return b.size - a.size;
+      }); // console.log(items.map(x => x.size).join(','));
+
+      return items;
+    }
+  }, {
+    key: "getSortedPattern",
+    value: function getSortedPattern(items) {
+      var order = [3, 2, 1, 2, 1, 1, 1, 2, 3, 1, 2, 1];
+      var sorted = [],
+          i = 0;
+
+      var _loop = function _loop() {
+        var size = order[i % order.length];
+        var item = items.find(function (x) {
+          return x.size === size;
+        });
+
+        if (item) {
+          items.splice(items.indexOf(item), 1);
+          sorted.push(item);
+        } else {
+          sorted.push(items.shift());
+        }
+
+        i++;
+      };
+
+      while (items.length) {
+        _loop();
+      }
+
+      console.log(sorted.map(function (x) {
+        return x.size;
+      }).join(','));
+      return sorted;
+    }
+  }, {
+    key: "getFilteredBrands",
+    value: function getFilteredBrands(skipFilter) {
+      var _this4 = this;
+
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this4.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredBrands = filters.length ? [] : this.brands;
+      var resultCounts = 0,
+          totalCounts = 0;
+
+      if (filters.length) {
+        this.brands.map(function (x) {
+          return Object.assign({}, x);
+        }).forEach(function (brand) {
+          var filteredCollections = [];
+          brand.collections.forEach(function (collection) {
+            var has = true;
+            filters.forEach(function (filter) {
+              if (filter !== skipFilter) {
+                has = has && filter.doFilter(collection, filter.value);
+              }
+            });
+
+            if (has) {
+              filteredCollections.push(collection);
+              resultCounts++;
+            }
+
+            totalCounts++;
+          }); // console.log(has, collection, filters);
+
+          if (filteredCollections.length) {
+            brand.collections = filteredCollections;
+            filteredBrands.push(brand);
+          }
+        });
+      }
+
+      return {
+        filteredBrands: filteredBrands,
+        resultCounts: resultCounts,
+        totalCounts: totalCounts
+      };
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates() {
+      var _this5 = this;
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this5.filters[x];
+
+        var _this5$getFilteredBra = _this5.getFilteredBrands(filter),
+            filteredBrands = _this5$getFilteredBra.filteredBrands,
+            resultCounts = _this5$getFilteredBra.resultCounts,
+            totalCounts = _this5$getFilteredBra.totalCounts;
+
+        var collections = [].concat.apply([], filteredBrands.map(function (x) {
+          return x.collections;
+        }));
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < collections.length && !has) {
+              var collection = collections[i];
+              has = filter.doFilter(collection, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        }); // console.log(filter.options);
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }]);
+
+  return Collections01Ctrl;
+}();
+
+Collections01Ctrl.$inject = ['$scope', '$timeout', 'LocationService'];
+var _default = Collections01Ctrl;
+exports.default = _default;
+
+},{"../gtm/gtm.service":241}],203:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'collezioni';
+
+var CollectionsCtrl =
+/*#__PURE__*/
+function () {
+  function CollectionsCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, CollectionsCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -21378,441 +22021,211 @@ class Collections02Ctrl {
     // console.log(this.brands);
   }
 
-  deserializeFilters(initialFilter) {
-    const locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('Collections02Ctrl.deserializeFilters', filters);
+  _createClass(CollectionsCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters(initialFilter) {
+      var _this = this;
 
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
 
-      switch (x) {
-        case 'collections':
-          filter.doFilter = (item, value) => {
-            return item.id === value;
-          };
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
 
-          break;
+        switch (x) {
+          case 'collections':
+            filter.doFilter = function (item, value) {
+              return item.id === value;
+            };
 
-        default:
-          filter.doFilter = (item, value) => {
-            return item.features.indexOf(value) !== -1;
-          };
+            break;
 
-      }
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
 
-      filter.options.unshift({
-        label: filter.placeholder,
-        value: null
-      });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label;
-    });
-    return filters;
-  }
+        }
 
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('Collections02Ctrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    /*
-    const filters = Object.keys(this.filters).map((x) => {
-    	return Object.assign({ type: x }, this.filters[x]);
-    }).filter(x => x.value !== null);
-    */
-    if (serialize !== false) this.serializeFilters();
-    const {
-      filteredBrands,
-      resultCounts,
-      totalCounts
-    } = this.getFilteredBrands(); // console.log(filteredBrands, filters);
-
-    this.filteredBrands = [];
-    this.$timeout(() => {
-      this.filteredBrands = filteredBrands;
-      this.resultCounts = resultCounts;
-      this.totalCounts = totalCounts;
-      this.updateFilterStates(); // delayer for image update
-    }, 50);
-
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
-
-  getFilteredBrands(skipFilter) {
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    const filteredBrands = [];
-    let resultCounts = 0;
-    const totalCounts = this.brands.reduce((total, brand) => {
-      return total + brand.collections.length;
-    }, 0);
-    const looks = this.filters.looks.options.filter(x => x.value);
-    this.brands.map(x => Object.assign({}, x)).forEach(brand => {
-      const collections = [];
-      brand.looks = looks.map(x => {
-        const look = Object.assign({}, x);
-        look.collections = brand.collections.filter(collection => {
-          let has = this.filters.looks.doFilter(collection, look.value);
-          filters.forEach(filter => {
-            if (filter !== skipFilter) {
-              has = has && filter.doFilter(collection, filter.value);
-            }
-          });
-
-          if (has && collections.indexOf(collection) === -1) {
-            collections.push(collection);
-          }
-
-          return has;
+        filter.options.unshift({
+          label: filter.placeholder,
+          value: null
         });
-        return look;
-      }); // .filter(x => x.collections.length)
-      // console.log(has, collection, filters);
-
-      resultCounts += collections.length;
-
-      if (brand.looks.length) {
-        filteredBrands.push(brand);
-      }
-    });
-    return {
-      filteredBrands,
-      resultCounts,
-      totalCounts
-    };
-  }
-
-  updateFilterStates() {
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-      const {
-        filteredBrands,
-        resultCounts,
-        totalCounts
-      } = this.getFilteredBrands(filter);
-      const collections = [].concat.apply([], filteredBrands.map(x => x.collections));
-      filter.options.forEach(option => {
-        let has = false;
-
-        if (option.value) {
-          let i = 0;
-
-          while (i < collections.length && !has) {
-            const collection = collections[i];
-            has = filter.doFilter(collection, option.value);
-            i++;
-          }
-        } else {
-          has = true;
-        }
-
-        option.disabled = !has;
-      }); // console.log(filter.options);
-    });
-  }
-
-  setFilter(item, filter) {
-    item = item || filter.options[0];
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
-
-  removeFilter(filter) {
-    this.setFilter(null, filter);
-  }
-
-}
-
-Collections02Ctrl.$inject = ['$scope', '$timeout', 'LocationService'];
-var _default = Collections02Ctrl;
-exports.default = _default;
-
-},{"../gtm/gtm.service":239}],203:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* jshint esversion: 6 */
-const GTM_CAT = 'collezioni';
-
-class CollectionsCtrl {
-  constructor($scope, $timeout, LocationService) {
-    this.$scope = $scope;
-    this.$timeout = $timeout;
-    this.locationService = LocationService;
-    this.filters = window.filters || {};
-    this.brands = window.brands || [];
-    this.initialFilters = window.initialFilters || null;
-    this.deserializeFilters(this.initialFilters);
-    this.applyFilters(false); // this.filteredReferences = this.references.slice();
-    // this.updateFilterStates();
-    // console.log(this.filters);
-    // console.log(this.brands);
-  }
-
-  test() {
-    this.test = true;
-    this.applyFilters(false);
-  }
-
-  deserializeFilters(initialFilter) {
-    const locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
-
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      switch (x) {
-        case 'collections':
-          filter.doFilter = (item, value) => {
-            return item.id === value;
-          };
-
-          break;
-
-        default:
-          filter.doFilter = (item, value) => {
-            return item.features.indexOf(value) !== -1;
-          };
-
-      }
-
-      filter.options.unshift({
-        label: filter.placeholder,
-        value: null
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
       });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label;
-    });
-    return filters;
-  }
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
 
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
 
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('CollectionsCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    /*
-    const filters = Object.keys(this.filters).map((x) => {
-    	return Object.assign({ type: x }, this.filters[x]);
-    }).filter(x => x.value !== null);
-    */
-    if (serialize !== false) this.serializeFilters();
-    const {
-      filteredBrands,
-      resultCounts,
-      totalCounts
-    } = this.getFilteredBrands(); // console.log(filteredBrands, filters);
-
-    if (this.test) {
-      filteredBrands.forEach(brand => brand.collections.forEach(collection => {
-        collection.size = 1 + Math.floor(Math.random() * 6);
-
-        if (collection.size < 4) {
-          collection.size = 1;
-        } else if (collection.size < 6) {
-          collection.size = 2;
-        } else {
-          collection.size = 3;
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
         }
-      }));
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('CollectionsCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
     }
-    /*
-    const order = [3, 2, 2, 1, 1, 1];
-    let i = 0;
-    filteredBrands.forEach(brand => {
-    	brand.collections.sort((a, b) => {
-    		const size = order[i % order.length];
-    		console.log(size);
-    		if (a.size === size) {
-    			i++;
-    			return -1;
-    		}
-    		if (b.size === size) {
-    			i++;
-    			return 1;
-    		}
-    		return 0;
-    	});
-    	// console.log(brand.collections.map(x => x.size).join(','));
-    });
-    */
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      /*
+      const filters = Object.keys(this.filters).map((x) => {
+      	return Object.assign({ type: x }, this.filters[x]);
+      }).filter(x => x.value !== null);
+      */
+      if (serialize !== false) this.serializeFilters();
+
+      var _this$getFilteredBran = this.getFilteredBrands(),
+          filteredBrands = _this$getFilteredBran.filteredBrands,
+          resultCounts = _this$getFilteredBran.resultCounts,
+          totalCounts = _this$getFilteredBran.totalCounts; // console.log(filteredBrands, filters);
 
 
-    filteredBrands.forEach(brand => {
-      brand.collections = this.getSortedPattern(brand.collections);
-    });
-    this.filteredBrands = [];
-    this.$timeout(() => {
-      this.filteredBrands = filteredBrands;
-      this.resultCounts = resultCounts;
-      this.totalCounts = totalCounts;
-      this.updateFilterStates(); // delayer for image update
-    }, 50);
+      this.filteredBrands = [];
+      this.$timeout(function () {
+        _this3.filteredBrands = filteredBrands;
+        _this3.resultCounts = resultCounts;
+        _this3.totalCounts = totalCounts;
 
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
+        _this3.updateFilterStates(); // delayer for image update
 
-  getSortedSize(items) {
-    items.sort((a, b) => {
-      return b.size - a.size;
-    }); // console.log(items.map(x => x.size).join(','));
+      }, 50);
 
-    return items;
-  }
-
-  getSortedPattern(items) {
-    const order = [3, 2, 1, 2, 1, 1, 1, 2, 3, 1, 2, 1];
-    let sorted = [],
-        i = 0;
-
-    while (items.length) {
-      const size = order[i % order.length];
-      const item = items.find(x => x.size === size);
-
-      if (item) {
-        items.splice(items.indexOf(item), 1);
-        sorted.push(item);
-      } else {
-        sorted.push(items.shift());
-      }
-
-      i++;
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
     }
+  }, {
+    key: "getFilteredBrands",
+    value: function getFilteredBrands(skipFilter) {
+      var _this4 = this;
 
-    console.log(sorted.map(x => x.size).join(','));
-    return sorted;
-  }
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this4.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredBrands = [];
+      var resultCounts = 0;
+      var totalCounts = this.brands.reduce(function (total, brand) {
+        return total + brand.collections.length;
+      }, 0);
+      var looks = this.filters.looks.options.filter(function (x) {
+        return x.value;
+      });
+      this.brands.map(function (x) {
+        return Object.assign({}, x);
+      }).forEach(function (brand) {
+        var collections = [];
+        brand.looks = looks.map(function (x) {
+          var look = Object.assign({}, x);
+          look.collections = brand.collections.filter(function (collection) {
+            var has = _this4.filters.looks.doFilter(collection, look.value);
 
-  getFilteredBrands(skipFilter) {
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    const filteredBrands = filters.length ? [] : this.brands;
-    let resultCounts = 0,
-        totalCounts = 0;
+            filters.forEach(function (filter) {
+              if (filter !== skipFilter) {
+                has = has && filter.doFilter(collection, filter.value);
+              }
+            });
 
-    if (filters.length) {
-      this.brands.map(x => Object.assign({}, x)).forEach(brand => {
-        const filteredCollections = [];
-        brand.collections.forEach(collection => {
-          let has = true;
-          filters.forEach(filter => {
-            if (filter !== skipFilter) {
-              has = has && filter.doFilter(collection, filter.value);
+            if (has && collections.indexOf(collection) === -1) {
+              collections.push(collection);
             }
+
+            return has;
           });
+          return look;
+        }); // .filter(x => x.collections.length)
+        // console.log(has, collection, filters);
 
-          if (has) {
-            filteredCollections.push(collection);
-            resultCounts++;
-          }
+        resultCounts += collections.length;
 
-          totalCounts++;
-        }); // console.log(has, collection, filters);
-
-        if (filteredCollections.length) {
-          brand.collections = filteredCollections;
+        if (brand.looks.length) {
           filteredBrands.push(brand);
         }
       });
+      return {
+        filteredBrands: filteredBrands,
+        resultCounts: resultCounts,
+        totalCounts: totalCounts
+      };
     }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates() {
+      var _this5 = this;
 
-    return {
-      filteredBrands,
-      resultCounts,
-      totalCounts
-    };
-  }
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this5.filters[x];
 
-  updateFilterStates() {
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-      const {
-        filteredBrands,
-        resultCounts,
-        totalCounts
-      } = this.getFilteredBrands(filter);
-      const collections = [].concat.apply([], filteredBrands.map(x => x.collections));
-      filter.options.forEach(option => {
-        let has = false;
+        var _this5$getFilteredBra = _this5.getFilteredBrands(filter),
+            filteredBrands = _this5$getFilteredBra.filteredBrands,
+            resultCounts = _this5$getFilteredBra.resultCounts,
+            totalCounts = _this5$getFilteredBra.totalCounts;
 
-        if (option.value) {
-          let i = 0;
+        var collections = [].concat.apply([], filteredBrands.map(function (x) {
+          return x.collections;
+        }));
+        filter.options.forEach(function (option) {
+          var has = false;
 
-          while (i < collections.length && !has) {
-            const collection = collections[i];
-            has = filter.doFilter(collection, option.value);
-            i++;
+          if (option.value) {
+            var i = 0;
+
+            while (i < collections.length && !has) {
+              var collection = collections[i];
+              has = filter.doFilter(collection, option.value);
+              i++;
+            }
+          } else {
+            has = true;
           }
-        } else {
-          has = true;
-        }
 
-        option.disabled = !has;
-      }); // console.log(filter.options);
-    });
-  }
+          option.disabled = !has;
+        }); // console.log(filter.options);
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }]);
 
-  setFilter(item, filter) {
-    item = item || filter.options[0];
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
-
-  removeFilter(filter) {
-    this.setFilter(null, filter);
-  }
-
-}
+  return CollectionsCtrl;
+}();
 
 CollectionsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = CollectionsCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239}],204:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21820,9 +22233,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class ContactsCtrl {
-  constructor($scope, $location, $timeout, $http, StateService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ContactsCtrl =
+/*#__PURE__*/
+function () {
+  function ContactsCtrl($scope, $location, $timeout, $http, StateService) {
+    _classCallCheck(this, ContactsCtrl);
+
     this.$scope = $scope;
     this.$location = $location;
     this.$timeout = $timeout;
@@ -21838,42 +22260,56 @@ class ContactsCtrl {
     this.state.ready();
   }
 
-  setProvinces() {
-    this.$timeout(() => {
-      this.provinces = this.data.provinces.filter(x => x.idstato === this.model.country);
-    });
-  }
+  _createClass(ContactsCtrl, [{
+    key: "setProvinces",
+    value: function setProvinces() {
+      var _this = this;
 
-  onSubmit() {
-    console.log('ContactsCtrl.onSubmit', this.model);
-
-    if (this.state.busy()) {
-      this.$http.post('/WS/wsForms.asmx/SaveForm', {
-        datamodel: this.model
-      }).then(success => {
-        this.state.success();
-        this.$scope.$emit('formsubmit');
-      }, error => {
-        this.error = error;
-        this.state.error(error);
-      })
-      /*.finally(() => {
-      this.state.ready();
-      })*/
-      ;
-      /*
-      this.$timeout(() => {
-      	this.state.ready();
-      }, 2000);
-      */
+      this.$timeout(function () {
+        _this.provinces = _this.data.provinces.filter(function (x) {
+          return x.idstato === _this.model.country;
+        });
+      });
     }
-  }
+  }, {
+    key: "onSubmit",
+    value: function onSubmit() {
+      var _this2 = this;
 
-  onInvalid() {
-    this.$scope.$broadcast('onInvalid');
-  }
+      console.log('ContactsCtrl.onSubmit', this.model);
 
-}
+      if (this.state.busy()) {
+        this.$http.post('/WS/wsForms.asmx/SaveForm', {
+          datamodel: this.model
+        }).then(function (success) {
+          _this2.state.success();
+
+          _this2.$scope.$emit('formsubmit');
+        }, function (error) {
+          _this2.error = error;
+
+          _this2.state.error(error);
+        })
+        /*.finally(() => {
+        this.state.ready();
+        })*/
+        ;
+        /*
+        this.$timeout(() => {
+        	this.state.ready();
+        }, 2000);
+        */
+      }
+    }
+  }, {
+    key: "onInvalid",
+    value: function onInvalid() {
+      this.$scope.$broadcast('onInvalid');
+    }
+  }]);
+
+  return ContactsCtrl;
+}();
 
 ContactsCtrl.$inject = ['$scope', '$location', '$timeout', '$http', 'StateService'];
 var _default = ContactsCtrl;
@@ -21887,81 +22323,96 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class AppearDirective {
-  constructor(DomService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var AppearDirective =
+/*#__PURE__*/
+function () {
+  function AppearDirective(DomService) {
+    _classCallCheck(this, AppearDirective);
+
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
+  _createClass(AppearDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var node = element[0];
 
-    if (window.matchMedia('print').matches) {
-      return node.classList.add('appeared');
-    }
+      if (window.matchMedia('print').matches) {
+        return node.classList.add('appeared');
+      }
 
-    const section = this.getSection(node);
-    element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
-    const subscription = this.domService.appear$(node).subscribe(event => {
-      // -0.05
-      // console.log(event.rect.top);
-      const rect = event.rect;
-      const x = rect.left;
-      const y = 0; // event.rect.top;
+      var section = this.getSection(node);
+      element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+      var subscription = this.domService.appear$(node).subscribe(function (event) {
+        // -0.05
+        // console.log(event.rect.top);
+        var rect = event.rect;
+        var x = rect.left;
+        var y = 0; // event.rect.top;
 
-      const index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
-      const timeout = index * 50;
-      setTimeout(() => {
-        if (node.classList) {
-          node.classList.add('appeared');
+        var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
+        var timeout = index * 50;
+        setTimeout(function () {
+          if (node.classList) {
+            node.classList.add('appeared');
+          }
+        }, timeout); // (i - firstVisibleIndex));
+
+        /*
+        if (index > 0) {
+        	setTimeout(() => {
+        		node.classList.add('appeared');
+        	}, timeout); // (i - firstVisibleIndex));
+        } else {
+        	node.classList.add('appeared');
         }
-      }, timeout); // (i - firstVisibleIndex));
+        */
+      });
 
-      /*
-      if (index > 0) {
-      	setTimeout(() => {
-      		node.classList.add('appeared');
-      	}, timeout); // (i - firstVisibleIndex));
-      } else {
-      	node.classList.add('appeared');
-      }
-      */
-    });
+      var onBeforePrint = function onBeforePrint() {
+        node.classList.add('appeared', 'print');
+        subscription.unsubscribe();
+      };
 
-    const onBeforePrint = () => {
-      node.classList.add('appeared', 'print');
-      subscription.unsubscribe();
-    };
-
-    window.addEventListener('beforeprint', onBeforePrint);
-    element.on('$destroy', () => {
-      window.removeEventListener('beforeprint', onBeforePrint);
-      subscription.unsubscribe();
-    });
-  }
-
-  getSection(node) {
-    let section = node.parentNode;
-    let p = node;
-
-    while (p) {
-      p = p.parentNode;
-
-      if (p && p.classList && p.classList.contains('section')) {
-        section = p;
-        p = null;
-      }
+      window.addEventListener('beforeprint', onBeforePrint);
+      element.on('$destroy', function () {
+        window.removeEventListener('beforeprint', onBeforePrint);
+        subscription.unsubscribe();
+      });
     }
+  }, {
+    key: "getSection",
+    value: function getSection(node) {
+      var section = node.parentNode;
+      var p = node;
 
-    return section;
-  }
+      while (p) {
+        p = p.parentNode;
 
-  static factory(DomService) {
-    return new AppearDirective(DomService);
-  }
+        if (p && p.classList && p.classList.contains('section')) {
+          section = p;
+          p = null;
+        }
+      }
 
-}
+      return section;
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new AppearDirective(DomService);
+    }
+  }]);
+
+  return AppearDirective;
+}();
 
 exports.default = AppearDirective;
 AppearDirective.factory.$inject = ['DomService'];
@@ -21978,9 +22429,18 @@ var _hasDropdown = _interopRequireDefault(require("./has-dropdown.directive"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class AutocompleteDirective {
-  constructor($timeout) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var AutocompleteDirective =
+/*#__PURE__*/
+function () {
+  function AutocompleteDirective($timeout) {
+    _classCallCheck(this, AutocompleteDirective);
+
     this.$timeout = $timeout;
     this.restrict = 'A';
     this.scope = {
@@ -21989,135 +22449,127 @@ class AutocompleteDirective {
       onSetItem: '=?',
       onRemoveItem: '=?'
     };
-    this.template = `
-		<div class="dropdown">
-			<ul class="nav nav--select">
-				<li ng-repeat="item in items track by $index" ng-class="{ active: item.value == filter.value, disabled: item.disabled }">
-					<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="setItem(item)">
-						<img ng-src="{{item.image}}" ng-if="item.image" />
-						<span ng-bind="item.label"></span>
-					</span>
-				</li>
-			</ul>
-		</div>
-		<label class="label" ng-bind="filter.label"></label>
-		<div class="control control--select" ng-class="{ selected: filter.value }">
-			<div class="input">
-				<svg class="icon icon--search" ng-if="!filter.value"><use xlink:href="#search"></use></svg>
-				<svg class="icon icon--close" ng-if="filter.value" ng-click="removeItem()"><use xlink:href="#close"></use></svg>
-				<input type="text" class="value" ng-model="autocomplete.query" ng-model-options="{ debounce: 200 }" ng-disabled="filter.value" placeholder="{{filter.placeholder}}" ng-change="onChange($event)" ng-click="onClick($event)"></input>
-				<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
-			</div>
-		</div>
-		`;
+    this.template = "\n\t\t<div class=\"dropdown\">\n\t\t\t<ul class=\"nav nav--select\">\n\t\t\t\t<li ng-repeat=\"item in items track by $index\" ng-class=\"{ active: item.value == filter.value, disabled: item.disabled }\">\n\t\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setItem(item)\">\n\t\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t\t</span>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<label class=\"label\" ng-bind=\"filter.label\"></label>\n\t\t<div class=\"control control--select\" ng-class=\"{ selected: filter.value }\">\n\t\t\t<div class=\"input\">\n\t\t\t\t<svg class=\"icon icon--search\" ng-if=\"!filter.value\"><use xlink:href=\"#search\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--close\" ng-if=\"filter.value\" ng-click=\"removeItem()\"><use xlink:href=\"#close\"></use></svg>\n\t\t\t\t<input type=\"text\" class=\"value\" ng-model=\"autocomplete.query\" ng-model-options=\"{ debounce: 200 }\" ng-disabled=\"filter.value\" placeholder=\"{{filter.placeholder}}\" ng-change=\"onChange($event)\" ng-click=\"onClick($event)\"></input>\n\t\t\t\t<svg class=\"icon icon--arrow-down\"><use xlink:href=\"#arrow-down\"></use></svg>\n\t\t\t</div>\n\t\t</div>\n\t\t";
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    const input = node.querySelector('input');
-    const uid = _hasDropdown.default.dropDownUid++;
-    const autocomplete = scope.autocomplete = {
-      query: null
-    };
-    const filter = scope.filter;
-    scope.items = scope.filter.options;
-    node.initialFocus = null; // scope.$parent.hasDropdown = null;
+  _createClass(AutocompleteDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    scope.setItem = item => {
-      filter.value = item.value;
-      autocomplete.query = null;
+      var node = element[0];
+      var input = node.querySelector('input');
+      var uid = _hasDropdown.default.dropDownUid++;
+      var autocomplete = scope.autocomplete = {
+        query: null
+      };
+      var filter = scope.filter;
+      scope.items = scope.filter.options;
+      node.initialFocus = null; // scope.$parent.hasDropdown = null;
 
-      if (scope.handler) {
-        scope.handler.setFilter(item, filter);
-      }
-    };
+      scope.setItem = function (item) {
+        filter.value = item.value;
+        autocomplete.query = null;
 
-    scope.removeItem = item => {
-      filter.value = null;
-      autocomplete.query = null;
+        if (scope.handler) {
+          scope.handler.setFilter(item, filter);
+        }
+      };
 
-      if (scope.handler) {
-        scope.handler.removeFilter(filter);
-      }
-    };
+      scope.removeItem = function (item) {
+        filter.value = null;
+        autocomplete.query = null;
 
-    scope.onChange = event => {
-      autocomplete.results = filter.options.filter(x => x.label.toLowerCase().indexOf(autocomplete.query.toLowerCase()) !== -1);
+        if (scope.handler) {
+          scope.handler.removeFilter(filter);
+        }
+      };
 
-      if (autocomplete.results) {
-        scope.items = autocomplete.results;
-        scope.$parent.hasDropdown = uid;
-        node.initialFocus = true;
-      } else {
-        scope.items = filter.options;
-        scope.$parent.hasDropdown = null;
-      } // console.log('onChange', autocomplete.query, autocomplete.results);
+      scope.onChange = function (event) {
+        autocomplete.results = filter.options.filter(function (x) {
+          return x.label.toLowerCase().indexOf(autocomplete.query.toLowerCase()) !== -1;
+        });
 
-    };
-
-    const onClickInput = event => {
-      event.stopPropagation(); // console.log('onClickInput', event);
-    };
-
-    const onClick = event => {
-      const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
-
-      if (clickedInside) {
-        node.initialFocus = true;
-        this.$timeout(() => {
-          if (scope.$parent.hasDropdown === uid) {
-            scope.$parent.hasDropdown = null;
-          } else {
-            scope.$parent.hasDropdown = uid;
-          }
-
+        if (autocomplete.results) {
+          scope.items = autocomplete.results;
+          scope.$parent.hasDropdown = uid;
+          node.initialFocus = true;
+        } else {
           scope.items = filter.options;
-          autocomplete.query = null;
-          autocomplete.results = [];
-        }); // console.log(node, clickedInside, scope.$parent.hasDropdown);
-      } else if (node.initialFocus !== null) {
-        node.initialFocus = false;
-        this.$timeout(() => {
-          if (scope.$parent.hasDropdown === uid) {
-            scope.$parent.hasDropdown = null;
+          scope.$parent.hasDropdown = null;
+        } // console.log('onChange', autocomplete.query, autocomplete.results);
+
+      };
+
+      var onClickInput = function onClickInput(event) {
+        event.stopPropagation(); // console.log('onClickInput', event);
+      };
+
+      var onClick = function onClick(event) {
+        var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+
+        if (clickedInside) {
+          node.initialFocus = true;
+
+          _this.$timeout(function () {
+            if (scope.$parent.hasDropdown === uid) {
+              scope.$parent.hasDropdown = null;
+            } else {
+              scope.$parent.hasDropdown = uid;
+            }
+
             scope.items = filter.options;
             autocomplete.query = null;
             autocomplete.results = [];
-          }
-        });
-      }
-    };
+          }); // console.log(node, clickedInside, scope.$parent.hasDropdown);
 
-    scope.$parent.$watch('hasDropdown', value => {
-      // console.log('hasDropdown', value, uid);
-      if (scope.$parent.hasDropdown === uid) {
-        node.classList.add('opened');
-      } else {
-        node.classList.remove('opened');
-      }
-    });
+        } else if (node.initialFocus !== null) {
+          node.initialFocus = false;
 
-    const addListeners = () => {
-      input.addEventListener('click', onClickInput);
-      document.addEventListener('click', onClick); // element.on('click', onClick);
-    };
+          _this.$timeout(function () {
+            if (scope.$parent.hasDropdown === uid) {
+              scope.$parent.hasDropdown = null;
+              scope.items = filter.options;
+              autocomplete.query = null;
+              autocomplete.results = [];
+            }
+          });
+        }
+      };
 
-    const removeListeners = () => {
-      input.removeEventListener('click', onClickInput);
-      document.removeEventListener('click', onClick); // element.off('click', onClick);
-    };
+      scope.$parent.$watch('hasDropdown', function (value) {
+        // console.log('hasDropdown', value, uid);
+        if (scope.$parent.hasDropdown === uid) {
+          node.classList.add('opened');
+        } else {
+          node.classList.remove('opened');
+        }
+      });
 
-    addListeners();
-    element.on('$destroy', () => {
-      removeListeners();
-    });
-  }
+      var addListeners = function addListeners() {
+        input.addEventListener('click', onClickInput);
+        document.addEventListener('click', onClick); // element.on('click', onClick);
+      };
 
-  static factory($timeout) {
-    return new AutocompleteDirective($timeout);
-  }
+      var removeListeners = function removeListeners() {
+        input.removeEventListener('click', onClickInput);
+        document.removeEventListener('click', onClick); // element.off('click', onClick);
+      };
 
-}
+      addListeners();
+      element.on('$destroy', function () {
+        removeListeners();
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout) {
+      return new AutocompleteDirective($timeout);
+    }
+  }]);
+
+  return AutocompleteDirective;
+}();
 
 exports.default = AutocompleteDirective;
 AutocompleteDirective.factory.$inject = ['$timeout'];
@@ -22130,47 +22582,64 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class CookiesDirective {
-  constructor($timeout, StorageService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var CookiesDirective =
+/*#__PURE__*/
+function () {
+  function CookiesDirective($timeout, StorageService) {
+    _classCallCheck(this, CookiesDirective);
+
     this.$timeout = $timeout;
     this.storage = StorageService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const accept = () => {
-      var dt = new Date();
-      dt.setDate(dt.getDate() + 365);
-      document.cookie = '_cookiepolicy=accept; path=/; expires=' + dt.toUTCString();
-    };
+  _createClass(CookiesDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    const node = element[0];
-    const cookiesAccepted = this.storage.get('cookiesAccepted');
+      var accept = function accept() {
+        var dt = new Date();
+        dt.setDate(dt.getDate() + 365);
+        document.cookie = '_cookiepolicy=accept; path=/; expires=' + dt.toUTCString();
+      };
 
-    if (cookiesAccepted) {
-      node.classList.add('cookies-accepted');
+      var node = element[0];
+      var cookiesAccepted = this.storage.get('cookiesAccepted');
+
+      if (cookiesAccepted) {
+        node.classList.add('cookies-accepted');
+      }
+
+      scope.onAcceptCookies = function (event) {
+        _this.storage.set('cookiesAccepted', true); // accept();
+
+
+        TweenMax.to(node, 0.5, {
+          bottom: '-100%',
+          ease: Power2.easeInOut,
+          delay: 0.15,
+          onComplete: function onComplete() {
+            node.classList.add('cookies-accepted');
+          }
+        });
+      };
     }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, StorageService) {
+      return new CookiesDirective($timeout, StorageService);
+    }
+  }]);
 
-    scope.onAcceptCookies = event => {
-      this.storage.set('cookiesAccepted', true); // accept();
-
-      TweenMax.to(node, 0.5, {
-        bottom: '-100%',
-        ease: Power2.easeInOut,
-        delay: 0.15,
-        onComplete: () => {
-          node.classList.add('cookies-accepted');
-        }
-      });
-    };
-  }
-
-  static factory($timeout, StorageService) {
-    return new CookiesDirective($timeout, StorageService);
-  }
-
-}
+  return CookiesDirective;
+}();
 
 exports.default = CookiesDirective;
 CookiesDirective.factory.$inject = ['$timeout', 'CookieService'];
@@ -22185,103 +22654,117 @@ exports.default = void 0;
 
 var _shader = require("../shared/shader");
 
-/* jshint esversion: 6 */
-class GlslCanvasDirective {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GlslCanvasDirective =
+/*#__PURE__*/
+function () {
   /*
   removed "node_modules/glsl-canvas-js/dist/glsl-canvas.js",
   from gulpfile.config.json
   */
-  constructor(DomService) {
+  function GlslCanvasDirective(DomService) {
+    _classCallCheck(this, GlslCanvasDirective);
+
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    console.log('GlslCanvasDirective.link');
-    const node = element[0];
-    const canvas = new GlslCanvas(node, {
-      fragmentString: _shader.FRAGMENT_SHADER
-    }); // const canvas = new GlslCanvas(node);
+  _createClass(GlslCanvasDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      console.log('GlslCanvasDirective.link');
+      var node = element[0];
+      var canvas = new GlslCanvas(node, {
+        fragmentString: _shader.FRAGMENT_SHADER
+      }); // const canvas = new GlslCanvas(node);
 
-    canvas.setTexture('u_texture', attributes.glslCanvas, {
-      repeat: true
-    });
-    canvas.setUniform('u_pow', 1.0);
-    canvas.setUniform('u_top', 0.0);
-    canvas.setUniform('u_strength', attributes.withVideo !== undefined ? 0.1 : 0.05);
-    let pow = {
-      pow: 1.0
-    };
-    let tween;
-
-    const onOver = event => {
-      // console.log('onOver');
-      if (tween) {
-        tween.kill();
-      }
-
-      tween = TweenMax.to(pow, 3, {
-        pow: 0.0,
-        ease: Expo.easeOut,
-        // Back.easeOut.config(1.7),
-        // Elastic.easeOut.config(1, 0.3),
-        overwrite: 'all',
-        onUpdate: () => {
-          // console.log(pow.pow);
-          canvas.setUniform('u_pow', pow.pow);
-        }
+      canvas.setTexture('u_texture', attributes.glslCanvas, {
+        repeat: true
       });
-    };
+      canvas.setUniform('u_pow', 1.0);
+      canvas.setUniform('u_top', 0.0);
+      canvas.setUniform('u_strength', attributes.withVideo !== undefined ? 0.1 : 0.05);
+      var pow = {
+        pow: 1.0
+      };
+      var tween;
 
-    const onOut = event => {
-      // console.log('onOut');
-      if (tween) {
-        tween.kill();
-      }
-
-      tween = TweenMax.to(pow, 3, {
-        pow: 1.0,
-        ease: Expo.easeOut,
-        // Back.easeOut.config(1.7),
-        // Elastic.easeOut.config(1, 0.3),
-        overwrite: 'all',
-        onUpdate: () => {
-          // console.log(pow.pow);
-          canvas.setUniform('u_pow', pow.pow);
+      var onOver = function onOver(event) {
+        // console.log('onOver');
+        if (tween) {
+          tween.kill();
         }
+
+        tween = TweenMax.to(pow, 3, {
+          pow: 0.0,
+          ease: Expo.easeOut,
+          // Back.easeOut.config(1.7),
+          // Elastic.easeOut.config(1, 0.3),
+          overwrite: 'all',
+          onUpdate: function onUpdate() {
+            // console.log(pow.pow);
+            canvas.setUniform('u_pow', pow.pow);
+          }
+        });
+      };
+
+      var onOut = function onOut(event) {
+        // console.log('onOut');
+        if (tween) {
+          tween.kill();
+        }
+
+        tween = TweenMax.to(pow, 3, {
+          pow: 1.0,
+          ease: Expo.easeOut,
+          // Back.easeOut.config(1.7),
+          // Elastic.easeOut.config(1, 0.3),
+          overwrite: 'all',
+          onUpdate: function onUpdate() {
+            // console.log(pow.pow);
+            canvas.setUniform('u_pow', pow.pow);
+          }
+        });
+      };
+
+      node.addEventListener('mouseover', onOver);
+      node.addEventListener('mouseout', onOut);
+      var subscription = this.domService.raf$().subscribe(function (scroll) {
+        canvas.setUniform('u_top', window.scrollY || window.scrollTop || 0);
       });
-    };
+      canvas.on('error', function (error) {
+        console.log(error);
+      });
+      element.on('$destroy', function () {
+        if (tween) {
+          tween.kill();
+        }
 
-    node.addEventListener('mouseover', onOver);
-    node.addEventListener('mouseout', onOut);
-    const subscription = this.domService.raf$().subscribe(scroll => {
-      canvas.setUniform('u_top', window.scrollY || window.scrollTop || 0);
-    });
-    canvas.on('error', function (error) {
-      console.log(error);
-    });
-    element.on('$destroy', () => {
-      if (tween) {
-        tween.kill();
-      }
+        node.removeEventListener('mouseover', onOver);
+        node.removeEventListener('mouseout', onOut);
+        subscription.unsubscribe();
+        canvas.destroy();
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new GlslCanvasDirective(DomService);
+    }
+  }]);
 
-      node.removeEventListener('mouseover', onOver);
-      node.removeEventListener('mouseout', onOut);
-      subscription.unsubscribe();
-      canvas.destroy();
-    });
-  }
-
-  static factory(DomService) {
-    return new GlslCanvasDirective(DomService);
-  }
-
-}
+  return GlslCanvasDirective;
+}();
 
 exports.default = GlslCanvasDirective;
 GlslCanvasDirective.factory.$inject = ['DomService'];
 
-},{"../shared/shader":257}],209:[function(require,module,exports){
+},{"../shared/shader":259}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22289,137 +22772,154 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class HasDropdownDirective {
-  constructor($timeout) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var HasDropdownDirective =
+/*#__PURE__*/
+function () {
+  function HasDropdownDirective($timeout) {
+    _classCallCheck(this, HasDropdownDirective);
+
     this.$timeout = $timeout;
     this.restrict = 'A';
     this.scope = false;
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    const uid = HasDropdownDirective.dropDownUid++;
-    let opened = null;
-    const consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null; // scope.hasDropdown = null;
-    // console.log(attributes.hasDropdown);
+  _createClass(HasDropdownDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    const trigger = attributes.hasDropdown !== '' ? node.querySelector(attributes.hasDropdown) : node;
+      var node = element[0];
+      var uid = HasDropdownDirective.dropDownUid++;
+      var opened = null;
+      var consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null; // scope.hasDropdown = null;
+      // console.log(attributes.hasDropdown);
 
-    const onClick = event => {
-      // console.log(trigger, node, attributes.hasDropdown);
-      if (opened === null) {
-        openDropdown();
-      } else if (trigger !== node) {
-        closeDropdown();
-      }
-    };
+      var trigger = attributes.hasDropdown !== '' ? node.querySelector(attributes.hasDropdown) : node;
 
-    const onDocumentClick = event => {
-      const clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
-
-      if (!clickedInside) {
-        closeDropdown();
-      }
-    };
-
-    const onShowHide = value => {
-      /*
-      if (uid === 4) {
-      	console.log('onShowHide', scope.hasDropdown, uid);
-      }
-      */
-      if (scope.hasDropdown === uid) {
-        node.classList.add('opened');
-      } else {
-        node.classList.remove('opened');
-      }
-    };
-
-    scope.$watch('hasDropdown', onShowHide);
-
-    const openDropdown = () => {
-      if (opened === null) {
-        opened = true;
-        addDocumentListeners();
-
-        if (consumer) {
-          const dropdown = node.querySelector('[dropdown]');
-          consumer.onDroppedIn(dropdown).then(success => {// console.log('success');
-          });
-          /*
-          if (scope.hasDropdown === uid) {
-          	// consumer.onDroppedOut(dropdown);
-          } else {
-          	consumer.onDroppedIn(dropdown);
-          }
-          // console.log(consumer, dropdown);
-          */
+      var onClick = function onClick(event) {
+        // console.log(trigger, node, attributes.hasDropdown);
+        if (opened === null) {
+          openDropdown();
+        } else if (trigger !== node) {
+          closeDropdown();
         }
+      };
 
-        this.$timeout(() => {
-          scope.hasDropdown = uid;
-          /*
-          if (scope.hasDropdown === uid) {
-          	// scope.hasDropdown = null;
-          } else {
-          	scope.hasDropdown = uid;
-          }
-          */
-        });
-      }
-    };
+      var onDocumentClick = function onDocumentClick(event) {
+        var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
 
-    const closeDropdown = () => {
-      if (opened !== null) {
-        removeDocumentListeners();
-        this.$timeout(() => {
-          opened = null;
+        if (!clickedInside) {
+          closeDropdown();
+        }
+      };
+
+      var onShowHide = function onShowHide(value) {
+        /*
+        if (uid === 4) {
+        	console.log('onShowHide', scope.hasDropdown, uid);
+        }
+        */
+        if (scope.hasDropdown === uid) {
+          node.classList.add('opened');
+        } else {
+          node.classList.remove('opened');
+        }
+      };
+
+      scope.$watch('hasDropdown', onShowHide);
+
+      var openDropdown = function openDropdown() {
+        if (opened === null) {
+          opened = true;
+          addDocumentListeners();
 
           if (consumer) {
-            const dropdown = node.querySelector('[dropdown]');
-            consumer.onDroppedOut(dropdown); // console.log(consumer, dropdown);
+            var dropdown = node.querySelector('[dropdown]');
+            consumer.onDroppedIn(dropdown).then(function (success) {// console.log('success');
+            });
+            /*
+            if (scope.hasDropdown === uid) {
+            	// consumer.onDroppedOut(dropdown);
+            } else {
+            	consumer.onDroppedIn(dropdown);
+            }
+            // console.log(consumer, dropdown);
+            */
           }
 
-          if (scope.hasDropdown === uid) {
-            scope.hasDropdown = null;
-          }
-        });
-      }
-    };
+          _this.$timeout(function () {
+            scope.hasDropdown = uid;
+            /*
+            if (scope.hasDropdown === uid) {
+            	// scope.hasDropdown = null;
+            } else {
+            	scope.hasDropdown = uid;
+            }
+            */
+          });
+        }
+      };
 
-    scope.$on('onCloseDropdown', closeDropdown);
-    scope.$on('onNavigateOut', closeDropdown);
-    scope.$on('onNavigationTransitionIn', closeDropdown);
+      var closeDropdown = function closeDropdown() {
+        if (opened !== null) {
+          removeDocumentListeners();
 
-    const addListeners = () => {
-      trigger.addEventListener('click', onClick);
-    };
+          _this.$timeout(function () {
+            opened = null;
 
-    const addDocumentListeners = () => {
-      document.addEventListener('click', onDocumentClick);
-    };
+            if (consumer) {
+              var dropdown = node.querySelector('[dropdown]');
+              consumer.onDroppedOut(dropdown); // console.log(consumer, dropdown);
+            }
 
-    const removeListeners = () => {
-      trigger.removeEventListener('click', onClick);
-    };
+            if (scope.hasDropdown === uid) {
+              scope.hasDropdown = null;
+            }
+          });
+        }
+      };
 
-    const removeDocumentListeners = () => {
-      document.removeEventListener('click', onDocumentClick);
-    };
+      scope.$on('onCloseDropdown', closeDropdown);
+      scope.$on('onNavigateOut', closeDropdown);
+      scope.$on('onNavigationTransitionIn', closeDropdown);
 
-    addListeners();
-    element.on('$destroy', () => {
-      removeListeners();
-      removeDocumentListeners();
-    });
-  }
+      var addListeners = function addListeners() {
+        trigger.addEventListener('click', onClick);
+      };
 
-  static factory($timeout) {
-    return new HasDropdownDirective($timeout);
-  }
+      var addDocumentListeners = function addDocumentListeners() {
+        document.addEventListener('click', onDocumentClick);
+      };
 
-}
+      var removeListeners = function removeListeners() {
+        trigger.removeEventListener('click', onClick);
+      };
+
+      var removeDocumentListeners = function removeDocumentListeners() {
+        document.removeEventListener('click', onDocumentClick);
+      };
+
+      addListeners();
+      element.on('$destroy', function () {
+        removeListeners();
+        removeDocumentListeners();
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout) {
+      return new HasDropdownDirective($timeout);
+    }
+  }]);
+
+  return HasDropdownDirective;
+}();
 
 exports.default = HasDropdownDirective;
 HasDropdownDirective.dropDownUid = 0;
@@ -22433,51 +22933,65 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class HilightDirective {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var HilightDirective =
+/*#__PURE__*/
+function () {
+  function HilightDirective() {
+    _classCallCheck(this, HilightDirective);
+
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    let hilight, query;
+  _createClass(HilightDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var node = element[0];
+      var hilight, query;
 
-    const update = () => {
-      if (hilight) {
-        if (query) {
-          const index = hilight.toLowerCase().indexOf(query);
+      var update = function update() {
+        if (hilight) {
+          if (query) {
+            var index = hilight.toLowerCase().indexOf(query);
 
-          if (index !== -1) {
-            node.innerHTML = `${hilight.substring(0, index)}<span class="hilight">${hilight.substring(index, index + query.length)}</span>${hilight.substring(index + query.length, hilight.length)}`;
+            if (index !== -1) {
+              node.innerHTML = "".concat(hilight.substring(0, index), "<span class=\"hilight\">").concat(hilight.substring(index, index + query.length), "</span>").concat(hilight.substring(index + query.length, hilight.length));
+            } else {
+              node.innerHTML = hilight;
+            }
           } else {
             node.innerHTML = hilight;
           }
-        } else {
-          node.innerHTML = hilight;
-        }
-      } // console.log(hilight, query, node.innerHTML);
+        } // console.log(hilight, query, node.innerHTML);
 
-    };
+      };
 
-    scope.$watch(attributes.hilight, (current, previous) => {
-      // console.log('HilightDirective.hilight', current, previous);
-      hilight = current;
-      update();
-    });
-    scope.$watch(attributes.query, (current, previous) => {
-      // console.log('HilightDirective.query', current, previous);
-      query = current;
-      update();
-    });
-    return;
-  }
+      scope.$watch(attributes.hilight, function (current, previous) {
+        // console.log('HilightDirective.hilight', current, previous);
+        hilight = current;
+        update();
+      });
+      scope.$watch(attributes.query, function (current, previous) {
+        // console.log('HilightDirective.query', current, previous);
+        query = current;
+        update();
+      });
+      return;
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new HilightDirective();
+    }
+  }]);
 
-  static factory() {
-    return new HilightDirective();
-  }
-
-}
+  return HilightDirective;
+}();
 
 exports.default = HilightDirective;
 HilightDirective.factory.$inject = [];
@@ -22490,120 +23004,142 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-const USE_HIGHWAY = true;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class HrefDirective {
-  constructor() {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var USE_HIGHWAY = true;
+
+var HrefDirective =
+/*#__PURE__*/
+function () {
+  function HrefDirective() {
+    _classCallCheck(this, HrefDirective);
+
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
+  _createClass(HrefDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    const onClick = () => {
-      window.location.href = node.getAttribute('href')
-      /* attributes.href mantiene il valore iniziale */
-      ;
-    };
+      var node = element[0];
 
-    if (USE_HIGHWAY) {
-      if (attributes.routerDisabled === undefined) {
-        scope.$emit('onHrefNode', node);
-      } else {
-        // console.log(attributes.routerDisabled, node);
-        node.addEventListener('click', onClick);
-      }
-
-      return;
-    } else {
-      if (node.nodeName.toLowerCase() === 'link') {
-        return;
-      }
-
-      if (attributes.target === '_blank') {
-        return;
-      }
-
-      const onClick = event => {
-        const href = attributes.href;
-        const absolute = /^(http:|https:|\/\/)/.test(href);
-        const domain = this.getDomain(href);
-        const currentDomain = this.getDomain(window.location.href);
-
-        if (absolute && domain !== currentDomain) {
-          window.location.href = href;
-          return;
-        } // Se c'è un cambio di mercato, facciamo ricaricare la pagina
-
-
-        const market = this.getMarket(href);
-        const currentMarket = this.getMarket(window.location.href); // console.log('onNavigationShouldFetch', currentMarket, market);
-
-        if (currentMarket !== null && market !== currentMarket) {
-          window.location.href = href;
-          return;
-        }
-
-        if (window.location.href.indexOf(href) !== -1) {
-          node.classList.add('active');
-        } else {
-          node.classList.remove('active');
-        }
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
-        if (href === '#') {
-          return;
-        }
-
-        const title = node.innerText;
-        scope.$emit('onNavigationShouldFetch', {
-          title,
-          href
-        });
+      var onClick = function onClick() {
+        window.location.href = node.getAttribute('href')
+        /* attributes.href mantiene il valore iniziale */
+        ;
       };
 
-      node.addEventListener('click', onClick);
-      /*
-      scope.$on('onNavigationEnded', function($scope, $href) {
-      	if (href === $href) {
-      		node.classList.add('active');
-      	} else {
-      		node.classList.remove('active');
-      	}
-      });
-      */
+      if (USE_HIGHWAY) {
+        if (attributes.routerDisabled === undefined) {
+          scope.$emit('onHrefNode', node);
+        } else {
+          // console.log(attributes.routerDisabled, node);
+          node.addEventListener('click', onClick);
+        }
 
-      element.on('$destroy', () => {
+        return;
+      } else {
+        if (node.nodeName.toLowerCase() === 'link') {
+          return;
+        }
+
+        if (attributes.target === '_blank') {
+          return;
+        }
+
+        var _onClick = function _onClick(event) {
+          var href = attributes.href;
+          var absolute = /^(http:|https:|\/\/)/.test(href);
+
+          var domain = _this.getDomain(href);
+
+          var currentDomain = _this.getDomain(window.location.href);
+
+          if (absolute && domain !== currentDomain) {
+            window.location.href = href;
+            return;
+          } // Se c'è un cambio di mercato, facciamo ricaricare la pagina
+
+
+          var market = _this.getMarket(href);
+
+          var currentMarket = _this.getMarket(window.location.href); // console.log('onNavigationShouldFetch', currentMarket, market);
+
+
+          if (currentMarket !== null && market !== currentMarket) {
+            window.location.href = href;
+            return;
+          }
+
+          if (window.location.href.indexOf(href) !== -1) {
+            node.classList.add('active');
+          } else {
+            node.classList.remove('active');
+          }
+
+          event.preventDefault();
+          event.stopImmediatePropagation();
+
+          if (href === '#') {
+            return;
+          }
+
+          var title = node.innerText;
+          scope.$emit('onNavigationShouldFetch', {
+            title: title,
+            href: href
+          });
+        };
+
+        node.addEventListener('click', _onClick);
+        /*
+        scope.$on('onNavigationEnded', function($scope, $href) {
+        	if (href === $href) {
+        		node.classList.add('active');
+        	} else {
+        		node.classList.remove('active');
+        	}
+        });
+        */
+
+        element.on('$destroy', function () {
+          node.removeEventListener('click', _onClick);
+        });
+      }
+
+      element.on('$destroy', function () {
         node.removeEventListener('click', onClick);
       });
+      return;
     }
+  }, {
+    key: "getDomain",
+    value: function getDomain(text) {
+      var domainRegexp = /([[a-zA-Z0-9-_]+\.]*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11})/;
+      var matches = text.match(domainRegexp);
+      return matches && matches.length > 1 ? matches[1] : null;
+    }
+  }, {
+    key: "getMarket",
+    value: function getMarket(text) {
+      var marketRegexp = /(^|[^\/])\/([^\/]+)/;
+      var matches = text.match(marketRegexp);
+      return matches && matches.length > 2 ? matches[2] : null;
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new HrefDirective();
+    }
+  }]);
 
-    element.on('$destroy', () => {
-      node.removeEventListener('click', onClick);
-    });
-    return;
-  }
-
-  getDomain(text) {
-    const domainRegexp = /([[a-zA-Z0-9-_]+\.]*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11})/;
-    const matches = text.match(domainRegexp);
-    return matches && matches.length > 1 ? matches[1] : null;
-  }
-
-  getMarket(text) {
-    const marketRegexp = /(^|[^\/])\/([^\/]+)/;
-    const matches = text.match(marketRegexp);
-    return matches && matches.length > 2 ? matches[2] : null;
-  }
-
-  static factory() {
-    return new HrefDirective();
-  }
-
-}
+  return HrefDirective;
+}();
 
 exports.default = HrefDirective;
 HrefDirective.factory.$inject = [];
@@ -22616,26 +23152,40 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LastItemDirective = void 0;
 
-/* jshint esversion: 6 */
-class LastItemDirective {
-  constructor($timeout) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var LastItemDirective =
+/*#__PURE__*/
+function () {
+  function LastItemDirective($timeout) {
+    _classCallCheck(this, LastItemDirective);
+
     this.$timeout = $timeout;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    if (scope.$last === true) {
-      this.$timeout(() => {
-        scope.$emit('lastItem', element);
-      });
+  _createClass(LastItemDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      if (scope.$last === true) {
+        this.$timeout(function () {
+          scope.$emit('lastItem', element);
+        });
+      }
     }
-  }
+  }], [{
+    key: "factory",
+    value: function factory($timeout) {
+      return new LastItemDirective($timeout);
+    }
+  }]);
 
-  static factory($timeout) {
-    return new LastItemDirective($timeout);
-  }
-
-}
+  return LastItemDirective;
+}();
 
 exports.LastItemDirective = LastItemDirective;
 LastItemDirective.factory.$inject = ['$timeout'];
@@ -22648,45 +23198,59 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class LazyScriptDirective {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var LazyScriptDirective =
+/*#__PURE__*/
+function () {
+  function LazyScriptDirective() {
+    _classCallCheck(this, LazyScriptDirective);
+
     this.restrict = 'A';
     this.scope = false;
   }
 
-  link(scope, element, attributes, controller) {
-    // if (attributes.type === 'text/javascript-lazy') {
-    if (attributes.src !== undefined) {
-      fetch(attributes.src, {
-        mode: 'no-cors'
-      }).then(response => {
-        const code = response.text();
+  _createClass(LazyScriptDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      // if (attributes.type === 'text/javascript-lazy') {
+      if (attributes.src !== undefined) {
+        fetch(attributes.src, {
+          mode: 'no-cors'
+        }).then(function (response) {
+          var code = response.text();
+
+          try {
+            new Function(code)();
+          } catch (error) {
+            console.log('LazyScriptDirective.error', error);
+          }
+        });
+      } else {
+        var code = element.text();
 
         try {
           new Function(code)();
         } catch (error) {
           console.log('LazyScriptDirective.error', error);
         }
-      });
-    } else {
-      const code = element.text();
+      } // }
+      // element.on('$destroy', () => {});
 
-      try {
-        new Function(code)();
-      } catch (error) {
-        console.log('LazyScriptDirective.error', error);
-      }
-    } // }
-    // element.on('$destroy', () => {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new LazyScriptDirective();
+    }
+  }]);
 
-  }
-
-  static factory() {
-    return new LazyScriptDirective();
-  }
-
-}
+  return LazyScriptDirective;
+}();
 
 exports.default = LazyScriptDirective;
 LazyScriptDirective.factory.$inject = [];
@@ -22707,11 +23271,20 @@ var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 // let INDEX = 0;
-class LazyDirective {
+var LazyDirective =
+/*#__PURE__*/
+function () {
   // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
-  constructor(DomService) {
+  function LazyDirective(DomService) {
+    _classCallCheck(this, LazyDirective);
+
     this.domService = DomService;
     this.restrict = 'A';
     this.scope = {
@@ -22721,149 +23294,163 @@ class LazyDirective {
     };
   }
 
-  link(scope, element, attributes, controller) {
-    const image = element[0];
+  _createClass(LazyDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    if (window.matchMedia('print').matches) {
-      return this.immediate(scope, image);
-    }
+      var image = element[0];
 
-    image.classList.remove('lazying', 'lazyed');
-    const subscription = this.domService.appear$(image).subscribe(event => {
-      if ((image.width > 0 || image.height > 0 || !image.classList.contains('nav--primary--image')) && !image.classList.contains('lazying')) {
-        image.classList.add('lazying');
-        this.onAppearsInViewport(image, scope, attributes);
+      if (window.matchMedia('print').matches) {
+        return this.immediate(scope, image);
       }
-    });
 
-    const onBeforePrint = () => {
-      this.immediate(scope, image);
-      subscription.unsubscribe();
-    };
+      image.classList.remove('lazying', 'lazyed');
+      var subscription = this.domService.appear$(image).subscribe(function (event) {
+        if ((image.width > 0 || image.height > 0 || !image.classList.contains('nav--primary--image')) && !image.classList.contains('lazying')) {
+          image.classList.add('lazying');
 
-    window.addEventListener('beforeprint', onBeforePrint);
-    element.on('$destroy', () => {
-      window.removeEventListener('beforeprint', onBeforePrint);
-      subscription.unsubscribe();
-    });
-  }
-
-  immediate(scope, image) {
-    // this.onAppearsInViewport(image, scope, attributes);
-    if (!image.classList.contains('lazyed')) {
-      const src = this.getThronSrc(image, scope.src);
-      image.src = src;
-      image.removeAttribute('data-src');
-      image.classList.remove('lazying');
-      image.classList.add('lazyed');
-      scope.$emit('lazyImage', image);
-    }
-  }
-
-  getThronSrc(image, src) {
-    const node = image.parentNode;
-    const splitted = src.split('/std/');
-
-    if (splitted.length > 1) {
-      // Contenuto Thron
-      if (splitted[1].match(/^0x0\//)) {
-        // se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
-        // src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
-        src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
-
-        if (!src.match(/[&?]scalemode=?/)) {
-          src += src.indexOf('?') !== -1 ? '&' : '?'; // src += 'scalemode=auto';
+          _this.onAppearsInViewport(image, scope, attributes);
         }
-      } //if (window.devicePixelRatio > 1) {
-      //	src += src.indexOf('?') !== -1 ? '&' : '?';
-      //	src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
-      //}
+      });
 
+      var onBeforePrint = function onBeforePrint() {
+        _this.immediate(scope, image);
+
+        subscription.unsubscribe();
+      };
+
+      window.addEventListener('beforeprint', onBeforePrint);
+      element.on('$destroy', function () {
+        window.removeEventListener('beforeprint', onBeforePrint);
+        subscription.unsubscribe();
+      });
     }
-
-    return src;
-  }
-
-  onAppearsInViewport(image, scope, attributes) {
-    if (scope.srcset) {
-      // attributes.$set('srcset', scope.srcset);
-      image.setAttribute('srcset', scope.srcset);
-      image.removeAttribute('data-srcset');
-
-      if (scope.src) {
-        // attributes.$set('src', scope.src);
-        image.setAttribute('src', this.getThronSrc(image, scope.src));
+  }, {
+    key: "immediate",
+    value: function immediate(scope, image) {
+      // this.onAppearsInViewport(image, scope, attributes);
+      if (!image.classList.contains('lazyed')) {
+        var src = this.getThronSrc(image, scope.src);
+        image.src = src;
         image.removeAttribute('data-src');
-      }
-
-      image.classList.remove('lazying');
-      image.classList.add('lazyed');
-    } else if (scope.src) {
-      const src = this.getThronSrc(image, scope.src);
-      image.removeAttribute('data-src');
-      this.onImagePreload(image, src, srcOrUndefined => {
-        // image.setAttribute('src', src);
         image.classList.remove('lazying');
         image.classList.add('lazyed');
         scope.$emit('lazyImage', image);
-      });
-    } else if (scope.backgroundSrc) {
-      image.setStyle('background-image', `url(${this.getThronSrc(image, scope.backgroundSrc)})`);
-      image.removeAttribute('data-background-src');
-      image.classList.remove('lazying');
-      image.classList.add('lazyed');
-    }
-  }
-
-  lazy$(node) {
-    return this.domService.rafAndRect$().pipe((0, _operators.map)(datas => {
-      const windowRect = datas[1];
-
-      const rect = _rect.default.fromNode(node);
-
-      const intersection = rect.intersection(windowRect);
-      return intersection;
-    }));
-  }
-
-  onImagePreload(image, src, callback) {
-    // const img = new Image();
-    image.onload = () => {
-      image.onload = image.onerror = null;
-
-      if (typeof callback === 'function') {
-        // setTimeout(() => {
-        callback(image.src); // }, 10);
       }
-    };
+    }
+  }, {
+    key: "getThronSrc",
+    value: function getThronSrc(image, src) {
+      var node = image.parentNode;
+      var splitted = src.split('/std/');
 
-    image.onerror = function (e) {
-      image.onload = image.onerror = null;
+      if (splitted.length > 1) {
+        // Contenuto Thron
+        if (splitted[1].match(/^0x0\//)) {
+          // se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
+          // src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
+          src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
 
-      _gtm.default.push({
-        event: 'img error',
-        imageurl: image.src,
-        pageurl: window.location.href
-      });
+          if (!src.match(/[&?]scalemode=?/)) {
+            src += src.indexOf('?') !== -1 ? '&' : '?'; // src += 'scalemode=auto';
+          }
+        } //if (window.devicePixelRatio > 1) {
+        //	src += src.indexOf('?') !== -1 ? '&' : '?';
+        //	src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
+        //}
 
-      image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAC/CAMAAAA1kLK0AAAATlBMVEX////MzMyZmZn39/fHx8fPz8+Ojo7FxcXDw8Pn5+fS0tLq6url5eX8/PyUlJTi4uLX19fv7++JiYm9vb3d3d2FhYWtra2qqqqAgICdnZ2sCR5lAAAJUElEQVR4nO2d6YKzKgyGa7VaN1zqdL7e/42eigERkGobrM7J+2umM3V5DEkICKeQxHUKT6SnCASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgE6NsgynFcvvzqhXwNRBk2RVdnQRBEXM8fsrormm/x+AqIsqnqAO5+Iv5ZXTVfgLE9iLDoIegIpjiCutj8srYFUaaZG8III0s3tYtNQTT1MgqCRd1sd20bgkiDZDmFQUmQbnV1m4Go5owhimTYsP612ub6NgKRWm60v/lL1nVF+lQfSi+BjUcUbWIVm4BogshkUKdmlCybtL4YNKJgA1+xAYiwjjQKQZc78qYw7/T4GtX+r9I7CK1VPCm8zpfKppsakf/24RtEmUWT+8nyhdlBmU9jbZT5TSs8g2jUm4lWWnhYT7/t1VP4BVFdlRtJ1jf0sEsUFFefkdQriFrJoK7v+btQPUZSY1+hciJ/IErF30XR26cJlfYRBd4chT8QoWLUyUdGXSlG8T7QF/IGIlSf44fnCFXb8nW9nkAoHJLuY3suu8Q3CU8gVA45xgFz3zbhB0Sp+Aek4yvNI/LhMf2AUJwbij30Ki8jXaxjKvIC4qIGDDQS42GjC9oxpXyA6Cb9pSseCdlviTq0Ywp5AJFqFTkfJBL0zig+iMaoTCKSkK0jwe6BoYMoFUcp/QTa81PSduTQgQ5ClqOiskjwScgEJULugGGDaFTbTT2QkCdALk8ggyind17IegReFB3pojYOZBAicgrDHUngeUzR+HBjKC6IUDwtmQWPfgKNhMzfE9RLRwWRiZse22+FT6IRZpYhHbAXKgiRQkw8ugcSonFgJhOoIKRnnLgxfD8xdm5xjtcLE4Q0CC1WpmPsQIqiInIgmgQmiMvcczJINGnuUPr6ksTx8LqhiCCkQZgNQCdR/cQOtffF58IzCUQQtcOX6ySK+OxQ/NqXiH4oWqKNB0LkEPbUN9VyTCcJ9tokRA0TLZfAA1FFzmarZ1ZOEgtMAhwS2oQaPBCBPWRIGSTaj0wiFSEU6fLRQMh6zGxXSM+sUgeJ9qUTFN07LHeJBgK6W66ekG4T+c/w+PtIwTQSr01iwQnXCAuEeECW0Zfq9tTQGrQcM29Zy36vWV1n19/nj2rjuE1lugJZosHpjWOBEJd1MS8raBlj7dAa9HzipnjFJmBKY2ETtRZXcJlF/9YNIIGAmGFz4hceH+wkNNVsJpbElljkOOUbwgKRzYf1AQSExFf9juvUg8Zs8B42ECJxwemMI4EIHcEMQJxjfuc2EmpzStnoKtj5kha3dgaEDNg4d4ADonG4cAHizHQS3EbK2/33936TE9CbhyTx4J9l8QwIETdQAigSiAKuyZYRShBAQqny83/vemf6jKD3Yvj/5gwkYsD6y+wgIM2OCow7QAIBNSNr5j+CMEkMNjL4Bdbeh6/n8AUGR8tmQICTwBnhQAIhQpn1b0okGDymkllxEpBZnSHInmrwmHBpdWwHcXL3btYJB4RIp6wOXAUBUVTJrCYkzv8GM7+z0bvy3+wgRK0YI6XCARG60t0JCCOfuPJbz8EGHj/c8zX8V/bg36/nnKX0lii3gAJCBA1rajAFYWZWnEQqQwt/vDc2hM+6aa6z4VP0QFHCBg4IuCJ7T1ADcW75GedIxNzPCAsR3TE7COjxoszcxwFROYKGAWIweINEMYkVj+l37CBE2MBIsnFAQGNNrF5LA8Gu8HmqeUwgEfPsNGELQJSJwzWtFA6I2hE9DR8hn1+a2Eiw3/7nql0A4oRYwf0CiP6EIaeh5xODn+BtIzwmCBHQrX/UQMT9Z+mPlmNCPsEjBA8r8RIQrvRlpbYHwfrPungmx2xFF2OJj/gTIMzMSpD4v4GYyazy+P8CgvsI3sGcyTEH93FMH7E+aii9Kp1EdeCosT6P+B1IDDZgqd4dNI9YlVkm/YcBpJEaiasgcT1mZrm+rxGKctzQz0h0Egfta6zrfXIfGU1q2zoJzUUcpve5ph5xZrf+01LYvp1EvsRH7K8esaJCdRZD3c3PQ7UQo3rXvgaxvwrV8polN4lhqLv4B7//OKt3DhD7q1kurmJzPdoh3uVi/FsnIXLMVyD2V8VeOq4h72so24d3QNEOmVUyJZEyN4g9jmssG+kaG8cZ/Ftx76uSjLXcu+SzJA4z0rVo7FMl8ZBDnfUw9snbea5XapgLxB7HPpeMhk9JMGuo1at3srZ9lNHwBfMjdLVX819NEuAxDzM/4vWMGVMxs3k5g0Q7B2KfM2bC+VA2B+JpFExdaisfZoxZSVhAlPucQ+WYVTcPoh//VmfVDTmm4jF5POgHQi0gdjqrzjHt0QWCwxjnWQ6ZVa5lVo11WsBO51k6Zt5e9MmkDg2ZlUKCt5aGmSB2O/N2fi524Hw5Q9O/IbPSs21znuVu52LPz87PL9kKDRZlkDDw7nd2vnxfA2dNGaNmNZV4M3qH72vICi5OgqNHUU2iB77DN3iw37NykpAv8Ozxna75t/zek4uE+Msu3/IbTQL57U6TRIpuEH7eBMZaKCrXqndCpSSEc55e/t8N/0R6ZgXa/bvhttUCPpOVxP5XC7CsH/Gp9MzqdIz1I4wVRT6X6SeOsKKIvsYMhoyK7iHWmPGxKNB07SLZy933qkPqOlRoB1bHO6SD2Ps6VGPjQFyodyShLAe495XJFNvFy39HjyltY/dr1SnPD6kf2ksncYTVC5X1LL2ROMZ6ln6WIh2j6HFWOFXWvI0s74q/KWUd5MOseassFPXx4uBCoWIQx1kFebJOOnIN81DrYtNK6cqBae18cWTaTQFE+2tITXdLeetEYX1Vj4F9hcqJfILQ9uDpVp8qrP/GHjy0K9MofZ+uevk+Xdlf2qfrRDu3Kaew7uU3++/lX93L72Tf3fEyt7ujudflX9ndsdf8fp+12O+z+x/s99mLdoCVoj2BpWiXaCnaN1w5I+0kL1U2FY+SBg7+WV29zrjw9RUQvcqw6bfIDkTYeP7Qh9LGsWuyV30NBKgMpb5EAPRtELsRgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAPUGQuP4DT2RwhyUkgc4AAAAASUVORK5CYII='; // setTimeout(() => {
+      }
 
-      callback(); // }, 10);
-    };
+      return src;
+    }
+  }, {
+    key: "onAppearsInViewport",
+    value: function onAppearsInViewport(image, scope, attributes) {
+      if (scope.srcset) {
+        // attributes.$set('srcset', scope.srcset);
+        image.setAttribute('srcset', scope.srcset);
+        image.removeAttribute('data-srcset');
 
-    image.src = src;
-  }
+        if (scope.src) {
+          // attributes.$set('src', scope.src);
+          image.setAttribute('src', this.getThronSrc(image, scope.src));
+          image.removeAttribute('data-src');
+        }
 
-  static factory(DomService) {
-    return new LazyDirective(DomService);
-  }
+        image.classList.remove('lazying');
+        image.classList.add('lazyed');
+      } else if (scope.src) {
+        var src = this.getThronSrc(image, scope.src);
+        image.removeAttribute('data-src');
+        this.onImagePreload(image, src, function (srcOrUndefined) {
+          // image.setAttribute('src', src);
+          image.classList.remove('lazying');
+          image.classList.add('lazyed');
+          scope.$emit('lazyImage', image);
+        });
+      } else if (scope.backgroundSrc) {
+        image.setStyle('background-image', "url(".concat(this.getThronSrc(image, scope.backgroundSrc), ")"));
+        image.removeAttribute('data-background-src');
+        image.classList.remove('lazying');
+        image.classList.add('lazyed');
+      }
+    }
+  }, {
+    key: "lazy$",
+    value: function lazy$(node) {
+      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+        var windowRect = datas[1];
 
-}
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+        return intersection;
+      }));
+    }
+  }, {
+    key: "onImagePreload",
+    value: function onImagePreload(image, src, callback) {
+      // const img = new Image();
+      image.onload = function () {
+        image.onload = image.onerror = null;
+
+        if (typeof callback === 'function') {
+          // setTimeout(() => {
+          callback(image.src); // }, 10);
+        }
+      };
+
+      image.onerror = function (e) {
+        image.onload = image.onerror = null;
+
+        _gtm.default.push({
+          event: 'img error',
+          imageurl: image.src,
+          pageurl: window.location.href
+        });
+
+        image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAC/CAMAAAA1kLK0AAAATlBMVEX////MzMyZmZn39/fHx8fPz8+Ojo7FxcXDw8Pn5+fS0tLq6url5eX8/PyUlJTi4uLX19fv7++JiYm9vb3d3d2FhYWtra2qqqqAgICdnZ2sCR5lAAAJUElEQVR4nO2d6YKzKgyGa7VaN1zqdL7e/42eigERkGobrM7J+2umM3V5DEkICKeQxHUKT6SnCASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgE6NsgynFcvvzqhXwNRBk2RVdnQRBEXM8fsrormm/x+AqIsqnqAO5+Iv5ZXTVfgLE9iLDoIegIpjiCutj8srYFUaaZG8III0s3tYtNQTT1MgqCRd1sd20bgkiDZDmFQUmQbnV1m4Go5owhimTYsP612ub6NgKRWm60v/lL1nVF+lQfSi+BjUcUbWIVm4BogshkUKdmlCybtL4YNKJgA1+xAYiwjjQKQZc78qYw7/T4GtX+r9I7CK1VPCm8zpfKppsakf/24RtEmUWT+8nyhdlBmU9jbZT5TSs8g2jUm4lWWnhYT7/t1VP4BVFdlRtJ1jf0sEsUFFefkdQriFrJoK7v+btQPUZSY1+hciJ/IErF30XR26cJlfYRBd4chT8QoWLUyUdGXSlG8T7QF/IGIlSf44fnCFXb8nW9nkAoHJLuY3suu8Q3CU8gVA45xgFz3zbhB0Sp+Aek4yvNI/LhMf2AUJwbij30Ki8jXaxjKvIC4qIGDDQS42GjC9oxpXyA6Cb9pSseCdlviTq0Ywp5AJFqFTkfJBL0zig+iMaoTCKSkK0jwe6BoYMoFUcp/QTa81PSduTQgQ5ClqOiskjwScgEJULugGGDaFTbTT2QkCdALk8ggyind17IegReFB3pojYOZBAicgrDHUngeUzR+HBjKC6IUDwtmQWPfgKNhMzfE9RLRwWRiZse22+FT6IRZpYhHbAXKgiRQkw8ugcSonFgJhOoIKRnnLgxfD8xdm5xjtcLE4Q0CC1WpmPsQIqiInIgmgQmiMvcczJINGnuUPr6ksTx8LqhiCCkQZgNQCdR/cQOtffF58IzCUQQtcOX6ySK+OxQ/NqXiH4oWqKNB0LkEPbUN9VyTCcJ9tokRA0TLZfAA1FFzmarZ1ZOEgtMAhwS2oQaPBCBPWRIGSTaj0wiFSEU6fLRQMh6zGxXSM+sUgeJ9qUTFN07LHeJBgK6W66ekG4T+c/w+PtIwTQSr01iwQnXCAuEeECW0Zfq9tTQGrQcM29Zy36vWV1n19/nj2rjuE1lugJZosHpjWOBEJd1MS8raBlj7dAa9HzipnjFJmBKY2ETtRZXcJlF/9YNIIGAmGFz4hceH+wkNNVsJpbElljkOOUbwgKRzYf1AQSExFf9juvUg8Zs8B42ECJxwemMI4EIHcEMQJxjfuc2EmpzStnoKtj5kha3dgaEDNg4d4ADonG4cAHizHQS3EbK2/33936TE9CbhyTx4J9l8QwIETdQAigSiAKuyZYRShBAQqny83/vemf6jKD3Yvj/5gwkYsD6y+wgIM2OCow7QAIBNSNr5j+CMEkMNjL4Bdbeh6/n8AUGR8tmQICTwBnhQAIhQpn1b0okGDymkllxEpBZnSHInmrwmHBpdWwHcXL3btYJB4RIp6wOXAUBUVTJrCYkzv8GM7+z0bvy3+wgRK0YI6XCARG60t0JCCOfuPJbz8EGHj/c8zX8V/bg36/nnKX0lii3gAJCBA1rajAFYWZWnEQqQwt/vDc2hM+6aa6z4VP0QFHCBg4IuCJ7T1ADcW75GedIxNzPCAsR3TE7COjxoszcxwFROYKGAWIweINEMYkVj+l37CBE2MBIsnFAQGNNrF5LA8Gu8HmqeUwgEfPsNGELQJSJwzWtFA6I2hE9DR8hn1+a2Eiw3/7nql0A4oRYwf0CiP6EIaeh5xODn+BtIzwmCBHQrX/UQMT9Z+mPlmNCPsEjBA8r8RIQrvRlpbYHwfrPungmx2xFF2OJj/gTIMzMSpD4v4GYyazy+P8CgvsI3sGcyTEH93FMH7E+aii9Kp1EdeCosT6P+B1IDDZgqd4dNI9YlVkm/YcBpJEaiasgcT1mZrm+rxGKctzQz0h0Egfta6zrfXIfGU1q2zoJzUUcpve5ph5xZrf+01LYvp1EvsRH7K8esaJCdRZD3c3PQ7UQo3rXvgaxvwrV8polN4lhqLv4B7//OKt3DhD7q1kurmJzPdoh3uVi/FsnIXLMVyD2V8VeOq4h72so24d3QNEOmVUyJZEyN4g9jmssG+kaG8cZ/Ftx76uSjLXcu+SzJA4z0rVo7FMl8ZBDnfUw9snbea5XapgLxB7HPpeMhk9JMGuo1at3srZ9lNHwBfMjdLVX819NEuAxDzM/4vWMGVMxs3k5g0Q7B2KfM2bC+VA2B+JpFExdaisfZoxZSVhAlPucQ+WYVTcPoh//VmfVDTmm4jF5POgHQi0gdjqrzjHt0QWCwxjnWQ6ZVa5lVo11WsBO51k6Zt5e9MmkDg2ZlUKCt5aGmSB2O/N2fi524Hw5Q9O/IbPSs21znuVu52LPz87PL9kKDRZlkDDw7nd2vnxfA2dNGaNmNZV4M3qH72vICi5OgqNHUU2iB77DN3iw37NykpAv8Ozxna75t/zek4uE+Msu3/IbTQL57U6TRIpuEH7eBMZaKCrXqndCpSSEc55e/t8N/0R6ZgXa/bvhttUCPpOVxP5XC7CsH/Gp9MzqdIz1I4wVRT6X6SeOsKKIvsYMhoyK7iHWmPGxKNB07SLZy933qkPqOlRoB1bHO6SD2Ps6VGPjQFyodyShLAe495XJFNvFy39HjyltY/dr1SnPD6kf2ksncYTVC5X1LL2ROMZ6ln6WIh2j6HFWOFXWvI0s74q/KWUd5MOseassFPXx4uBCoWIQx1kFebJOOnIN81DrYtNK6cqBae18cWTaTQFE+2tITXdLeetEYX1Vj4F9hcqJfILQ9uDpVp8qrP/GHjy0K9MofZ+uevk+Xdlf2qfrRDu3Kaew7uU3++/lX93L72Tf3fEyt7ujudflX9ndsdf8fp+12O+z+x/s99mLdoCVoj2BpWiXaCnaN1w5I+0kL1U2FY+SBg7+WV29zrjw9RUQvcqw6bfIDkTYeP7Qh9LGsWuyV30NBKgMpb5EAPRtELsRgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAPUGQuP4DT2RwhyUkgc4AAAAASUVORK5CYII='; // setTimeout(() => {
+
+        callback(); // }, 10);
+      };
+
+      image.src = src;
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new LazyDirective(DomService);
+    }
+  }]);
+
+  return LazyDirective;
+}();
 
 exports.default = LazyDirective;
 LazyDirective.factory.$inject = ['DomService'];
 
-},{"../gtm/gtm.service":239,"../shared/rect":256,"rxjs/operators":198}],215:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"../shared/rect":258,"rxjs/operators":198}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22875,160 +23462,179 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class MediaDirective {
-  constructor($timeout, WishlistService) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var MediaDirective =
+/*#__PURE__*/
+function () {
+  function MediaDirective($timeout, WishlistService) {
+    _classCallCheck(this, MediaDirective);
+
     this.$timeout = $timeout;
     this.wishlistService = WishlistService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = `<div class="media">
-	<ng-transclude></ng-transclude>
-</div>
-<div class="overlay" ng-click="onOverlay()"></div>
-<div class="share-buttons">
-<div class="btn btn--pinterest" ng-click="onPin($event)" ng-if="onPin">
-	<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
-</div>
-<div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
-	<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
-	<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
-</div></div>`;
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"share-buttons\">\n<div class=\"btn btn--pinterest\" ng-click=\"onPin($event)\" ng-if=\"onPin\">\n\t<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div></div>";
     this.scope = {
       item: '=?media'
     };
   }
 
-  link(scope, element, attributes, controller) {
-    scope.item = scope.item || {};
-    const node = element[0];
-    const img = node.querySelector('img');
+  _createClass(MediaDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    if (img) {
-      const pageTitle = document.title;
+      scope.item = scope.item || {};
+      var node = element[0];
+      var img = node.querySelector('img');
 
-      scope.onPin = event => {
+      if (img) {
+        var pageTitle = document.title;
+
+        scope.onPin = function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          var pin = {
+            url: window.location.href,
+            media: img.src,
+            description: img.title || pageTitle
+          }; // console.log('MediaDirective.onPin', pin);
+
+          _gtm.default.push({
+            event: 'Pinterest',
+            wish_name: scope.item.name || scope.item.coId,
+            wish_type: scope.item.typeName || scope.item.type
+          });
+
+          PinUtils.pinOne(pin);
+        };
+      }
+
+      scope.$watch(function () {
+        return _this.wishlistService.has(scope.item);
+      }, function (current, previous) {
+        // console.log(current, previous, node);
+        if (scope.wishlistActive !== current) {
+          scope.wishlistActive = current;
+
+          if (current) {
+            scope.wishlistActivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistActivated = false;
+            }, 2000);
+          } else {
+            scope.wishlistDeactivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistDeactivated = false;
+            }, 2000);
+          }
+        }
+      });
+
+      scope.onClickWishlist = function (event) {
         event.preventDefault();
         event.stopPropagation();
-        const pin = {
-          url: window.location.href,
-          media: img.src,
-          description: img.title || pageTitle
-        }; // console.log('MediaDirective.onPin', pin);
 
-        _gtm.default.push({
-          event: 'Pinterest',
-          wish_name: scope.item.name || scope.item.coId,
-          wish_type: scope.item.typeName || scope.item.type
+        _this.wishlistService.toggle(scope.item).then(function (has) {
+          console.log('MediaDirective.onClickWishlist', has);
+        }, function (error) {
+          console.log(error);
         });
-
-        PinUtils.pinOne(pin);
       };
-    }
 
-    scope.$watch(() => {
-      return this.wishlistService.has(scope.item);
-    }, (current, previous) => {
-      // console.log(current, previous, node);
-      if (scope.wishlistActive !== current) {
-        scope.wishlistActive = current;
+      scope.onOverlay = function (event) {
+        var btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
 
-        if (current) {
-          scope.wishlistActivated = true;
-          this.$timeout(() => {
-            scope.wishlistActivated = false;
-          }, 2000);
-        } else {
-          scope.wishlistDeactivated = true;
-          this.$timeout(() => {
-            scope.wishlistDeactivated = false;
-          }, 2000);
+        if (btnGallery !== null) {
+          // console.log(btnGallery);
+          btnGallery.click();
+          return;
         }
-      }
-    });
 
-    scope.onClickWishlist = event => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.wishlistService.toggle(scope.item).then(has => {
-        console.log('MediaDirective.onClickWishlist', has);
-      }, error => {
-        console.log(error);
-      });
-    };
+        if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+          _this.$timeout(function () {
+            var index = 0;
 
-    scope.onOverlay = event => {
-      const btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
+            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')).map(function (itemNode, i) {
+              if (itemNode == node) {
+                index = i;
+              }
 
-      if (btnGallery !== null) {
-        // console.log(btnGallery);
-        btnGallery.click();
-        return;
-      }
+              var item = {};
+              item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
 
-      if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
-        this.$timeout(() => {
-          let index = 0;
-          const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')].map((itemNode, i) => {
-            if (itemNode == node) {
-              index = i;
-            }
+              if (item.type === 'media') {
+                var _img = itemNode.querySelector('img');
 
-            const item = {};
-            item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+                if (_img) {
+                  item.src = _img.getAttribute('data-src-zoom') || _img.getAttribute('src') || _img.getAttribute('data-src');
+                  item.title = _img.getAttribute('alt');
+                  var wishlist = itemNode.getAttribute('media');
 
-            if (item.type === 'media') {
-              const img = itemNode.querySelector('img');
-
-              if (img) {
-                item.src = img.getAttribute('data-src-zoom') || img.getAttribute('src') || img.getAttribute('data-src');
-                item.title = img.getAttribute('alt');
-                const wishlist = itemNode.getAttribute('media');
-
-                if (wishlist) {
-                  item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                  if (wishlist) {
+                    item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                  }
+                } else {
+                  console.log(itemNode, _img);
                 }
               } else {
-                console.log(itemNode, img);
-              }
-            } else {
-              const video = itemNode.querySelector('video');
-              const sources = video.querySelectorAll('source');
-              item.poster = video.getAttribute('poster');
-              item.src = sources[sources.length - 1].getAttribute('src');
-              item.title = video.getAttribute('alt');
-              const wishlist = itemNode.getAttribute('video');
+                var video = itemNode.querySelector('video');
+                var sources = video.querySelectorAll('source');
+                item.poster = video.getAttribute('poster');
+                item.src = sources[sources.length - 1].getAttribute('src');
+                item.title = video.getAttribute('alt');
 
-              if (wishlist) {
-                item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
-              }
-            }
+                var _wishlist = itemNode.getAttribute('video');
 
-            return item;
+                if (_wishlist) {
+                  item.wishlist = JSON.parse(_wishlist.indexOf('"') === -1 ? _wishlist.split(/[^\d\W]+/g).join('"') : _wishlist);
+                }
+              }
+
+              return item;
+            });
+
+            scope.$root.gallery = {
+              index: index,
+              items: items
+            };
           });
-          scope.$root.gallery = {
-            index,
-            items
-          };
-        });
-      } // event.preventDefault();
-      // event.stopPropagation();
+        } // event.preventDefault();
+        // event.stopPropagation();
 
-    };
+      };
 
-    element.on('$destroy', () => {});
-  }
+      element.on('$destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, WishlistService) {
+      return new MediaDirective($timeout, WishlistService);
+    }
+  }]);
 
-  static factory($timeout, WishlistService) {
-    return new MediaDirective($timeout, WishlistService);
-  }
-
-}
+  return MediaDirective;
+}();
 
 exports.default = MediaDirective;
 MediaDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-},{"../gtm/gtm.service":239}],216:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23036,92 +23642,125 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MuuriDirective = void 0;
 
-/* jshint esversion: 6 */
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* global window, document, angular, Muuri, TweenMax, TimelineMax */
-class MuuriDirective {
-  constructor() {
+var MuuriDirective =
+/*#__PURE__*/
+function () {
+  function MuuriDirective() {
+    _classCallCheck(this, MuuriDirective);
+
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
+  _createClass(MuuriDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    if (window.matchMedia('print').matches) {
-      node.classList.add('printable');
-      return;
-    }
+      var node = element[0];
 
-    const onBeforePrint = () => {
-      if (element.muuri) {
-        element.muuri.destroy();
+      if (window.matchMedia('print').matches) {
+        node.classList.add('printable');
+        return;
       }
 
-      node.classList.add('printable');
-    };
+      var onBeforePrint = function onBeforePrint() {
+        if (element.muuri) {
+          element.muuri.destroy();
+        }
 
-    window.addEventListener('beforeprint', onBeforePrint);
-    scope.$on('lastItem', slide => {
-      // console.log('MuuriDirective.lastItem', slide);
-      this.onMuuri(scope, element, attributes);
-    });
-    scope.$on('lazyImage', slide => {
-      // console.log('lazyImage', element.muuri);
-      return;
+        node.classList.add('printable');
+      };
 
-      if (element.muuri) {
-        const node = element[0];
-        const items = [...node.querySelectorAll('.listing__item')];
-        element.muuri.refreshItems(items).layout();
-      }
-    });
-    element.on('$destroy', () => {
-      window.removeEventListener('beforeprint', onBeforePrint);
+      window.addEventListener('beforeprint', onBeforePrint);
+      scope.$on('lastItem', function (slide) {
+        // console.log('MuuriDirective.lastItem', slide);
+        _this.onMuuri(scope, element, attributes);
+      });
+      scope.$on('lazyImage', function (slide) {
+        // console.log('lazyImage', element.muuri);
+        return;
 
-      if (element.muuri) {
-        element.muuri.destroy();
-      }
-    });
-    setTimeout(() => {
-      this.onMuuri(scope, element, attributes);
-    }, 1);
-  }
+        if (element.muuri) {
+          var _node = element[0];
 
-  onMuuri(scope, element, attributes) {
-    if (element.muuri) {
-      const node = element[0]; // const items = scope.$eval(attributes.muuri);
+          var items = _toConsumableArray(_node.querySelectorAll('.listing__item'));
 
-      const previousItems = element.muuri.getItems().map(x => x.getElement()); // console.log('MuuriDirective.previousItems', previousItems);
-
-      const items = [...node.querySelectorAll('.listing__item')]; // console.log('MuuriDirective.newItems', items);
-
-      const newItems = items.filter(x => previousItems.indexOf(x) === -1);
-      const removeItems = previousItems.filter(x => items.indexOf(x) === -1);
-      element.muuri.remove(removeItems);
-      element.muuri.add(newItems); // element.muuri.refreshItems(items).layout();
-    } else {
-      element.muuri = new Muuri(element[0], {
-        layoutDuration: 0,
-        // 400,
-        layoutEasing: 'ease',
-        layout: {
-          fillGaps: true,
-          horizontal: false,
-          alignRight: false,
-          alignBottom: false,
-          rounding: false
+          element.muuri.refreshItems(items).layout();
         }
       });
-      element.addClass('muuri-init');
-      scope.$emit('onMuuri');
+      element.on('$destroy', function () {
+        window.removeEventListener('beforeprint', onBeforePrint);
+
+        if (element.muuri) {
+          element.muuri.destroy();
+        }
+      });
+      setTimeout(function () {
+        _this.onMuuri(scope, element, attributes);
+      }, 1);
     }
-  }
+  }, {
+    key: "onMuuri",
+    value: function onMuuri(scope, element, attributes) {
+      if (element.muuri) {
+        var node = element[0]; // const items = scope.$eval(attributes.muuri);
 
-  static factory() {
-    return new MuuriDirective();
-  }
+        var previousItems = element.muuri.getItems().map(function (x) {
+          return x.getElement();
+        }); // console.log('MuuriDirective.previousItems', previousItems);
 
-}
+        var items = _toConsumableArray(node.querySelectorAll('.listing__item')); // console.log('MuuriDirective.newItems', items);
+
+
+        var newItems = items.filter(function (x) {
+          return previousItems.indexOf(x) === -1;
+        });
+        var removeItems = previousItems.filter(function (x) {
+          return items.indexOf(x) === -1;
+        });
+        element.muuri.remove(removeItems);
+        element.muuri.add(newItems); // element.muuri.refreshItems(items).layout();
+      } else {
+        element.muuri = new Muuri(element[0], {
+          layoutDuration: 0,
+          // 400,
+          layoutEasing: 'ease',
+          layout: {
+            fillGaps: true,
+            horizontal: false,
+            alignRight: false,
+            alignBottom: false,
+            rounding: false
+          }
+        });
+        element.addClass('muuri-init');
+        scope.$emit('onMuuri');
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new MuuriDirective();
+    }
+  }]);
+
+  return MuuriDirective;
+}();
 
 exports.MuuriDirective = MuuriDirective;
 MuuriDirective.factory.$inject = [];
@@ -23134,267 +23773,290 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 // Workaround for Edge 16+, which only implemented object-fit for <img> tags
 // TODO: Keep an eye on Edge to determine which version has full final support
-const edgeVersion = window.navigator.userAgent.match(/Edge\/(\d{2})\./);
-const edgePartialSupport = edgeVersion ? parseInt(edgeVersion[1], 10) >= 16 : false; // If the browser does support object-fit, we don't need to continue
+var edgeVersion = window.navigator.userAgent.match(/Edge\/(\d{2})\./);
+var edgePartialSupport = edgeVersion ? parseInt(edgeVersion[1], 10) >= 16 : false; // If the browser does support object-fit, we don't need to continue
 
-const hasSupport = 'objectFit' in document.documentElement.style !== false;
+var hasSupport = 'objectFit' in document.documentElement.style !== false;
 
-class ObjectFitDirective {
-  constructor(DomService) {
+var ObjectFitDirective =
+/*#__PURE__*/
+function () {
+  function ObjectFitDirective(DomService) {
+    _classCallCheck(this, ObjectFitDirective);
+
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0]; // console.log('ObjectFitDirective', node);
-    // if the page is being rendered on the server, don't continue
+  _createClass(ObjectFitDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    if (typeof window === 'undefined') {
-      return;
-    }
+      var node = element[0]; // console.log('ObjectFitDirective', node);
+      // if the page is being rendered on the server, don't continue
 
-    if (hasSupport && !edgePartialSupport) {
-      return;
-    }
+      if (typeof window === 'undefined') {
+        return;
+      }
 
-    this.polyfill(node);
-    /*
-    	if (typeof node === 'undefined' || node instanceof Event) {
-    		// If left blank, or a default event, all node on the page will be polyfilled.
-    		node = document.querySelectorAll('[data-object-fit]');
-    	} else if (node && node.nodeName) {
-    		// If it's a single node, wrap it in an array so it works.
-    		node = [node];
-    	} else if (typeof node === 'object' && node.length && node[0].nodeName) {
-    		// If it's an array of DOM nodes (e.g. a jQuery selector), it's fine as-is.
-    		node = node;
-    	} else {
-    		// Otherwise, if it's invalid or an incorrect type, return false to let people know.
-    		return false;
-    	}
-    */
+      if (hasSupport && !edgePartialSupport) {
+        return;
+      }
 
-    const polyfill = () => {
       this.polyfill(node);
-    };
+      /*
+      	if (typeof node === 'undefined' || node instanceof Event) {
+      		// If left blank, or a default event, all node on the page will be polyfilled.
+      		node = document.querySelectorAll('[data-object-fit]');
+      	} else if (node && node.nodeName) {
+      		// If it's a single node, wrap it in an array so it works.
+      		node = [node];
+      	} else if (typeof node === 'object' && node.length && node[0].nodeName) {
+      		// If it's an array of DOM nodes (e.g. a jQuery selector), it's fine as-is.
+      		node = node;
+      	} else {
+      		// Otherwise, if it's invalid or an incorrect type, return false to let people know.
+      		return false;
+      	}
+      */
 
-    window.addEventListener('resize', polyfill);
-    element.on('$destroy', () => {
-      window.removeEventListener('resize', polyfill);
-    });
-  }
+      var polyfill = function polyfill() {
+        _this.polyfill(node);
+      };
 
-  polyfill(node) {
-    const nodeName = node.nodeName.toLowerCase();
-
-    const objectFit = () => {
-      this.objectFit(node);
-    };
-
-    if (nodeName === 'img') {
-      if (edgePartialSupport) {
-        return; // Edge supports object-fit for images (but nothing else), so no need to polyfill
-      }
-
-      if (node.complete) {
-        this.objectFit(node);
-      } else {
-        node.addEventListener('load', objectFit);
-      }
-    } else if (nodeName === 'video') {
-      if (node.readyState > 0) {
-        this.objectFit(node);
-      } else {
-        node.addEventListener('loadedmetadata', objectFit);
-      }
-    } else {
-      this.objectFit(node);
+      window.addEventListener('resize', polyfill);
+      element.on('$destroy', function () {
+        window.removeEventListener('resize', polyfill);
+      });
     }
-  }
+  }, {
+    key: "polyfill",
+    value: function polyfill(node) {
+      var _this2 = this;
 
-  objectFit(node) {
-    console.log('ObjectFitDirective.objectFit', node); // IE 10- data polyfill
+      var nodeName = node.nodeName.toLowerCase();
 
-    let fit = node.dataset ? node.dataset.objectFit : node.getAttribute('data-object-fit');
-    let position = node.dataset ? node.dataset.objectPosition : node.getAttribute('data-object-position'); // Default fallbacks
+      var objectFit = function objectFit() {
+        _this2.objectFit(node);
+      };
 
-    fit = fit || 'cover';
-    position = position || '50% 50%'; // If necessary, make the parent container work with absolutely positioned elements
+      if (nodeName === 'img') {
+        if (edgePartialSupport) {
+          return; // Edge supports object-fit for images (but nothing else), so no need to polyfill
+        }
 
-    const parentNode = node.parentNode;
-    this.checkParentContainer(parentNode); // Check for any pre-set CSS which could mess up image calculations
-
-    this.checkMediaProperties(node); // Reset any pre-set width/height CSS and handle fit positioning
-
-    node.style.position = 'absolute';
-    node.style.width = 'auto';
-    node.style.height = 'auto'; // `scale-down` chooses either `none` or `contain`, whichever is smaller
-
-    if (fit === 'scale-down') {
-      if (node.clientWidth < parentNode.clientWidth && node.clientHeight < parentNode.clientHeight) {
-        fit = 'none';
+        if (node.complete) {
+          this.objectFit(node);
+        } else {
+          node.addEventListener('load', objectFit);
+        }
+      } else if (nodeName === 'video') {
+        if (node.readyState > 0) {
+          this.objectFit(node);
+        } else {
+          node.addEventListener('loadedmetadata', objectFit);
+        }
       } else {
-        fit = 'contain';
+        this.objectFit(node);
       }
-    } // `none` (width/height auto) and `fill` (100%) and are straightforward
-
-
-    if (fit === 'none') {
-      this.setPosition('x', node, position);
-      this.setPosition('y', node, position);
-      return;
     }
+  }, {
+    key: "objectFit",
+    value: function objectFit(node) {
+      console.log('ObjectFitDirective.objectFit', node); // IE 10- data polyfill
 
-    if (fit === 'fill') {
-      node.style.width = '100%';
+      var fit = node.dataset ? node.dataset.objectFit : node.getAttribute('data-object-fit');
+      var position = node.dataset ? node.dataset.objectPosition : node.getAttribute('data-object-position'); // Default fallbacks
+
+      fit = fit || 'cover';
+      position = position || '50% 50%'; // If necessary, make the parent container work with absolutely positioned elements
+
+      var parentNode = node.parentNode;
+      this.checkParentContainer(parentNode); // Check for any pre-set CSS which could mess up image calculations
+
+      this.checkMediaProperties(node); // Reset any pre-set width/height CSS and handle fit positioning
+
+      node.style.position = 'absolute';
+      node.style.width = 'auto';
+      node.style.height = 'auto'; // `scale-down` chooses either `none` or `contain`, whichever is smaller
+
+      if (fit === 'scale-down') {
+        if (node.clientWidth < parentNode.clientWidth && node.clientHeight < parentNode.clientHeight) {
+          fit = 'none';
+        } else {
+          fit = 'contain';
+        }
+      } // `none` (width/height auto) and `fill` (100%) and are straightforward
+
+
+      if (fit === 'none') {
+        this.setPosition('x', node, position);
+        this.setPosition('y', node, position);
+        return;
+      }
+
+      if (fit === 'fill') {
+        node.style.width = '100%';
+        node.style.height = '100%';
+        this.setPosition('x', node, position);
+        this.setPosition('y', node, position);
+        return;
+      } // `cover` and `contain` must figure out which side needs covering, and add CSS positioning & centering
+
+
       node.style.height = '100%';
-      this.setPosition('x', node, position);
-      this.setPosition('y', node, position);
-      return;
-    } // `cover` and `contain` must figure out which side needs covering, and add CSS positioning & centering
 
-
-    node.style.height = '100%';
-
-    if (fit === 'cover' && node.clientWidth > parentNode.clientWidth || fit === 'contain' && node.clientWidth < parentNode.clientWidth) {
-      node.style.top = '0';
-      node.style.marginTop = '0';
-      this.setPosition('x', node, position);
-    } else {
-      node.style.width = '100%';
-      node.style.height = 'auto';
-      node.style.left = '0';
-      node.style.marginLeft = '0';
-      this.setPosition('y', node, position);
-    }
-  }
-
-  checkParentContainer(parentNode) {
-    const styles = window.getComputedStyle(parentNode, null);
-    const position = styles.getPropertyValue('position');
-    const overflow = styles.getPropertyValue('overflow');
-    const display = styles.getPropertyValue('display');
-
-    if (!position || position === 'static') {
-      parentNode.style.position = 'relative';
-    }
-
-    if (overflow !== 'hidden') {
-      parentNode.style.overflow = 'hidden';
-    } // Guesstimating that people want the parent to act like full width/height wrapper here.
-    // Mostly attempts to target <picture> elements, which default to inline.
-
-
-    if (!display || display === 'inline') {
-      parentNode.style.display = 'block';
-    }
-
-    if (parentNode.clientHeight === 0) {
-      parentNode.style.height = '100%';
-    } // Add a CSS class hook, in case people need to override styles for any reason.
-
-
-    if (parentNode.className.indexOf('object-fit-polyfill') === -1) {
-      parentNode.className = parentNode.className + ' object-fit-polyfill';
-    }
-  }
-
-  checkMediaProperties(node) {
-    const styles = window.getComputedStyle(node, null);
-    const constraints = {
-      'max-width': 'none',
-      'max-height': 'none',
-      'min-width': '0px',
-      'min-height': '0px',
-      top: 'auto',
-      right: 'auto',
-      bottom: 'auto',
-      left: 'auto',
-      'margin-top': '0px',
-      'margin-right': '0px',
-      'margin-bottom': '0px',
-      'margin-left': '0px'
-    };
-
-    for (let property in constraints) {
-      const constraint = styles.getPropertyValue(property);
-
-      if (constraint !== constraints[property]) {
-        node.style[property] = constraints[property];
-      }
-    }
-  }
-
-  setPosition(axis, node, objectPosition) {
-    let position, other, start, end, side;
-    objectPosition = objectPosition.split(' ');
-
-    if (objectPosition.length < 2) {
-      objectPosition[1] = objectPosition[0];
-    }
-
-    if (axis === 'x') {
-      position = objectPosition[0];
-      other = objectPosition[1];
-      start = 'left';
-      end = 'right';
-      side = node.clientWidth;
-    } else if (axis === 'y') {
-      position = objectPosition[1];
-      other = objectPosition[0];
-      start = 'top';
-      end = 'bottom';
-      side = node.clientHeight;
-    } else {
-      return; // Neither x or y axis specified
-    }
-
-    if (position === start || other === start) {
-      node.style[start] = '0';
-      return;
-    }
-
-    if (position === end || other === end) {
-      node.style[end] = '0';
-      return;
-    }
-
-    if (position === 'center' || position === '50%') {
-      node.style[start] = '50%';
-      node.style['margin-' + start] = side / -2 + 'px';
-      return;
-    } // Percentage values (e.g., 30% 10%)
-
-
-    if (position.indexOf('%') !== -1) {
-      position = parseInt(position);
-
-      if (position < 50) {
-        node.style[start] = position + '%';
-        node.style['margin-' + start] = side * (position / -100) + 'px';
+      if (fit === 'cover' && node.clientWidth > parentNode.clientWidth || fit === 'contain' && node.clientWidth < parentNode.clientWidth) {
+        node.style.top = '0';
+        node.style.marginTop = '0';
+        this.setPosition('x', node, position);
       } else {
-        position = 100 - position;
-        node.style[end] = position + '%';
-        node.style['margin-' + end] = side * (position / -100) + 'px';
+        node.style.width = '100%';
+        node.style.height = 'auto';
+        node.style.left = '0';
+        node.style.marginLeft = '0';
+        this.setPosition('y', node, position);
+      }
+    }
+  }, {
+    key: "checkParentContainer",
+    value: function checkParentContainer(parentNode) {
+      var styles = window.getComputedStyle(parentNode, null);
+      var position = styles.getPropertyValue('position');
+      var overflow = styles.getPropertyValue('overflow');
+      var display = styles.getPropertyValue('display');
+
+      if (!position || position === 'static') {
+        parentNode.style.position = 'relative';
       }
 
-      return;
-    } else {
-      // Length-based values (e.g. 10px / 10em)
-      node.style[start] = position;
+      if (overflow !== 'hidden') {
+        parentNode.style.overflow = 'hidden';
+      } // Guesstimating that people want the parent to act like full width/height wrapper here.
+      // Mostly attempts to target <picture> elements, which default to inline.
+
+
+      if (!display || display === 'inline') {
+        parentNode.style.display = 'block';
+      }
+
+      if (parentNode.clientHeight === 0) {
+        parentNode.style.height = '100%';
+      } // Add a CSS class hook, in case people need to override styles for any reason.
+
+
+      if (parentNode.className.indexOf('object-fit-polyfill') === -1) {
+        parentNode.className = parentNode.className + ' object-fit-polyfill';
+      }
     }
+  }, {
+    key: "checkMediaProperties",
+    value: function checkMediaProperties(node) {
+      var styles = window.getComputedStyle(node, null);
+      var constraints = {
+        'max-width': 'none',
+        'max-height': 'none',
+        'min-width': '0px',
+        'min-height': '0px',
+        top: 'auto',
+        right: 'auto',
+        bottom: 'auto',
+        left: 'auto',
+        'margin-top': '0px',
+        'margin-right': '0px',
+        'margin-bottom': '0px',
+        'margin-left': '0px'
+      };
 
-    node.style.position = 'absolute';
-  }
+      for (var property in constraints) {
+        var constraint = styles.getPropertyValue(property);
 
-  static factory(DomService) {
-    return new ObjectFitDirective(DomService);
-  }
+        if (constraint !== constraints[property]) {
+          node.style[property] = constraints[property];
+        }
+      }
+    }
+  }, {
+    key: "setPosition",
+    value: function setPosition(axis, node, objectPosition) {
+      var position, other, start, end, side;
+      objectPosition = objectPosition.split(' ');
 
-}
+      if (objectPosition.length < 2) {
+        objectPosition[1] = objectPosition[0];
+      }
+
+      if (axis === 'x') {
+        position = objectPosition[0];
+        other = objectPosition[1];
+        start = 'left';
+        end = 'right';
+        side = node.clientWidth;
+      } else if (axis === 'y') {
+        position = objectPosition[1];
+        other = objectPosition[0];
+        start = 'top';
+        end = 'bottom';
+        side = node.clientHeight;
+      } else {
+        return; // Neither x or y axis specified
+      }
+
+      if (position === start || other === start) {
+        node.style[start] = '0';
+        return;
+      }
+
+      if (position === end || other === end) {
+        node.style[end] = '0';
+        return;
+      }
+
+      if (position === 'center' || position === '50%') {
+        node.style[start] = '50%';
+        node.style['margin-' + start] = side / -2 + 'px';
+        return;
+      } // Percentage values (e.g., 30% 10%)
+
+
+      if (position.indexOf('%') !== -1) {
+        position = parseInt(position);
+
+        if (position < 50) {
+          node.style[start] = position + '%';
+          node.style['margin-' + start] = side * (position / -100) + 'px';
+        } else {
+          position = 100 - position;
+          node.style[end] = position + '%';
+          node.style['margin-' + end] = side * (position / -100) + 'px';
+        }
+
+        return;
+      } else {
+        // Length-based values (e.g. 10px / 10em)
+        node.style[start] = position;
+      }
+
+      node.style.position = 'absolute';
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new ObjectFitDirective(DomService);
+    }
+  }]);
+
+  return ObjectFitDirective;
+}();
 
 exports.default = ObjectFitDirective;
 ObjectFitDirective.factory.$inject = ['DomService'];
@@ -23407,88 +24069,59 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _operators = require("rxjs/operators");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _rect = _interopRequireDefault(require("../shared/rect"));
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-/* jshint esversion: 6 */
-const isEdge = window.navigator.userAgent.indexOf('Edge') !== -1;
+var OverOnDirective =
+/*#__PURE__*/
+function () {
+  function OverOnDirective() {
+    _classCallCheck(this, OverOnDirective);
 
-class ParallaxDirective {
-  constructor(DomService) {
-    this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    return false; // !!! rimosso effetto parallasse
+  _createClass(OverOnDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var node = element[0];
+      var selector = attributes.overOn;
+      var target = node.querySelector(selector);
 
-    const node = element[0];
-    const childNode = node.querySelector(isEdge ? 'img' : 'img, video');
-
-    if (childNode) {
-      const style = window.getComputedStyle(node);
-      const position = style.position;
-      const parallax = (parseInt(attributes.parallax) || 5) * 2;
-      const subscription = this.parallax$(node, parallax).subscribe(parallax => {
-        if (position === 'absolute') {
-          childNode.setAttribute('style', `top: 50%; left: 50%; transform: translateX(-50%) translateY(${parallax.p}%) scale(${parallax.s}, ${parallax.s});`);
-        } else {
-          childNode.setAttribute('style', `transform: translateX(0) translateY(${parallax.p + 50}%) scale(${parallax.s}, ${parallax.s});`);
-        }
-      });
-      element.on('$destroy', () => {
-        subscription.unsubscribe();
-      });
-    }
-  }
-
-  units(value, decimals = 4) {
-    const pow = Math.pow(10, decimals) / 10;
-    return Math.round(value * pow) / pow;
-  }
-
-  parallax$(node, parallax) {
-    return this.domService.rafAndRect$().pipe((0, _operators.map)(datas => {
-      const windowRect = datas[1];
-
-      const rect = _rect.default.fromNode(node);
-
-      const intersection = rect.intersection(windowRect);
-
-      if (intersection.y > 0) {
-        return Math.min(1, Math.max(-1, intersection.center.y)); // intersection.center.y;
-      } else {
-        return null;
-      }
-    }), (0, _operators.filter)(y => y !== null), (0, _operators.distinctUntilChanged)(), (0, _operators.map)(y => {
-      const direction = 1; // i % 2 === 0 ? 1 : -1;
-
-      const s = (100 + parallax * 2) / 100;
-      const p = -50 + y * parallax * direction; // .toFixed(3);
-      // const y = Math.min(1, Math.max(-1, intersection.center.y));
-      // const s = (100 + parallax * 2) / 100;
-      // const p = (-50 + (y * parallax * direction)); // .toFixed(3);
-
-      return {
-        s: this.units(s),
-        p: this.units(p)
+      var onOver = function onOver(event) {
+        node.classList.add('over');
       };
-    }));
-  }
 
-  static factory(DomService) {
-    return new ParallaxDirective(DomService);
-  }
+      var onOut = function onOut(event) {
+        node.classList.remove('over');
+      };
 
-}
+      if (target) {
+        target.addEventListener('mouseover', onOver);
+        target.addEventListener('mouseleave', onOut);
+        scope.$on('$destroy', function () {
+          target.removeEventListener('mouseover', onOver);
+          target.removeEventListener('mouseleave', onOut);
+        });
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new OverOnDirective();
+    }
+  }]);
 
-exports.default = ParallaxDirective;
-ParallaxDirective.factory.$inject = ['DomService'];
+  return OverOnDirective;
+}();
 
-},{"../shared/rect":256,"rxjs/operators":198}],219:[function(require,module,exports){
+exports.default = OverOnDirective;
+OverOnDirective.factory.$inject = [];
+
+},{}],219:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23498,61 +24131,189 @@ exports.default = void 0;
 
 var _operators = require("rxjs/operators");
 
-/* jshint esversion: 6 */
-class ScrollDirective {
+var _rect = _interopRequireDefault(require("../shared/rect"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var isEdge = window.navigator.userAgent.indexOf('Edge') !== -1;
+
+var ParallaxDirective =
+/*#__PURE__*/
+function () {
+  function ParallaxDirective(DomService) {
+    _classCallCheck(this, ParallaxDirective);
+
+    this.domService = DomService;
+    this.restrict = 'A';
+  }
+
+  _createClass(ParallaxDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      return false; // !!! rimosso effetto parallasse
+
+      var node = element[0];
+      var childNode = node.querySelector(isEdge ? 'img' : 'img, video');
+
+      if (childNode) {
+        var style = window.getComputedStyle(node);
+        var position = style.position;
+        var parallax = (parseInt(attributes.parallax) || 5) * 2;
+        var subscription = this.parallax$(node, parallax).subscribe(function (parallax) {
+          if (position === 'absolute') {
+            childNode.setAttribute('style', "top: 50%; left: 50%; transform: translateX(-50%) translateY(".concat(parallax.p, "%) scale(").concat(parallax.s, ", ").concat(parallax.s, ");"));
+          } else {
+            childNode.setAttribute('style', "transform: translateX(0) translateY(".concat(parallax.p + 50, "%) scale(").concat(parallax.s, ", ").concat(parallax.s, ");"));
+          }
+        });
+        element.on('$destroy', function () {
+          subscription.unsubscribe();
+        });
+      }
+    }
+  }, {
+    key: "units",
+    value: function units(value) {
+      var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 4;
+      var pow = Math.pow(10, decimals) / 10;
+      return Math.round(value * pow) / pow;
+    }
+  }, {
+    key: "parallax$",
+    value: function parallax$(node, parallax) {
+      var _this = this;
+
+      return this.domService.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        var intersection = rect.intersection(windowRect);
+
+        if (intersection.y > 0) {
+          return Math.min(1, Math.max(-1, intersection.center.y)); // intersection.center.y;
+        } else {
+          return null;
+        }
+      }), (0, _operators.filter)(function (y) {
+        return y !== null;
+      }), (0, _operators.distinctUntilChanged)(), (0, _operators.map)(function (y) {
+        var direction = 1; // i % 2 === 0 ? 1 : -1;
+
+        var s = (100 + parallax * 2) / 100;
+        var p = -50 + y * parallax * direction; // .toFixed(3);
+        // const y = Math.min(1, Math.max(-1, intersection.center.y));
+        // const s = (100 + parallax * 2) / 100;
+        // const p = (-50 + (y * parallax * direction)); // .toFixed(3);
+
+        return {
+          s: _this.units(s),
+          p: _this.units(p)
+        };
+      }));
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new ParallaxDirective(DomService);
+    }
+  }]);
+
+  return ParallaxDirective;
+}();
+
+exports.default = ParallaxDirective;
+ParallaxDirective.factory.$inject = ['DomService'];
+
+},{"../shared/rect":258,"rxjs/operators":198}],220:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _operators = require("rxjs/operators");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ScrollDirective =
+/*#__PURE__*/
+function () {
   // @Output() public scroll = new EventEmitter();
-  constructor($timeout, DomService) {
+  function ScrollDirective($timeout, DomService) {
+    _classCallCheck(this, ScrollDirective);
+
     this.$timeout = $timeout;
     this.domService = DomService; // this.require = 'ngModel';
 
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    if (attributes.scroll !== undefined) {
-      const node = element[0];
-      this.$timeout(() => {
-        let previous;
-        const subscription = this.domService.scrollIntersection$(node).pipe((0, _operators.distinctUntilChanged)((a, b) => {
-          const differs = b.scroll.scrollTop !== previous;
-          previous = b.scroll.scrollTop;
-          return !differs;
-        })).subscribe(event => {
-          const callback = scope.$eval(attributes.scroll, {
-            $event: event
+  _createClass(ScrollDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      if (attributes.scroll !== undefined) {
+        var node = element[0];
+        this.$timeout(function () {
+          var previous;
+
+          var subscription = _this.domService.scrollIntersection$(node).pipe((0, _operators.distinctUntilChanged)(function (a, b) {
+            var differs = b.scroll.scrollTop !== previous;
+            previous = b.scroll.scrollTop;
+            return !differs;
+          })).subscribe(function (event) {
+            var callback = scope.$eval(attributes.scroll, {
+              $event: event
+            });
+
+            if (typeof callback === 'function') {
+              callback(event); // scope.$eval(attributes.scroll, { $event: event });
+            }
           });
 
-          if (typeof callback === 'function') {
-            callback(event); // scope.$eval(attributes.scroll, { $event: event });
-          }
+          element.on('$destroy', function () {
+            subscription.unsubscribe();
+          });
         });
-        element.on('$destroy', () => {
-          subscription.unsubscribe();
-        });
-      });
+      }
+      /*
+      const callback = scope.$eval(attributes.scroll);
+      if (typeof callback === 'function') {
+      	const subscription = this.domService.scroll$().subscribe(event => callback(event));
+      	element.on('$destroy', () => {
+      		subscription.unsubscribe();
+      	});
+      }
+      */
+
     }
-    /*
-    const callback = scope.$eval(attributes.scroll);
-    if (typeof callback === 'function') {
-    	const subscription = this.domService.scroll$().subscribe(event => callback(event));
-    	element.on('$destroy', () => {
-    		subscription.unsubscribe();
-    	});
+  }], [{
+    key: "factory",
+    value: function factory($timeout, DomService) {
+      return new ScrollDirective($timeout, DomService);
     }
-    */
+  }]);
 
-  }
-
-  static factory($timeout, DomService) {
-    return new ScrollDirective($timeout, DomService);
-  }
-
-}
+  return ScrollDirective;
+}();
 
 exports.default = ScrollDirective;
 ScrollDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"rxjs/operators":198}],220:[function(require,module,exports){
+},{"rxjs/operators":198}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23566,114 +24327,158 @@ var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class StickyDirective {
-  constructor($timeout, DomService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var StickyDirective =
+/*#__PURE__*/
+function () {
+  function StickyDirective($timeout, DomService) {
+    _classCallCheck(this, StickyDirective);
+
     this.$timeout = $timeout;
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    const content = node.querySelector('[sticky-content]');
+  _createClass(StickyDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    const onClick = event => {
-      const isChild = this.domService.traverseUp(event.target, node => {
-        return node.classList && node.classList.contains('form__group');
-      });
+      var node = element[0];
+      var content = node.querySelector('[sticky-content]');
 
-      if (isChild && window.innerWidth > 860) {
-        // console.log('StickyDirective.onClick');
-        const top = this.domService.scrollTop + node.getBoundingClientRect().top;
-        window.scroll({
-          top: top,
-          left: 0,
-          behavior: 'smooth'
+      var onClick = function onClick(event) {
+        var isChild = _this.domService.traverseUp(event.target, function (node) {
+          return node.classList && node.classList.contains('form__group');
         });
-      }
-    };
 
-    this.$timeout(() => {
-      const subscription = this.scroll$(element, attributes).subscribe();
-      content.addEventListener('click', onClick);
-      element.on('$destroy', () => {
-        subscription.unsubscribe();
-        content.removeEventListener('click', onClick);
+        if (isChild && window.innerWidth > 860) {
+          // console.log('StickyDirective.onClick');
+          var top = _this.domService.scrollTop + node.getBoundingClientRect().top;
+          window.scroll({
+            top: top,
+            left: 0,
+            behavior: 'smooth'
+          });
+        }
+      };
+
+      this.$timeout(function () {
+        var subscription = _this.scroll$(element, attributes).subscribe();
+
+        content.addEventListener('click', onClick);
+        element.on('$destroy', function () {
+          subscription.unsubscribe();
+          content.removeEventListener('click', onClick);
+        });
       });
-    });
-  }
+    }
+  }, {
+    key: "scroll$",
+    value: function scroll$(element, attributes) {
+      var node = element[0];
+      var content = node.querySelector('[sticky-content]');
+      var stickyTop = parseInt(attributes.sticky) || 0;
+      return this.domService.scroll$().pipe((0, _operators.tap)(function (scroll) {
+        var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
+        // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
-  scroll$(element, attributes) {
-    const node = element[0];
-    const content = node.querySelector('[sticky-content]');
-    const stickyTop = parseInt(attributes.sticky) || 0;
-    return this.domService.scroll$().pipe((0, _operators.tap)(scroll => {
-      let rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
-      // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
+        var maxTop = Math.max(0, stickyTop - rect.top); // content.setAttribute('style', `transform: translateY(${maxTop}px);`);
+        // console.log(maxTop, stickyTop, rect.top);
 
-      const maxTop = Math.max(0, stickyTop - rect.top); // content.setAttribute('style', `transform: translateY(${maxTop}px);`);
-      // console.log(maxTop, stickyTop, rect.top);
+        var sticky = maxTop > 0;
 
-      const sticky = maxTop > 0;
+        if (sticky !== element.sticky) {
+          element.sticky = sticky;
 
-      if (sticky !== element.sticky) {
-        element.sticky = sticky;
-
-        if (sticky) {
-          node.classList.add('sticky');
-        } else {
-          node.classList.remove('sticky');
+          if (sticky) {
+            node.classList.add('sticky');
+          } else {
+            node.classList.remove('sticky');
+          }
         }
-      }
-    }));
-  }
+      }));
+    }
+  }, {
+    key: "scroll$_",
+    value: function scroll$_(element, attributes) {
+      var node = element[0];
+      var content = node.querySelector('[sticky-content]');
+      var stickyTop = parseInt(attributes.sticky) || 0;
+      return this.domService.raf$().pipe((0, _operators.tap)(function (datas) {
+        var rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
+        // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
-  scroll$_(element, attributes) {
-    const node = element[0];
-    const content = node.querySelector('[sticky-content]');
-    const stickyTop = parseInt(attributes.sticky) || 0;
-    return this.domService.raf$().pipe((0, _operators.tap)(datas => {
-      let rect = _rect.default.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
-      // top = Math.max(0, Math.min(maxtop, top - rect.top));
 
+        var maxTop = Math.max(0, stickyTop - rect.top);
+        content.setAttribute('style', "transform: translateY(".concat(maxTop, "px);"));
+        var sticky = maxTop > 0;
 
-      const maxTop = Math.max(0, stickyTop - rect.top);
-      content.setAttribute('style', `transform: translateY(${maxTop}px);`);
-      const sticky = maxTop > 0;
+        if (sticky !== element.sticky) {
+          element.sticky = sticky;
 
-      if (sticky !== element.sticky) {
-        element.sticky = sticky;
-
-        if (sticky) {
-          node.classList.add('sticky');
-        } else {
-          node.classList.remove('sticky');
+          if (sticky) {
+            node.classList.add('sticky');
+          } else {
+            node.classList.remove('sticky');
+          }
         }
-      }
-    }));
-  }
+      }));
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, DomService) {
+      return new StickyDirective($timeout, DomService);
+    }
+  }]);
 
-  static factory($timeout, DomService) {
-    return new StickyDirective($timeout, DomService);
-  }
-
-}
+  return StickyDirective;
+}();
 
 exports.default = StickyDirective;
 StickyDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"../shared/rect":256,"rxjs/operators":198}],221:[function(require,module,exports){
+},{"../shared/rect":258,"rxjs/operators":198}],222:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SwiperTimelineDirective = exports.SwiperTileDirective = exports.SwiperProjectsDirective = exports.SwiperHeroDirective = exports.SwiperGalleryDirective = exports.SwiperDirective = void 0;
+exports.SwiperTimelineDirective = exports.SwiperTileDirective = exports.SwiperReferencesDirective = exports.SwiperProjectsDirective = exports.SwiperFocusDirective = exports.SwiperHeroDirective = exports.SwiperGalleryDirective = exports.SwiperDirective = void 0;
 
-/* jshint esversion: 6 */
-const DEFAULT_SWIPER_OPTIONS = {
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var DEFAULT_SWIPER_OPTIONS = {
   slidesPerView: 'auto',
   spaceBetween: 1,
   centeredSlides: true,
@@ -23683,7 +24488,7 @@ const DEFAULT_SWIPER_OPTIONS = {
   autoplay: 5000,
   keyboardControl: true,
   mousewheelControl: false,
-  onSlideClick: function (swiper) {
+  onSlideClick: function onSlideClick(swiper) {
     angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
   },
   pagination: {
@@ -23700,109 +24505,139 @@ const DEFAULT_SWIPER_OPTIONS = {
   }
 };
 
-class SwiperDirective {
-  constructor() {
+var SwiperDirective =
+/*#__PURE__*/
+function () {
+  function SwiperDirective() {
+    _classCallCheck(this, SwiperDirective);
+
     this.restrict = 'A';
     this.options = DEFAULT_SWIPER_OPTIONS;
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
+  _createClass(SwiperDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    if (window.matchMedia('print').matches) {
-      return;
-    }
+      var node = element[0];
 
-    const onBeforePrint = () => {
-      if (element.swiper) {
-        element.swiper.destroy();
-      }
-    };
-
-    window.addEventListener('beforeprint', onBeforePrint);
-    TweenMax.set(node, {
-      opacity: 0
-    });
-    scope.$on('lastItem', slide => {
-      this.onSwiper(scope, element, attributes);
-    });
-    element.on('$destroy', () => {
-      window.removeEventListener('beforeprint', onBeforePrint);
-
-      if (element.swiper) {
-        element.swiper.destroy();
-      }
-    });
-    scope.$watch('$viewContentLoaded', () => {
-      this.onSwiper(scope, element, attributes);
-    });
-    scope.$on('onResize', $scope => {
-      this.onResize(scope, element, attributes);
-    });
-  }
-
-  onResize(scope, element, attributes) {
-    if (element.swiper) {
-      Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
-      element.swiper.update();
-    }
-  }
-
-  onSwiper(scope, element, attributes) {
-    const node = element[0]; //const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
-
-    if (element.swiper) {
-      element.swiper.update();
-    } else {
-      //this.options.initialSlide = initialSlide;
-      let swiper_;
-      const on = this.options.on || (this.options.on = {});
-      const callback = on.init;
-
-      if (!on.init || !on.init.swiperDirectiveInit) {
-        on.init = function () {
-          TweenMax.to(node, 0.4, {
-            opacity: 1,
-            ease: Power2.easeOut
-          });
-          setTimeout(() => {
-            if (typeof callback === 'function') {
-              callback.apply(this, [swiper_, element, scope]);
-            }
-          }, 1);
-        };
-
-        on.init.swiperDirectiveInit = true;
+      if (window.matchMedia('print').matches) {
+        return;
       }
 
-      if (attributes.noLoop !== undefined) {
-        this.options.loop = false;
-      } // console.log('attributes.noLoop', attributes.noLoop);
+      var onBeforePrint = function onBeforePrint() {
+        if (element.swiper) {
+          element.swiper.destroy();
+        }
+      };
 
-
+      window.addEventListener('beforeprint', onBeforePrint);
       TweenMax.set(node, {
-        opacity: 1
+        opacity: 0
       });
-      swiper_ = new Swiper(element, this.options);
-      element.swiper = swiper_;
-      element.swiper._opening = true;
-      element.addClass('swiper-init');
+      scope.$on('lastItem', function (slide) {
+        _this.onSwiper(scope, element, attributes);
+      });
+      element.on('$destroy', function () {
+        window.removeEventListener('beforeprint', onBeforePrint);
+
+        if (element.swiper) {
+          element.swiper.destroy();
+        }
+      });
+      scope.$watch('$viewContentLoaded', function () {
+        _this.onSwiper(scope, element, attributes);
+      });
+      scope.$on('onResize', function ($scope) {
+        _this.onResize(scope, element, attributes);
+      });
+      this.linked(scope, element, attributes, controller);
     }
-  }
+  }, {
+    key: "linked",
+    value: function linked(scope, element, attributes, controller) {// console.log('linked not overrided');
+    }
+  }, {
+    key: "onResize",
+    value: function onResize(scope, element, attributes) {
+      if (element.swiper) {
+        Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(function (node) {
+          return node.setAttribute('style', '');
+        });
+        element.swiper.update();
+      }
+    }
+  }, {
+    key: "onSwiper",
+    value: function onSwiper(scope, element, attributes) {
+      var node = element[0]; //const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
 
-  static factory() {
-    return new SwiperDirective();
-  }
+      if (element.swiper) {
+        element.swiper.update();
+      } else {
+        //this.options.initialSlide = initialSlide;
+        var swiper_;
+        var on = this.options.on || (this.options.on = {});
+        var callback = on.init;
 
-}
+        if (!on.init || !on.init.swiperDirectiveInit) {
+          on.init = function () {
+            var _this2 = this;
+
+            TweenMax.to(node, 0.4, {
+              opacity: 1,
+              ease: Power2.easeOut
+            });
+            setTimeout(function () {
+              if (typeof callback === 'function') {
+                callback.apply(_this2, [swiper_, element, scope]);
+              }
+            }, 1);
+          };
+
+          on.init.swiperDirectiveInit = true;
+        }
+
+        if (attributes.noLoop !== undefined) {
+          this.options.loop = false;
+        } // console.log('attributes.noLoop', attributes.noLoop);
+
+
+        TweenMax.set(node, {
+          opacity: 1
+        });
+        swiper_ = new Swiper(element, this.options);
+        element.swiper = swiper_;
+        element.swiper._opening = true;
+        element.addClass('swiper-init');
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperDirective();
+    }
+  }]);
+
+  return SwiperDirective;
+}();
 
 exports.SwiperDirective = SwiperDirective;
 SwiperDirective.factory.$inject = [];
 
-class SwiperGalleryDirective extends SwiperDirective {
-  constructor() {
-    super();
-    this.options = {
+var SwiperGalleryDirective =
+/*#__PURE__*/
+function (_SwiperDirective) {
+  _inherits(SwiperGalleryDirective, _SwiperDirective);
+
+  function SwiperGalleryDirective() {
+    var _this3;
+
+    _classCallCheck(this, SwiperGalleryDirective);
+
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperGalleryDirective).call(this));
+    _this3.options = {
       slidesPerView: 'auto',
       loopAdditionalSlides: 100,
       loop: true,
@@ -23813,7 +24648,7 @@ class SwiperGalleryDirective extends SwiperDirective {
       // autoplay: 5,
       keyboardControl: true,
       mousewheelControl: false,
-      onSlideClick: function (swiper) {
+      onSlideClick: function onSlideClick(swiper) {
         angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
       },
       pagination: {
@@ -23829,40 +24664,56 @@ class SwiperGalleryDirective extends SwiperDirective {
         onlyInViewport: true
       }
     };
+    return _this3;
   }
 
-  onResize(scope, element, attributes) {
-    if (element.swiper) {
-      Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
-      element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
-      element.swiper.update();
+  _createClass(SwiperGalleryDirective, [{
+    key: "onResize",
+    value: function onResize(scope, element, attributes) {
+      if (element.swiper) {
+        Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(function (node) {
+          return node.setAttribute('style', '');
+        });
+        element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
+        element.swiper.update();
 
-      if (element.swiper._opening) {
-        element.swiper._opening = false;
-        const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+        if (element.swiper._opening) {
+          element.swiper._opening = false;
+          var initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
 
-        if (initialSlide) {
-          element.swiper.slideTo(initialSlide, 0);
+          if (initialSlide) {
+            element.swiper.slideTo(initialSlide, 0);
+          }
         }
-      }
-    } // console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
+      } // console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
 
-  }
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperGalleryDirective();
+    }
+  }]);
 
-  static factory() {
-    return new SwiperGalleryDirective();
-  }
-
-}
+  return SwiperGalleryDirective;
+}(SwiperDirective);
 
 exports.SwiperGalleryDirective = SwiperGalleryDirective;
 SwiperGalleryDirective.factory.$inject = [];
 
-class SwiperHeroDirective extends SwiperDirective {
-  constructor() {
-    super();
-    let swiper_, element_, scope_;
-    this.options = {
+var SwiperHeroDirective =
+/*#__PURE__*/
+function (_SwiperDirective2) {
+  _inherits(SwiperHeroDirective, _SwiperDirective2);
+
+  function SwiperHeroDirective() {
+    var _this4;
+
+    _classCallCheck(this, SwiperHeroDirective);
+
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperHeroDirective).call(this));
+    var swiper_, element_, scope_;
+    _this4.options = {
       speed: 600,
       parallax: true,
 
@@ -23874,11 +24725,11 @@ class SwiperHeroDirective extends SwiperDirective {
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
-      onSlideClick: function (swiper) {
+      onSlideClick: function onSlideClick(swiper) {
         angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
       },
       on: {
-        init: (swiper, element, scope) => {
+        init: function init(swiper, element, scope) {
           // console.log('SwiperHeroDirective.init');
           if (!swiper_) {
             swiper_ = swiper;
@@ -23886,13 +24737,13 @@ class SwiperHeroDirective extends SwiperDirective {
             scope_ = scope;
           }
 
-          scope_.$on('onThronCanPlay', ($scope, id) => {
+          scope_.$on('onThronCanPlay', function ($scope, id) {
             // console.log('SwiperHeroDirective.onThronCanPlay', id);
-            this.toggleVideo(element, scope, id);
+            _this4.toggleVideo(element, scope, id);
           });
-          scope_.$on('onThronComplete', ($scope, id) => {
+          scope_.$on('onThronComplete', function ($scope, id) {
             // console.log('SwiperHeroDirective.onThronComplete', id);
-            this.next(swiper_);
+            _this4.next(swiper_);
           });
           /*
           if (swiper_.autoplay) {
@@ -23900,17 +24751,17 @@ class SwiperHeroDirective extends SwiperDirective {
           }
           */
         },
-        slideChangeTransitionStart: () => {
+        slideChangeTransitionStart: function slideChangeTransitionStart() {
           // console.log('SwiperHeroDirective.slideChangeTransitionStart');
           if (element_) {
-            this.toggleVideo(element_, scope_);
+            _this4.toggleVideo(element_, scope_);
           }
         },
-        slideChangeTransitionEnd: () => {
+        slideChangeTransitionEnd: function slideChangeTransitionEnd() {
           // console.log('SwiperHeroDirective.slideChangeTransitionEnd');
           if (element_) {
             // this.toggleVideo(element_, scope_);
-            this.checkAutoplay(element_, scope_, swiper_);
+            _this4.checkAutoplay(element_, scope_, swiper_);
           }
         }
       },
@@ -23927,68 +24778,176 @@ class SwiperHeroDirective extends SwiperDirective {
         onlyInViewport: true
       }
     };
+    return _this4;
   }
 
-  toggleVideo(element, scope, id) {
-    const slides = [...element[0].querySelectorAll('.swiper-slide')];
-    slides.forEach(slide => {
-      const node = slide.querySelector('video, [data-thron]');
+  _createClass(SwiperHeroDirective, [{
+    key: "toggleVideo",
+    value: function toggleVideo(element, scope, id) {
+      var slides = _toConsumableArray(element[0].querySelectorAll('.swiper-slide'));
 
-      if (node) {
-        if (slide.classList.contains('swiper-slide-active')) {
-          // console.log('playing node', node);
-          if (node.hasAttribute('data-thron')) {
-            // console.log(id, node.id, id === node.id);
-            if (id && id === node.id) {
-              scope.$broadcast('playThron', node.id);
-            } else if (!id) {
-              scope.$broadcast('playThron', node.id);
+      slides.forEach(function (slide) {
+        var node = slide.querySelector('video, [data-thron]');
+
+        if (node) {
+          if (slide.classList.contains('swiper-slide-active')) {
+            // console.log('playing node', node);
+            if (node.hasAttribute('data-thron')) {
+              // console.log(id, node.id, id === node.id);
+              if (id && id === node.id) {
+                scope.$broadcast('playThron', node.id);
+              } else if (!id) {
+                scope.$broadcast('playThron', node.id);
+              }
+            } else {
+              node.play();
             }
           } else {
-            node.play();
-          }
-        } else {
-          if (node.hasAttribute('data-thron')) {
-            scope.$broadcast('pauseThron', node.id);
-          } else {
-            node.pause();
+            if (node.hasAttribute('data-thron')) {
+              scope.$broadcast('pauseThron', node.id);
+            } else {
+              node.pause();
+            }
           }
         }
+      });
+    }
+  }, {
+    key: "checkAutoplay",
+    value: function checkAutoplay(element, scope, swiper) {
+      var _this5 = this;
+
+      var video = element[0].querySelector('.swiper-slide-active video, .swiper-slide-active [data-thron]');
+
+      if (!video) {
+        setTimeout(function () {
+          _this5.next(swiper); // swiper.slideNext();
+
+        }, 5000);
       }
-    });
-  }
-
-  checkAutoplay(element, scope, swiper) {
-    const video = element[0].querySelector('.swiper-slide-active video, .swiper-slide-active [data-thron]');
-
-    if (!video) {
-      setTimeout(() => {
-        this.next(swiper); // swiper.slideNext();
-      }, 5000);
     }
-  }
-
-  next(swiper) {
-    if (swiper.realIndex == swiper.slides.length - 1) {
-      swiper.slideTo(0);
-    } else {
-      swiper.slideNext();
+  }, {
+    key: "next",
+    value: function next(swiper) {
+      if (swiper.realIndex == swiper.slides.length - 1) {
+        swiper.slideTo(0);
+      } else {
+        swiper.slideNext();
+      }
     }
-  }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperHeroDirective();
+    }
+  }]);
 
-  static factory() {
-    return new SwiperHeroDirective();
-  }
-
-}
+  return SwiperHeroDirective;
+}(SwiperDirective);
 
 exports.SwiperHeroDirective = SwiperHeroDirective;
 SwiperHeroDirective.factory.$inject = [];
 
-class SwiperProjectsDirective extends SwiperDirective {
-  constructor() {
-    super();
-    this.options = {
+var SwiperFocusDirective =
+/*#__PURE__*/
+function (_SwiperDirective3) {
+  _inherits(SwiperFocusDirective, _SwiperDirective3);
+
+  function SwiperFocusDirective() {
+    var _this6;
+
+    _classCallCheck(this, SwiperFocusDirective);
+
+    _this6 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperFocusDirective).call(this));
+    _this6.options = {
+      speed: 600,
+      spaceBetween: 0,
+      keyboardControl: true,
+      mousewheelControl: false,
+      onSlideClick: function onSlideClick(swiper) {
+        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+      },
+      on: {
+        init: function init() {
+          var swiper = this;
+          var container = swiper.$el[0];
+
+          var tabs = _toConsumableArray(container.querySelectorAll('.btn--tab'));
+
+          tabs.forEach(function (tab, i) {
+            return i === 0 ? tab.classList.add('active') : tab.classList.remove('active');
+          });
+        },
+        slideChange: function slideChange() {
+          var swiper = this;
+          var container = swiper.$el[0];
+
+          var tabs = _toConsumableArray(container.querySelectorAll('.btn--tab'));
+
+          tabs.forEach(function (tab, i) {
+            return i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active');
+          });
+        }
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
+      }
+    };
+    return _this6;
+  }
+
+  _createClass(SwiperFocusDirective, [{
+    key: "linked",
+    value: function linked(scope, element, attributes, controller) {
+      var node = element[0];
+
+      var tabs = _toConsumableArray(node.querySelectorAll('.btn--tab'));
+
+      var onOver = function onOver(event) {
+        var index = tabs.indexOf(event.currentTarget);
+        element.swiper.slideTo(index, 1000, function () {// console.log('swiper.complete');
+        });
+      };
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('mouseover', onOver);
+      });
+      scope.$on('$destroy', function () {
+        tabs.forEach(function (tab) {
+          tab.removeEventListener('mouseover', onOver);
+        });
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperFocusDirective();
+    }
+  }]);
+
+  return SwiperFocusDirective;
+}(SwiperDirective);
+
+exports.SwiperFocusDirective = SwiperFocusDirective;
+SwiperFocusDirective.factory.$inject = [];
+
+var SwiperProjectsDirective =
+/*#__PURE__*/
+function (_SwiperDirective4) {
+  _inherits(SwiperProjectsDirective, _SwiperDirective4);
+
+  function SwiperProjectsDirective() {
+    var _this7;
+
+    _classCallCheck(this, SwiperProjectsDirective);
+
+    _this7 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperProjectsDirective).call(this));
+    _this7.options = {
       speed: 600,
       // parallax: true,
       // autoplay: 5000,
@@ -23996,7 +24955,7 @@ class SwiperProjectsDirective extends SwiperDirective {
       spaceBetween: 0,
       keyboardControl: true,
       mousewheelControl: false,
-      onSlideClick: function (swiper) {
+      onSlideClick: function onSlideClick(swiper) {
         angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
       },
       pagination: {
@@ -24012,21 +24971,78 @@ class SwiperProjectsDirective extends SwiperDirective {
         onlyInViewport: true
       }
     };
+    return _this7;
   }
 
-  static factory() {
-    return new SwiperProjectsDirective();
-  }
+  _createClass(SwiperProjectsDirective, null, [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperProjectsDirective();
+    }
+  }]);
 
-}
+  return SwiperProjectsDirective;
+}(SwiperDirective);
 
 exports.SwiperProjectsDirective = SwiperProjectsDirective;
 SwiperProjectsDirective.factory.$inject = [];
 
-class SwiperTileDirective extends SwiperDirective {
-  constructor() {
-    super();
-    this.options = {
+var SwiperReferencesDirective =
+/*#__PURE__*/
+function (_SwiperDirective5) {
+  _inherits(SwiperReferencesDirective, _SwiperDirective5);
+
+  function SwiperReferencesDirective() {
+    var _this8;
+
+    _classCallCheck(this, SwiperReferencesDirective);
+
+    _this8 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperReferencesDirective).call(this));
+    _this8.options = {
+      speed: 600,
+      spaceBetween: 0,
+      keyboardControl: true,
+      mousewheelControl: false,
+      onSlideClick: function onSlideClick(swiper) {
+        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
+      }
+    };
+    return _this8;
+  }
+
+  _createClass(SwiperReferencesDirective, null, [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperReferencesDirective();
+    }
+  }]);
+
+  return SwiperReferencesDirective;
+}(SwiperDirective);
+
+exports.SwiperReferencesDirective = SwiperReferencesDirective;
+SwiperReferencesDirective.factory.$inject = [];
+
+var SwiperTileDirective =
+/*#__PURE__*/
+function (_SwiperDirective6) {
+  _inherits(SwiperTileDirective, _SwiperDirective6);
+
+  function SwiperTileDirective() {
+    var _this9;
+
+    _classCallCheck(this, SwiperTileDirective);
+
+    _this9 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperTileDirective).call(this));
+    _this9.options = {
       speed: 600,
       parallax: true,
       autoplay: 5000,
@@ -24034,7 +25050,7 @@ class SwiperTileDirective extends SwiperDirective {
       spaceBetween: 60,
       keyboardControl: true,
       mousewheelControl: false,
-      onSlideClick: function (swiper) {
+      onSlideClick: function onSlideClick(swiper) {
         angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
       },
       pagination: {
@@ -24051,21 +25067,34 @@ class SwiperTileDirective extends SwiperDirective {
         onlyInViewport: true
       }
     };
+    return _this9;
   }
 
-  static factory() {
-    return new SwiperTileDirective();
-  }
+  _createClass(SwiperTileDirective, null, [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperTileDirective();
+    }
+  }]);
 
-}
+  return SwiperTileDirective;
+}(SwiperDirective);
 
 exports.SwiperTileDirective = SwiperTileDirective;
 SwiperTileDirective.factory.$inject = [];
 
-class SwiperTimelineDirective extends SwiperDirective {
-  constructor() {
-    super();
-    this.options = {
+var SwiperTimelineDirective =
+/*#__PURE__*/
+function (_SwiperDirective7) {
+  _inherits(SwiperTimelineDirective, _SwiperDirective7);
+
+  function SwiperTimelineDirective() {
+    var _this10;
+
+    _classCallCheck(this, SwiperTimelineDirective);
+
+    _this10 = _possibleConstructorReturn(this, _getPrototypeOf(SwiperTimelineDirective).call(this));
+    _this10.options = {
       slidesPerView: 1,
       spaceBetween: 60,
       speed: 600,
@@ -24073,21 +25102,25 @@ class SwiperTimelineDirective extends SwiperDirective {
       keyboardControl: true,
       mousewheelControl: false,
       on: {
-        init: function () {
-          const swiper = this;
-          const container = swiper.$el[0];
-          const lis = [...container.querySelectorAll('.nav--timeline>li')];
-          lis.forEach((x, i) => {
-            x.addEventListener('click', () => {
+        init: function init() {
+          var swiper = this;
+          var container = swiper.$el[0];
+
+          var lis = _toConsumableArray(container.querySelectorAll('.nav--timeline>li'));
+
+          lis.forEach(function (x, i) {
+            x.addEventListener('click', function () {
               swiper.slideTo(i, 600);
             });
           });
         },
-        slideChange: function () {
-          const swiper = this;
-          const container = swiper.$el[0];
-          const lis = [...container.querySelectorAll('.nav--timeline>li')];
-          lis.forEach((x, i) => {
+        slideChange: function slideChange() {
+          var swiper = this;
+          var container = swiper.$el[0];
+
+          var lis = _toConsumableArray(container.querySelectorAll('.nav--timeline>li'));
+
+          lis.forEach(function (x, i) {
             if (i === swiper.activeIndex) {
               x.classList.add('active');
             } else {
@@ -24105,129 +25138,21 @@ class SwiperTimelineDirective extends SwiperDirective {
         onlyInViewport: true
       }
     };
+    return _this10;
   }
 
-  static factory() {
-    return new SwiperTimelineDirective();
-  }
+  _createClass(SwiperTimelineDirective, null, [{
+    key: "factory",
+    value: function factory() {
+      return new SwiperTimelineDirective();
+    }
+  }]);
 
-}
+  return SwiperTimelineDirective;
+}(SwiperDirective);
 
 exports.SwiperTimelineDirective = SwiperTimelineDirective;
 SwiperTimelineDirective.factory.$inject = [];
-
-},{}],222:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/* jshint esversion: 6 */
-let ID = 0;
-
-class ThronDirective {
-  constructor() {
-    this.restrict = 'A';
-  }
-
-  link(scope, element, attributes, controller) {
-    const THRON = window.THRONContentExperience || window.THRONPlayer;
-
-    if (!THRON) {
-      return;
-    }
-
-    const node = element[0];
-    node.id = `thron-${++ID}`;
-    const player = THRON(node.id, {
-      media: node.getAttribute('data-thron'),
-      loop: node.hasAttribute('loop'),
-      autoplay: node.hasAttribute('autoplay'),
-      muted: true,
-      displayLinked: 'close',
-      noSkin: true // lockBitrate: 'max',
-
-    });
-
-    const onReady = function () {
-      // console.log('ThronDirective.onReady', node.id);
-      const mediaContainer = player.mediaContainer();
-      const video = mediaContainer.querySelector('video');
-      video.setAttribute('playsinline', 'true');
-      scope.$emit('onThronReady', node.id); // video.setAttribute('autoplay', 'true');
-    };
-
-    const onCanPlay = function () {
-      // console.log('ThronDirective.onCanPlay', node.id);
-      scope.$emit('onThronCanPlay', node.id);
-    };
-
-    const onPlaying = function () {
-      player.off('playing', onPlaying);
-      const qualities = player.qualityLevels(); // console.log('ThronDirective.onPlaying', node.id, qualities);
-
-      if (qualities.length) {
-        const highestQuality = qualities[qualities.length - 1].index;
-        const lowestQuality = qualities[0].index;
-        player.currentQuality(highestQuality); // console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
-      }
-    };
-
-    const onComplete = function () {
-      // console.log('ThronDirective.onComplete', node.id);
-      scope.$emit('onThronComplete', node.id);
-    };
-
-    const playVideo = function () {
-      const status = player.status(); // console.log('ThronDirective.playVideo', node.id, status);
-
-      if (status && !status.playing) {
-        player.play();
-      }
-    };
-
-    const pauseVideo = function () {
-      const status = player.status(); // console.log('ThronDirective.pauseVideo', node.id, status);
-
-      if (status && status.playing) {
-        player.pause();
-      }
-    };
-
-    player.on('ready', onReady);
-    player.on('canPlay', onCanPlay);
-    player.on('playing', onPlaying);
-    player.on('complete', onComplete);
-    scope.$on('playThron', ($scope, id) => {
-      // console.log('ThronDirective.playThron', id, node.id, id === node.id);
-      if (id === node.id) {
-        playVideo();
-      }
-    });
-    scope.$on('pauseThron', ($scope, id) => {
-      // console.log('ThronDirective.pauseThron', id, node.id, id === node.id);
-      if (id === node.id) {
-        pauseVideo();
-      }
-    });
-    element.on('$destroy', () => {
-      player.off('ready', onReady);
-      player.off('canPlay', onCanPlay);
-      player.off('playing', onPlaying);
-      player.off('complete', onComplete);
-    });
-  }
-
-  static factory() {
-    return new ThronDirective();
-  }
-
-}
-
-exports.default = ThronDirective;
-ThronDirective.factory.$inject = [];
 
 },{}],223:[function(require,module,exports){
 "use strict";
@@ -24237,234 +25162,373 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ID = 0;
+
+var ThronDirective =
+/*#__PURE__*/
+function () {
+  function ThronDirective() {
+    _classCallCheck(this, ThronDirective);
+
+    this.restrict = 'A';
+  }
+
+  _createClass(ThronDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var THRON = window.THRONContentExperience || window.THRONPlayer;
+
+      if (!THRON) {
+        return;
+      }
+
+      var node = element[0];
+      node.id = "thron-".concat(++ID);
+      var player = THRON(node.id, {
+        media: node.getAttribute('data-thron'),
+        loop: node.hasAttribute('loop'),
+        autoplay: node.hasAttribute('autoplay'),
+        muted: true,
+        displayLinked: 'close',
+        noSkin: true // lockBitrate: 'max',
+
+      });
+
+      var onReady = function onReady() {
+        // console.log('ThronDirective.onReady', node.id);
+        var mediaContainer = player.mediaContainer();
+        var video = mediaContainer.querySelector('video');
+        video.setAttribute('playsinline', 'true');
+        scope.$emit('onThronReady', node.id); // video.setAttribute('autoplay', 'true');
+      };
+
+      var onCanPlay = function onCanPlay() {
+        // console.log('ThronDirective.onCanPlay', node.id);
+        scope.$emit('onThronCanPlay', node.id);
+      };
+
+      var onPlaying = function onPlaying() {
+        player.off('playing', onPlaying);
+        var qualities = player.qualityLevels(); // console.log('ThronDirective.onPlaying', node.id, qualities);
+
+        if (qualities.length) {
+          var highestQuality = qualities[qualities.length - 1].index;
+          var lowestQuality = qualities[0].index;
+          player.currentQuality(highestQuality); // console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
+        }
+      };
+
+      var onComplete = function onComplete() {
+        // console.log('ThronDirective.onComplete', node.id);
+        scope.$emit('onThronComplete', node.id);
+      };
+
+      var playVideo = function playVideo() {
+        var status = player.status(); // console.log('ThronDirective.playVideo', node.id, status);
+
+        if (status && !status.playing) {
+          player.play();
+        }
+      };
+
+      var pauseVideo = function pauseVideo() {
+        var status = player.status(); // console.log('ThronDirective.pauseVideo', node.id, status);
+
+        if (status && status.playing) {
+          player.pause();
+        }
+      };
+
+      player.on('ready', onReady);
+      player.on('canPlay', onCanPlay);
+      player.on('playing', onPlaying);
+      player.on('complete', onComplete);
+      scope.$on('playThron', function ($scope, id) {
+        // console.log('ThronDirective.playThron', id, node.id, id === node.id);
+        if (id === node.id) {
+          playVideo();
+        }
+      });
+      scope.$on('pauseThron', function ($scope, id) {
+        // console.log('ThronDirective.pauseThron', id, node.id, id === node.id);
+        if (id === node.id) {
+          pauseVideo();
+        }
+      });
+      element.on('$destroy', function () {
+        player.off('ready', onReady);
+        player.off('canPlay', onCanPlay);
+        player.off('playing', onPlaying);
+        player.off('complete', onComplete);
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new ThronDirective();
+    }
+  }]);
+
+  return ThronDirective;
+}();
+
+exports.default = ThronDirective;
+ThronDirective.factory.$inject = [];
+
+},{}],224:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class VideoDirective {
-  constructor($timeout, WishlistService) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var VideoDirective =
+/*#__PURE__*/
+function () {
+  function VideoDirective($timeout, WishlistService) {
+    _classCallCheck(this, VideoDirective);
+
     this.$timeout = $timeout;
     this.wishlistService = WishlistService;
     this.restrict = 'A';
     this.transclude = true;
-    this.template = `<div class="media">
-	<ng-transclude></ng-transclude>
-</div>
-<div class="overlay" ng-click="onOverlay($event)"></div>
-<div class="btn btn--play" ng-class="{ playing: playing }">
-	<svg class="icon icon--play-progress-background"><use xlink:href="#play-progress"></use></svg>
-	<svg class="icon icon--play-progress" viewBox="0 0 196 196">
-		<path xmlns="http://www.w3.org/2000/svg" stroke-width="2px" stroke-dasharray="1" stroke-dashoffset="1" pathLength="1" stroke-linecap="square" d="M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z"/>
-	</svg>
-	<svg class="icon icon--play" ng-if="!playing"><use xlink:href="#play"></use></svg>
-	<svg class="icon icon--play" ng-if="playing"><use xlink:href="#pause"></use></svg>
-</div><div class="btn btn--pinterest" ng-click="onPin()" ng-if="onPin">
-<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
-</div>
-<div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
-	<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
-	<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
-</div>
-<div class="btn btn--zoom" ng-click="onClickZoom($event)">
-	<svg class="icon icon--zoom"><use xlink:href="#zoom"></use></svg>
-</div>`;
+    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay($event)\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>\n<div class=\"btn btn--zoom\" ng-click=\"onClickZoom($event)\">\n\t<svg class=\"icon icon--zoom\"><use xlink:href=\"#zoom\"></use></svg>\n</div>";
     this.scope = {
       item: '=?video'
     };
   }
 
-  link(scope, element, attributes, controller) {
-    scope.item = scope.item || {};
-    const node = element[0];
-    const video = node.querySelector('video');
+  _createClass(VideoDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    if (video) {
-      const pageTitle = document.title;
+      scope.item = scope.item || {};
+      var node = element[0];
+      var video = node.querySelector('video');
 
-      scope.onPin = () => {
-        const pin = {
-          url: window.location.href,
-          media: video.poster,
-          description: video.title || pageTitle
-        };
-
-        _gtm.default.push({
-          event: 'Pinterest',
-          wish_name: scope.item.name || scope.item.coId,
-          wish_type: scope.item.typeName || scope.item.type
-        }); // console.log('VideoDirective.onPin', pin);
-
-
-        PinUtils.pinOne(pin);
-      };
-    }
-
-    const progress = node.querySelector('.icon--play-progress path');
-    scope.item = scope.item || {};
-
-    scope.onOverlay = event => {
       if (video) {
-        if (video.paused) {
-          const gallery = document.querySelector('.section--gallery');
-          video.muted = gallery ? false : true;
-          video.play();
-        } else {
-          video.pause();
-        }
-      }
-      /*
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      */
+        var pageTitle = document.title;
 
-    };
-
-    const onPlay = () => {
-      this.$timeout(() => {
-        scope.playing = true;
-      });
-    };
-
-    const onPlayGtm = () => {
-      const sources = video.querySelectorAll('source');
-
-      if (sources.length) {
-        const src = sources[sources.length - 1].getAttribute('src');
-        if (src) _gtm.default.push({
-          event: 'video play',
-          video_name: src
-        });
-      }
-    };
-
-    const onPause = () => {
-      this.$timeout(() => {
-        scope.playing = false;
-      });
-    };
-
-    const onEnded = () => {
-      this.$timeout(() => {
-        scope.playing = false;
-      });
-    };
-
-    const onTimeUpdate = () => {
-      // console.log(video.currentTime, video.duration);
-      progress.style.strokeDashoffset = video.currentTime / video.duration;
-    };
-
-    scope.$watch(() => {
-      return this.wishlistService.has(scope.item);
-    }, (current, previous) => {
-      // console.log(current, previous, node);
-      if (scope.wishlistActive !== current) {
-        scope.wishlistActive = current;
-
-        if (current) {
-          scope.wishlistActivated = true;
-          this.$timeout(() => {
-            scope.wishlistActivated = false;
-          }, 2000);
-        } else {
-          scope.wishlistDeactivated = true;
-          this.$timeout(() => {
-            scope.wishlistDeactivated = false;
-          }, 2000);
-        }
-      }
-    });
-
-    scope.onClickWishlist = event => {
-      this.wishlistService.toggle(scope.item).then(has => {
-        console.log('VideoDirective.onClickWishlist', has);
-      }, error => {
-        console.log(error);
-      }); // event.preventDefault();
-      // event.stopPropagation();
-    };
-
-    scope.onClickZoom = event => {
-      if (scope.$root.gallery) {
-        this.$timeout(() => {
-          scope.$root.gallery = null;
-        });
-      } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
-        this.$timeout(() => {
-          let index = 0;
-          const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')].map((itemNode, i) => {
-            if (itemNode == node) {
-              index = i;
-            }
-
-            const item = {};
-            item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
-
-            if (item.type === 'media') {
-              const img = itemNode.querySelector('img');
-              item.src = img.getAttribute('src') || img.getAttribute('data-src');
-              item.title = img.getAttribute('alt');
-              const wishlist = itemNode.getAttribute('media');
-
-              if (wishlist) {
-                item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
-              }
-            } else {
-              const video = itemNode.querySelector('video');
-              const sources = video.querySelectorAll('source');
-              item.poster = video.getAttribute('poster');
-              item.src = sources[sources.length - 1].getAttribute('src');
-              item.title = video.getAttribute('alt');
-              const wishlist = itemNode.getAttribute('video');
-
-              if (wishlist) {
-                item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
-              }
-            }
-
-            return item;
-          });
-          scope.$root.gallery = {
-            index,
-            items
+        scope.onPin = function () {
+          var pin = {
+            url: window.location.href,
+            media: video.poster,
+            description: video.title || pageTitle
           };
-        });
-      } // event.preventDefault();
-      // event.stopPropagation();
 
-    };
+          _gtm.default.push({
+            event: 'Pinterest',
+            wish_name: scope.item.name || scope.item.coId,
+            wish_type: scope.item.typeName || scope.item.type
+          }); // console.log('VideoDirective.onPin', pin);
 
-    if (video) {
-      video.addEventListener('play', onPlay);
-      video.addEventListener('play', onPlayGtm);
-      video.addEventListener('pause', onPause);
-      video.addEventListener('ended', onEnded);
-      video.addEventListener('timeupdate', onTimeUpdate);
-    }
 
-    element.on('$destroy', () => {
-      if (video) {
-        // console.log('VideoDirective.$destroy');
-        video.removeEventListener('play', onPlay);
-        video.removeEventListener('play', onPlayGtm);
-        video.removeEventListener('pause', onPause);
-        video.removeEventListener('ended', onEnded);
-        video.removeEventListener('timeupdate', onTimeUpdate);
+          PinUtils.pinOne(pin);
+        };
       }
-    });
-  }
 
-  static factory($timeout, WishlistService) {
-    return new VideoDirective($timeout, WishlistService);
-  }
+      var progress = node.querySelector('.icon--play-progress path');
+      scope.item = scope.item || {};
 
-}
+      scope.onOverlay = function (event) {
+        if (video) {
+          if (video.paused) {
+            var gallery = document.querySelector('.section--gallery');
+            video.muted = gallery ? false : true;
+            video.play();
+          } else {
+            video.pause();
+          }
+        }
+        /*
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        */
+
+      };
+
+      var onPlay = function onPlay() {
+        _this.$timeout(function () {
+          scope.playing = true;
+        });
+      };
+
+      var onPlayGtm = function onPlayGtm() {
+        var sources = video.querySelectorAll('source');
+
+        if (sources.length) {
+          var src = sources[sources.length - 1].getAttribute('src');
+          if (src) _gtm.default.push({
+            event: 'video play',
+            video_name: src
+          });
+        }
+      };
+
+      var onPause = function onPause() {
+        _this.$timeout(function () {
+          scope.playing = false;
+        });
+      };
+
+      var onEnded = function onEnded() {
+        _this.$timeout(function () {
+          scope.playing = false;
+        });
+      };
+
+      var onTimeUpdate = function onTimeUpdate() {
+        // console.log(video.currentTime, video.duration);
+        progress.style.strokeDashoffset = video.currentTime / video.duration;
+      };
+
+      scope.$watch(function () {
+        return _this.wishlistService.has(scope.item);
+      }, function (current, previous) {
+        // console.log(current, previous, node);
+        if (scope.wishlistActive !== current) {
+          scope.wishlistActive = current;
+
+          if (current) {
+            scope.wishlistActivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistActivated = false;
+            }, 2000);
+          } else {
+            scope.wishlistDeactivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistDeactivated = false;
+            }, 2000);
+          }
+        }
+      });
+
+      scope.onClickWishlist = function (event) {
+        _this.wishlistService.toggle(scope.item).then(function (has) {
+          console.log('VideoDirective.onClickWishlist', has);
+        }, function (error) {
+          console.log(error);
+        }); // event.preventDefault();
+        // event.stopPropagation();
+
+      };
+
+      scope.onClickZoom = function (event) {
+        if (scope.$root.gallery) {
+          _this.$timeout(function () {
+            scope.$root.gallery = null;
+          });
+        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+          _this.$timeout(function () {
+            var index = 0;
+
+            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')).map(function (itemNode, i) {
+              if (itemNode == node) {
+                index = i;
+              }
+
+              var item = {};
+              item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+
+              if (item.type === 'media') {
+                var img = itemNode.querySelector('img');
+                item.src = img.getAttribute('src') || img.getAttribute('data-src');
+                item.title = img.getAttribute('alt');
+                var wishlist = itemNode.getAttribute('media');
+
+                if (wishlist) {
+                  item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                }
+              } else {
+                var _video = itemNode.querySelector('video');
+
+                var sources = _video.querySelectorAll('source');
+
+                item.poster = _video.getAttribute('poster');
+                item.src = sources[sources.length - 1].getAttribute('src');
+                item.title = _video.getAttribute('alt');
+
+                var _wishlist = itemNode.getAttribute('video');
+
+                if (_wishlist) {
+                  item.wishlist = JSON.parse(_wishlist.indexOf('"') === -1 ? _wishlist.split(/[^\d\W]+/g).join('"') : _wishlist);
+                }
+              }
+
+              return item;
+            });
+
+            scope.$root.gallery = {
+              index: index,
+              items: items
+            };
+          });
+        } // event.preventDefault();
+        // event.stopPropagation();
+
+      };
+
+      if (video) {
+        video.addEventListener('play', onPlay);
+        video.addEventListener('play', onPlayGtm);
+        video.addEventListener('pause', onPause);
+        video.addEventListener('ended', onEnded);
+        video.addEventListener('timeupdate', onTimeUpdate);
+      }
+
+      element.on('$destroy', function () {
+        if (video) {
+          // console.log('VideoDirective.$destroy');
+          video.removeEventListener('play', onPlay);
+          video.removeEventListener('play', onPlayGtm);
+          video.removeEventListener('pause', onPause);
+          video.removeEventListener('ended', onEnded);
+          video.removeEventListener('timeupdate', onTimeUpdate);
+        }
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, WishlistService) {
+      return new VideoDirective($timeout, WishlistService);
+    }
+  }]);
+
+  return VideoDirective;
+}();
 
 exports.default = VideoDirective;
 VideoDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-},{"../gtm/gtm.service":239}],224:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],225:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24476,40 +25540,54 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class VisibilityDirective {
-  constructor(DomService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var VisibilityDirective =
+/*#__PURE__*/
+function () {
+  function VisibilityDirective(DomService) {
+    _classCallCheck(this, VisibilityDirective);
+
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    const subscription = this.domService.firstVisibility$(node).subscribe(visible => {
-      // console.log('visibility', attributes.visibility, node.classList);
-      const gtmEvent = {
-        event: 'ElementVisibilityCustomEvent',
-        element: attributes.visibility,
-        classes: node.getAttribute('class')
-      }; // console.log(gtmEvent);
+  _createClass(VisibilityDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var node = element[0];
+      var subscription = this.domService.firstVisibility$(node).subscribe(function (visible) {
+        // console.log('visibility', attributes.visibility, node.classList);
+        var gtmEvent = {
+          event: 'ElementVisibilityCustomEvent',
+          element: attributes.visibility,
+          classes: node.getAttribute('class')
+        }; // console.log(gtmEvent);
 
-      _gtm.default.push(gtmEvent);
-    });
-    element.on('$destroy', () => {
-      subscription.unsubscribe();
-    });
-  }
+        _gtm.default.push(gtmEvent);
+      });
+      element.on('$destroy', function () {
+        subscription.unsubscribe();
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory(DomService) {
+      return new VisibilityDirective(DomService);
+    }
+  }]);
 
-  static factory(DomService) {
-    return new VisibilityDirective(DomService);
-  }
-
-}
+  return VisibilityDirective;
+}();
 
 exports.default = VisibilityDirective;
 VisibilityDirective.factory.$inject = ['DomService'];
 
-},{"../gtm/gtm.service":239}],225:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],226:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24517,8 +25595,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-class WishlistDirective {
-  constructor($timeout, WishlistService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var WishlistDirective =
+/*#__PURE__*/
+function () {
+  function WishlistDirective($timeout, WishlistService) {
+    _classCallCheck(this, WishlistDirective);
+
     this.$timeout = $timeout;
     this.wishlistService = WishlistService;
     this.restrict = 'E';
@@ -24526,60 +25614,66 @@ class WishlistDirective {
       item: '='
     };
     this.transclude = true;
-    this.template = `<div class="btn btn--wishlist" ng-class="{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }" ng-click="onClickWishlist($event)">
-		<svg class="icon icon--wishlist" ng-if="!wishlistActive"><use xlink:href="#wishlist"></use></svg>
-		<svg class="icon icon--wishlist" ng-if="wishlistActive"><use xlink:href="#wishlist-added"></use></svg>
-		<ng-transclude></ng-transclude>
-	</div>`;
+    this.template = "<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n\t\t<ng-transclude></ng-transclude>\n\t</div>";
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    scope.item = scope.item || {};
-    scope.$watch(() => {
-      return this.wishlistService.has(scope.item);
-    }, (current, previous) => {
-      // console.log(current, previous, node);
-      if (scope.wishlistActive !== current) {
-        scope.wishlistActive = current;
+  _createClass(WishlistDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-        if (current) {
-          scope.wishlistActivated = true;
-          this.$timeout(() => {
-            scope.wishlistActivated = false;
-          }, 2000);
-        } else {
-          scope.wishlistDeactivated = true;
-          this.$timeout(() => {
-            scope.wishlistDeactivated = false;
-          }, 2000);
+      var node = element[0];
+      scope.item = scope.item || {};
+      scope.$watch(function () {
+        return _this.wishlistService.has(scope.item);
+      }, function (current, previous) {
+        // console.log(current, previous, node);
+        if (scope.wishlistActive !== current) {
+          scope.wishlistActive = current;
+
+          if (current) {
+            scope.wishlistActivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistActivated = false;
+            }, 2000);
+          } else {
+            scope.wishlistDeactivated = true;
+
+            _this.$timeout(function () {
+              scope.wishlistDeactivated = false;
+            }, 2000);
+          }
         }
-      }
-    });
-
-    scope.onClickWishlist = event => {
-      this.wishlistService.toggle(scope.item).then(has => {
-        console.log('WishlistDirective.onClickWishlist', has);
-      }, error => {
-        console.log(error);
       });
-      event.preventDefault();
-      event.stopPropagation();
-    };
 
-    element.on('$destroy', () => {});
-  }
+      scope.onClickWishlist = function (event) {
+        _this.wishlistService.toggle(scope.item).then(function (has) {
+          console.log('WishlistDirective.onClickWishlist', has);
+        }, function (error) {
+          console.log(error);
+        });
 
-  static factory($timeout, WishlistService) {
-    return new WishlistDirective($timeout, WishlistService);
-  }
+        event.preventDefault();
+        event.stopPropagation();
+      };
 
-}
+      element.on('$destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, WishlistService) {
+      return new WishlistDirective($timeout, WishlistService);
+    }
+  }]);
+
+  return WishlistDirective;
+}();
 
 exports.default = WishlistDirective;
 WishlistDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-},{}],226:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24587,107 +25681,127 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 // let INDEX = 0;
-class WorldDirective {
+var WorldDirective =
+/*#__PURE__*/
+function () {
   // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
-  constructor($timeout, DomService) {
+  function WorldDirective($timeout, DomService) {
+    _classCallCheck(this, WorldDirective);
+
     this.$timeout = $timeout;
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
-    const img = node.querySelector('img');
-    const nodePoints = node.querySelector('.points');
+  _createClass(WorldDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    const
-    /*onEnter*/
-    onClick = event => {
-      event.stopImmediatePropagation();
-      [...node.querySelectorAll('.world__point')].forEach(x => {
-        if (x === event.currentTarget) {
-          x.classList.add('active');
-        } else {
-          x.classList.remove('active');
-        }
-      });
-    };
+      var node = element[0];
+      var img = node.querySelector('img');
+      var nodePoints = node.querySelector('.points');
 
-    const onLeave = event => {
-      event.currentTarget.parentNode.classList.remove('active');
-    };
+      var
+      /*onEnter*/
+      onClick = function onClick(event) {
+        event.stopImmediatePropagation();
 
-    img.onload = () => {
-      const offices = window.offices;
-      const w = node.offsetWidth;
-      const h = node.offsetHeight;
-      const points = offices.forEach(x => {
-        const position = x.position;
-        const latitude = position.latitude;
-        const top = h * 1.169 / 180 * (-latitude + 90);
-        const longitude = position.longitude;
-        const left = w / 360 * (longitude + 180) - 30;
-        const pointNode = this.makePoint(x);
-        TweenMax.set(pointNode, {
-          top: top / h * 100 + '%',
-          left: left / w * 100 + '%'
+        _toConsumableArray(node.querySelectorAll('.world__point')).forEach(function (x) {
+          if (x === event.currentTarget) {
+            x.classList.add('active');
+          } else {
+            x.classList.remove('active');
+          }
         });
-        nodePoints.appendChild(pointNode);
-        node.addEventListener('click', onClick);
-        pointNode.addEventListener('click', onClick); //pointNode.addEventListener('mouseenter', onEnter);
-        //const pointInfoNode = pointNode.querySelector('.world__info');
-        //pointInfoNode.addEventListener('mouseleave', onLeave);
-      });
-    };
+      };
 
-    element.on('$destroy', () => {
-      node.removeEventListener('click', onClick);
-      [...node.querySelectorAll('.world__point')].forEach(node => {
+      var onLeave = function onLeave(event) {
+        event.currentTarget.parentNode.classList.remove('active');
+      };
+
+      img.onload = function () {
+        var offices = window.offices;
+        var w = node.offsetWidth;
+        var h = node.offsetHeight;
+        var points = offices.forEach(function (x) {
+          var position = x.position;
+          var latitude = position.latitude;
+          var top = h * 1.169 / 180 * (-latitude + 90);
+          var longitude = position.longitude;
+          var left = w / 360 * (longitude + 180) - 30;
+
+          var pointNode = _this.makePoint(x);
+
+          TweenMax.set(pointNode, {
+            top: top / h * 100 + '%',
+            left: left / w * 100 + '%'
+          });
+          nodePoints.appendChild(pointNode);
+          node.addEventListener('click', onClick);
+          pointNode.addEventListener('click', onClick); //pointNode.addEventListener('mouseenter', onEnter);
+          //const pointInfoNode = pointNode.querySelector('.world__info');
+          //pointInfoNode.addEventListener('mouseleave', onLeave);
+        });
+      };
+
+      element.on('$destroy', function () {
         node.removeEventListener('click', onClick);
-      }); //[...node.querySelectorAll('.world__point')].forEach(node => {
-      //	node.removeEventListener('mouseenter', onEnter);
-      //});
-      //[...node.querySelectorAll('.world__point .world__info')].forEach(node => {
-      //	node.removeEventListener('mouseleave', onLeave);
-      //});
-    });
-  }
 
-  makePoint(point) {
-    const pointNode = document.createElement('div');
-    pointNode.classList.add('world__point');
+        _toConsumableArray(node.querySelectorAll('.world__point')).forEach(function (node) {
+          node.removeEventListener('click', onClick);
+        }); //[...node.querySelectorAll('.world__point')].forEach(node => {
+        //	node.removeEventListener('mouseenter', onEnter);
+        //});
+        //[...node.querySelectorAll('.world__point .world__info')].forEach(node => {
+        //	node.removeEventListener('mouseleave', onLeave);
+        //});
 
-    if (point.headquarter) {
-      pointNode.classList.add('world__point--headquarter');
+      });
     }
+  }, {
+    key: "makePoint",
+    value: function makePoint(point) {
+      var pointNode = document.createElement('div');
+      pointNode.classList.add('world__point');
 
-    let cta = point.url ? `
-		<div class="group group--cta">
-			<a href="${point.url}" class="btn btn--link"><span>${window.BOMLabels.More_info}</span></a>
-		</div>
-		` : '';
-    pointNode.innerHTML = `
-		<div class="world__info">
-			<div><span class="city">${point.city}</span> <span class="country">${point.country}</span></div>
-			<div class="abstract">${point.abstract}</div>
-			${cta}
-		</div>
-		`;
-    return pointNode;
-  }
+      if (point.headquarter) {
+        pointNode.classList.add('world__point--headquarter');
+      }
 
-  static factory($timeout, DomService) {
-    return new WorldDirective($timeout, DomService);
-  }
+      var cta = point.url ? "\n\t\t<div class=\"group group--cta\">\n\t\t\t<a href=\"".concat(point.url, "\" class=\"btn btn--link\"><span>").concat(window.BOMLabels.More_info, "</span></a>\n\t\t</div>\n\t\t") : '';
+      pointNode.innerHTML = "\n\t\t<div class=\"world__info\">\n\t\t\t<div><span class=\"city\">".concat(point.city, "</span> <span class=\"country\">").concat(point.country, "</span></div>\n\t\t\t<div class=\"abstract\">").concat(point.abstract, "</div>\n\t\t\t").concat(cta, "\n\t\t</div>\n\t\t");
+      return pointNode;
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, DomService) {
+      return new WorldDirective($timeout, DomService);
+    }
+  }]);
 
-}
+  return WorldDirective;
+}();
 
 exports.default = WorldDirective;
 WorldDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{}],227:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24699,219 +25813,309 @@ var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 // let INDEX = 0;
-class ZoomableDirective {
+var ZoomableDirective =
+/*#__PURE__*/
+function () {
   // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
-  constructor($timeout, DomService) {
+  function ZoomableDirective($timeout, DomService) {
+    _classCallCheck(this, ZoomableDirective);
+
     this.$timeout = $timeout;
     this.domService = DomService;
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    let triggers, rect;
-    const node = element[0];
-    const content = node.querySelector('.zoomable__content');
+  _createClass(ZoomableDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-    const onClose = () => {
-      if (node.classList.contains('zoomed')) {
-        this.zoomOut(scope, node, content, rect);
+      var triggers, rect;
+      var node = element[0];
+      var content = node.querySelector('.zoomable__content');
 
-        if (attributes.zoomed !== undefined) {
-          this.$timeout(() => {
-            scope.$root.gallery = null;
+      var onClose = function onClose() {
+        if (node.classList.contains('zoomed')) {
+          _this.zoomOut(scope, node, content, rect);
+
+          if (attributes.zoomed !== undefined) {
+            _this.$timeout(function () {
+              scope.$root.gallery = null;
+            });
+          }
+        }
+      };
+
+      var onOpen = function onOpen() {
+        if (!node.classList.contains('zoomed')) {
+          rect = _rect.default.fromNode(node);
+
+          _this.zoomIn(scope, node, content, rect);
+        }
+      };
+
+      var onClick = function onClick() {
+        // const slides = [...node.querySelectorAll('.swiper-slide')];
+        if (node.classList.contains('zoomed')) {
+          _this.zoomOut(scope, node, content, rect);
+
+          if (attributes.zoomed !== undefined) {
+            _this.$timeout(function () {
+              scope.$root.gallery = null;
+            });
+          }
+        } else {
+          rect = _rect.default.fromNode(node);
+
+          _this.zoomIn(scope, node, content, rect);
+        }
+      };
+
+      var addListeners = function addListeners() {
+        var close = node.querySelector('.zoomable__close');
+
+        if (close) {
+          close.addEventListener('click', onClose);
+        }
+
+        triggers = _toConsumableArray(node.querySelectorAll('.zoomable__trigger')); // console.log('ZoomableDirective', node, content, triggers);
+
+        triggers.forEach(function (x) {
+          return x.addEventListener('click', onClick);
+        });
+      };
+
+      var removeListeners = function removeListeners() {
+        var close = node.querySelector('.zoomable__close');
+
+        if (close) {
+          close.removeEventListener('click', onClose);
+        }
+
+        if (triggers) {
+          triggers.forEach(function (x) {
+            return x.removeEventListener('click', onClick);
           });
         }
+      };
+
+      scope.$on('lastItem', function ($scope, item) {
+        // console.log('lastItem');
+        removeListeners();
+        addListeners();
+      });
+      this.$timeout(function () {
+        addListeners();
+      });
+      element.on('$destroy', function () {
+        triggers.forEach(function (x) {
+          return x.removeEventListener('click', onClick);
+        });
+      });
+      console.log('ZoomableDirective', scope.$id);
+
+      scope.onZoom = function (item) {
+        var rect = _rect.default.fromNode(content);
+
+        console.log('ZoomableDirective.onZoom', scope.zoomed);
+        TweenMax.set(node, {
+          height: rect.height
+        });
+
+        _this.$timeout(function () {
+          scope.zoomed = !scope.zoomed;
+        });
+        /*
+        TweenMax.to(u, 0.50, {
+        	scaleX: 1,
+        	transformOrigin: '0 50%',
+        	delay: 0,
+        	ease: Power3.easeInOut,
+        	overwrite: 'all',
+        	onComplete: () => {
+        		TweenMax.set(u, { transformOrigin: '100% 50%', scaleX: 1 });
+        		TweenMax.to(u, 0.50, {
+        			scaleX: 0,
+        			transformOrigin: '100% 50%',
+        			delay: 1.0,
+        			ease: Power3.easeInOut,
+        			overwrite: 'all',
+        			onComplete: () => {
+        				animate();
+        			}
+        		});
+        	}
+        });
+        */
+
+      };
+
+      if (attributes.zoomed !== undefined) {
+        onOpen();
       }
-    };
+    }
+  }, {
+    key: "zoomIn",
+    value: function zoomIn(scope, node, content, rect) {
+      // TweenMax.set(node, { height: rect.height });
+      // TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+      node.classList.add('zoomed');
+      scope.zoomed = true; // TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
 
-    const onOpen = () => {
-      if (!node.classList.contains('zoomed')) {
-        rect = _rect.default.fromNode(node);
-        this.zoomIn(scope, node, content, rect);
-      }
-    };
-
-    const onClick = () => {
-      // const slides = [...node.querySelectorAll('.swiper-slide')];
-      if (node.classList.contains('zoomed')) {
-        this.zoomOut(scope, node, content, rect);
-
-        if (attributes.zoomed !== undefined) {
-          this.$timeout(() => {
-            scope.$root.gallery = null;
-          });
-        }
-      } else {
-        rect = _rect.default.fromNode(node);
-        this.zoomIn(scope, node, content, rect);
-      }
-    };
-
-    const addListeners = () => {
-      const close = node.querySelector('.zoomable__close');
-
-      if (close) {
-        close.addEventListener('click', onClose);
-      }
-
-      triggers = [...node.querySelectorAll('.zoomable__trigger')]; // console.log('ZoomableDirective', node, content, triggers);
-
-      triggers.forEach(x => x.addEventListener('click', onClick));
-    };
-
-    const removeListeners = () => {
-      const close = node.querySelector('.zoomable__close');
-
-      if (close) {
-        close.removeEventListener('click', onClose);
-      }
-
-      if (triggers) {
-        triggers.forEach(x => x.removeEventListener('click', onClick));
-      }
-    };
-
-    scope.$on('lastItem', ($scope, item) => {
-      // console.log('lastItem');
-      removeListeners();
-      addListeners();
-    });
-    this.$timeout(() => {
-      addListeners();
-    });
-    element.on('$destroy', () => {
-      triggers.forEach(x => x.removeEventListener('click', onClick));
-    });
-    console.log('ZoomableDirective', scope.$id);
-
-    scope.onZoom = item => {
-      const rect = _rect.default.fromNode(content);
-
-      console.log('ZoomableDirective.onZoom', scope.zoomed);
+      setTimeout(function () {
+        scope.$broadcast('onResize', scope.zoomed);
+      }, 1); // scope.$emit('onDroppinIn', true);
+    }
+  }, {
+    key: "zoomOut",
+    value: function zoomOut(scope, node, content, rect) {
+      // TweenMax.set(node, { height: 'auto' });
+      // TweenMax.set(content, { clearProps: 'all' });
+      node.classList.remove('zoomed');
+      scope.zoomed = false;
+      setTimeout(function () {
+        scope.$broadcast('onResize', scope.zoomed);
+      }, 1); // scope.$emit('onDroppinIn', false);
+    }
+  }, {
+    key: "zoomInAnimated",
+    value: function zoomInAnimated(scope, node, content, rect) {
       TweenMax.set(node, {
         height: rect.height
       });
-      this.$timeout(() => {
-        scope.zoomed = !scope.zoomed;
+      TweenMax.set(content, {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
       });
-      /*
-      TweenMax.to(u, 0.50, {
-      	scaleX: 1,
-      	transformOrigin: '0 50%',
-      	delay: 0,
-      	ease: Power3.easeInOut,
-      	overwrite: 'all',
-      	onComplete: () => {
-      		TweenMax.set(u, { transformOrigin: '100% 50%', scaleX: 1 });
-      		TweenMax.to(u, 0.50, {
-      			scaleX: 0,
-      			transformOrigin: '100% 50%',
-      			delay: 1.0,
-      			ease: Power3.easeInOut,
-      			overwrite: 'all',
-      			onComplete: () => {
-      				animate();
-      			}
-      		});
-      	}
+      node.classList.add('zoomed');
+      scope.$emit('onDroppinIn', true);
+      TweenMax.to(content, 0.3, {
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        ease: Expo.easeInOut,
+        // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+        onUpdate: function onUpdate() {
+          // window.dispatchEvent(new Event('resize'));
+          // slides.forEach(x => x.style.width = content.style.width);
+          scope.$broadcast('onResize');
+        },
+        onComplete: function onComplete() {// scope.$broadcast('onResize');
+        }
       });
-      */
-    };
-
-    if (attributes.zoomed !== undefined) {
-      onOpen();
     }
-  }
+  }, {
+    key: "zoomOutAnimated",
+    value: function zoomOutAnimated(scope, node, content, rect) {
+      TweenMax.to(content, 0.3, {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        ease: Expo.easeInOut,
+        // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
+        onUpdate: function onUpdate() {
+          scope.$broadcast('onResize');
+        },
+        onComplete: function onComplete() {
+          TweenMax.set(node, {
+            height: 'auto'
+          });
+          TweenMax.set(content, {
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+          });
+          node.classList.remove('zoomed');
+          scope.$emit('onDroppinIn', false);
+        }
+      });
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, DomService) {
+      return new ZoomableDirective($timeout, DomService);
+    }
+  }]);
 
-  zoomIn(scope, node, content, rect) {
-    // TweenMax.set(node, { height: rect.height });
-    // TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
-    node.classList.add('zoomed');
-    scope.zoomed = true; // TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
-
-    setTimeout(() => {
-      scope.$broadcast('onResize', scope.zoomed);
-    }, 1); // scope.$emit('onDroppinIn', true);
-  }
-
-  zoomOut(scope, node, content, rect) {
-    // TweenMax.set(node, { height: 'auto' });
-    // TweenMax.set(content, { clearProps: 'all' });
-    node.classList.remove('zoomed');
-    scope.zoomed = false;
-    setTimeout(() => {
-      scope.$broadcast('onResize', scope.zoomed);
-    }, 1); // scope.$emit('onDroppinIn', false);
-  }
-
-  zoomInAnimated(scope, node, content, rect) {
-    TweenMax.set(node, {
-      height: rect.height
-    });
-    TweenMax.set(content, {
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height
-    });
-    node.classList.add('zoomed');
-    scope.$emit('onDroppinIn', true);
-    TweenMax.to(content, 0.3, {
-      left: 0,
-      top: 0,
-      width: '100%',
-      height: '100%',
-      ease: Expo.easeInOut,
-      // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
-      onUpdate: () => {
-        // window.dispatchEvent(new Event('resize'));
-        // slides.forEach(x => x.style.width = content.style.width);
-        scope.$broadcast('onResize');
-      },
-      onComplete: () => {// scope.$broadcast('onResize');
-      }
-    });
-  }
-
-  zoomOutAnimated(scope, node, content, rect) {
-    TweenMax.to(content, 0.3, {
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height,
-      ease: Expo.easeInOut,
-      // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
-      onUpdate: () => {
-        scope.$broadcast('onResize');
-      },
-      onComplete: () => {
-        TweenMax.set(node, {
-          height: 'auto'
-        });
-        TweenMax.set(content, {
-          left: rect.left,
-          top: rect.top,
-          width: rect.width,
-          height: rect.height
-        });
-        node.classList.remove('zoomed');
-        scope.$emit('onDroppinIn', false);
-      }
-    });
-  }
-
-  static factory($timeout, DomService) {
-    return new ZoomableDirective($timeout, DomService);
-  }
-
-}
+  return ZoomableDirective;
+}();
 
 exports.default = ZoomableDirective;
 ZoomableDirective.factory.$inject = ['$timeout', 'DomService'];
 
-},{"../shared/rect":256}],228:[function(require,module,exports){
+},{"../shared/rect":258}],229:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EffectsCtrl =
+/*#__PURE__*/
+function () {
+  function EffectsCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, EffectsCtrl);
+
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+    this.locationService = LocationService;
+    this.filters = window.filters || {};
+    this.collections = this.filters.collections || {
+      options: []
+    };
+    this.looks = this.filters.looks || {
+      options: []
+    };
+    console.log(this.filters);
+  }
+
+  _createClass(EffectsCtrl, [{
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      /*
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      */
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }]);
+
+  return EffectsCtrl;
+}();
+
+EffectsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
+var _default = EffectsCtrl;
+exports.default = _default;
+
+},{}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24927,17 +26131,28 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const GTM_CAT = 'faq';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class FaqCtrl {
-  constructor($scope, $timeout, DomService, ApiService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'faq';
+
+var FaqCtrl =
+/*#__PURE__*/
+function () {
+  function FaqCtrl($scope, $timeout, DomService, ApiService) {
+    var _this = this;
+
+    _classCallCheck(this, FaqCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.domService = DomService;
     this.apiService = ApiService;
     this.faqCategories = window.faqCategories || [];
-    this.faqCategories.forEach(x => {
+    this.faqCategories.forEach(function (x) {
       if (!x.items) x.items = [];
     }); // eliminare!
     //this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
@@ -24946,143 +26161,162 @@ class FaqCtrl {
     this.filteredFaqCategories = this.faqCategories.slice();
     this.flags = {};
     this.unsubscribe = new _rxjs.Subject();
-    $scope.$watch('$viewContentLoaded', () => {
-      this.search$().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(filteredFaqCategories => {
-        this.$timeout(() => {
-          this.filteredFaqCategories = [];
-          this.$timeout(() => {
-            this.filteredFaqCategories = filteredFaqCategories;
+    $scope.$watch('$viewContentLoaded', function () {
+      _this.search$().pipe((0, _operators.takeUntil)(_this.unsubscribe)).subscribe(function (filteredFaqCategories) {
+        _this.$timeout(function () {
+          _this.filteredFaqCategories = [];
+
+          _this.$timeout(function () {
+            _this.filteredFaqCategories = filteredFaqCategories;
           }, 50);
         });
       });
     });
-    $scope.$on('destroy', () => {
+    $scope.$on('destroy', function () {
       // console.log('destroy');
-      this.unsubscribe.next();
-      this.unsubscribe.complete();
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
     });
   }
 
-  isOpen(id) {
-    return this.flags[id];
-  }
-
-  toggle(id) {
-    const flag = !this.flags[id];
-    const node = document.querySelector(`#faq--${id} > .group--content`);
-
-    if (flag) {
-      TweenMax.set(node, {
-        opacity: 0,
-        maxHeight: 'none',
-        display: 'block'
-      });
-      const offsetHeight = node.offsetHeight + 20;
-      TweenMax.set(node, {
-        maxHeight: 0
-      });
-      TweenMax.to(node, 0.35, {
-        opacity: 1,
-        maxHeight: offsetHeight,
-        overwrite: 'all',
-        onComplete: () => {}
-      });
-    } else {
-      TweenMax.to(node, 0.35, {
-        opacity: 0,
-        maxHeight: 0,
-        overwrite: 'all',
-        onComplete: () => {
-          TweenMax.set(node, {
-            display: 'none'
-          });
-        }
-      });
+  _createClass(FaqCtrl, [{
+    key: "isOpen",
+    value: function isOpen(id) {
+      return this.flags[id];
     }
+  }, {
+    key: "toggle",
+    value: function toggle(id) {
+      var flag = !this.flags[id];
+      var node = document.querySelector("#faq--".concat(id, " > .group--content"));
 
-    this.flags[id] = flag;
-  }
-
-  navTo(category, event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    if (!category.slug) {
-      throw 'Missing category slug';
-      return;
-    }
-
-    const node = document.querySelector(`#${category.slug}`);
-    const top = this.domService.scrollTop + node.getBoundingClientRect().top - 100;
-    window.scroll({
-      top: top,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
-
-  search$() {
-    const node = document.querySelector('.control--search');
-    return (0, _rxjs.fromEvent)(node, 'input').pipe((0, _operators.debounceTime)(1000), (0, _operators.map)(function (event) {
-      return event.target.value.toLowerCase();
-    }), (0, _operators.map)(query => {
-      this.query = query;
-      this.faqCategories.forEach(x => x.items.forEach(i => i.opened = false));
-
-      if (query !== '') {
-        const fakeFilter = {
-          '': {
-            value: query,
-            options: [{
-              value: query,
-              key: query
-            }]
-          }
-        };
-
-        _gtm.default.pageViewFilters(GTM_CAT, fakeFilter);
-
-        const filteredFaqCategories = this.faqCategories.map(x => Object.assign({}, x)).filter(category => {
-          let has = false;
-          let items = category.items.filter(item => {
-            const hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
-            const hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
-            item.opened = hasAbstract;
-            this.flags[item.id] = item.opened;
-            has = has || hasTitle || hasAbstract;
-            return hasTitle || hasAbstract;
-          });
-
-          if (items.length) {
-            category.items = items;
-          } else if (category.title.toLowerCase().indexOf(query) !== -1) {
-            items = category.items;
-          }
-
-          return items.length;
-        }); // console.log('FaqCtrl.search$', query, filteredFaqCategories);
-
-        /*
-        const node = document.querySelector('.section--faq');
-        const top = node.getBoundingClientRect().top;
-        window.scrollTo(0, top);
-        */
-
-        return filteredFaqCategories;
+      if (flag) {
+        TweenMax.set(node, {
+          opacity: 0,
+          maxHeight: 'none',
+          display: 'block'
+        });
+        var offsetHeight = node.offsetHeight + 20;
+        TweenMax.set(node, {
+          maxHeight: 0
+        });
+        TweenMax.to(node, 0.35, {
+          opacity: 1,
+          maxHeight: offsetHeight,
+          overwrite: 'all',
+          onComplete: function onComplete() {}
+        });
       } else {
-        this.flags = {};
-        return this.faqCategories.slice();
+        TweenMax.to(node, 0.35, {
+          opacity: 0,
+          maxHeight: 0,
+          overwrite: 'all',
+          onComplete: function onComplete() {
+            TweenMax.set(node, {
+              display: 'none'
+            });
+          }
+        });
       }
-    }), (0, _operators.shareReplay)());
-  }
 
-}
+      this.flags[id] = flag;
+    }
+  }, {
+    key: "navTo",
+    value: function navTo(category, event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (!category.slug) {
+        throw 'Missing category slug';
+        return;
+      }
+
+      var node = document.querySelector("#".concat(category.slug));
+      var top = this.domService.scrollTop + node.getBoundingClientRect().top - 100;
+      window.scroll({
+        top: top,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, {
+    key: "search$",
+    value: function search$() {
+      var _this2 = this;
+
+      var node = document.querySelector('.control--search');
+      return (0, _rxjs.fromEvent)(node, 'input').pipe((0, _operators.debounceTime)(1000), (0, _operators.map)(function (event) {
+        return event.target.value.toLowerCase();
+      }), (0, _operators.map)(function (query) {
+        _this2.query = query;
+
+        _this2.faqCategories.forEach(function (x) {
+          return x.items.forEach(function (i) {
+            return i.opened = false;
+          });
+        });
+
+        if (query !== '') {
+          var fakeFilter = {
+            '': {
+              value: query,
+              options: [{
+                value: query,
+                key: query
+              }]
+            }
+          };
+
+          _gtm.default.pageViewFilters(GTM_CAT, fakeFilter);
+
+          var filteredFaqCategories = _this2.faqCategories.map(function (x) {
+            return Object.assign({}, x);
+          }).filter(function (category) {
+            var has = false;
+            var items = category.items.filter(function (item) {
+              var hasTitle = item.title.toLowerCase().indexOf(query) !== -1;
+              var hasAbstract = item.abstract.toLowerCase().indexOf(query) !== -1;
+              item.opened = hasAbstract;
+              _this2.flags[item.id] = item.opened;
+              has = has || hasTitle || hasAbstract;
+              return hasTitle || hasAbstract;
+            });
+
+            if (items.length) {
+              category.items = items;
+            } else if (category.title.toLowerCase().indexOf(query) !== -1) {
+              items = category.items;
+            }
+
+            return items.length;
+          }); // console.log('FaqCtrl.search$', query, filteredFaqCategories);
+
+          /*
+          const node = document.querySelector('.section--faq');
+          const top = node.getBoundingClientRect().top;
+          window.scrollTo(0, top);
+          */
+
+
+          return filteredFaqCategories;
+        } else {
+          _this2.flags = {};
+          return _this2.faqCategories.slice();
+        }
+      }), (0, _operators.shareReplay)());
+    }
+  }]);
+
+  return FaqCtrl;
+}();
 
 FaqCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = FaqCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239,"rxjs":2,"rxjs/operators":198}],229:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"rxjs":2,"rxjs/operators":198}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25090,9 +26324,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ImageWithFeatures = ImageWithFeatures;
 
-/* jshint esversion: 6 */
 function ImageWithFeatures() {
-  return (images, features) => {
+  return function (images, features) {
     if (!images) {
       return null;
     }
@@ -25105,9 +26338,11 @@ function ImageWithFeatures() {
       return images[0].url;
     }
 
-    const image = images.find(image => {
-      let has = true;
-      features.forEach(f => has = has && image.features.indexOf(f) !== -1);
+    var image = images.find(function (image) {
+      var has = true;
+      features.forEach(function (f) {
+        return has = has && image.features.indexOf(f) !== -1;
+      });
       return has;
     });
 
@@ -25119,7 +26354,7 @@ function ImageWithFeatures() {
   };
 }
 
-},{}],230:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25127,11 +26362,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.NotInFilter = NotInFilter;
 
-/* jshint esversion: 6 */
 function NotInFilter($filter) {
-  return (array, filters, element) => {
+  return function (array, filters, element) {
     if (filters) {
-      return $filter('filter')(array, item => {
+      return $filter('filter')(array, function (item) {
         for (var i = 0; i < filters.length; i++) {
           if (filters[i][element] === item[element]) return false;
         }
@@ -25142,7 +26376,7 @@ function NotInFilter($filter) {
   };
 }
 
-},{}],231:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25150,14 +26384,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TrustedFilter = TrustedFilter;
 
-/* jshint esversion: 6 */
 function TrustedFilter($sce) {
-  return url => {
+  return function (url) {
     return $sce.trustAsResourceUrl(url);
   };
 }
 
-},{}],232:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25165,9 +26398,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class ControlMessagesDirective {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ControlMessagesDirective =
+/*#__PURE__*/
+function () {
+  function ControlMessagesDirective() {
+    _classCallCheck(this, ControlMessagesDirective);
+
     this.restrict = 'E';
     this.templateUrl = 'templates/forms/messages.html';
     this.transclude = {
@@ -25175,18 +26417,23 @@ class ControlMessagesDirective {
     };
   }
 
-  link(scope, element, attributes, model) {}
+  _createClass(ControlMessagesDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, model) {}
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new ControlMessagesDirective();
+    }
+  }]);
 
-  static factory() {
-    return new ControlMessagesDirective();
-  }
-
-}
+  return ControlMessagesDirective;
+}();
 
 exports.default = ControlMessagesDirective;
 ControlMessagesDirective.factory.$inject = [];
 
-},{}],233:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25194,13 +26441,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-const formatLabel = function (string = '', prepend = '', expression = undefined) {
-  const splitted = string.split(',');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var formatLabel = function formatLabel() {
+  var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var prepend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var expression = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+  var splitted = string.split(',');
 
   if (splitted.length > 1) {
-    let formatted = splitted.shift();
-    splitted.forEach((value, index) => {
+    var formatted = splitted.shift();
+    splitted.forEach(function (value, index) {
       if (expression) {
         formatted = formatted.split('{' + index + '}').join('\' + ' + prepend + value + ' + \'');
       } else {
@@ -25218,17 +26473,23 @@ const formatLabel = function (string = '', prepend = '', expression = undefined)
   }
 };
 
-let uniqueId = 0;
-let errorElements = [],
+var uniqueId = 0;
+var errorElements = [],
     to;
 
-class ControlDirective {
-  constructor($parse, DomService) {
+var ControlDirective =
+/*#__PURE__*/
+function () {
+  function ControlDirective($parse, DomService) {
+    var _this = this;
+
+    _classCallCheck(this, ControlDirective);
+
     this.$parse = $parse;
     this.domService = DomService;
     this.restrict = 'A';
 
-    this.templateUrl = (element, attributes) => {
+    this.templateUrl = function (element, attributes) {
       var template = 'templates/forms/text.html';
 
       switch (attributes.control) {
@@ -25265,159 +26526,176 @@ class ControlDirective {
     this.require = 'ngModel';
     this.transclude = true;
     this.link = {
-      pre: (scope, element, attributes, controller, transclude) => {
-        this.linkMethod(scope, element, attributes, controller, transclude);
+      pre: function pre(scope, element, attributes, controller, transclude) {
+        _this.linkMethod(scope, element, attributes, controller, transclude);
       }
     };
   }
 
-  linkMethod(scope, element, attributes, controller, transclude) {
-    const label = scope.label = scope.label ? scope.label : 'name';
-    const key = scope.key = scope.key ? scope.key : 'id';
+  _createClass(ControlDirective, [{
+    key: "linkMethod",
+    value: function linkMethod(scope, element, attributes, controller, transclude) {
+      var _this2 = this;
 
-    if (attributes.control === 'select') {
-      const filter = attributes.filter ? '| ' + attributes.filter : '';
-      const optionLabel = formatLabel(label, 'item.', true);
+      var label = scope.label = scope.label ? scope.label : 'name';
+      var key = scope.key = scope.key ? scope.key : 'id';
 
-      scope.getOptions = () => {
-        return attributes.number ? 'item.' + key + ' as ' + optionLabel + ' disable when item.disabled for item in source ' + filter : optionLabel + ' disable when item.disabled for item in source ' + filter + ' track by item.' + key;
-      };
-    }
+      if (attributes.control === 'select') {
+        var filter = attributes.filter ? '| ' + attributes.filter : '';
+        var optionLabel = formatLabel(label, 'item.', true);
 
-    const type = scope.type = attributes.control;
-    const form = scope.form = scope.form || 'form';
-    const title = scope.title = scope.title || 'untitled';
-    const placeholder = scope.placeholder = scope.placeholder || title;
-    const field = scope.field = title.replace(/[^0-9a-zA-Z]/g, "").split(' ').join('') + ++uniqueId;
-    scope.format = attributes.format || null;
-    scope.precision = attributes.precision || null;
-    scope.validate = attributes.validate || attributes.control;
-    scope.minLength = attributes.minLength || 0;
-    scope.maxLength = attributes.maxLength || Number.POSITIVE_INFINITY;
-    scope.min = attributes.min || null;
-    scope.max = attributes.max || null;
-    scope.options = this.$parse(attributes.options)(scope) || {};
-    scope.focus = false;
-    scope.visible = false;
-
-    scope.onChange = model => {
-      // console.log('ControlDirective.onChange');
-      this.$parse(attributes.onChange)(scope.$parent);
-    };
-
-    scope.onFilter = model => {
-      this.$parse(attributes.onFilter)(scope.$parent);
-    };
-
-    scope.getType = () => {
-      let type = 'text';
-
-      switch (attributes.control) {
-        case 'password':
-          type = scope.visible ? 'text' : 'password';
-          break;
-
-        default:
-          type = attributes.control;
-      }
-
-      return type;
-    };
-
-    scope.onFocus = () => {
-      scope.focus = true; // console.log('ControlDirective.onFocus', scope.focus);
-    };
-
-    scope.onBlur = () => {
-      scope.focus = false; // console.log('ControlDirective.onBlur', scope.focus);
-
-      this.scrollToError();
-    };
-
-    scope.getClasses = () => {
-      const field = this.$parse(scope.form + '.' + scope.field)(scope.$parent);
-
-      if (field) {
-        const focus = scope.focus;
-        const success = field.$valid;
-        const form = this.$parse(scope.form)(scope.$parent);
-        const error = field.$invalid && (form.$submitted || field.$touched);
-        const empty = !field.$viewValue;
-
-        if (error) {
-          this.onError(element);
-
-          if (scope.error !== error) {
-            scope.error = error;
-            this.scrollToError();
-          }
-        } else {
-          scope.error = false;
-        }
-
-        return {
-          focus,
-          success,
-          error,
-          empty
+        scope.getOptions = function () {
+          return attributes.number ? 'item.' + key + ' as ' + optionLabel + ' disable when item.disabled for item in source ' + filter : optionLabel + ' disable when item.disabled for item in source ' + filter + ' track by item.' + key;
         };
       }
-    };
 
-    scope.getMessages = () => {
-      const form = this.$parse(scope.form)(scope.$parent);
-      const field = this.$parse(scope.form + '.' + scope.field)(scope.$parent);
-      return (form.$submitted || field.$touched) && field.$error;
-    };
+      var type = scope.type = attributes.control;
+      var form = scope.form = scope.form || 'form';
+      var title = scope.title = scope.title || 'untitled';
+      var placeholder = scope.placeholder = scope.placeholder || title;
+      var field = scope.field = title.replace(/[^0-9a-zA-Z]/g, "").split(' ').join('') + ++uniqueId;
+      scope.format = attributes.format || null;
+      scope.precision = attributes.precision || null;
+      scope.validate = attributes.validate || attributes.control;
+      scope.minLength = attributes.minLength || 0;
+      scope.maxLength = attributes.maxLength || Number.POSITIVE_INFINITY;
+      scope.min = attributes.min || null;
+      scope.max = attributes.max || null;
+      scope.options = this.$parse(attributes.options)(scope) || {};
+      scope.focus = false;
+      scope.visible = false;
 
-    scope.toggleVisibility = () => {
-      scope.visible = !scope.visible;
-    };
+      scope.onChange = function (model) {
+        // console.log('ControlDirective.onChange');
+        _this2.$parse(attributes.onChange)(scope.$parent);
+      };
 
-    scope.$on('onInvalid', () => {
-      this.scrollToError();
-    });
-  }
+      scope.onFilter = function (model) {
+        _this2.$parse(attributes.onFilter)(scope.$parent);
+      };
 
-  onError(element) {
-    if (errorElements.indexOf(element) === -1) {
-      errorElements.push(element);
+      scope.getType = function () {
+        var type = 'text';
+
+        switch (attributes.control) {
+          case 'password':
+            type = scope.visible ? 'text' : 'password';
+            break;
+
+          default:
+            type = attributes.control;
+        }
+
+        return type;
+      };
+
+      scope.onFocus = function () {
+        scope.focus = true; // console.log('ControlDirective.onFocus', scope.focus);
+      };
+
+      scope.onBlur = function () {
+        scope.focus = false; // console.log('ControlDirective.onBlur', scope.focus);
+
+        _this2.scrollToError();
+      };
+
+      scope.getClasses = function () {
+        var field = _this2.$parse(scope.form + '.' + scope.field)(scope.$parent);
+
+        if (field) {
+          var focus = scope.focus;
+          var success = field.$valid;
+
+          var _form = _this2.$parse(scope.form)(scope.$parent);
+
+          var error = field.$invalid && (_form.$submitted || field.$touched);
+          var empty = !field.$viewValue;
+
+          if (error) {
+            _this2.onError(element);
+
+            if (scope.error !== error) {
+              scope.error = error;
+
+              _this2.scrollToError();
+            }
+          } else {
+            scope.error = false;
+          }
+
+          return {
+            focus: focus,
+            success: success,
+            error: error,
+            empty: empty
+          };
+        }
+      };
+
+      scope.getMessages = function () {
+        var form = _this2.$parse(scope.form)(scope.$parent);
+
+        var field = _this2.$parse(scope.form + '.' + scope.field)(scope.$parent);
+
+        return (form.$submitted || field.$touched) && field.$error;
+      };
+
+      scope.toggleVisibility = function () {
+        scope.visible = !scope.visible;
+      };
+
+      scope.$on('onInvalid', function () {
+        _this2.scrollToError();
+      });
     }
-  }
-
-  scrollToError() {
-    if (errorElements.length) {
-      if (to) {
-        clearTimeout(to);
+  }, {
+    key: "onError",
+    value: function onError(element) {
+      if (errorElements.indexOf(element) === -1) {
+        errorElements.push(element);
       }
-
-      to = setTimeout(() => {
-        const top = errorElements.reduce((previous, current, index, array) => {
-          const node = current[0];
-          return Math.min(previous, node.getBoundingClientRect().top);
-        }, Number.POSITIVE_INFINITY);
-        window.scroll({
-          top: this.domService.scrollTop + top - 100,
-          left: 0,
-          behavior: 'smooth'
-        });
-        errorElements = [];
-      }, 100);
     }
-  }
+  }, {
+    key: "scrollToError",
+    value: function scrollToError() {
+      var _this3 = this;
 
-  link(scope, element, attributes, controller) {}
+      if (errorElements.length) {
+        if (to) {
+          clearTimeout(to);
+        }
 
-  static factory($parse, DomService) {
-    return new ControlDirective($parse, DomService);
-  }
+        to = setTimeout(function () {
+          var top = errorElements.reduce(function (previous, current, index, array) {
+            var node = current[0];
+            return Math.min(previous, node.getBoundingClientRect().top);
+          }, Number.POSITIVE_INFINITY);
+          window.scroll({
+            top: _this3.domService.scrollTop + top - 100,
+            left: 0,
+            behavior: 'smooth'
+          });
+          errorElements = [];
+        }, 100);
+      }
+    }
+  }, {
+    key: "link",
+    value: function link(scope, element, attributes, controller) {}
+  }], [{
+    key: "factory",
+    value: function factory($parse, DomService) {
+      return new ControlDirective($parse, DomService);
+    }
+  }]);
 
-}
+  return ControlDirective;
+}();
 
 exports.default = ControlDirective;
 ControlDirective.factory.$inject = ['$parse', 'DomService'];
 
-},{}],234:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25425,183 +26703,197 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class ValidateDirective {
-  constructor($filter) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ValidateDirective =
+/*#__PURE__*/
+function () {
+  function ValidateDirective($filter) {
+    _classCallCheck(this, ValidateDirective);
+
     this.$filter = $filter;
     this.require = 'ngModel';
   }
 
-  link(scope, element, attributes, model) {
-    const type = attributes.validate;
-    const format = attributes.format || '';
-    const precision = attributes.precision || 2;
-    let focus = false; // console.log('validate', type);
+  _createClass(ValidateDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, model) {
+      var type = attributes.validate;
+      var format = attributes.format || '';
+      var precision = attributes.precision || 2;
+      var focus = false; // console.log('validate', type);
 
-    switch (type) {
-      case 'date':
-      case 'datetime':
-      case 'datetime-local':
-        model.$formatters.push(function (value) {
-          if (value) {
-            return $filter('date')(value, format);
-          } else {
-            return null;
-          }
-        });
-        break;
+      switch (type) {
+        case 'date':
+        case 'datetime':
+        case 'datetime-local':
+          model.$formatters.push(function (value) {
+            if (value) {
+              return $filter('date')(value, format);
+            } else {
+              return null;
+            }
+          });
+          break;
 
-      case 'number':
-        model.$parsers.unshift(function (value) {
-          let valid = false;
+        case 'number':
+          model.$parsers.unshift(function (value) {
+            var valid = false;
 
-          if (value !== undefined && value !== "") {
-            valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
+            if (value !== undefined && value !== "") {
+              valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
 
-            value = Number(value);
-            model.$setValidity('number', valid);
+              value = Number(value);
+              model.$setValidity('number', valid);
 
-            if (valid) {
-              model.$setValidity('positive', value >= 0.01);
+              if (valid) {
+                model.$setValidity('positive', value >= 0.01);
+
+                if (attributes.min !== undefined) {
+                  model.$setValidity('range', value >= Number(attributes.min));
+                }
+
+                if (attributes.max !== undefined) {
+                  model.$setValidity('range', value <= Number(attributes.max));
+                }
+              }
+            } else {
+              valid = true;
+              value = Number(value);
+              model.$setValidity('number', true);
+              model.$setValidity('positive', true);
 
               if (attributes.min !== undefined) {
-                model.$setValidity('range', value >= Number(attributes.min));
+                model.$setValidity('range', true);
               }
 
               if (attributes.max !== undefined) {
-                model.$setValidity('range', value <= Number(attributes.max));
+                model.$setValidity('range', true);
               }
             }
-          } else {
-            valid = true;
-            value = Number(value);
-            model.$setValidity('number', true);
-            model.$setValidity('positive', true);
 
-            if (attributes.min !== undefined) {
-              model.$setValidity('range', true);
+            return value;
+          });
+          model.$formatters.push(function (value) {
+            if (value) {
+              return $filter('number')(value, precision) + ' ' + format;
+            } else {
+              return null;
             }
+          });
+          break;
 
-            if (attributes.max !== undefined) {
-              model.$setValidity('range', true);
-            }
-          }
+        case 'anynumber':
+          model.$parsers.unshift(function (value) {
+            var valid = false;
 
-          return value;
-        });
-        model.$formatters.push(function (value) {
-          if (value) {
-            return $filter('number')(value, precision) + ' ' + format;
-          } else {
-            return null;
-          }
-        });
-        break;
+            if (value !== undefined && value !== "") {
+              valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
 
-      case 'anynumber':
-        model.$parsers.unshift(function (value) {
-          let valid = false;
+              value = Number(value);
+              model.$setValidity('number', valid);
 
-          if (value !== undefined && value !== "") {
-            valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
+              if (valid) {
+                if (attributes.min !== undefined) {
+                  model.$setValidity('range', value >= Number(attributes.min));
+                }
 
-            value = Number(value);
-            model.$setValidity('number', valid);
+                if (attributes.max !== undefined) {
+                  model.$setValidity('range', value <= Number(attributes.max));
+                }
+              }
+            } else {
+              valid = true;
+              value = Number(value);
+              model.$setValidity('number', true);
 
-            if (valid) {
               if (attributes.min !== undefined) {
-                model.$setValidity('range', value >= Number(attributes.min));
+                model.$setValidity('range', true);
               }
 
               if (attributes.max !== undefined) {
-                model.$setValidity('range', value <= Number(attributes.max));
+                model.$setValidity('range', true);
               }
             }
-          } else {
-            valid = true;
-            value = Number(value);
-            model.$setValidity('number', true);
 
-            if (attributes.min !== undefined) {
-              model.$setValidity('range', true);
+            return value;
+          });
+          model.$formatters.push(function (value) {
+            if (value || value === 0) {
+              return $filter('number')(value, precision) + ' ' + format;
+            } else {
+              return null;
             }
+          });
+          break;
+      }
 
-            if (attributes.max !== undefined) {
-              model.$setValidity('range', true);
-            }
-          }
+      var onFocus = function onFocus() {
+        focus = true;
 
-          return value;
-        });
-        model.$formatters.push(function (value) {
-          if (value || value === 0) {
-            return $filter('number')(value, precision) + ' ' + format;
-          } else {
-            return null;
+        if (format) {
+          element[0].value = model.$modelValue || null;
+
+          if (!model.$modelValue) {
+            model.$setViewValue(null);
           }
-        });
-        break;
+        }
+      };
+
+      var doBlur = function doBlur() {
+        if (format && !model.$invalid) {
+          switch (type) {
+            case 'date':
+            case 'datetime':
+            case 'datetime-local':
+              element[0].value = model.$modelValue ? $filter('date')(model.$modelValue, format) : ' ';
+              break;
+
+            default:
+              element[0].value = model.$modelValue ? $filter('number')(model.$modelValue, precision) + ' ' + format : ' ';
+              break;
+          }
+        }
+      };
+
+      var onBlur = function onBlur() {
+        focus = false;
+        doBlur();
+      };
+
+      var addListeners = function addListeners() {
+        element.on('focus', onFocus);
+        element.on('blur', onBlur);
+      };
+
+      var removeListeners = function removeListeners() {
+        element.off('focus', onFocus);
+        element.off('blur', onBlur);
+      };
+
+      scope.$on('$destroy', function () {
+        removeListeners();
+      });
+      addListeners();
     }
+  }], [{
+    key: "factory",
+    value: function factory($filter) {
+      return new ValidateDirective($filter);
+    }
+  }]);
 
-    const onFocus = () => {
-      focus = true;
-
-      if (format) {
-        element[0].value = model.$modelValue || null;
-
-        if (!model.$modelValue) {
-          model.$setViewValue(null);
-        }
-      }
-    };
-
-    const doBlur = () => {
-      if (format && !model.$invalid) {
-        switch (type) {
-          case 'date':
-          case 'datetime':
-          case 'datetime-local':
-            element[0].value = model.$modelValue ? $filter('date')(model.$modelValue, format) : ' ';
-            break;
-
-          default:
-            element[0].value = model.$modelValue ? $filter('number')(model.$modelValue, precision) + ' ' + format : ' ';
-            break;
-        }
-      }
-    };
-
-    const onBlur = () => {
-      focus = false;
-      doBlur();
-    };
-
-    const addListeners = () => {
-      element.on('focus', onFocus);
-      element.on('blur', onBlur);
-    };
-
-    const removeListeners = () => {
-      element.off('focus', onFocus);
-      element.off('blur', onBlur);
-    };
-
-    scope.$on('$destroy', function () {
-      removeListeners();
-    });
-    addListeners();
-  }
-
-  static factory($filter) {
-    return new ValidateDirective($filter);
-  }
-
-}
+  return ValidateDirective;
+}();
 
 exports.default = ValidateDirective;
 ValidateDirective.factory.$inject = ['$filter'];
 
-},{}],235:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25613,13 +26905,22 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const ITEMS_PER_PAGE = 9;
-exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
-const GTM_CAT = 'gallerie';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class GalleriesCtrl {
-  constructor($scope, $timeout, LocationService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ITEMS_PER_PAGE = 9;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
+var GTM_CAT = 'gallerie';
+
+var GalleriesCtrl =
+/*#__PURE__*/
+function () {
+  function GalleriesCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, GalleriesCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -25638,158 +26939,192 @@ class GalleriesCtrl {
     this.applyFilters(false);
   }
 
-  deserializeFilters(initialFilter) {
-    const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+  _createClass(GalleriesCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters(initialFilter) {
+      var _this = this;
 
-      switch (x) {
-        case 'collections':
-          // probabilmente verrà aggiunto
-          filter.doFilter = (item, value) => {
-            return item.id === value;
-          };
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
 
-          break;
+        switch (x) {
+          case 'collections':
+            // probabilmente verrà aggiunto
+            filter.doFilter = function (item, value) {
+              return item.id === value;
+            };
 
-        default:
-          filter.doFilter = (item, value) => {
-            return item.features.indexOf(value) !== -1;
-          };
+            break;
 
-      }
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
 
-      filter.options.unshift({
-        label: filter.placeholder,
-        value: null
-      });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label;
-    });
-    return filters;
-  }
-
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('ReferenceCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    if (serialize !== false) this.serializeFilters();
-    const {
-      filteredItems
-    } = this.getFilteredItems(this.galleries);
-    this.filteredItems = [];
-    this.visibleItems = [];
-    this.maxItems = ITEMS_PER_PAGE;
-    this.$timeout(() => {
-      this.filteredItems = filteredItems;
-      this.visibleItems = filteredItems.slice(0, this.maxItems);
-      this.updateFilterStates(this.galleries); // delayer for image update
-    }, 50);
-
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
-
-  getFilteredItems(items, skipFilter) {
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredItems = items.slice();
-
-    if (filters.length) {
-      filteredItems = filteredItems.filter(item => {
-        let has = true;
-        filters.forEach(filter => {
-          if (filter !== skipFilter) {
-            has = has && filter.doFilter(item, filter.value);
-          }
-        });
-        return has;
-      });
-    }
-
-    return {
-      filteredItems
-    };
-  }
-
-  updateFilterStates(items) {
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-      const {
-        filteredItems
-      } = this.getFilteredItems(items, filter);
-      filter.options.forEach(option => {
-        let has = false;
-
-        if (option.value) {
-          let i = 0;
-
-          while (i < filteredItems.length && !has) {
-            const item = filteredItems[i];
-            has = filter.doFilter(item, option.value);
-            i++;
-          }
-        } else {
-          has = true;
         }
 
-        option.disabled = !has;
+        filter.options.unshift({
+          label: filter.placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
       });
-    });
-  }
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
 
-  setFilter(item, filter) {
-    item = item || filter.options[0];
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
 
-  removeFilter(filter) {
-    this.setFilter(null, filter);
-  }
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
 
-  onScroll(event) {
-    if (event.rect.bottom < event.windowRect.bottom) {
-      // console.log('more!');
-      if (!this.busy && this.maxItems < this.filteredItems.length) {
-        this.$timeout(() => {
-          this.busy = true;
-          this.$timeout(() => {
-            this.maxItems += ITEMS_PER_PAGE;
-            this.visibleItems = this.filteredItems.slice(0, this.maxItems);
-            this.busy = false; // console.log(this.visibleItems.length);
-          }, 1000);
-        }, 0);
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('ReferenceCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      if (serialize !== false) this.serializeFilters();
+
+      var _this$getFilteredItem = this.getFilteredItems(this.galleries),
+          filteredItems = _this$getFilteredItem.filteredItems;
+
+      this.filteredItems = [];
+      this.visibleItems = [];
+      this.maxItems = ITEMS_PER_PAGE;
+      this.$timeout(function () {
+        _this3.filteredItems = filteredItems;
+        _this3.visibleItems = filteredItems.slice(0, _this3.maxItems);
+
+        _this3.updateFilterStates(_this3.galleries); // delayer for image update
+
+      }, 50);
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "getFilteredItems",
+    value: function getFilteredItems(items, skipFilter) {
+      var _this4 = this;
+
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this4.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredItems = items.slice();
+
+      if (filters.length) {
+        filteredItems = filteredItems.filter(function (item) {
+          var has = true;
+          filters.forEach(function (filter) {
+            if (filter !== skipFilter) {
+              has = has && filter.doFilter(item, filter.value);
+            }
+          });
+          return has;
+        });
+      }
+
+      return {
+        filteredItems: filteredItems
+      };
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates(items) {
+      var _this5 = this;
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this5.filters[x];
+
+        var _this5$getFilteredIte = _this5.getFilteredItems(items, filter),
+            filteredItems = _this5$getFilteredIte.filteredItems;
+
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < filteredItems.length && !has) {
+              var item = filteredItems[i];
+              has = filter.doFilter(item, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        });
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this6 = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.filteredItems.length) {
+          this.$timeout(function () {
+            _this6.busy = true;
+
+            _this6.$timeout(function () {
+              _this6.maxItems += ITEMS_PER_PAGE;
+              _this6.visibleItems = _this6.filteredItems.slice(0, _this6.maxItems);
+              _this6.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
       }
     }
-  }
+  }]);
 
-}
+  return GalleriesCtrl;
+}();
 
 GalleriesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = GalleriesCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239}],236:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25801,50 +27136,66 @@ var _gtm = _interopRequireDefault(require("./gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class GtmCollectionDirective {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GtmCollectionDirective =
+/*#__PURE__*/
+function () {
+  function GtmCollectionDirective() {
+    _classCallCheck(this, GtmCollectionDirective);
+
     this.restrict = 'A';
     this.scope = {
       item: '=gtmCollection'
     };
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
+  _createClass(GtmCollectionDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var node = element[0];
 
-    const onClick = () => {
-      const actionField = {
-        list: scope.item.list
-      };
-      const product = Object.assign({}, scope.item);
-      delete product.list;
+      var onClick = function onClick() {
+        var actionField = {
+          list: scope.item.list
+        };
+        var product = Object.assign({}, scope.item);
+        delete product.list;
 
-      _gtm.default.push({
-        event: 'collectionClick',
-        ecommerce: {
-          click: {
-            actionField,
-            products: [product]
+        _gtm.default.push({
+          event: 'collectionClick',
+          ecommerce: {
+            click: {
+              actionField: actionField,
+              products: [product]
+            }
           }
-        }
+        });
+      };
+
+      node.addEventListener('click', onClick);
+      element.on('$destroy', function () {
+        return node.removeEventListener('click', onClick);
       });
-    };
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new GtmCollectionDirective();
+    }
+  }]);
 
-    node.addEventListener('click', onClick);
-    element.on('$destroy', () => node.removeEventListener('click', onClick));
-  }
-
-  static factory() {
-    return new GtmCollectionDirective();
-  }
-
-}
+  return GtmCollectionDirective;
+}();
 
 exports.default = GtmCollectionDirective;
 GtmCollectionDirective.factory.$inject = [];
 
-},{"./gtm.service":239}],237:[function(require,module,exports){
+},{"./gtm.service":241}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25856,40 +27207,56 @@ var _gtm = _interopRequireDefault(require("./gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class gtmDealerLocatorDirective {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var gtmDealerLocatorDirective =
+/*#__PURE__*/
+function () {
+  function gtmDealerLocatorDirective() {
+    _classCallCheck(this, gtmDealerLocatorDirective);
+
     this.restrict = 'A';
     this.scope = {
       label: '=gtmDealerLocator'
     };
   }
 
-  link(scope, element, attributes, controller) {
-    const node = element[0];
+  _createClass(gtmDealerLocatorDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var node = element[0];
 
-    const onClick = () => {
-      _gtm.default.push({
-        event: 'dealerlocator',
-        action: 'sidebar-click',
-        label: scope.label
+      var onClick = function onClick() {
+        _gtm.default.push({
+          event: 'dealerlocator',
+          action: 'sidebar-click',
+          label: scope.label
+        });
+      };
+
+      node.addEventListener('click', onClick);
+      element.on('$destroy', function () {
+        return node.removeEventListener('click', onClick);
       });
-    };
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new gtmDealerLocatorDirective();
+    }
+  }]);
 
-    node.addEventListener('click', onClick);
-    element.on('$destroy', () => node.removeEventListener('click', onClick));
-  }
-
-  static factory() {
-    return new gtmDealerLocatorDirective();
-  }
-
-}
+  return gtmDealerLocatorDirective;
+}();
 
 exports.default = gtmDealerLocatorDirective;
 gtmDealerLocatorDirective.factory.$inject = [];
 
-},{"./gtm.service":239}],238:[function(require,module,exports){
+},{"./gtm.service":241}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25901,35 +27268,49 @@ var _gtm = _interopRequireDefault(require("./gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class GtmFormDirective {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GtmFormDirective =
+/*#__PURE__*/
+function () {
+  function GtmFormDirective() {
+    _classCallCheck(this, GtmFormDirective);
+
     this.restrict = 'A';
   }
 
-  link(scope, element, attributes, controller) {
-    const form_name = attributes["gtmFormName"];
+  _createClass(GtmFormDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var form_name = attributes["gtmFormName"];
 
-    if (form_name) {
-      scope.$root.$on('formsubmit', () => {
-        _gtm.default.push({
-          event: 'formsubmit',
-          form_name
+      if (form_name) {
+        scope.$root.$on('formsubmit', function () {
+          _gtm.default.push({
+            event: 'formsubmit',
+            form_name: form_name
+          });
         });
-      });
+      }
     }
-  }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new GtmFormDirective();
+    }
+  }]);
 
-  static factory() {
-    return new GtmFormDirective();
-  }
-
-}
+  return GtmFormDirective;
+}();
 
 exports.default = GtmFormDirective;
 GtmFormDirective.factory.$inject = [];
 
-},{"./gtm.service":239}],239:[function(require,module,exports){
+},{"./gtm.service":241}],241:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25937,71 +27318,94 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/* jshint esversion: 6 */
 function push_(event) {
-  const dataLayer = window.dataLayer || [];
+  var dataLayer = window.dataLayer || [];
   dataLayer.push(event);
   console.log('GtmService.dataLayer', event);
 }
 
-class GtmService {
-  // Id da dare al tag script delle pagine con filtri.
-  // Questo indica a Highway di non eseguire il PageView. Sarà il controller a farlo
-  static pageView(pathname) {
-    const obj = {
-      event: 'PageViewCustomEvent',
-      title: document.title,
-      href: window.location.href,
-      pathname: pathname || window.location.pathname,
-      hostname: window.location.hostname
-    };
-    Object.assign(obj, window.dataLayerData);
-    return push_(obj);
+var GtmService =
+/*#__PURE__*/
+function () {
+  function GtmService() {
+    _classCallCheck(this, GtmService);
   }
 
-  static pageViewFilters(cat, filters) {
-    const values = [];
-    let any = false;
+  _createClass(GtmService, null, [{
+    key: "pageView",
+    // Id da dare al tag script delle pagine con filtri.
+    // Questo indica a Highway di non eseguire il PageView. Sarà il controller a farlo
+    value: function pageView(pathname) {
+      var obj = {
+        event: 'PageViewCustomEvent',
+        title: document.title,
+        href: window.location.href,
+        pathname: pathname || window.location.pathname,
+        hostname: window.location.hostname
+      };
+      Object.assign(obj, window.dataLayerData);
+      return push_(obj);
+    }
+  }, {
+    key: "pageViewFilters",
+    value: function pageViewFilters(cat, filters) {
+      var values = [];
+      var any = false;
 
-    for (let key in filters) {
-      let textValue = '';
-      const filterValue = filters[key].value;
+      var _loop = function _loop(key) {
+        var textValue = '';
+        var filterValue = filters[key].value;
 
-      if (filterValue) {
-        const selectedOption = filters[key].options.find(option => option.value === filterValue);
+        if (filterValue) {
+          var selectedOption = filters[key].options.find(function (option) {
+            return option.value === filterValue;
+          });
 
-        if (selectedOption) {
-          textValue = selectedOption.key;
+          if (selectedOption) {
+            textValue = selectedOption.key;
+          }
         }
+
+        if (textValue) any = true;
+        var name = filters[key].key
+        /* se array di filtri */
+        || key
+        /* se oggetto filtro */
+        ;
+        if (name) name = encodeURIComponent(name) + '-';
+        values.push(name + encodeURIComponent(textValue));
+      };
+
+      for (var key in filters) {
+        _loop(key);
       }
 
-      if (textValue) any = true;
-      let name = filters[key].key
-      /* se array di filtri */
-      || key
-      /* se oggetto filtro */
-      ;
-      if (name) name = encodeURIComponent(name) + '-';
-      values.push(name + encodeURIComponent(textValue));
+      var pathname = any ? "?cat=".concat(cat, "&s=").concat(values.join('_')) : '';
+      GtmService.pageView(window.location.pathname + pathname);
     }
+  }, {
+    key: "push",
+    value: function push(event) {
+      return push_(event);
+    }
+  }]);
 
-    const pathname = any ? `?cat=${cat}&s=${values.join('_')}` : '';
-    GtmService.pageView(window.location.pathname + pathname);
-  }
-
-  static push(event) {
-    return push_(event);
-  }
-
-}
+  return GtmService;
+}();
 
 exports.default = GtmService;
 
 _defineProperty(GtmService, "FILTERS_SCRIPT_ID", 'script-listing');
 
-},{}],240:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26015,189 +27419,246 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-let first = true;
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-class CustomRenderer extends _highway.default.Renderer {
-  update() {
-    this.updateMeta();
-    this.updateGTMData();
-    this.pageView();
-    this.updateBrand();
-    this.updateSearchQuery();
-    this.updateMarketsAndLanguages();
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var first = true;
+
+var CustomRenderer =
+/*#__PURE__*/
+function (_Highway$Renderer) {
+  _inherits(CustomRenderer, _Highway$Renderer);
+
+  function CustomRenderer() {
+    _classCallCheck(this, CustomRenderer);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(CustomRenderer).apply(this, arguments));
   }
 
-  updateMeta() {
-    const page = this.properties.page;
-    document.title = page.title;
-  }
+  _createClass(CustomRenderer, [{
+    key: "update",
+    value: function update() {
+      this.updateMeta();
+      this.updateGTMData();
+      this.pageView();
+      this.updateBrand();
+      this.updateSearchQuery();
+      this.updateMarketsAndLanguages();
+    }
+  }, {
+    key: "updateMeta",
+    value: function updateMeta() {
+      var page = this.properties.page;
+      document.title = page.title;
+    }
+  }, {
+    key: "updateBrand",
+    value: function updateBrand() {
+      var page = this.properties.page;
+      var body = page.querySelector('body');
+      var brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
+      brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde'; // console.log(brand);
 
-  updateBrand() {
-    const page = this.properties.page;
-    const body = page.querySelector('body');
-    let brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
-    brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde'; // console.log(brand);
-
-    CustomRenderer.$timeout(() => {
-      const scope = CustomRenderer.scope;
-      scope.root.brand = brand; // console.log('CustomRenderer.update', scope);
-    });
-  }
-
-  updateSearchQuery() {
-    const page = this.properties.page;
-    const dataSearch = [...page.querySelectorAll('[data-search]')];
-
-    if (dataSearch.length) {
-      const pageDataSearch = [...document.querySelectorAll('[data-search]')];
-      pageDataSearch.forEach(node => {
-        node.setAttribute('data-search', dataSearch[0].getAttribute('data-search'));
+      CustomRenderer.$timeout(function () {
+        var scope = CustomRenderer.scope;
+        scope.root.brand = brand; // console.log('CustomRenderer.update', scope);
       });
     }
-  }
+  }, {
+    key: "updateSearchQuery",
+    value: function updateSearchQuery() {
+      var page = this.properties.page;
 
-  updateMarketsAndLanguages() {
-    const page = this.properties.page;
-    const marketSelector = page.getElementById('market-selector');
+      var dataSearch = _toConsumableArray(page.querySelectorAll('[data-search]'));
 
-    if (marketSelector != null) {
-      try {
-        const marketUrls = angular.fromJson(marketSelector.getAttribute('data-markets'));
-        CustomRenderer.scope.root.marketUrls = marketUrls;
-      } catch (e) {}
+      if (dataSearch.length) {
+        var pageDataSearch = _toConsumableArray(document.querySelectorAll('[data-search]'));
+
+        pageDataSearch.forEach(function (node) {
+          node.setAttribute('data-search', dataSearch[0].getAttribute('data-search'));
+        });
+      }
     }
-    /*
-    const marketsAndLanguages = [...page.querySelectorAll('.nav--markets__secondary > li > a')];
-    const anchors = [...document.querySelectorAll('.nav--markets__secondary > li > a')];
-    anchors.forEach(a => {
-    	const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
-    	if (marketAndLanguage) {
-    		a.href = marketAndLanguage.href;
-    		console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
-    	}
-    });
-    */
+  }, {
+    key: "updateMarketsAndLanguages",
+    value: function updateMarketsAndLanguages() {
+      var page = this.properties.page;
+      var marketSelector = page.getElementById('market-selector');
 
-  }
+      if (marketSelector != null) {
+        try {
+          var marketUrls = angular.fromJson(marketSelector.getAttribute('data-markets'));
+          CustomRenderer.scope.root.marketUrls = marketUrls;
+        } catch (e) {}
+      }
+      /*
+      const marketsAndLanguages = [...page.querySelectorAll('.nav--markets__secondary > li > a')];
+      const anchors = [...document.querySelectorAll('.nav--markets__secondary > li > a')];
+      anchors.forEach(a => {
+      	const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
+      	if (marketAndLanguage) {
+      		a.href = marketAndLanguage.href;
+      		console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
+      	}
+      });
+      */
 
-  pageView() {
-    const page = this.properties.page;
-
-    if (!page.getElementById(_gtm.default.FILTERS_SCRIPT_ID)) {
-      _gtm.default.pageView();
     }
-  }
+  }, {
+    key: "pageView",
+    value: function pageView() {
+      var page = this.properties.page;
 
-  updateGTMData() {
-    const page = this.properties.page;
-    const script = page.getElementById("gtm-page-data");
-
-    if (script && script.text) {
-      try {
-        new Function(script.text)();
-      } catch (error) {}
+      if (!page.getElementById(_gtm.default.FILTERS_SCRIPT_ID)) {
+        _gtm.default.pageView();
+      }
     }
-  } // This method in the renderer is run when the data-router-view is added to the DOM Tree.
+  }, {
+    key: "updateGTMData",
+    value: function updateGTMData() {
+      var page = this.properties.page;
+      var script = page.getElementById("gtm-page-data");
+
+      if (script && script.text) {
+        try {
+          new Function(script.text)();
+        } catch (error) {}
+      }
+    } // This method in the renderer is run when the data-router-view is added to the DOM Tree.
+
+  }, {
+    key: "onEnter",
+    value: function onEnter() {
+      // console.log('onEnter');
+      if (!first) {
+        CustomRenderer.$timeout(function () {
+          var $compile = CustomRenderer.$compile;
+
+          var view = _toConsumableArray(document.querySelectorAll('.view')).pop(); // console.log(view.childNodes);
 
 
-  onEnter() {
-    // console.log('onEnter');
-    if (!first) {
-      CustomRenderer.$timeout(() => {
-        const $compile = CustomRenderer.$compile;
-        const view = [...document.querySelectorAll('.view')].pop(); // console.log(view.childNodes);
+          var element = angular.element(view.childNodes);
+          var $scope = CustomRenderer.scope;
+          $scope.root.menuOpened = false;
+          $scope.root.menuProductOpened = false;
+          var $newScope = $scope.$new();
+          var content = $compile(element)($newScope);
+          CustomRenderer.$newScope = $newScope;
+          CustomRenderer.content = content;
+          /*
+          element.on('$destroy', (event) => {
+          	console.log('.view -> $destroy', event);
+          });
+          */
+          // element.append(content);
+        });
+      }
+    } // This method in the renderer is run when transition to hide the data-router-view is called.
 
-        const element = angular.element(view.childNodes);
-        const $scope = CustomRenderer.scope;
-        $scope.root.menuOpened = false;
-        $scope.root.menuProductOpened = false;
-        const $newScope = $scope.$new();
-        const content = $compile(element)($newScope);
-        CustomRenderer.$newScope = $newScope;
-        CustomRenderer.content = content;
+  }, {
+    key: "onLeave",
+    value: function onLeave() {
+      // console.log('onLeave', first);
+      if (first) {
+        first = false;
+
+        var view = _toConsumableArray(document.querySelectorAll('.view')).shift();
+
+        var element = angular.element(view.childNodes);
         /*
         element.on('$destroy', (event) => {
         	console.log('.view -> $destroy', event);
         });
         */
-        // element.append(content);
-      });
-    }
-  } // This method in the renderer is run when transition to hide the data-router-view is called.
+      }
+    } // This method in the renderer is run when the transition to display the data-router-view is done.
 
+  }, {
+    key: "onEnterCompleted",
+    value: function onEnterCompleted() {} // console.log('onEnterCompleted');
 
-  onLeave() {
-    // console.log('onLeave', first);
+    /*
     if (first) {
-      first = false;
-      const view = [...document.querySelectorAll('.view')].shift();
-      const element = angular.element(view.childNodes);
-      /*
-      element.on('$destroy', (event) => {
-      	console.log('.view -> $destroy', event);
-      });
-      */
+    	first = false;
     }
-  } // This method in the renderer is run when the transition to display the data-router-view is done.
+    */
+    // This method in the renderer is run when the data-router-view is removed from the DOM Tree.
 
+  }, {
+    key: "onLeaveCompleted",
+    value: function onLeaveCompleted() {// console.log('onLeaveCompleted');
+    }
+  }], [{
+    key: "$destroy",
+    value: function $destroy(from) {
+      // console.log('CustomRenderer.destroy', this.content, this.$newScope);
+      if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
+        CustomRenderer.$timeout(function () {
+          CustomRenderer.scope.$root.first = null;
+        });
+      } else {
+        if (this.content) {
+          this.content.remove();
+          this.content = null;
+        }
 
-  onEnterCompleted() {} // console.log('onEnterCompleted');
+        if (this.$newScope) {
+          this.$newScope.$destroy();
+          this.$newScope = null;
+        }
 
-  /*
-  if (first) {
-  	first = false;
-  }
-  */
-  // This method in the renderer is run when the data-router-view is removed from the DOM Tree.
+        from.remove();
+      }
+    }
+  }, {
+    key: "collectScopes",
+    value: function collectScopes(scope, scopes) {
+      scopes = scopes || [];
 
+      if (scope) {
+        var child = scope && scope.$$childHead;
 
-  onLeaveCompleted() {// console.log('onLeaveCompleted');
-  }
+        while (child) {
+          scopes.push(child);
+          scopes = this.collectScopes(child, scopes);
+          child = child.$$nextSibling;
+        } // console.log(scopes);
 
-  static $destroy(from) {
-    // console.log('CustomRenderer.destroy', this.content, this.$newScope);
-    if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
-      CustomRenderer.$timeout(() => {
-        CustomRenderer.scope.$root.first = null;
-      });
-    } else {
-      if (this.content) {
-        this.content.remove();
-        this.content = null;
       }
 
-      if (this.$newScope) {
-        this.$newScope.$destroy();
-        this.$newScope = null;
-      }
-
-      from.remove();
+      return scopes;
     }
-  }
+  }]);
 
-  static collectScopes(scope, scopes) {
-    scopes = scopes || [];
-
-    if (scope) {
-      let child = scope && scope.$$childHead;
-
-      while (child) {
-        scopes.push(child);
-        scopes = this.collectScopes(child, scopes);
-        child = child.$$nextSibling;
-      } // console.log(scopes);
-
-    }
-
-    return scopes;
-  }
-
-}
+  return CustomRenderer;
+}(_highway.default.Renderer);
 
 exports.default = CustomRenderer;
 
-},{"../gtm/gtm.service":239,"@dogstudio/highway":1}],241:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"@dogstudio/highway":1}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26221,145 +27682,174 @@ var _pageTransition = _interopRequireDefault(require("./page-transition"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 // import PageNoTransition from './page-no-transition';
 // Import Quicklink
 // See: https://github.com/GoogleChromeLabs/quicklink
 // import Quicklink from 'quicklink/dist/quicklink.mjs';
-class HighwayDirective {
-  constructor($compile, $timeout) {
+var HighwayDirective =
+/*#__PURE__*/
+function () {
+  function HighwayDirective($compile, $timeout) {
+    _classCallCheck(this, HighwayDirective);
+
     this.$compile = $compile;
     this.$timeout = $timeout;
     this.restrict = 'A';
     this.link$ = new _rxjs.Subject();
   }
 
-  onLink$() {
-    return this.link$.pipe((0, _operators.debounceTime)(50));
-  }
+  _createClass(HighwayDirective, [{
+    key: "onLink$",
+    value: function onLink$() {
+      return this.link$.pipe((0, _operators.debounceTime)(50));
+    }
+  }, {
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
 
-  link(scope, element, attributes, controller) {
-    this.$timeout(() => {
-      this.init(scope, element, attributes, controller);
-    });
-  }
+      this.$timeout(function () {
+        _this.init(scope, element, attributes, controller);
+      });
+    }
+  }, {
+    key: "init",
+    value: function init(scope, element, attributes, controller) {
+      var _this2 = this;
 
-  init(scope, element, attributes, controller) {
-    _customRenderer.default.$compile = this.$compile;
-    _customRenderer.default.$timeout = this.$timeout;
-    _customRenderer.default.scope = scope;
-    let wasProduct = false;
+      _customRenderer.default.$compile = this.$compile;
+      _customRenderer.default.$timeout = this.$timeout;
+      _customRenderer.default.scope = scope;
+      var wasProduct = false;
 
-    const onProductMenu = () => {
-      setTimeout(() => {
-        let top = 0;
-        const sectionProduct = element[0].querySelector('.section--product');
+      var onProductMenu = function onProductMenu() {
+        setTimeout(function () {
+          var top = 0;
+          var sectionProduct = element[0].querySelector('.section--product');
 
-        if (wasProduct && sectionProduct && window.innerWidth > 860) {
-          const anchors = [...sectionProduct.querySelectorAll('a')];
-          let selectedAnchor = anchors.find(x => window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length); // console.log(anchors, selectedAnchor);
+          if (wasProduct && sectionProduct && window.innerWidth > 860) {
+            var anchors = _toConsumableArray(sectionProduct.querySelectorAll('a'));
 
-          if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
-            const sectionProductTop = sectionProduct.getBoundingClientRect().top;
-            top = sectionProductTop + _dom.default.getScrollTop(window);
+            var selectedAnchor = anchors.find(function (x) {
+              return window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length;
+            }); // console.log(anchors, selectedAnchor);
+
+            if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
+              var sectionProductTop = sectionProduct.getBoundingClientRect().top;
+              top = sectionProductTop + _dom.default.getScrollTop(window);
+            }
           }
-        }
 
-        window.scrollTo(0, top); // console.log('wasProduct', wasProduct);
-        // console.log(wasProduct, sectionProduct);
+          window.scrollTo(0, top); // console.log('wasProduct', wasProduct);
+          // console.log(wasProduct, sectionProduct);
 
-        wasProduct = Boolean(sectionProduct); // console.log('isProduct', wasProduct);
-      }, 100);
-    };
-    /*
-    Highway.Core.prototype.pushState_ = Highway.Core.prototype.pushState;
-    Highway.Core.prototype.pushState = () => {};
-    */
-
-
-    const H = new _highway.default.Core({
-      renderers: {
-        view: _customRenderer.default
-      },
-      transitions: {
-        view: _pageTransition.default
-      }
-    });
-    this.H = H;
-    _customRenderer.default.H = H;
-    scope.$on('onHrefNode', ($scope, node) => {
-      this.link$.next();
-    });
-    const subscription = this.onLink$().subscribe(x => {
-      // console.log('onLinks$');
-      H.detach(H.links);
-      const links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
-      H.links = links;
-      H.attach(links);
+          wasProduct = Boolean(sectionProduct); // console.log('isProduct', wasProduct);
+        }, 100);
+      };
       /*
-      links.forEach(x => {
-      	x.classList.remove('active');
-      	if (x.href === location.href) {
-      		x.classList.add('active');
-      	}
+      Highway.Core.prototype.pushState_ = Highway.Core.prototype.pushState;
+      Highway.Core.prototype.pushState = () => {};
+      */
+
+
+      var H = new _highway.default.Core({
+        renderers: {
+          view: _customRenderer.default
+        },
+        transitions: {
+          view: _pageTransition.default
+        }
+      });
+      this.H = H;
+      _customRenderer.default.H = H;
+      scope.$on('onHrefNode', function ($scope, node) {
+        _this2.link$.next();
+      });
+      var subscription = this.onLink$().subscribe(function (x) {
+        // console.log('onLinks$');
+        H.detach(H.links);
+        var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
+        H.links = links;
+        H.attach(links);
+        /*
+        links.forEach(x => {
+        	x.classList.remove('active');
+        	if (x.href === location.href) {
+        		x.classList.add('active');
+        	}
+        });
+        */
+      });
+      var properties = H.cache.get(H.location.href);
+      properties.view = scope.$root.firstView;
+      H.cache.set(H.location.href, properties);
+      H.on('NAVIGATE_OUT', function (_ref) {
+        var to = _ref.to,
+            trigger = _ref.trigger,
+            location = _ref.location;
+        scope.$broadcast('onNavigateOut', location);
+      });
+      H.on('NAVIGATE_IN', function (_ref2) {
+        var to = _ref2.to,
+            trigger = _ref2.trigger,
+            location = _ref2.location;
+        // console.log('NAVIGATE_IN');
+        H.detach(H.links);
+        onProductMenu();
+      });
+      /*
+      H.on('NAVIGATE_END', ({ to, trigger, location }) => {
+      	console.log('NAVIGATE_END', document.title);
+      	// H.pushState_();
       });
       */
-    });
-    const properties = H.cache.get(H.location.href);
-    properties.view = scope.$root.firstView;
-    H.cache.set(H.location.href, properties);
-    H.on('NAVIGATE_OUT', ({
-      to,
-      trigger,
-      location
-    }) => {
-      scope.$broadcast('onNavigateOut', location);
-    });
-    H.on('NAVIGATE_IN', ({
-      to,
-      trigger,
-      location
-    }) => {
-      // console.log('NAVIGATE_IN');
-      H.detach(H.links);
-      onProductMenu();
-    });
-    /*
-    H.on('NAVIGATE_END', ({ to, trigger, location }) => {
-    	console.log('NAVIGATE_END', document.title);
-    	// H.pushState_();
-    });
-    */
 
-    element.on('$destroy', () => {
-      // H.destroy();
-      subscription.unsubscribe();
-    });
-    /*
-    const pushState = history.pushState;
-    history.pushState = (...args) => {
-    	console.log('pushState', args, document.title);
-    	return pushState.apply(history, args);
-    };
-    */
+      element.on('$destroy', function () {
+        // H.destroy();
+        subscription.unsubscribe();
+      });
+      /*
+      const pushState = history.pushState;
+      history.pushState = (...args) => {
+      	console.log('pushState', args, document.title);
+      	return pushState.apply(history, args);
+      };
+      */
 
-    setTimeout(onProductMenu, 1000);
+      setTimeout(onProductMenu, 1000);
 
-    if (!H.properties.page.getElementById(_gtm.default.FILTERS_SCRIPT_ID)) {
-      _gtm.default.pageView();
+      if (!H.properties.page.getElementById(_gtm.default.FILTERS_SCRIPT_ID)) {
+        _gtm.default.pageView();
+      }
     }
-  }
+  }], [{
+    key: "factory",
+    value: function factory($compile, $timeout) {
+      return new HighwayDirective($compile, $timeout);
+    }
+  }]);
 
-  static factory($compile, $timeout) {
-    return new HighwayDirective($compile, $timeout);
-  }
-
-}
+  return HighwayDirective;
+}();
 
 exports.default = HighwayDirective;
 HighwayDirective.factory.$inject = ['$compile', '$timeout'];
 
-},{"../gtm/gtm.service":239,"../services/dom.service":252,"./custom-renderer":240,"./page-transition":242,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],242:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"../services/dom.service":254,"./custom-renderer":242,"./page-transition":244,"@dogstudio/highway":1,"rxjs":2,"rxjs/operators":198}],244:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26377,132 +27867,162 @@ var _customRenderer = _interopRequireDefault(require("./custom-renderer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class PageTransition extends _highway.default.Transition {
-  in({
-    from,
-    to,
-    done
-  }) {
-    // console.log('PageTransition.in');
-    const loader = document.querySelector('.loader--cube');
-    TweenMax.to(loader, 0.45, {
-      opacity: 0,
-      ease: Power2.easeInOut,
-      onComplete: () => {
-        TweenMax.set(loader, {
-          display: 'none'
-        });
-      }
-    });
-    TweenMax.set(to, {
-      opacity: 0,
-      minHeight: from.offsetHeight
-    });
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-    _customRenderer.default.$destroy(from);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    if (PageTransition.origin) {
-      const left = PageTransition.origin.x / window.innerWidth * 100;
-      const top = PageTransition.origin.y;
-      TweenMax.set(to, {
-        scale: 1.1,
-        transformOrigin: `${left}% ${top}px`
-      });
-    } // console.log(PageTransition.origin);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-    TweenMax.to(to, 0.6, {
-      scale: 1,
-      opacity: 1,
-      delay: 0.1,
-      // 0.250,
-      // overwrite: 'all',
-      ease: Power2.easeInOut,
-      onComplete: () => {
-        setTimeout(() => {
-          TweenMax.set(to, {
-            clearProps: 'all'
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var PageTransition =
+/*#__PURE__*/
+function (_Highway$Transition) {
+  _inherits(PageTransition, _Highway$Transition);
+
+  function PageTransition() {
+    _classCallCheck(this, PageTransition);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(PageTransition).apply(this, arguments));
+  }
+
+  _createClass(PageTransition, [{
+    key: "in",
+    value: function _in(_ref) {
+      var from = _ref.from,
+          to = _ref.to,
+          done = _ref.done;
+      // console.log('PageTransition.in');
+      var loader = document.querySelector('.loader--cube');
+      TweenMax.to(loader, 0.45, {
+        opacity: 0,
+        ease: Power2.easeInOut,
+        onComplete: function onComplete() {
+          TweenMax.set(loader, {
+            display: 'none'
           });
-          TweenMax.set(to, {
-            minHeight: 0,
-            opacity: 1
-          });
-        }, 50); // ci sono estensioni che bloccano questo genere di script
-
-        if (addthis.layers && addthis.layers.refresh) {
-          addthis.layers.refresh();
         }
-
-        done();
-      }
-    });
-  }
-
-  out({
-    from,
-    trigger,
-    done
-  }) {
-    // console.log('PageTransition.out');
-    const loader = document.querySelector('.loader--cube');
-    TweenMax.set(loader, {
-      opacity: 0,
-      display: 'block'
-    });
-    TweenMax.to(loader, 0.45, {
-      opacity: 1,
-      ease: Power2.easeInOut
-    });
-    const headerMenu = document.querySelector('.header__menu');
-
-    if (headerMenu) {
-      headerMenu.classList.remove('opened');
-      /*
-      TweenMax.to(headerMenu, 0.3, {
-      	maxHeight: 0,
-      	delay: 0,
-      	onComplete: () => {
-      		TweenMax.set(headerMenu, { clearProps: 'all' });
-      		// headerMenu.classList.remove('opened');
-      	}
       });
-      */
+      TweenMax.set(to, {
+        opacity: 0,
+        minHeight: from.offsetHeight
+      });
+
+      _customRenderer.default.$destroy(from);
+
+      if (PageTransition.origin) {
+        var left = PageTransition.origin.x / window.innerWidth * 100;
+        var top = PageTransition.origin.y;
+        TweenMax.set(to, {
+          scale: 1.1,
+          transformOrigin: "".concat(left, "% ").concat(top, "px")
+        });
+      } // console.log(PageTransition.origin);
+
+
+      TweenMax.to(to, 0.6, {
+        scale: 1,
+        opacity: 1,
+        delay: 0.1,
+        // 0.250,
+        // overwrite: 'all',
+        ease: Power2.easeInOut,
+        onComplete: function onComplete() {
+          setTimeout(function () {
+            TweenMax.set(to, {
+              clearProps: 'all'
+            });
+            TweenMax.set(to, {
+              minHeight: 0,
+              opacity: 1
+            });
+          }, 50); // ci sono estensioni che bloccano questo genere di script
+
+          if (addthis.layers && addthis.layers.refresh) {
+            addthis.layers.refresh();
+          }
+
+          done();
+        }
+      });
     }
+  }, {
+    key: "out",
+    value: function out(_ref2) {
+      var from = _ref2.from,
+          trigger = _ref2.trigger,
+          done = _ref2.done;
+      // console.log('PageTransition.out');
+      var loader = document.querySelector('.loader--cube');
+      TweenMax.set(loader, {
+        opacity: 0,
+        display: 'block'
+      });
+      TweenMax.to(loader, 0.45, {
+        opacity: 1,
+        ease: Power2.easeInOut
+      });
+      var headerMenu = document.querySelector('.header__menu');
 
-    let left = 50;
-
-    let top = _dom.default.getScrollTop(window);
-
-    if (trigger instanceof HTMLElement) {
-      const rect = _rect.default.fromNode(trigger);
-
-      PageTransition.origin = rect.center;
-      top += rect.center.y;
-      left = rect.center.x / window.innerWidth * 100;
-    }
-
-    TweenMax.set(from, {
-      transformOrigin: `${left}% ${top}px`
-    });
-    TweenMax.to(from, 0.6, {
-      scale: 1.1,
-      opacity: 0,
-      delay: 0,
-      // 0.150,
-      // overwrite: 'all',
-      ease: Power2.easeInOut,
-      onComplete: () => {
-        setTimeout(done, 500);
+      if (headerMenu) {
+        headerMenu.classList.remove('opened');
+        /*
+        TweenMax.to(headerMenu, 0.3, {
+        	maxHeight: 0,
+        	delay: 0,
+        	onComplete: () => {
+        		TweenMax.set(headerMenu, { clearProps: 'all' });
+        		// headerMenu.classList.remove('opened');
+        	}
+        });
+        */
       }
-    });
-  }
 
-}
+      var left = 50;
+
+      var top = _dom.default.getScrollTop(window);
+
+      if (trigger instanceof HTMLElement) {
+        var rect = _rect.default.fromNode(trigger);
+
+        PageTransition.origin = rect.center;
+        top += rect.center.y;
+        left = rect.center.x / window.innerWidth * 100;
+      }
+
+      TweenMax.set(from, {
+        transformOrigin: "".concat(left, "% ").concat(top, "px")
+      });
+      TweenMax.to(from, 0.6, {
+        scale: 1.1,
+        opacity: 0,
+        delay: 0,
+        // 0.150,
+        // overwrite: 'all',
+        ease: Power2.easeInOut,
+        onComplete: function onComplete() {
+          setTimeout(done, 500);
+        }
+      });
+    }
+  }]);
+
+  return PageTransition;
+}(_highway.default.Transition);
 
 exports.default = PageTransition;
 
-},{"../services/dom.service":252,"../shared/rect":256,"./custom-renderer":240,"@dogstudio/highway":1}],243:[function(require,module,exports){
+},{"../services/dom.service":254,"../shared/rect":258,"./custom-renderer":242,"@dogstudio/highway":1}],245:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26510,12 +28030,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.ITEMS_PER_PAGE = void 0;
 
-/* jshint esversion: 6 */
-const ITEMS_PER_PAGE = 9;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ITEMS_PER_PAGE = 9;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
-class MagazineCtrl {
-  constructor($scope, $timeout, LocationService) {
+var MagazineCtrl =
+/*#__PURE__*/
+function () {
+  function MagazineCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, MagazineCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -26529,224 +28058,34 @@ class MagazineCtrl {
     this.visibleItems = [];
   }
 
-  onScroll(event) {
-    if (event.rect.bottom < event.windowRect.bottom) {
-      // console.log('more!');
-      if (!this.busy && this.maxItems < this.magazine.length) {
-        this.$timeout(() => {
-          this.busy = true;
-          this.$timeout(() => {
-            this.maxItems += ITEMS_PER_PAGE;
-            this.visibleItems = this.magazine.slice(0, this.maxItems);
-            this.busy = false; // console.log(this.visibleItems.length);
-          }, 1000);
-        }, 0);
+  _createClass(MagazineCtrl, [{
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.magazine.length) {
+          this.$timeout(function () {
+            _this.busy = true;
+
+            _this.$timeout(function () {
+              _this.maxItems += ITEMS_PER_PAGE;
+              _this.visibleItems = _this.magazine.slice(0, _this.maxItems);
+              _this.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
       }
     }
-  }
+  }]);
 
-}
+  return MagazineCtrl;
+}();
 
 MagazineCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = MagazineCtrl;
 exports.default = _default;
-
-},{}],244:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/* jshint esversion: 6 */
-
-/* global window, document, angular, TweenMax, TimelineMax */
-class MoodboardDropdownDirective {
-  constructor($compile) {
-    this.$compile = $compile;
-    this.restrict = 'A';
-    this.template = `
-<span has-dropdown=".moodboard__value">
-	<span class="dropdown">
-		<ul class="nav nav--select">
-			<li ng-repeat="item in filter.options track by $index" ng-class="{ active: filter.value == item.value, disabled: item.disabled }">
-				<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="setFilter(item, filter)">
-					<img ng-src="{{item.image}}" ng-if="item.image" />
-					<span ng-bind="item.label"></span>
-				</span>
-			</li>
-		</ul>
-	</span>
-	<span class="moodboard__value" ng-class="{ active: filter.value }">
-		<span class="moodboard__underline"></span>
-		<span class="moodboard__text">{{filter.placeholder}}</span>
-	</span>
-</span>
-`; // this.require = 'ngModel';
-
-    this.scope = {
-      filter: '=?moodboardDropdown'
-    };
-  }
-
-  link(scope, element, attributes, controller) {
-    // console.log('MoodboardDropdownDirective', this.filter);
-    const filter = scope.filter;
-
-    if (filter.value) {
-      filter.placeholder = filter.options.find(x => x.value === filter.value).label;
-    }
-
-    scope.setFilter = (item, filter) => {
-      item = item || filter.options[0];
-      filter.value = item.value;
-      filter.placeholder = item.label;
-
-      if (typeof filter.doFilter === 'function') {
-        filter.doFilter(item, item.value);
-      }
-
-      scope.$broadcast('onCloseDropdown');
-    };
-
-    scope.removeFilter = filter => {
-      this.setFilter(null, filter);
-    };
-
-    element.on('$destroy', () => {});
-  }
-
-  static factory($compile) {
-    return new MoodboardDropdownDirective($compile);
-  }
-
-}
-
-exports.default = MoodboardDropdownDirective;
-MoodboardDropdownDirective.factory.$inject = ['$compile'];
-
-},{}],245:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/* jshint esversion: 6 */
-
-/* global window, document, angular, MoodboardSearch, TweenMax, TimelineMax */
-class MoodboardSearchDirective {
-  constructor($compile) {
-    this.$compile = $compile;
-    this.restrict = 'A';
-    this.scope = {
-      filters: '=moodboardSearch',
-      model: '=model'
-    };
-  }
-
-  link(scope, element, attributes, controller) {
-    scope.filters = scope.filters || {};
-    const node = element[0];
-    let html = node.innerText;
-    const keys = Object.keys(scope.filters);
-    keys.forEach(x => {
-      // console.log(x);
-      html = html.replace(`$${x}$`, `<span class="moodboard__dropdown ${x}" moodboard-dropdown="filters.${x}" ng-click="animateOff()"></span>`);
-    }); // console.log('MoodboardSearchDirective', html);
-
-    node.innerHTML = html;
-    this.$compile(element.contents())(scope);
-    const hasFilter = Object.keys(scope.filters).map(x => scope.filters[x]).find(x => x.value !== null) !== undefined;
-
-    if (!hasFilter) {
-      this.animateUnderlines(node);
-    }
-
-    scope.animateOff = () => {
-      this.animateOff(node);
-    };
-
-    element.on('$destroy', () => {});
-  }
-
-  animateUnderlines(node) {
-    this.animated = true;
-    const values = [...node.querySelectorAll('.moodboard__underline')];
-    values.forEach(x => {
-      TweenMax.set(x, {
-        transformOrigin: '0 50%',
-        scaleX: 0
-      });
-    });
-    let i = -1;
-
-    const animate = () => {
-      i++;
-      i = i % values.length;
-      const u = values[i];
-      TweenMax.set(u, {
-        transformOrigin: '0 50%',
-        scaleX: 0
-      });
-      TweenMax.to(u, 0.50, {
-        scaleX: 1,
-        transformOrigin: '0 50%',
-        delay: 0,
-        ease: Power3.easeInOut,
-        overwrite: 'all',
-        onComplete: () => {
-          TweenMax.set(u, {
-            transformOrigin: '100% 50%',
-            scaleX: 1
-          });
-          TweenMax.to(u, 0.50, {
-            scaleX: 0,
-            transformOrigin: '100% 50%',
-            delay: 1.0,
-            ease: Power3.easeInOut,
-            overwrite: 'all',
-            onComplete: () => {
-              animate();
-            }
-          });
-        }
-      });
-    };
-
-    animate();
-  }
-
-  animateOff(node) {
-    if (this.animated) {
-      this.animated = false; // console.log('animateOff');
-      // TweenMax.killAll();
-
-      const values = [...node.querySelectorAll('.moodboard__underline')];
-      TweenMax.set(values, {
-        transformOrigin: '0 50%',
-        scaleX: 0
-      });
-      TweenMax.to(values, 0.50, {
-        scaleX: 1,
-        transformOrigin: '0 50%',
-        delay: 0,
-        ease: Power3.easeInOut,
-        overwrite: 'all'
-      });
-    }
-  }
-
-  static factory($compile) {
-    return new MoodboardSearchDirective($compile);
-  }
-
-}
-
-exports.default = MoodboardSearchDirective;
-MoodboardSearchDirective.factory.$inject = ['$compile'];
 
 },{}],246:[function(require,module,exports){
 "use strict";
@@ -26756,32 +28095,265 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class MoodboardSectionCtrl {
-  constructor($scope, $timeout, LocationService, ApiService) {
-    this.$scope = $scope;
-    this.$timeout = $timeout;
-    this.locationService = LocationService;
-    this.apiService = ApiService;
-    this.filters = window.filters || {};
-    Object.keys(this.filters).forEach(key => {
-      const filter = this.filters[key];
-      filter.options.forEach(option => {
-        const value = {};
-        value[key] = option.value;
-        const q = this.locationService.getSerialization('filters', value);
-        option.query = `?q=${q}`; // console.log(option.query, option.value);
-      });
-    });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* global window, document, angular, TweenMax, TimelineMax */
+var MoodboardDropdownDirective =
+/*#__PURE__*/
+function () {
+  function MoodboardDropdownDirective($compile) {
+    _classCallCheck(this, MoodboardDropdownDirective);
+
+    this.$compile = $compile;
+    this.restrict = 'A';
+    this.template = "\n<span has-dropdown=\".moodboard__value\">\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\" ng-class=\"{ active: filter.value }\">\n\t\t<span class=\"moodboard__underline\"></span>\n\t\t<span class=\"moodboard__text\">{{filter.placeholder}}</span>\n\t</span>\n</span>\n"; // this.require = 'ngModel';
+
+    this.scope = {
+      filter: '=?moodboardDropdown'
+    };
   }
 
-}
+  _createClass(MoodboardDropdownDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      // console.log('MoodboardDropdownDirective', this.filter);
+      var filter = scope.filter;
+
+      if (filter.value) {
+        filter.placeholder = filter.options.find(function (x) {
+          return x.value === filter.value;
+        }).label;
+      }
+
+      scope.setFilter = function (item, filter) {
+        item = item || filter.options[0];
+        filter.value = item.value;
+        filter.placeholder = item.label;
+
+        if (typeof filter.doFilter === 'function') {
+          filter.doFilter(item, item.value);
+        }
+
+        scope.$broadcast('onCloseDropdown');
+      };
+
+      scope.removeFilter = function (filter) {
+        _this.setFilter(null, filter);
+      };
+
+      element.on('$destroy', function () {});
+    }
+  }], [{
+    key: "factory",
+    value: function factory($compile) {
+      return new MoodboardDropdownDirective($compile);
+    }
+  }]);
+
+  return MoodboardDropdownDirective;
+}();
+
+exports.default = MoodboardDropdownDirective;
+MoodboardDropdownDirective.factory.$inject = ['$compile'];
+
+},{}],247:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* global window, document, angular, MoodboardSearch, TweenMax, TimelineMax */
+var MoodboardSearchDirective =
+/*#__PURE__*/
+function () {
+  function MoodboardSearchDirective($compile) {
+    _classCallCheck(this, MoodboardSearchDirective);
+
+    this.$compile = $compile;
+    this.restrict = 'A';
+    this.scope = {
+      filters: '=moodboardSearch',
+      model: '=model'
+    };
+  }
+
+  _createClass(MoodboardSearchDirective, [{
+    key: "link",
+    value: function link(scope, element, attributes, controller) {
+      var _this = this;
+
+      scope.filters = scope.filters || {};
+      var node = element[0];
+      var html = node.innerText;
+      var keys = Object.keys(scope.filters);
+      keys.forEach(function (x) {
+        // console.log(x);
+        html = html.replace("$".concat(x, "$"), "<span class=\"moodboard__dropdown ".concat(x, "\" moodboard-dropdown=\"filters.").concat(x, "\" ng-click=\"animateOff()\"></span>"));
+      }); // console.log('MoodboardSearchDirective', html);
+
+      node.innerHTML = html;
+      this.$compile(element.contents())(scope);
+      var hasFilter = Object.keys(scope.filters).map(function (x) {
+        return scope.filters[x];
+      }).find(function (x) {
+        return x.value !== null;
+      }) !== undefined;
+
+      if (!hasFilter) {
+        this.animateUnderlines(node);
+      }
+
+      scope.animateOff = function () {
+        _this.animateOff(node);
+      };
+
+      element.on('$destroy', function () {});
+    }
+  }, {
+    key: "animateUnderlines",
+    value: function animateUnderlines(node) {
+      this.animated = true;
+
+      var values = _toConsumableArray(node.querySelectorAll('.moodboard__underline'));
+
+      values.forEach(function (x) {
+        TweenMax.set(x, {
+          transformOrigin: '0 50%',
+          scaleX: 0
+        });
+      });
+      var i = -1;
+
+      var animate = function animate() {
+        i++;
+        i = i % values.length;
+        var u = values[i];
+        TweenMax.set(u, {
+          transformOrigin: '0 50%',
+          scaleX: 0
+        });
+        TweenMax.to(u, 0.50, {
+          scaleX: 1,
+          transformOrigin: '0 50%',
+          delay: 0,
+          ease: Power3.easeInOut,
+          overwrite: 'all',
+          onComplete: function onComplete() {
+            TweenMax.set(u, {
+              transformOrigin: '100% 50%',
+              scaleX: 1
+            });
+            TweenMax.to(u, 0.50, {
+              scaleX: 0,
+              transformOrigin: '100% 50%',
+              delay: 1.0,
+              ease: Power3.easeInOut,
+              overwrite: 'all',
+              onComplete: function onComplete() {
+                animate();
+              }
+            });
+          }
+        });
+      };
+
+      animate();
+    }
+  }, {
+    key: "animateOff",
+    value: function animateOff(node) {
+      if (this.animated) {
+        this.animated = false; // console.log('animateOff');
+        // TweenMax.killAll();
+
+        var values = _toConsumableArray(node.querySelectorAll('.moodboard__underline'));
+
+        TweenMax.set(values, {
+          transformOrigin: '0 50%',
+          scaleX: 0
+        });
+        TweenMax.to(values, 0.50, {
+          scaleX: 1,
+          transformOrigin: '0 50%',
+          delay: 0,
+          ease: Power3.easeInOut,
+          overwrite: 'all'
+        });
+      }
+    }
+  }], [{
+    key: "factory",
+    value: function factory($compile) {
+      return new MoodboardSearchDirective($compile);
+    }
+  }]);
+
+  return MoodboardSearchDirective;
+}();
+
+exports.default = MoodboardSearchDirective;
+MoodboardSearchDirective.factory.$inject = ['$compile'];
+
+},{}],248:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MoodboardSectionCtrl = function MoodboardSectionCtrl($scope, $timeout, LocationService, ApiService) {
+  var _this = this;
+
+  _classCallCheck(this, MoodboardSectionCtrl);
+
+  this.$scope = $scope;
+  this.$timeout = $timeout;
+  this.locationService = LocationService;
+  this.apiService = ApiService;
+  this.filters = window.filters || {};
+  Object.keys(this.filters).forEach(function (key) {
+    var filter = _this.filters[key];
+    filter.options.forEach(function (option) {
+      var value = {};
+      value[key] = option.value;
+
+      var q = _this.locationService.getSerialization('filters', value);
+
+      option.query = "?q=".concat(q); // console.log(option.query, option.value);
+    });
+  });
+};
 
 MoodboardSectionCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardSectionCtrl;
 exports.default = _default;
 
-},{}],247:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26795,9 +28367,14 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const GTM_CAT = 'moodboard';
-const MOOD_TYPES = Object.freeze({
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'moodboard';
+var MOOD_TYPES = Object.freeze({
   Tile: 1,
   Horizontal: 2,
   Vertical: 3,
@@ -26805,11 +28382,15 @@ const MOOD_TYPES = Object.freeze({
   Decor: 5
 });
 exports.MOOD_TYPES = MOOD_TYPES;
-const ITEMS_PER_PAGE = 20;
+var ITEMS_PER_PAGE = 20;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
-class MoodboardCtrl {
-  constructor($scope, $timeout, LocationService, ApiService) {
+var MoodboardCtrl =
+/*#__PURE__*/
+function () {
+  function MoodboardCtrl($scope, $timeout, LocationService, ApiService) {
+    _classCallCheck(this, MoodboardCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -26822,107 +28403,128 @@ class MoodboardCtrl {
     this.applyFilters(false);
   }
 
-  deserializeFilters() {
-    const locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('MoodboardCtrl.deserializeFilters', filters);
+  _createClass(MoodboardCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters() {
+      var _this = this;
 
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+      var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('MoodboardCtrl.deserializeFilters', filters);
 
-      switch (x) {
-        default:
-          filter.doFilter = (item, value) => {
-            // console.log(item, value);
-            this.applyFilters(item, value);
-          };
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
 
-      }
+        switch (x) {
+          default:
+            filter.doFilter = function (item, value) {
+              // console.log(item, value);
+              _this.applyFilters(item, value);
+            };
 
-      filter.options.unshift({
-        label: filter.placeholder,
-        value: null
+        }
+
+        filter.options.unshift({
+          label: filter.placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label; // console.log(x, filters[x], filter.value);
       });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label; // console.log(x, filters[x], filter.value);
-    });
-    return filters;
-  }
-
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('MoodboardCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    // console.log('MoodboardCtrl.applyFilters', this.filters);
-    if (serialize !== false) this.serializeFilters();
-    var me = this;
-    const filters = {};
-    let anyFilter = false;
-    Object.keys(this.filters).map(key => {
-      const v = me.filters[key].value;
-
-      if (v !== null) {
-        filters[key] = v;
-        anyFilter = true;
-      }
-    });
-
-    if (anyFilter) {
-      this.apiService.moodboard.filter(filters).pipe((0, _operators.first)()).subscribe(success => {
-        let items = success.data;
-        this.filteredItems = [];
-        this.visibleItems = [];
-        this.maxItems = ITEMS_PER_PAGE;
-        this.$timeout(() => {
-          this.filteredItems = items;
-          this.visibleItems = items.slice(0, this.maxItems);
-        }, 50);
-      }, error => console.log('MoodboardCtrl.applyFilters.error', error));
+      return filters;
     }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
 
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
 
-  onScroll(event) {
-    if (event.rect.bottom < event.windowRect.bottom) {
-      // console.log('more!');
-      if (!this.busy && this.maxItems < this.filteredItems.length) {
-        this.$timeout(() => {
-          this.busy = true;
-          this.$timeout(() => {
-            this.maxItems += ITEMS_PER_PAGE;
-            this.visibleItems = this.filteredItems.slice(0, this.maxItems);
-            this.busy = false; // console.log(this.visibleItems.length);
-          }, 1000);
-        }, 0);
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('MoodboardCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      // console.log('MoodboardCtrl.applyFilters', this.filters);
+      if (serialize !== false) this.serializeFilters();
+      var me = this;
+      var filters = {};
+      var anyFilter = false;
+      Object.keys(this.filters).map(function (key) {
+        var v = me.filters[key].value;
+
+        if (v !== null) {
+          filters[key] = v;
+          anyFilter = true;
+        }
+      });
+
+      if (anyFilter) {
+        this.apiService.moodboard.filter(filters).pipe((0, _operators.first)()).subscribe(function (success) {
+          var items = success.data;
+          _this3.filteredItems = [];
+          _this3.visibleItems = [];
+          _this3.maxItems = ITEMS_PER_PAGE;
+
+          _this3.$timeout(function () {
+            _this3.filteredItems = items;
+            _this3.visibleItems = items.slice(0, _this3.maxItems);
+          }, 50);
+        }, function (error) {
+          return console.log('MoodboardCtrl.applyFilters.error', error);
+        });
+      }
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this4 = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.filteredItems.length) {
+          this.$timeout(function () {
+            _this4.busy = true;
+
+            _this4.$timeout(function () {
+              _this4.maxItems += ITEMS_PER_PAGE;
+              _this4.visibleItems = _this4.filteredItems.slice(0, _this4.maxItems);
+              _this4.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
       }
     }
-  }
+  }]);
 
-}
+  return MoodboardCtrl;
+}();
 
 MoodboardCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
 var _default = MoodboardCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239,"rxjs/operators":198}],248:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"rxjs/operators":198}],250:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26934,13 +28536,22 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const ITEMS_PER_PAGE = 9;
-exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
-const GTM_CAT = 'news';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class NewsCtrl {
-  constructor($scope, $timeout, LocationService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ITEMS_PER_PAGE = 9;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
+var GTM_CAT = 'news';
+
+var NewsCtrl =
+/*#__PURE__*/
+function () {
+  function NewsCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, NewsCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -26957,159 +28568,193 @@ class NewsCtrl {
     this.applyFilters(false);
   }
 
-  deserializeFilters(initialFilter) {
-    const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+  _createClass(NewsCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters(initialFilter) {
+      var _this = this;
 
-      switch (x) {
-        case 'categories':
-          filter.doFilter = (item, value) => {
-            return item.categoryId === value;
-          };
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
 
-          break;
+        switch (x) {
+          case 'categories':
+            filter.doFilter = function (item, value) {
+              return item.categoryId === value;
+            };
 
-        case 'years':
-          filter.doFilter = (item, value) => {
-            return item.year === value;
-          };
+            break;
 
-          break;
-      }
+          case 'years':
+            filter.doFilter = function (item, value) {
+              return item.year === value;
+            };
 
-      filter.options.unshift({
-        label: this.filters[x].placeholder,
-        value: null
-      });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label;
-    });
-    return filters;
-  }
-
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('ReferenceCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    if (serialize !== false) this.serializeFilters();
-    const {
-      filteredItems
-    } = this.getFilteredItems(this.news); // console.log(filteredItems, filters);
-
-    this.filteredItems = [];
-    this.visibleItems = [];
-    this.maxItems = ITEMS_PER_PAGE;
-    this.$timeout(() => {
-      this.filteredItems = filteredItems;
-      this.visibleItems = filteredItems.slice(0, this.maxItems);
-      this.updateFilterStates(this.news); // delayer for image update
-    }, 50);
-
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
-
-  getFilteredItems(items, skipFilter) {
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredItems = items.slice();
-
-    if (filters.length) {
-      filteredItems = filteredItems.filter(item => {
-        let has = true;
-        filters.forEach(filter => {
-          if (filter !== skipFilter) {
-            has = has && filter.doFilter(item, filter.value);
-          }
-        });
-        return has;
-      });
-    }
-
-    return {
-      filteredItems
-    };
-  }
-
-  updateFilterStates(items) {
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-      const {
-        filteredItems
-      } = this.getFilteredItems(items, filter);
-      filter.options.forEach(option => {
-        let has = false;
-
-        if (option.value) {
-          let i = 0;
-
-          while (i < filteredItems.length && !has) {
-            const item = filteredItems[i];
-            has = filter.doFilter(item, option.value);
-            i++;
-          }
-        } else {
-          has = true;
+            break;
         }
 
-        option.disabled = !has;
+        filter.options.unshift({
+          label: _this.filters[x].placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
       });
-    });
-  }
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
 
-  setFilter(item, filter) {
-    item = item || filter.options[0];
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
 
-  removeFilter(filter) {
-    this.setFilter(null, filter);
-  }
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
 
-  onScroll(event) {
-    if (event.rect.bottom < event.windowRect.bottom) {
-      // console.log('more!');
-      if (!this.busy && this.maxItems < this.filteredItems.length) {
-        this.$timeout(() => {
-          this.busy = true;
-          this.$timeout(() => {
-            this.maxItems += ITEMS_PER_PAGE;
-            this.visibleItems = this.filteredItems.slice(0, this.maxItems);
-            this.busy = false; // console.log(this.visibleItems.length);
-          }, 1000);
-        }, 0);
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('ReferenceCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      if (serialize !== false) this.serializeFilters();
+
+      var _this$getFilteredItem = this.getFilteredItems(this.news),
+          filteredItems = _this$getFilteredItem.filteredItems; // console.log(filteredItems, filters);
+
+
+      this.filteredItems = [];
+      this.visibleItems = [];
+      this.maxItems = ITEMS_PER_PAGE;
+      this.$timeout(function () {
+        _this3.filteredItems = filteredItems;
+        _this3.visibleItems = filteredItems.slice(0, _this3.maxItems);
+
+        _this3.updateFilterStates(_this3.news); // delayer for image update
+
+      }, 50);
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "getFilteredItems",
+    value: function getFilteredItems(items, skipFilter) {
+      var _this4 = this;
+
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this4.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredItems = items.slice();
+
+      if (filters.length) {
+        filteredItems = filteredItems.filter(function (item) {
+          var has = true;
+          filters.forEach(function (filter) {
+            if (filter !== skipFilter) {
+              has = has && filter.doFilter(item, filter.value);
+            }
+          });
+          return has;
+        });
+      }
+
+      return {
+        filteredItems: filteredItems
+      };
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates(items) {
+      var _this5 = this;
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this5.filters[x];
+
+        var _this5$getFilteredIte = _this5.getFilteredItems(items, filter),
+            filteredItems = _this5$getFilteredIte.filteredItems;
+
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < filteredItems.length && !has) {
+              var item = filteredItems[i];
+              has = filter.doFilter(item, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        });
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this6 = this;
+
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.filteredItems.length) {
+          this.$timeout(function () {
+            _this6.busy = true;
+
+            _this6.$timeout(function () {
+              _this6.maxItems += ITEMS_PER_PAGE;
+              _this6.visibleItems = _this6.filteredItems.slice(0, _this6.maxItems);
+              _this6.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
       }
     }
-  }
+  }]);
 
-}
+  return NewsCtrl;
+}();
 
 NewsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = NewsCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239}],249:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],251:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27121,11 +28766,20 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const GTM_CAT = 'references';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class ReferencesCtrl {
-  constructor($scope, $timeout, LocationService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'references';
+
+var ReferencesCtrl =
+/*#__PURE__*/
+function () {
+  function ReferencesCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, ReferencesCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -27136,145 +28790,175 @@ class ReferencesCtrl {
     this.applyFilters(false);
   }
 
-  deserializeFilters(initialFilter) {
-    const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+  _createClass(ReferencesCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters(initialFilter) {
+      var _this = this;
 
-      switch (x) {
-        case 'collections':
-          filter.doFilter = (item, value) => {
-            return item.collections.indexOf(value) !== -1;
-          };
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
 
-          break;
+        switch (x) {
+          case 'collections':
+            filter.doFilter = function (item, value) {
+              return item.collections.indexOf(value) !== -1;
+            };
 
-        case 'countries':
-          filter.doFilter = (item, value) => {
-            return item.countryId === value;
-          };
+            break;
 
-          break;
+          case 'countries':
+            filter.doFilter = function (item, value) {
+              return item.countryId === value;
+            };
 
-        default:
-          filter.doFilter = (item, value) => {
-            return item.features.indexOf(value) !== -1;
-          };
+            break;
 
-      }
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
 
-      filter.options.unshift({
-        label: this.filters[x].placeholder,
-        value: null
-      });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label;
-    });
-    return filters;
-  }
-
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('ReferenceCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    if (serialize !== false) this.serializeFilters();
-    const {
-      filteredItems
-    } = this.getFilteredItems(this.references);
-    this.filteredReferences = [];
-    this.$timeout(() => {
-      this.filteredReferences = filteredItems;
-      this.updateFilterStates(this.references, filteredItems); // delayer for image update
-    }, 50);
-
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
-
-  getFilteredItems(items, skipFilter) {
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredItems = items.slice();
-
-    if (filters.length) {
-      filteredItems = filteredItems.filter(item => {
-        let has = true;
-        filters.forEach(filter => {
-          if (filter !== skipFilter) {
-            has = has && filter.doFilter(item, filter.value);
-          }
-        });
-        return has;
-      });
-    }
-
-    return {
-      filteredItems
-    };
-  }
-
-  updateFilterStates(items) {
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-      const {
-        filteredItems
-      } = this.getFilteredItems(items, filter);
-      filter.options.forEach(option => {
-        let has = false;
-
-        if (option.value) {
-          let i = 0;
-
-          while (i < filteredItems.length && !has) {
-            const item = filteredItems[i];
-            has = filter.doFilter(item, option.value);
-            i++;
-          }
-        } else {
-          has = true;
         }
 
-        option.disabled = !has;
+        filter.options.unshift({
+          label: _this.filters[x].placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
       });
-    });
-  }
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
 
-  setFilter(item, filter) {
-    item = item || filter.options[0];
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
 
-  removeFilter(filter) {
-    this.setFilter(null, filter);
-  }
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
 
-}
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('ReferenceCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      if (serialize !== false) this.serializeFilters();
+
+      var _this$getFilteredItem = this.getFilteredItems(this.references),
+          filteredItems = _this$getFilteredItem.filteredItems;
+
+      this.filteredReferences = [];
+      this.$timeout(function () {
+        _this3.filteredReferences = filteredItems;
+
+        _this3.updateFilterStates(_this3.references, filteredItems); // delayer for image update
+
+      }, 50);
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "getFilteredItems",
+    value: function getFilteredItems(items, skipFilter) {
+      var _this4 = this;
+
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this4.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredItems = items.slice();
+
+      if (filters.length) {
+        filteredItems = filteredItems.filter(function (item) {
+          var has = true;
+          filters.forEach(function (filter) {
+            if (filter !== skipFilter) {
+              has = has && filter.doFilter(item, filter.value);
+            }
+          });
+          return has;
+        });
+      }
+
+      return {
+        filteredItems: filteredItems
+      };
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates(items) {
+      var _this5 = this;
+
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this5.filters[x];
+
+        var _this5$getFilteredIte = _this5.getFilteredItems(items, filter),
+            filteredItems = _this5$getFilteredIte.filteredItems;
+
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < filteredItems.length && !has) {
+              var item = filteredItems[i];
+              has = filter.doFilter(item, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        });
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }]);
+
+  return ReferencesCtrl;
+}();
 
 ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = ReferencesCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239}],250:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],252:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27286,262 +28970,298 @@ var _rxjs = require("rxjs");
 
 var _operators = require("rxjs/operators");
 
-/* jshint esversion: 6 */
-class RootCtrl {
-  constructor($scope, $timeout, DomService, ApiService, WishlistService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var RootCtrl =
+/*#__PURE__*/
+function () {
+  function RootCtrl($scope, $timeout, DomService, ApiService, WishlistService) {
+    var _this = this;
+
+    _classCallCheck(this, RootCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.domService = DomService;
     this.apiService = ApiService;
     this.wishlistService = WishlistService;
     this.unsubscribe = new _rxjs.Subject();
-    this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(count => {
-      this.wishlistCount = count;
+    this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (count) {
+      _this.wishlistCount = count;
     });
-    $scope.$on('onMuuri', () => {
-      this.domService.scrollEmitter$.next({
+    $scope.$on('onMuuri', function () {
+      _this.domService.scrollEmitter$.next({
         target: window
       });
     });
-    $scope.$on('destroy', () => {
+    $scope.$on('destroy', function () {
       // console.log('destroy');
-      this.unsubscribe.next();
-      this.unsubscribe.complete();
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
     });
   }
 
-  onSearch(query) {
-    // console.log('onSearch', query);
-    this.searchOpened = false;
-    const url = document.querySelector('[data-search]').getAttribute('data-search');
-    window.location.href = url.replace('##query##', query);
-  }
-
-  onScroll(event) {
-    const scrolled = event.scroll.scrollTop > 40;
-    const direction = event.scroll.direction; // console.log(this.$scope.hasDropdown, Object.keys(this).filter(x => typeof this[x] === 'boolean').map(x => `${x}: ${this[x]}`).join(','));
-
-    if (this.droppedIn) {
-      // console.log('onScroll.onCloseDropdown');
-      this.$scope.$broadcast('onCloseDropdown');
+  _createClass(RootCtrl, [{
+    key: "onSearch",
+    value: function onSearch(query) {
+      // console.log('onSearch', query);
+      this.searchOpened = false;
+      var url = document.querySelector('[data-search]').getAttribute('data-search');
+      window.location.href = url.replace('##query##', query);
     }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this2 = this;
 
-    if (event.scroll.direction) {
-      if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
-        this.$timeout(() => {
-          this.scrolled = scrolled;
-          this.direction = direction;
-        }, 1);
+      var scrolled = event.scroll.scrollTop > 40;
+      var direction = event.scroll.direction; // console.log(this.$scope.hasDropdown, Object.keys(this).filter(x => typeof this[x] === 'boolean').map(x => `${x}: ${this[x]}`).join(','));
+
+      if (this.droppedIn) {
+        // console.log('onScroll.onCloseDropdown');
+        this.$scope.$broadcast('onCloseDropdown');
+      }
+
+      if (event.scroll.direction) {
+        if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
+          this.$timeout(function () {
+            _this2.scrolled = scrolled;
+            _this2.direction = direction;
+          }, 1);
+        }
       }
     }
-  }
+  }, {
+    key: "onInit",
+    value: function onInit(brand) {
+      var _this3 = this;
 
-  onInit(brand) {
-    this.brand = brand;
-    this.webglEnabled = false; // this.domService.hasWebglSupport();
+      this.brand = brand;
+      this.webglEnabled = false; // this.domService.hasWebglSupport();
 
-    this.domService.addCustomRules();
-    /*
-    this.domService.smoothScroll$('.page').subscribe((top) => {
-    	// console.log(top);
-    });
-    */
-    // console.log('onInit');
-
-    this.$timeout(() => {
-      this.init = true;
-      const view = document.querySelector('.view');
-      TweenMax.to(view, 0.6, {
-        opacity: 1,
-        delay: 0,
-        overwrite: 'all'
+      this.domService.addCustomRules();
+      /*
+      this.domService.smoothScroll$('.page').subscribe((top) => {
+      	// console.log(top);
       });
-    }, 1000);
-    this.$scope.$on('onDroppinIn', (scope, droppinIn) => {
-      // console.log('onDroppinIn', droppinIn);
-      this.$timeout(() => {
-        this.droppinIn = droppinIn;
+      */
+      // console.log('onInit');
+
+      this.$timeout(function () {
+        _this3.init = true;
+        var view = document.querySelector('.view');
+        TweenMax.to(view, 0.6, {
+          opacity: 1,
+          delay: 0,
+          overwrite: 'all'
+        });
+      }, 1000);
+      this.$scope.$on('onDroppinIn', function (scope, droppinIn) {
+        // console.log('onDroppinIn', droppinIn);
+        _this3.$timeout(function () {
+          _this3.droppinIn = droppinIn;
+        });
       });
-    });
-  }
-
-  getClasses() {
-    const classes = {};
-    classes[this.brand] = true;
-
-    if (this.init) {
-      classes.init = true;
     }
+  }, {
+    key: "getClasses",
+    value: function getClasses() {
+      var classes = {};
+      classes[this.brand] = true;
 
-    if (this.direction === -1) {
-      classes['scrolled-up'] = true;
-    }
-
-    if (this.direction === 1) {
-      classes['scrolled-down'] = true;
-    }
-
-    if (this.droppinIn || this.menuOpened || this.menuProductOpened) {
-      classes['droppin-in'] = true;
-    }
-
-    return classes;
-  }
-
-  closeNav() {
-    const node = document.querySelector(`.section--submenu.active`);
-    return this.onDroppedOut(node);
-  }
-
-  openNav(nav) {
-    const node = document.querySelector(`#nav-${nav} .section--submenu`);
-    return this.onDroppedIn(node);
-  }
-
-  toggleNav(id) {
-    this.nav = this.nav === id ? null : id;
-    this.closeNav().then(() => {
-      if (this.nav) {
-        this.openNav(this.nav);
+      if (this.init) {
+        classes.init = true;
       }
-    });
-  }
 
-  onDroppedOut(node) {
-    // console.log('onDroppedOut', node);
-    if (node) {
-      this.droppedIn = false;
-
-      if (this.droppinIn) {
-        TweenMax.set(node, {
-          height: 0
-        });
-        return Promise.resolve();
-      } else {
-        TweenMax.set(node, {
-          overflow: 'hidden'
-        });
-        TweenMax.to(node, 0.6, {
-          height: 0,
-          ease: Expo.easeOut,
-          overwrite: 'all',
-          onComplete: () => {
-            delete node.style.overflow;
-            return Promise.resolve();
-          }
-        });
+      if (this.direction === -1) {
+        classes['scrolled-up'] = true;
       }
-    } else {
-      return Promise.resolve();
+
+      if (this.direction === 1) {
+        classes['scrolled-down'] = true;
+      }
+
+      if (this.droppinIn || this.menuOpened || this.menuProductOpened) {
+        classes['droppin-in'] = true;
+      }
+
+      return classes;
     }
-    /*
-    return new Promise((resolve, reject) => {
-    	if (node) {
-    		const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-    		TweenMax.staggerTo(items.reverse(), 0.25, {
-    			opacity: 0,
-    			stagger: 0.05,
-    			delay: 0.0,
-    			onComplete: () => {
-    				TweenMax.to(node, 0.2, {
-    					maxHeight: 0,
-    					ease: Expo.easeOut,
-    					delay: 0.0,
-    					onComplete: () => {
-    						resolve();
-    					}
-    				});
-    			}
-    		});
-    	} else {
-    		resolve();
-    	}
-    });
-    */
+  }, {
+    key: "closeNav",
+    value: function closeNav() {
+      var node = document.querySelector(".section--submenu.active");
+      return this.onDroppedOut(node);
+    }
+  }, {
+    key: "openNav",
+    value: function openNav(nav) {
+      var node = document.querySelector("#nav-".concat(nav, " .section--submenu"));
+      return this.onDroppedIn(node);
+    }
+  }, {
+    key: "toggleNav",
+    value: function toggleNav(id) {
+      var _this4 = this;
 
-  }
-
-  onDroppedIn(node) {
-    return new Promise((resolve, reject) => {
-      this.droppedIn = true;
-      this.droppinIn = true;
-      const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-      TweenMax.set(items, {
-        opacity: 0
-      });
-      TweenMax.set(node, {
-        height: 'auto'
-      });
-      const mh = node.offsetHeight;
-      TweenMax.set(node, {
-        height: 0,
-        overflow: 'hidden'
-      });
-      TweenMax.to(node, 0.8, {
-        height: mh,
-        ease: Expo.easeOut,
-        delay: 0.0,
-        overwrite: 'all',
-        onComplete: () => {
-          delete node.style.overflow;
-          TweenMax.set(node, {
-            height: 'auto'
-          }); // TweenMax.set(node, { clearProps: 'all' });
-
-          if (items.length === 0) {
-            this.droppinIn = false;
-          }
+      this.nav = this.nav === id ? null : id;
+      this.closeNav().then(function () {
+        if (_this4.nav) {
+          _this4.openNav(_this4.nav);
         }
       });
+    }
+  }, {
+    key: "onDroppedOut",
+    value: function onDroppedOut(node) {
+      // console.log('onDroppedOut', node);
+      if (node) {
+        this.droppedIn = false;
 
-      if (items.length) {
-        TweenMax.staggerTo(items, 0.35, {
-          opacity: 1,
-          stagger: 0.07,
-          delay: 0.5,
-          onComplete: () => {
-            this.droppinIn = false;
+        if (this.droppinIn) {
+          TweenMax.set(node, {
+            height: 0
+          });
+          return Promise.resolve();
+        } else {
+          TweenMax.set(node, {
+            overflow: 'hidden'
+          });
+          TweenMax.to(node, 0.6, {
+            height: 0,
+            ease: Expo.easeOut,
+            overwrite: 'all',
+            onComplete: function onComplete() {
+              delete node.style.overflow;
+              return Promise.resolve();
+            }
+          });
+        }
+      } else {
+        return Promise.resolve();
+      }
+      /*
+      return new Promise((resolve, reject) => {
+      	if (node) {
+      		const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+      		TweenMax.staggerTo(items.reverse(), 0.25, {
+      			opacity: 0,
+      			stagger: 0.05,
+      			delay: 0.0,
+      			onComplete: () => {
+      				TweenMax.to(node, 0.2, {
+      					maxHeight: 0,
+      					ease: Expo.easeOut,
+      					delay: 0.0,
+      					onComplete: () => {
+      						resolve();
+      					}
+      				});
+      			}
+      		});
+      	} else {
+      		resolve();
+      	}
+      });
+      */
+
+    }
+  }, {
+    key: "onDroppedIn",
+    value: function onDroppedIn(node) {
+      var _this5 = this;
+
+      return new Promise(function (resolve, reject) {
+        _this5.droppedIn = true;
+        _this5.droppinIn = true;
+        var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+        TweenMax.set(items, {
+          opacity: 0
+        });
+        TweenMax.set(node, {
+          height: 'auto'
+        });
+        var mh = node.offsetHeight;
+        TweenMax.set(node, {
+          height: 0,
+          overflow: 'hidden'
+        });
+        TweenMax.to(node, 0.8, {
+          height: mh,
+          ease: Expo.easeOut,
+          delay: 0.0,
+          overwrite: 'all',
+          onComplete: function onComplete() {
+            delete node.style.overflow;
+            TweenMax.set(node, {
+              height: 'auto'
+            }); // TweenMax.set(node, { clearProps: 'all' });
+
+            if (items.length === 0) {
+              _this5.droppinIn = false;
+            }
           }
         });
-      }
-    });
-  }
 
-  toggleBrand(event) {
-    const brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
-    const i = (brands.indexOf(this.brand) + 1) % brands.length;
-    this.brand = brands[i];
-    event.preventDefault();
-    event.stopImmediatePropagation();
-  }
-
-  toggleMenuProduct() {
-    this.menuProductOpened = !this.menuProductOpened;
-
-    if (!this.menuProductOpened) {
-      const results = document.querySelector('.section--filters');
-      const bottom = this.domService.scrollTop + results.getBoundingClientRect().bottom;
-      setTimeout(() => {
-        window.scroll(0, bottom - 80); // console.log('toggleMenuProduct', results, bottom, this.domService.scrollTop);
-      }, 500);
+        if (items.length) {
+          TweenMax.staggerTo(items, 0.35, {
+            opacity: 1,
+            stagger: 0.07,
+            delay: 0.5,
+            onComplete: function onComplete() {
+              _this5.droppinIn = false;
+            }
+          });
+        }
+      });
     }
-  }
+  }, {
+    key: "toggleBrand",
+    value: function toggleBrand(event) {
+      var brands = ['atlas-concorde', 'atlas-concorde-solution', 'atlas-concorde-usa', 'atlas-concorde-russia'];
+      var i = (brands.indexOf(this.brand) + 1) % brands.length;
+      this.brand = brands[i];
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, {
+    key: "toggleMenuProduct",
+    value: function toggleMenuProduct() {
+      this.menuProductOpened = !this.menuProductOpened;
 
-  pad(index) {
-    return index < 10 ? '0' + index : index;
-  }
+      if (!this.menuProductOpened) {
+        var results = document.querySelector('.section--filters');
+        var bottom = this.domService.scrollTop + results.getBoundingClientRect().bottom;
+        setTimeout(function () {
+          window.scroll(0, bottom - 80); // console.log('toggleMenuProduct', results, bottom, this.domService.scrollTop);
+        }, 500);
+      }
+    }
+  }, {
+    key: "pad",
+    value: function pad(index) {
+      return index < 10 ? '0' + index : index;
+    }
+  }, {
+    key: "hasHash",
+    value: function hasHash(hash) {
+      return window.location.hash.indexOf(hash) !== -1;
+    }
+  }]);
 
-  hasHash(hash) {
-    return window.location.hash.indexOf(hash) !== -1;
-  }
-
-}
+  return RootCtrl;
+}();
 
 RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService', 'WishlistService'];
 var _default = RootCtrl;
 exports.default = _default;
 
-},{"rxjs":2,"rxjs/operators":198}],251:[function(require,module,exports){
+},{"rxjs":2,"rxjs/operators":198}],253:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27551,43 +29271,54 @@ exports.default = exports.API_HREF = exports.API_DEV = void 0;
 
 var _rxjs = require("rxjs");
 
-/* jshint esversion: 6 */
-const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
 exports.API_DEV = API_DEV;
-const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
+var API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 exports.API_HREF = API_HREF;
 
-class ApiService {
-  constructor($http) {
+var ApiService =
+/*#__PURE__*/
+function () {
+  function ApiService($http) {
+    var _this = this;
+
+    _classCallCheck(this, ApiService);
+
     this.http = $http;
-    const api = {
+    var api = {
       advancedSearch: {
-        get: () => {
+        get: function get() {
           return (0, _rxjs.from)($http.get('data/advanced-search.json')); // return from($http.get(API_HREF + '/api/advanced-search/json'));
         }
       },
       wishlist: {
-        get: () => {
+        get: function get() {
           if (!API_DEV) {
-            return (0, _rxjs.from)(this.$http.post('', this.wishlist));
+            return (0, _rxjs.from)(_this.$http.post('', _this.wishlist));
           } else {
-            return (0, _rxjs.from)(this.$http.get('data/moodboard.json').then(success => {
+            return (0, _rxjs.from)(_this.$http.get('data/moodboard.json').then(function (success) {
               if (success.data) {
                 return success.data;
               }
             }));
           }
         },
-        toggle: item => {
+        toggle: function toggle(item) {
           item.added = !item.added;
           return Promise.resolve(item);
         },
-        clearAll: () => {
+        clearAll: function clearAll() {
           return Promise.resolve();
         }
       },
       moodboard: {
-        filter: filters => {
+        filter: function filter(filters) {
           if (!API_DEV) {
             return (0, _rxjs.from)($http.post('', filters));
           } else {
@@ -27596,7 +29327,7 @@ class ApiService {
         }
       },
       storeLocator: {
-        all: () => {
+        all: function all() {
           if (!API_DEV) {
             return $http.get(API_HREF + '/api/store/json');
           } else {
@@ -27608,17 +29339,21 @@ class ApiService {
     Object.assign(this, api);
   }
 
-  static factory($http) {
-    return new ApiService($http);
-  }
+  _createClass(ApiService, null, [{
+    key: "factory",
+    value: function factory($http) {
+      return new ApiService($http);
+    }
+  }]);
 
-}
+  return ApiService;
+}();
 
 exports.default = ApiService;
 ApiService.factory.$inject = ['$http'];
 ApiService.API_DEV = API_DEV;
 
-},{"rxjs":2}],252:[function(require,module,exports){
+},{"rxjs":2}],254:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27636,343 +29371,407 @@ var _rect = _interopRequireDefault(require("../shared/rect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class DomService {
-  constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var DomService =
+/*#__PURE__*/
+function () {
+  function DomService() {
+    _classCallCheck(this, DomService);
+
     this.scrollEmitter$ = DomService.scrollEmitter$;
   }
 
-  get scrollTop() {
-    return DomService.getScrollTop(window);
-  }
+  _createClass(DomService, [{
+    key: "traverseUp",
+    value: function traverseUp(node, callback) {
+      var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
-  get scrollLeft() {
-    return DomService.getScrollLeft(window);
-  }
+      if (!node) {
+        return;
+      }
 
-  traverseUp(node, callback, i = 0) {
-    if (!node) {
-      return;
+      var result = callback(node, i);
+
+      if (result) {
+        return result;
+      }
+
+      return this.traverseUp(node.parentNode, callback, i + 1);
     }
+  }, {
+    key: "traverseDown",
+    value: function traverseDown(node, callback) {
+      var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
-    const result = callback(node, i);
+      if (!node) {
+        return;
+      }
 
-    if (result) {
+      var result = callback(node, i);
+
+      if (result) {
+        return result;
+      }
+
+      if (node.nodeType === 1) {
+        var j = 0,
+            t = node.childNodes.length;
+
+        while (j < t && !result) {
+          result = this.traverseDown(node.childNodes[j], callback, i + 1);
+          j++;
+        }
+      }
+
       return result;
     }
-
-    return this.traverseUp(node.parentNode, callback, i + 1);
-  }
-
-  traverseDown(node, callback, i = 0) {
-    if (!node) {
-      return;
-    }
-
-    let result = callback(node, i);
-
-    if (result) {
-      return result;
-    }
-
-    if (node.nodeType === 1) {
-      let j = 0,
-          t = node.childNodes.length;
-
-      while (j < t && !result) {
-        result = this.traverseDown(node.childNodes[j], callback, i + 1);
-        j++;
+  }, {
+    key: "hasWebglSupport",
+    value: function hasWebglSupport() {
+      if (this.isIE()) {
+        return false;
       }
+
+      if (!this.hasWebgl()) {
+        return false;
+      }
+
+      return true;
     }
+  }, {
+    key: "isIE",
+    value: function isIE() {
+      var ua = window.navigator.userAgent;
+      var msie = ua.indexOf('MSIE ');
 
-    return result;
-  }
+      if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+      }
 
-  hasWebglSupport() {
-    if (this.isIE()) {
+      var trident = ua.indexOf('Trident/');
+
+      if (trident > 0) {
+        // IE 11 => return version number
+        var rv = ua.indexOf('rv:');
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+      }
+
+      var edge = ua.indexOf('Edge/');
+
+      if (edge > 0) {
+        // Edge (IE 12+) => return version number
+        return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+      } // other browser
+
+
       return false;
     }
-
-    if (!this.hasWebgl()) {
+  }, {
+    key: "hasWebgl",
+    value: function hasWebgl() {
       return false;
-    }
+      var gl,
+          debugInfo,
+          vendor,
+          renderer,
+          has = false;
 
-    return true;
-  }
+      try {
+        var canvas = document.createElement('canvas');
 
-  isIE() {
-    const ua = window.navigator.userAgent;
-    const msie = ua.indexOf('MSIE ');
-
-    if (msie > 0) {
-      // IE 10 or older => return version number
-      return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
-    }
-
-    const trident = ua.indexOf('Trident/');
-
-    if (trident > 0) {
-      // IE 11 => return version number
-      const rv = ua.indexOf('rv:');
-      return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
-    }
-
-    const edge = ua.indexOf('Edge/');
-
-    if (edge > 0) {
-      // Edge (IE 12+) => return version number
-      return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
-    } // other browser
-
-
-    return false;
-  }
-
-  hasWebgl() {
-    return false;
-    let gl,
-        debugInfo,
-        vendor,
-        renderer,
-        has = false;
-
-    try {
-      const canvas = document.createElement('canvas');
-
-      if (!!window.WebGLRenderingContext) {
-        gl = canvas.getContext('webgl', {
-          failIfMajorPerformanceCaveat: true
-        }) || canvas.getContext('experimental-webgl', {
-          failIfMajorPerformanceCaveat: true
-        });
-      }
-    } catch (e) {
-      console.log('no webgl');
-    }
-
-    if (gl) {
-      debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-      vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-      renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-      has = true;
-    }
-
-    console.log(`WebGLCapabilities debugInfo: ${debugInfo} vendor: ${vendor} renderer: ${renderer} `);
-    return has;
-  }
-
-  getOuterHeight(node) {
-    let height = node.clientHeight;
-    const computedStyle = window.getComputedStyle(node);
-    height += parseInt(computedStyle.marginTop, 10);
-    height += parseInt(computedStyle.marginBottom, 10);
-    height += parseInt(computedStyle.borderTopWidth, 10);
-    height += parseInt(computedStyle.borderBottomWidth, 10);
-    return height;
-  }
-
-  getOuterWidth(node) {
-    let width = node.clientWidth;
-    const computedStyle = window.getComputedStyle(node);
-    width += parseInt(computedStyle.marginLeft, 10);
-    width += parseInt(computedStyle.marginRight, 10);
-    width += parseInt(computedStyle.borderLeftWidth, 10);
-    width += parseInt(computedStyle.borderRightWidth, 10);
-    return width;
-  }
-
-  raf$() {
-    return DomService.raf$;
-  }
-
-  windowRect$() {
-    return DomService.windowRect$;
-  }
-
-  rafAndRect$() {
-    return DomService.rafAndRect$;
-  }
-
-  scroll$() {
-    return DomService.scroll$;
-  }
-
-  secondaryScroll$(target) {
-    return DomService.secondaryScroll$(target);
-  }
-
-  scrollAndRect$() {
-    return DomService.scrollAndRect$;
-  }
-
-  smoothScroll$(selector, friction = 20) {
-    const body = document.querySelector('body');
-    const node = document.querySelector(selector); // const outerHeight = this.getOuterHeight(node);
-
-    let down = false;
-    /*
-    const onWheel = (event) => {
-    	down = true;
-    }
-    const onDown = () => {
-    	down = true;
-    }
-    const onUp = () => {
-    	down = false;
-    }
-    document.addEventListener('wheel', onWheel);
-    document.addEventListener('touchstart', onDown);
-    document.addEventListener('touchend', onUp);
-    */
-
-    /*
-    document.addEventListener('touchstart', () => {
-    	console.log('touchstart');
-    	body.classList.add('down');
-    	down = true;
-    }, {passive:true});
-    document.addEventListener('touchend', () => {
-    	body.classList.remove('down');
-    	down = false;
-    });
-    console.log(window);
-    */
-
-    return this.raf$().pipe((0, _operators.map)(() => {
-      const outerHeight = this.getOuterHeight(node); // console.log(window.DocumentTouch);
-      // console.log(document instanceof DocumentTouch);
-      // console.log(navigator.msMaxTouchPoints);
-
-      if (body.offsetHeight !== outerHeight) {
-        // margin ?
-        body.style = `height: ${outerHeight}px`;
+        if (!!window.WebGLRenderingContext) {
+          gl = canvas.getContext('webgl', {
+            failIfMajorPerformanceCaveat: true
+          }) || canvas.getContext('experimental-webgl', {
+            failIfMajorPerformanceCaveat: true
+          });
+        }
+      } catch (e) {
+        console.log('no webgl');
       }
 
-      const nodeTop = node.top || 0;
-      const top = down ? -this.scrollTop : Math.round((nodeTop + (-this.scrollTop - nodeTop) / friction) * 100) / 100;
+      if (gl) {
+        debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+        renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        has = true;
+      }
 
-      if (node.top !== top) {
-        node.top = top;
-        node.style = `position: fixed; width: 100%; transform: translateY(${top}px)`;
-        return top;
+      console.log("WebGLCapabilities debugInfo: ".concat(debugInfo, " vendor: ").concat(vendor, " renderer: ").concat(renderer, " "));
+      return has;
+    }
+  }, {
+    key: "getOuterHeight",
+    value: function getOuterHeight(node) {
+      var height = node.clientHeight;
+      var computedStyle = window.getComputedStyle(node);
+      height += parseInt(computedStyle.marginTop, 10);
+      height += parseInt(computedStyle.marginBottom, 10);
+      height += parseInt(computedStyle.borderTopWidth, 10);
+      height += parseInt(computedStyle.borderBottomWidth, 10);
+      return height;
+    }
+  }, {
+    key: "getOuterWidth",
+    value: function getOuterWidth(node) {
+      var width = node.clientWidth;
+      var computedStyle = window.getComputedStyle(node);
+      width += parseInt(computedStyle.marginLeft, 10);
+      width += parseInt(computedStyle.marginRight, 10);
+      width += parseInt(computedStyle.borderLeftWidth, 10);
+      width += parseInt(computedStyle.borderRightWidth, 10);
+      return width;
+    }
+  }, {
+    key: "raf$",
+    value: function raf$() {
+      return DomService.raf$;
+    }
+  }, {
+    key: "windowRect$",
+    value: function windowRect$() {
+      return DomService.windowRect$;
+    }
+  }, {
+    key: "rafAndRect$",
+    value: function rafAndRect$() {
+      return DomService.rafAndRect$;
+    }
+  }, {
+    key: "scroll$",
+    value: function scroll$() {
+      return DomService.scroll$;
+    }
+  }, {
+    key: "secondaryScroll$",
+    value: function secondaryScroll$(target) {
+      return DomService.secondaryScroll$(target);
+    }
+  }, {
+    key: "scrollAndRect$",
+    value: function scrollAndRect$() {
+      return DomService.scrollAndRect$;
+    }
+  }, {
+    key: "smoothScroll$",
+    value: function smoothScroll$(selector) {
+      var _this = this;
+
+      var friction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20;
+      var body = document.querySelector('body');
+      var node = document.querySelector(selector); // const outerHeight = this.getOuterHeight(node);
+
+      var down = false;
+      /*
+      const onWheel = (event) => {
+      	down = true;
+      }
+      const onDown = () => {
+      	down = true;
+      }
+      const onUp = () => {
+      	down = false;
+      }
+      document.addEventListener('wheel', onWheel);
+      document.addEventListener('touchstart', onDown);
+      document.addEventListener('touchend', onUp);
+      */
+
+      /*
+      document.addEventListener('touchstart', () => {
+      	console.log('touchstart');
+      	body.classList.add('down');
+      	down = true;
+      }, {passive:true});
+      document.addEventListener('touchend', () => {
+      	body.classList.remove('down');
+      	down = false;
+      });
+      console.log(window);
+      */
+
+      return this.raf$().pipe((0, _operators.map)(function () {
+        var outerHeight = _this.getOuterHeight(node); // console.log(window.DocumentTouch);
+        // console.log(document instanceof DocumentTouch);
+        // console.log(navigator.msMaxTouchPoints);
+
+
+        if (body.offsetHeight !== outerHeight) {
+          // margin ?
+          body.style = "height: ".concat(outerHeight, "px");
+        }
+
+        var nodeTop = node.top || 0;
+        var top = down ? -_this.scrollTop : Math.round((nodeTop + (-_this.scrollTop - nodeTop) / friction) * 100) / 100;
+
+        if (node.top !== top) {
+          node.top = top;
+          node.style = "position: fixed; width: 100%; transform: translateY(".concat(top, "px)");
+          return top;
+        } else {
+          return null;
+        }
+      }), (0, _operators.filter)(function (x) {
+        return x !== null;
+      }), (0, _operators.shareReplay)());
+    }
+    /*
+    // trackpad
+    window.onwheel = function(e) {
+      e.preventDefault();
+      if (e.ctrlKey) {
+        zoom += e.deltaY;
       } else {
-        return null;
+        offsetX += e.deltaX * 2;
+        offsetY -= e.deltaY * 2;
       }
-    }), (0, _operators.filter)(x => x !== null), (0, _operators.shareReplay)());
-  }
-  /*
-  // trackpad
-  window.onwheel = function(e) {
-    e.preventDefault();
-    if (e.ctrlKey) {
-      zoom += e.deltaY;
-    } else {
-      offsetX += e.deltaX * 2;
-      offsetY -= e.deltaY * 2;
+    };
+    */
+
+  }, {
+    key: "rafIntersection$",
+    value: function rafIntersection$(node) {
+      return this.rafAndRect$().pipe((0, _operators.map)(function (datas) {
+        // const scrollTop = datas[0];
+        var windowRect = datas[1];
+
+        var rect = _rect.default.fromNode(node);
+
+        if (rect.height) {
+          var intersection = rect.intersection(windowRect);
+          var response = DomService.rafIntersection_;
+          response.scroll = datas[0];
+          response.windowRect = datas[1];
+          response.rect = rect;
+          response.intersection = intersection;
+          return response;
+        }
+      }), (0, _operators.filter)(function (response) {
+        return response !== undefined;
+      }));
     }
-  };
-  */
+  }, {
+    key: "scrollIntersection$",
+    value: function scrollIntersection$(node) {
+      var o = this.scrollAndRect$().pipe((0, _operators.map)(function (datas) {
+        // const scrollTop = datas[0];
+        var windowRect = datas[1];
 
+        var rect = _rect.default.fromNode(node);
 
-  rafIntersection$(node) {
-    return this.rafAndRect$().pipe((0, _operators.map)(datas => {
-      // const scrollTop = datas[0];
-      const windowRect = datas[1];
-
-      const rect = _rect.default.fromNode(node);
-
-      if (rect.height) {
-        const intersection = rect.intersection(windowRect);
-        const response = DomService.rafIntersection_;
-        response.scroll = datas[0];
-        response.windowRect = datas[1];
-        response.rect = rect;
-        response.intersection = intersection;
-        return response;
+        if (rect.height) {
+          var intersection = rect.intersection(windowRect);
+          var response = DomService.scrollIntersection_;
+          response.scroll = datas[0];
+          response.windowRect = datas[1];
+          response.rect = rect;
+          response.intersection = intersection;
+          return response;
+        }
+      }), (0, _operators.filter)(function (response) {
+        return response !== undefined;
+      }));
+      DomService.scrollEmitter$.next({
+        target: window
+      });
+      return o;
+    }
+  }, {
+    key: "appear$",
+    value: function appear$(node) {
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.0;
+      // -0.5
+      return this.scrollIntersection$(node).pipe((0, _operators.filter)(function (x) {
+        return x.intersection.y > value;
+      }), (0, _operators.first)());
+    }
+  }, {
+    key: "visibility$",
+    value: function visibility$(node) {
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+      return this.scrollIntersection$(node).pipe((0, _operators.map)(function (x) {
+        return x.intersection.y > value;
+      }), (0, _operators.distinctUntilChanged)());
+    }
+  }, {
+    key: "firstVisibility$",
+    value: function firstVisibility$(node) {
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+      return this.visibility$(node, value).pipe((0, _operators.filter)(function (visible) {
+        return visible;
+      }), (0, _operators.first)());
+    }
+  }, {
+    key: "addCustomRules",
+    value: function addCustomRules() {
+      var sheet = this.addCustomSheet();
+      var body = document.querySelector('body');
+      var scrollBarWidth = window.innerWidth - body.clientWidth;
+      var rule = "body.droppin-in { padding-right: ".concat(scrollBarWidth, "px; }");
+      sheet.insertRule(rule, 0);
+      rule = "body.droppin-in header { width: calc(100% - ".concat(scrollBarWidth, "px); }");
+      sheet.insertRule(rule, 1);
+      rule = "body.droppin-in menu--product { width: calc(100% - ".concat(scrollBarWidth, "px); }");
+      sheet.insertRule(rule, 2);
+    }
+  }, {
+    key: "addCustomSheet",
+    value: function addCustomSheet() {
+      var style = document.createElement('style');
+      style.appendChild(document.createTextNode(''));
+      document.head.appendChild(style);
+      return style.sheet;
+    }
+  }, {
+    key: "scrollTop",
+    get: function get() {
+      return DomService.getScrollTop(window);
+    }
+  }, {
+    key: "scrollLeft",
+    get: function get() {
+      return DomService.getScrollLeft(window);
+    }
+  }], [{
+    key: "factory",
+    value: function factory() {
+      return new DomService();
+    }
+  }, {
+    key: "getScrollTop",
+    value: function getScrollTop(node) {
+      if (node === document || node === window) {
+        return this.getScrollTop(document.scrollingElement || document.documentElement || document.body);
       }
-    }), (0, _operators.filter)(response => response !== undefined));
-  }
 
-  scrollIntersection$(node) {
-    const o = this.scrollAndRect$().pipe((0, _operators.map)(datas => {
-      // const scrollTop = datas[0];
-      const windowRect = datas[1];
-
-      const rect = _rect.default.fromNode(node);
-
-      if (rect.height) {
-        const intersection = rect.intersection(windowRect);
-        const response = DomService.scrollIntersection_;
-        response.scroll = datas[0];
-        response.windowRect = datas[1];
-        response.rect = rect;
-        response.intersection = intersection;
-        return response;
+      return node.pageYOffset || node.scrollY || node.scrollTop || 0;
+    }
+  }, {
+    key: "getScrollLeft",
+    value: function getScrollLeft(node) {
+      if (node === document || node === window) {
+        return this.getScrollLeft(document.scrollingElement || document.documentElement || document.body);
       }
-    }), (0, _operators.filter)(response => response !== undefined));
-    DomService.scrollEmitter$.next({
-      target: window
-    });
-    return o;
-  }
 
-  appear$(node, value = 0.0) {
-    // -0.5
-    return this.scrollIntersection$(node).pipe((0, _operators.filter)(x => x.intersection.y > value), (0, _operators.first)());
-  }
-
-  visibility$(node, value = 0.5) {
-    return this.scrollIntersection$(node).pipe((0, _operators.map)(x => x.intersection.y > value), (0, _operators.distinctUntilChanged)());
-  }
-
-  firstVisibility$(node, value = 0.5) {
-    return this.visibility$(node, value).pipe((0, _operators.filter)(visible => visible), (0, _operators.first)());
-  }
-
-  addCustomRules() {
-    const sheet = this.addCustomSheet();
-    const body = document.querySelector('body');
-    const scrollBarWidth = window.innerWidth - body.clientWidth;
-    let rule = `body.droppin-in { padding-right: ${scrollBarWidth}px; }`;
-    sheet.insertRule(rule, 0);
-    rule = `body.droppin-in header { width: calc(100% - ${scrollBarWidth}px); }`;
-    sheet.insertRule(rule, 1);
-    rule = `body.droppin-in menu--product { width: calc(100% - ${scrollBarWidth}px); }`;
-    sheet.insertRule(rule, 2);
-  }
-
-  addCustomSheet() {
-    const style = document.createElement('style');
-    style.appendChild(document.createTextNode(''));
-    document.head.appendChild(style);
-    return style.sheet;
-  }
-
-  static factory() {
-    return new DomService();
-  }
-
-  static getScrollTop(node) {
-    if (node === document || node === window) {
-      return this.getScrollTop(document.scrollingElement || document.documentElement || document.body);
+      return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
     }
-
-    return node.pageYOffset || node.scrollY || node.scrollTop || 0;
-  }
-
-  static getScrollLeft(node) {
-    if (node === document || node === window) {
-      return this.getScrollLeft(document.scrollingElement || document.documentElement || document.body);
+  }, {
+    key: "secondaryScroll$",
+    value: function secondaryScroll$(target) {
+      return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.tap)(function (event) {
+        return DomService.scrollEmitter$.next(event);
+      }));
     }
+  }]);
 
-    return node.pageXOffset || node.scrollX || node.scrollLeft || 0;
-  }
-
-  static secondaryScroll$(target) {
-    return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.tap)(event => DomService.scrollEmitter$.next(event)));
-  }
-
-}
+  return DomService;
+}();
 
 exports.default = DomService;
 DomService.factory.$inject = [];
@@ -27981,11 +29780,11 @@ DomService.scrollIntersection_ = {};
 DomService.raf$ = (0, _rxjs.range)(0, Number.POSITIVE_INFINITY, _animationFrame.animationFrame);
 
 DomService.windowRect$ = function () {
-  const windowRect = new _rect.default({
+  var windowRect = new _rect.default({
     width: window.innerWidth,
     height: window.innerHeight
   });
-  return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(originalEvent => {
+  return (0, _rxjs.fromEvent)(window, 'resize').pipe((0, _operators.map)(function (originalEvent) {
     windowRect.width = window.innerWidth;
     windowRect.height = window.innerHeight;
     return windowRect;
@@ -27995,25 +29794,25 @@ DomService.windowRect$ = function () {
 DomService.rafAndRect$ = (0, _rxjs.combineLatest)(DomService.raf$, DomService.windowRect$).pipe((0, _operators.shareReplay)());
 
 DomService.mainScroll$ = function () {
-  const target = window;
+  var target = window;
   return (0, _rxjs.fromEvent)(target, 'scroll').pipe((0, _operators.shareReplay)());
 }();
 
 DomService.scrollEmitter$ = new _rxjs.Subject();
 
 DomService.scroll$ = function () {
-  const target = window;
-  let previousTop = DomService.getScrollTop(target);
-  const event = {
+  var target = window;
+  var previousTop = DomService.getScrollTop(target);
+  var event = {
     scrollTop: previousTop,
     scrollLeft: DomService.getScrollLeft(target),
     direction: 0,
     originalEvent: null
   };
-  return (0, _rxjs.merge)(DomService.mainScroll$, DomService.scrollEmitter$).pipe((0, _operators.auditTime)(1000 / 60), (0, _operators.map)(originalEvent => {
+  return (0, _rxjs.merge)(DomService.mainScroll$, DomService.scrollEmitter$).pipe((0, _operators.auditTime)(1000 / 60), (0, _operators.map)(function (originalEvent) {
     event.scrollTop = DomService.getScrollTop(originalEvent.target);
     event.scrollLeft = DomService.getScrollLeft(originalEvent.target);
-    const diff = event.scrollTop - previousTop;
+    var diff = event.scrollTop - previousTop;
     event.direction = diff ? diff / Math.abs(diff) : 0;
     previousTop = event.scrollTop;
     event.originalEvent = originalEvent;
@@ -28023,7 +29822,7 @@ DomService.scroll$ = function () {
 
 DomService.scrollAndRect$ = (0, _rxjs.combineLatest)(DomService.scroll$, DomService.windowRect$).pipe((0, _operators.shareReplay)());
 
-},{"../shared/rect":256,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],253:[function(require,module,exports){
+},{"../shared/rect":258,"rxjs":2,"rxjs/internal/scheduler/animationFrame":161,"rxjs/operators":198}],255:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28039,134 +29838,163 @@ var _api = require("./api.service");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-class WishlistService {
-  constructor($http, PromiseService, StorageService, ApiService) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var WishlistService =
+/*#__PURE__*/
+function () {
+  function WishlistService($http, PromiseService, StorageService, ApiService) {
+    _classCallCheck(this, WishlistService);
+
     this.$http = $http;
     this.promise = PromiseService;
     this.storage = StorageService;
     this.api = ApiService;
     this.count$ = WishlistService.count$;
-    const count = this.wishlist.length; // console.log('WishlistService', this.storage);
+    var count = this.wishlist.length; // console.log('WishlistService', this.storage);
   }
 
-  get wishlist() {
-    if (!this.wishlist_) {
-      const wishlist = this.storage.get('wishlist');
+  _createClass(WishlistService, [{
+    key: "indexOf",
+    value: function indexOf(item) {
+      if (item) {
+        var index = this.wishlist.reduce(function (p, c, i) {
+          if (p === -1) {
+            return c.id === item.id && c.coId === item.coId ? i : p;
+          } else {
+            return p;
+          }
+        }, -1);
+        return index;
+      } else {
+        return -1;
+      }
+    }
+  }, {
+    key: "has",
+    value: function has(item) {
+      return this.indexOf(item) !== -1;
+    }
+  }, {
+    key: "add",
+    value: function add(item) {
+      var _this = this;
+
+      return this.promise.make(function (promise) {
+        var wishlist = _this.wishlist;
+
+        _gtm.default.push({
+          event: 'addWishlist',
+          wish_name: item.name || item.coId,
+          wish_type: item.typeName || item.type
+        });
+
+        wishlist.push({
+          id: item.id,
+          coId: item.coId,
+          type: item.type,
+          typeName: item.typeName,
+          name: item.name
+        });
+        _this.wishlist = wishlist;
+        promise.resolve(true);
+      });
+    }
+  }, {
+    key: "remove",
+    value: function remove(item) {
+      var _this2 = this;
+
+      return this.promise.make(function (promise) {
+        var index = _this2.indexOf(item);
+
+        var wishlist = _this2.wishlist;
+
+        _gtm.default.push({
+          event: 'removeWishlist',
+          wish_name: wishlist[index].name || wishlist[index].coId,
+          wish_type: wishlist[index].typeName || wishlist[index].type
+        });
+
+        wishlist.splice(index, 1);
+        _this2.wishlist = wishlist;
+        promise.resolve(false);
+      });
+    }
+  }, {
+    key: "toggle",
+    value: function toggle(item) {
+      if (this.has(item)) {
+        return this.remove(item);
+      } else {
+        return this.add(item);
+      }
+    }
+  }, {
+    key: "clearAll",
+    value: function clearAll() {
+      var _this3 = this;
+
+      return (0, _rxjs.from)(this.promise.make(function (promise) {
+        var wishlist = [];
+        _this3.wishlist = wishlist;
+        promise.resolve(wishlist);
+      }));
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      var _this4 = this;
+
+      if (!_api.API_DEV) {
+        return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(function (success) {
+          return success;
+        }));
+      } else {
+        return (0, _rxjs.from)(this.$http.get('data/moodboard.json').then(function (success) {
+          if (success.data) {
+            _this4.wishlist = success.data;
+          }
+
+          return success;
+        }));
+      }
+    }
+  }, {
+    key: "wishlist",
+    get: function get() {
+      if (!this.wishlist_) {
+        var wishlist = this.storage.get('wishlist');
+        this.wishlist_ = wishlist || [];
+        WishlistService.count$.next(this.wishlist_.length);
+      }
+
+      return this.wishlist_;
+    },
+    set: function set(wishlist) {
       this.wishlist_ = wishlist || [];
+      this.storage.set('wishlist', this.wishlist_);
       WishlistService.count$.next(this.wishlist_.length);
     }
-
-    return this.wishlist_;
-  }
-
-  set wishlist(wishlist) {
-    this.wishlist_ = wishlist || [];
-    this.storage.set('wishlist', this.wishlist_);
-    WishlistService.count$.next(this.wishlist_.length);
-  }
-
-  indexOf(item) {
-    if (item) {
-      const index = this.wishlist.reduce((p, c, i) => {
-        if (p === -1) {
-          return c.id === item.id && c.coId === item.coId ? i : p;
-        } else {
-          return p;
-        }
-      }, -1);
-      return index;
-    } else {
-      return -1;
+  }], [{
+    key: "factory",
+    value: function factory($http, PromiseService, StorageService, ApiService) {
+      return new WishlistService($http, PromiseService, StorageService, ApiService);
     }
-  }
+  }]);
 
-  has(item) {
-    return this.indexOf(item) !== -1;
-  }
-
-  add(item) {
-    return this.promise.make(promise => {
-      const wishlist = this.wishlist;
-
-      _gtm.default.push({
-        event: 'addWishlist',
-        wish_name: item.name || item.coId,
-        wish_type: item.typeName || item.type
-      });
-
-      wishlist.push({
-        id: item.id,
-        coId: item.coId,
-        type: item.type,
-        typeName: item.typeName,
-        name: item.name
-      });
-      this.wishlist = wishlist;
-      promise.resolve(true);
-    });
-  }
-
-  remove(item) {
-    return this.promise.make(promise => {
-      const index = this.indexOf(item);
-      const wishlist = this.wishlist;
-
-      _gtm.default.push({
-        event: 'removeWishlist',
-        wish_name: wishlist[index].name || wishlist[index].coId,
-        wish_type: wishlist[index].typeName || wishlist[index].type
-      });
-
-      wishlist.splice(index, 1);
-      this.wishlist = wishlist;
-      promise.resolve(false);
-    });
-  }
-
-  toggle(item) {
-    if (this.has(item)) {
-      return this.remove(item);
-    } else {
-      return this.add(item);
-    }
-  }
-
-  clearAll() {
-    return (0, _rxjs.from)(this.promise.make(promise => {
-      const wishlist = [];
-      this.wishlist = wishlist;
-      promise.resolve(wishlist);
-    }));
-  }
-
-  get() {
-    if (!_api.API_DEV) {
-      return (0, _rxjs.from)(this.$http.post('', this.wishlist).then(success => {
-        return success;
-      }));
-    } else {
-      return (0, _rxjs.from)(this.$http.get('data/moodboard.json').then(success => {
-        if (success.data) {
-          this.wishlist = success.data;
-        }
-
-        return success;
-      }));
-    }
-  }
-
-  static factory($http, PromiseService, StorageService, ApiService) {
-    return new WishlistService($http, PromiseService, StorageService, ApiService);
-  }
-
-}
+  return WishlistService;
+}();
 
 exports.default = WishlistService;
 WishlistService.count$ = new _rxjs.BehaviorSubject(0);
 WishlistService.factory.$inject = ['$http', 'PromiseService', 'LocalStorageService', 'ApiService'];
 
-},{"../gtm/gtm.service":239,"./api.service":251,"rxjs":2}],254:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"./api.service":253,"rxjs":2}],256:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28174,83 +30002,100 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* global angular */
-class LocationService {
-  constructor($location) {
+var LocationService =
+/*#__PURE__*/
+function () {
+  function LocationService($location) {
+    _classCallCheck(this, LocationService);
+
     this.$location = $location;
   }
 
-  get(key) {
-    return this.$location.search()[key];
-  }
-
-  set(keyOrValue, value) {
-    if (typeof keyOrValue === 'string') {
-      this.$location.search(keyOrValue, value).replace();
-    } else {
-      this.$location.search(keyOrValue).replace();
+  _createClass(LocationService, [{
+    key: "get",
+    value: function get(key) {
+      return this.$location.search()[key];
     }
-  }
-
-  deserialize(key) {
-    let value = null;
-    const serialized = this.get('q'); // console.log(serialized);
-
-    if (serialized) {
-      const json = window.atob(serialized);
-      value = JSON.parse(json);
-    } // console.log(value);
-
-
-    if (key && value) {
-      value = value[key];
+  }, {
+    key: "set",
+    value: function set(keyOrValue, value) {
+      if (typeof keyOrValue === 'string') {
+        this.$location.search(keyOrValue, value).replace();
+      } else {
+        this.$location.search(keyOrValue).replace();
+      }
     }
+  }, {
+    key: "deserialize",
+    value: function deserialize(key) {
+      var value = null;
+      var serialized = this.get('q'); // console.log(serialized);
 
-    return value || null;
-  }
+      if (serialized) {
+        var json = window.atob(serialized);
+        value = JSON.parse(json);
+      } // console.log(value);
 
-  serialize(keyOrValue, value) {
-    let serialized = null;
-    let q = this.deserialize() || {};
 
-    if (typeof keyOrValue === 'string') {
-      q[keyOrValue] = value;
-    } else {
-      q = keyOrValue;
+      if (key && value) {
+        value = value[key];
+      }
+
+      return value || null;
     }
+  }, {
+    key: "serialize",
+    value: function serialize(keyOrValue, value) {
+      var serialized = null;
+      var q = this.deserialize() || {};
 
-    const json = JSON.stringify(q);
-    serialized = window.btoa(json);
-    this.set('q', serialized);
-  }
+      if (typeof keyOrValue === 'string') {
+        q[keyOrValue] = value;
+      } else {
+        q = keyOrValue;
+      }
 
-  getSerialization(keyOrValue, value) {
-    let serialized = null;
-    let q = {};
-
-    if (typeof keyOrValue === 'string') {
-      q[keyOrValue] = value;
-    } else {
-      q = keyOrValue;
+      var json = JSON.stringify(q);
+      serialized = window.btoa(json);
+      this.set('q', serialized);
     }
+  }, {
+    key: "getSerialization",
+    value: function getSerialization(keyOrValue, value) {
+      var serialized = null;
+      var q = {};
 
-    const json = JSON.stringify(q);
-    serialized = window.btoa(json);
-    return serialized;
-  }
+      if (typeof keyOrValue === 'string') {
+        q[keyOrValue] = value;
+      } else {
+        q = keyOrValue;
+      }
 
-  static factory($location) {
-    return new LocationService($location);
-  }
+      var json = JSON.stringify(q);
+      serialized = window.btoa(json);
+      return serialized;
+    }
+  }], [{
+    key: "factory",
+    value: function factory($location) {
+      return new LocationService($location);
+    }
+  }]);
 
-}
+  return LocationService;
+}();
 
 exports.default = LocationService;
 LocationService.factory.$inject = ['$location'];
 
-},{}],255:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28258,38 +30103,52 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* global angular */
-class PromiseService {
-  constructor($q) {
+var PromiseService =
+/*#__PURE__*/
+function () {
+  function PromiseService($q) {
+    _classCallCheck(this, PromiseService);
+
     this.$q = $q;
   }
 
-  make(callback) {
-    if (typeof callback !== 'function') {
-      throw 'promise resolve callback missing';
+  _createClass(PromiseService, [{
+    key: "make",
+    value: function make(callback) {
+      if (typeof callback !== 'function') {
+        throw 'promise resolve callback missing';
+      }
+
+      var deferred = this.$q.defer();
+      callback(deferred);
+      return deferred.promise;
     }
+  }, {
+    key: "all",
+    value: function all(promises) {
+      return this.$q.all(promises);
+    }
+  }], [{
+    key: "factory",
+    value: function factory($q) {
+      return new PromiseService($q);
+    }
+  }]);
 
-    const deferred = this.$q.defer();
-    callback(deferred);
-    return deferred.promise;
-  }
-
-  all(promises) {
-    return this.$q.all(promises);
-  }
-
-  static factory($q) {
-    return new PromiseService($q);
-  }
-
-}
+  return PromiseService;
+}();
 
 exports.default = PromiseService;
 PromiseService.factory.$inject = ['$q'];
 
-},{}],256:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28297,9 +30156,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-/* jshint esversion: 6 */
-class Rect {
-  constructor(rect) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Rect =
+/*#__PURE__*/
+function () {
+  function Rect(rect) {
+    _classCallCheck(this, Rect);
+
     this.top = 0;
     this.right = 0;
     this.bottom = 0;
@@ -28309,337 +30177,121 @@ class Rect {
     this.set(rect);
   }
 
-  static contains(rect, left, top) {
-    return rect.top <= top && top <= rect.bottom && rect.left <= left && left <= rect.right;
-  }
+  _createClass(Rect, [{
+    key: "set",
+    value: function set(rect) {
+      if (rect) {
+        Object.assign(this, rect);
+        this.right = this.left + this.width;
+        this.bottom = this.top + this.height;
+      }
 
-  static intersectRect(r1, r2) {
-    return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
-  }
-
-  static fromNode(node) {
-    if (!node) {
-      return;
+      this.setCenter();
     }
+  }, {
+    key: "setCenter",
+    value: function setCenter() {
+      var center = this.center || (this.center = {});
+      center.top = this.top + this.height / 2;
+      center.left = this.left + this.width / 2;
+      center.x = center.left;
+      center.y = center.top;
+    }
+  }, {
+    key: "contains",
+    value: function contains(left, top) {
+      return Rect.contains(this, left, top);
+    }
+  }, {
+    key: "intersect",
+    value: function intersect(rect) {
+      return Rect.intersectRect(this, rect);
+    }
+  }, {
+    key: "intersection",
+    value: function intersection(rect) {
+      var intersection = this.intersection_ || (this.intersection_ = {
+        center: {}
+      });
+      intersection.center.x = (this.center.x - rect.center.x) / (rect.width / 2);
+      intersection.center.y = (this.center.y - rect.center.y) / (rect.height / 2);
+      var dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
+      var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
+      var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
+      var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
+      intersection.x = x;
+      intersection.y = y;
+      return intersection;
+    }
+  }, {
+    key: "intersection___",
+    value: function intersection___(rect) {
+      var center = {
+        x: (this.center.x - rect.center.x) / (rect.width / 2),
+        y: (this.center.y - rect.center.y) / (rect.height / 2)
+      };
 
-    const rect = node.rect_ || (node.rect_ = new Rect());
-    const rects = node.getClientRects();
+      if (this.intersect(rect)) {
+        var dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
+        var dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
+        var x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
+        var y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
+        x = Math.min(1, x);
+        y = Math.min(1, y);
+        return {
+          x: x,
+          y: y,
+          center: center
+        };
+      } else {
+        return {
+          x: 0,
+          y: 0,
+          center: center
+        };
+      }
+    }
+  }], [{
+    key: "contains",
+    value: function contains(rect, left, top) {
+      return rect.top <= top && top <= rect.bottom && rect.left <= left && left <= rect.right;
+    }
+  }, {
+    key: "intersectRect",
+    value: function intersectRect(r1, r2) {
+      return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
+    }
+  }, {
+    key: "fromNode",
+    value: function fromNode(node) {
+      if (!node) {
+        return;
+      }
 
-    if (!rects.length) {
-      // console.log(rects, node);
+      var rect = node.rect_ || (node.rect_ = new Rect());
+      var rects = node.getClientRects();
+
+      if (!rects.length) {
+        // console.log(rects, node);
+        return rect;
+      }
+
+      var boundingRect = node.getBoundingClientRect(); // rect.top: boundingRect.top + defaultView.pageYOffset,
+      // rect.left: boundingRect.left + defaultView.pageXOffset,
+
+      rect.top = boundingRect.top;
+      rect.left = boundingRect.left;
+      rect.width = boundingRect.width;
+      rect.height = boundingRect.height;
+      rect.setCenter();
       return rect;
     }
+  }]);
 
-    const boundingRect = node.getBoundingClientRect(); // rect.top: boundingRect.top + defaultView.pageYOffset,
-    // rect.left: boundingRect.left + defaultView.pageXOffset,
-
-    rect.top = boundingRect.top;
-    rect.left = boundingRect.left;
-    rect.width = boundingRect.width;
-    rect.height = boundingRect.height;
-    rect.setCenter();
-    return rect;
-  }
-
-  set(rect) {
-    if (rect) {
-      Object.assign(this, rect);
-      this.right = this.left + this.width;
-      this.bottom = this.top + this.height;
-    }
-
-    this.setCenter();
-  }
-
-  setCenter() {
-    const center = this.center || (this.center = {});
-    center.top = this.top + this.height / 2;
-    center.left = this.left + this.width / 2;
-    center.x = center.left;
-    center.y = center.top;
-  }
-
-  contains(left, top) {
-    return Rect.contains(this, left, top);
-  }
-
-  intersect(rect) {
-    return Rect.intersectRect(this, rect);
-  }
-
-  intersection(rect) {
-    const intersection = this.intersection_ || (this.intersection_ = {
-      center: {}
-    });
-    intersection.center.x = (this.center.x - rect.center.x) / (rect.width / 2);
-    intersection.center.y = (this.center.y - rect.center.y) / (rect.height / 2);
-    const dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
-    const dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
-    const x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
-    const y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
-    intersection.x = x;
-    intersection.y = y;
-    return intersection;
-  }
-
-  intersection___(rect) {
-    const center = {
-      x: (this.center.x - rect.center.x) / (rect.width / 2),
-      y: (this.center.y - rect.center.y) / (rect.height / 2)
-    };
-
-    if (this.intersect(rect)) {
-      const dx = this.left > rect.left ? 0 : Math.abs(rect.left - this.left);
-      const dy = this.top > rect.top ? 0 : Math.abs(rect.top - this.top);
-      let x = dx ? 1 - dx / this.width : (rect.left + rect.width - this.left) / this.width;
-      let y = dy ? 1 - dy / this.height : (rect.top + rect.height - this.top) / this.height;
-      x = Math.min(1, x);
-      y = Math.min(1, y);
-      return {
-        x: x,
-        y: y,
-        center: center
-      };
-    } else {
-      return {
-        x: 0,
-        y: 0,
-        center: center
-      };
-    }
-  }
-
-}
+  return Rect;
+}();
 
 exports.default = Rect;
-
-},{}],257:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.FRAGMENT_SHADER = void 0;
-
-/* jshint esversion: 6 */
-const FRAGMENT_SHADER = `
-#ifdef GL_ES
-precision highp float;
-#endif
-
-uniform vec2 u_resolution;
-uniform vec2 u_mouse;
-uniform float u_time;
-uniform float u_pow;
-uniform float u_top;
-uniform float u_strength;
-uniform sampler2D u_texture;
-uniform vec2 u_textureResolution;
-
-float random(vec2 st) {
-	return fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));
-}
-
-void main() {
-	vec2 st = gl_FragCoord.xy / u_resolution.xy;
-	float rr = u_resolution.x / u_resolution.y;
-	float tr = u_textureResolution.x / u_textureResolution.y;
-	if (tr > rr) {
-		st.x = ((st.x - 0.5) * rr / tr) + 0.5;
-	} else {
-		st.y = ((st.y - 0.5) / rr * tr) + 0.5;
-	}
-	float top = u_top / u_resolution.y;
-	vec2 mx = u_mouse / u_resolution;
-	vec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;
-
-	float noise = random(st) * 0.08;
-
-	float c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);
-	float s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);
-	float b = (length(vec2(c + s, c)) + 2.0) * u_strength;
-
-	float center = length(st - 0.5);
-	vec2 sty = vec2(st.x, st.y + top);
-	float scale = 0.95 * (1.0 - b * center * u_pow);
-	vec2 stb = (sty - 0.5) * scale + 0.5;
-
-	vec3 video = texture2D(u_texture, stb).rgb;
-	vec3 bulge = vec3(b);
-
-	vec3 color = vec3(0.0);
-	color = vec3(video - noise);
-	// color = vec3(video);
-	// color = vec3(video - bulge * 0.1 - noise);
-	// color = vec3(bulge);
-	// color = vec3(noise);
-	// color = vec3(center);
-	// color = vec3(u_pow * center);
-	// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;
-
-	gl_FragColor = vec4(color, 1.0);
-}
-`;
-exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
-
-},{}],258:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.State = void 0;
-
-/* jshint esversion: 6 */
-const DELAY = 3000;
-
-class State {
-  constructor($timeout, $rootScope) {
-    this.$timeout = $timeout;
-    this.$rootScope = $rootScope;
-    this.idle();
-  }
-
-  idle() {
-    this.isBusy = false;
-    this.isError = false;
-    this.isErroring = false;
-    this.isSuccess = false;
-    this.isSuccessing = false;
-    this.button = null;
-    this.errors = [];
-  }
-
-  busy() {
-    if (!this.isBusy) {
-      this.isBusy = true;
-      this.isError = false;
-      this.isErroring = false;
-      this.isSuccess = false;
-      this.isSuccessing = false;
-      this.errors = [];
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  classes(addons) {
-    const classes = {
-      ready: this.isReady,
-      busy: this.isBusy,
-      successing: this.isSuccessing,
-      success: this.isSuccess,
-      errorring: this.isErroring,
-      error: this.isError
-    };
-
-    if (addons) {
-      Object.keys(addons).forEach(key => {
-        classes[addons[key]] = classes[key];
-      });
-    }
-
-    return classes;
-  }
-
-  enabled() {
-    return !this.isBusy && !this.isErroring && !this.isSuccessing;
-  }
-
-  error(error) {
-    console.log('State.error', error);
-    this.isBusy = false;
-    this.isError = true;
-    this.isErroring = true;
-    this.isSuccess = false;
-    this.isSuccessing = false;
-    this.errors.push(error);
-    this.$timeout(() => {
-      this.isErroring = false;
-    }, DELAY);
-  }
-
-  errorMessage() {
-    return this.isError ? this.errors[this.errors.length - 1] : null;
-  }
-
-  labels(addons) {
-    const defaults = {
-      ready: 'submit',
-      busy: 'sending',
-      error: 'error',
-      success: 'success'
-    };
-
-    if (addons) {
-      angular.extend(defaults, addons);
-    }
-
-    let label = defaults.ready;
-
-    if (this.isBusy) {
-      label = defaults.busy;
-    } else if (this.isSuccess) {
-      label = defaults.success;
-    } else if (this.isError) {
-      label = defaults.error;
-    }
-
-    return label;
-  }
-
-  ready() {
-    this.idle();
-    this.isReady = true;
-    this.$rootScope.$broadcast('$thisReady', this);
-  }
-
-  submitClass() {
-    return {
-      busy: this.isBusy,
-      ready: this.isReady,
-      successing: this.isSuccessing,
-      success: this.isSuccess,
-      errorring: this.isErroring,
-      error: this.isError
-    };
-  }
-
-  success() {
-    this.isBusy = false;
-    this.isError = false;
-    this.isErroring = false;
-    this.isSuccess = true;
-    this.isSuccessing = true;
-    this.errors = [];
-    this.$timeout(() => {
-      this.isSuccessing = false;
-    }, DELAY);
-  }
-
-}
-
-exports.State = State;
-
-class StateService {
-  constructor($timeout, $rootScope) {
-    this.$timeout = $timeout;
-    this.$rootScope = $rootScope;
-  }
-
-  getState() {
-    return new State(this.$timeout, this.$rootScope);
-  }
-
-  static factory($timeout, $rootScope) {
-    return new StateService($timeout, $rootScope);
-  }
-
-}
-
-exports.default = StateService;
-StateService.factory.$inject = ['$timeout', '$rootScope'];
 
 },{}],259:[function(require,module,exports){
 "use strict";
@@ -28647,359 +30299,613 @@ StateService.factory.$inject = ['$timeout', '$rootScope'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.FRAGMENT_SHADER = void 0;
+var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
+exports.FRAGMENT_SHADER = FRAGMENT_SHADER;
+
+},{}],260:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.State = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var DELAY = 3000;
+
+var State =
+/*#__PURE__*/
+function () {
+  function State($timeout, $rootScope) {
+    _classCallCheck(this, State);
+
+    this.$timeout = $timeout;
+    this.$rootScope = $rootScope;
+    this.idle();
+  }
+
+  _createClass(State, [{
+    key: "idle",
+    value: function idle() {
+      this.isBusy = false;
+      this.isError = false;
+      this.isErroring = false;
+      this.isSuccess = false;
+      this.isSuccessing = false;
+      this.button = null;
+      this.errors = [];
+    }
+  }, {
+    key: "busy",
+    value: function busy() {
+      if (!this.isBusy) {
+        this.isBusy = true;
+        this.isError = false;
+        this.isErroring = false;
+        this.isSuccess = false;
+        this.isSuccessing = false;
+        this.errors = [];
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "classes",
+    value: function classes(addons) {
+      var classes = {
+        ready: this.isReady,
+        busy: this.isBusy,
+        successing: this.isSuccessing,
+        success: this.isSuccess,
+        errorring: this.isErroring,
+        error: this.isError
+      };
+
+      if (addons) {
+        Object.keys(addons).forEach(function (key) {
+          classes[addons[key]] = classes[key];
+        });
+      }
+
+      return classes;
+    }
+  }, {
+    key: "enabled",
+    value: function enabled() {
+      return !this.isBusy && !this.isErroring && !this.isSuccessing;
+    }
+  }, {
+    key: "error",
+    value: function error(_error) {
+      var _this = this;
+
+      console.log('State.error', _error);
+      this.isBusy = false;
+      this.isError = true;
+      this.isErroring = true;
+      this.isSuccess = false;
+      this.isSuccessing = false;
+      this.errors.push(_error);
+      this.$timeout(function () {
+        _this.isErroring = false;
+      }, DELAY);
+    }
+  }, {
+    key: "errorMessage",
+    value: function errorMessage() {
+      return this.isError ? this.errors[this.errors.length - 1] : null;
+    }
+  }, {
+    key: "labels",
+    value: function labels(addons) {
+      var defaults = {
+        ready: 'submit',
+        busy: 'sending',
+        error: 'error',
+        success: 'success'
+      };
+
+      if (addons) {
+        angular.extend(defaults, addons);
+      }
+
+      var label = defaults.ready;
+
+      if (this.isBusy) {
+        label = defaults.busy;
+      } else if (this.isSuccess) {
+        label = defaults.success;
+      } else if (this.isError) {
+        label = defaults.error;
+      }
+
+      return label;
+    }
+  }, {
+    key: "ready",
+    value: function ready() {
+      this.idle();
+      this.isReady = true;
+      this.$rootScope.$broadcast('$thisReady', this);
+    }
+  }, {
+    key: "submitClass",
+    value: function submitClass() {
+      return {
+        busy: this.isBusy,
+        ready: this.isReady,
+        successing: this.isSuccessing,
+        success: this.isSuccess,
+        errorring: this.isErroring,
+        error: this.isError
+      };
+    }
+  }, {
+    key: "success",
+    value: function success() {
+      var _this2 = this;
+
+      this.isBusy = false;
+      this.isError = false;
+      this.isErroring = false;
+      this.isSuccess = true;
+      this.isSuccessing = true;
+      this.errors = [];
+      this.$timeout(function () {
+        _this2.isSuccessing = false;
+      }, DELAY);
+    }
+  }]);
+
+  return State;
+}();
+
+exports.State = State;
+
+var StateService =
+/*#__PURE__*/
+function () {
+  function StateService($timeout, $rootScope) {
+    _classCallCheck(this, StateService);
+
+    this.$timeout = $timeout;
+    this.$rootScope = $rootScope;
+  }
+
+  _createClass(StateService, [{
+    key: "getState",
+    value: function getState() {
+      return new State(this.$timeout, this.$rootScope);
+    }
+  }], [{
+    key: "factory",
+    value: function factory($timeout, $rootScope) {
+      return new StateService($timeout, $rootScope);
+    }
+  }]);
+
+  return StateService;
+}();
+
+exports.default = StateService;
+StateService.factory.$inject = ['$timeout', '$rootScope'];
+
+},{}],261:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.SessionStorageService = exports.LocalStorageService = exports.CookieService = void 0;
 
-/* jshint esversion: 6 */
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* global angular */
-const TIMEOUT = 5 * 60 * 1000; // five minutes
+var TIMEOUT = 5 * 60 * 1000; // five minutes
 
-class CookieService {
-  constructor(PromiseService) {
+var CookieService =
+/*#__PURE__*/
+function () {
+  function CookieService(PromiseService) {
+    _classCallCheck(this, CookieService);
+
     this.promise = PromiseService;
   }
 
-  delete(name) {
-    setter(name, '', -1);
-  }
-
-  exist(name) {
-    return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
-  }
-
-  get(name) {
-    const cookieName = name + "=";
-    const ca = document.cookie.split(';');
-
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1, c.length);
-      }
-
-      if (c.indexOf(cookieName) === 0) {
-        const value = c.substring(cookieName.length, c.length);
-        let model = null;
-
-        try {
-          model = JSON.parse(decodeURIComponent(atob(value)));
-        } catch (e) {
-          console.log('CookieService.get.error parsing', key, e);
-        }
-
-        return model;
-      }
+  _createClass(CookieService, [{
+    key: "delete",
+    value: function _delete(name) {
+      setter(name, '', -1);
     }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var cookieName = name + "=";
+      var ca = document.cookie.split(';');
 
-    return null;
-  }
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
 
-  on(name) {
-    return this.promise.make(promise => {
-      let i,
-          interval = 1000,
-          elapsed = 0,
-          timeout = TIMEOUT;
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1, c.length);
+        }
 
-      const checkCookie = () => {
-        if (elapsed > timeout) {
-          promise.reject('timeout');
-        } else {
-          const c = this.get(name);
+        if (c.indexOf(cookieName) === 0) {
+          var value = c.substring(cookieName.length, c.length);
+          var model = null;
 
-          if (c) {
-            promise.resolve(c);
-          } else {
-            elapsed += interval;
-            i = setTimeout(checkCookie, interval);
+          try {
+            model = JSON.parse(decodeURIComponent(atob(value)));
+          } catch (e) {
+            console.log('CookieService.get.error parsing', key, e);
           }
+
+          return model;
         }
-      };
+      }
 
-      checkCookie();
-    });
-  }
+      return null;
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      var _this = this;
 
-  set(name, value, days) {
-    try {
-      const cache = [];
-      const json = JSON.stringify(value, function (key, value) {
-        if (key === 'pool') {
-          return;
-        }
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
 
-        if (typeof value === 'object' && value !== null) {
-          if (cache.indexOf(value) !== -1) {
-            // Circular reference found, discard key
+        var checkCookie = function checkCookie() {
+          if (elapsed > timeout) {
+            promise.reject('timeout');
+          } else {
+            var c = _this.get(name);
+
+            if (c) {
+              promise.resolve(c);
+            } else {
+              elapsed += interval;
+              i = setTimeout(checkCookie, interval);
+            }
+          }
+        };
+
+        checkCookie();
+      });
+    }
+  }, {
+    key: "set",
+    value: function set(name, value, days) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
             return;
           }
 
-          cache.push(value);
-        }
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
 
-        return value;
-      });
-      this.setter(name, btoa(encodeURIComponent(json)), days);
-    } catch (e) {
-      console.log('CookieService.error serializing', name, value, e);
+            cache.push(value);
+          }
+
+          return value;
+        });
+        this.setter(name, btoa(encodeURIComponent(json)), days);
+      } catch (e) {
+        console.log('CookieService.error serializing', name, value, e);
+      }
     }
-  }
+  }, {
+    key: "setter",
+    value: function setter(name, value, days) {
+      var expires;
 
-  setter(name, value, days) {
-    let expires;
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toGMTString();
+      } else {
+        expires = '';
+      }
 
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = '; expires=' + date.toGMTString();
-    } else {
-      expires = '';
+      document.cookie = name + '=' + value + expires + '; path=/';
     }
+  }], [{
+    key: "factory",
+    value: function factory(PromiseService) {
+      return new CookieService(PromiseService);
+    }
+  }]);
 
-    document.cookie = name + '=' + value + expires + '; path=/';
-  }
-
-  static factory(PromiseService) {
-    return new CookieService(PromiseService);
-  }
-
-}
+  return CookieService;
+}();
 
 exports.CookieService = CookieService;
 CookieService.factory.$inject = ['PromiseService'];
 
-class LocalStorageService {
-  constructor(PromiseService) {
+var LocalStorageService =
+/*#__PURE__*/
+function () {
+  function LocalStorageService(PromiseService) {
+    _classCallCheck(this, LocalStorageService);
+
     this.promise = PromiseService;
   }
 
-  delete(name) {
-    window.localStorage.removeItem(name);
-  }
-
-  exist(name) {
-    return window.localStorage[name] !== undefined;
-  }
-
-  get(name) {
-    let value = null;
-
-    if (window.localStorage[name] !== undefined) {
-      try {
-        value = JSON.parse(window.localStorage[name]);
-      } catch (e) {
-        console.log('LocalStorageService.get.error parsing', name, e);
-      }
+  _createClass(LocalStorageService, [{
+    key: "delete",
+    value: function _delete(name) {
+      window.localStorage.removeItem(name);
     }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return window.localStorage[name] !== undefined;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var value = null;
 
-    return value;
-  }
-
-  set(name, value) {
-    try {
-      const cache = [];
-      const json = JSON.stringify(value, function (key, value) {
-        if (key === 'pool') {
-          return;
+      if (window.localStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.localStorage[name]);
+        } catch (e) {
+          console.log('LocalStorageService.get.error parsing', name, e);
         }
+      }
 
-        if (typeof value === 'object' && value !== null) {
-          if (cache.indexOf(value) !== -1) {
-            // Circular reference found, discard key
+      return value;
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
             return;
           }
 
-          cache.push(value);
-        }
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
 
-        return value;
-      });
-      window.localStorage.setItem(name, json);
-    } catch (e) {
-      console.log('LocalStorageService.set.error serializing', name, value, e);
-    }
-  }
-
-  on(name) {
-    return this.promise.make(promise => {
-      let i,
-          interval = 1000,
-          elapsed = 0,
-          timeout = TIMEOUT;
-
-      const storageEvent = e => {
-        if (i) {
-          clearTimeout(i);
-        }
-
-        if (e.originalEvent.key == name) {
-          try {
-            const value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
-
-            promise.resolve(value);
-          } catch (error) {
-            console.log('LocalStorageService.on.error parsing', name, error);
-            promise.reject('error parsing ' + name);
+            cache.push(value);
           }
+
+          return value;
+        });
+        window.localStorage.setItem(name, json);
+      } catch (e) {
+        console.log('LocalStorageService.set.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var storageEvent = function storageEvent(e) {
+          if (i) {
+            clearTimeout(i);
+          }
+
+          if (e.originalEvent.key == name) {
+            try {
+              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
+
+              promise.resolve(value);
+            } catch (error) {
+              console.log('LocalStorageService.on.error parsing', name, error);
+              promise.reject('error parsing ' + name);
+            }
+          }
+        };
+
+        angular.element(window).on('storage', storageEvent);
+        i = setTimeout(function () {
+          promise.reject('timeout');
+        }, timeout);
+      });
+    }
+  }], [{
+    key: "isLocalStorageSupported",
+    value: function isLocalStorageSupported() {
+      var supported = false;
+
+      try {
+        supported = 'localStorage' in window && window.localStorage !== null;
+
+        if (supported) {
+          window.localStorage.setItem('test', '1');
+          window.localStorage.removeItem('test');
+        } else {
+          supported = false;
         }
-      };
-
-      angular.element(window).on('storage', storageEvent);
-      i = setTimeout(function () {
-        promise.reject('timeout');
-      }, timeout);
-    });
-  }
-
-  static isLocalStorageSupported() {
-    let supported = false;
-
-    try {
-      supported = 'localStorage' in window && window.localStorage !== null;
-
-      if (supported) {
-        window.localStorage.setItem('test', '1');
-        window.localStorage.removeItem('test');
-      } else {
+      } catch (e) {
         supported = false;
       }
-    } catch (e) {
-      supported = false;
+
+      return supported;
     }
-
-    return supported;
-  }
-
-  static factory(PromiseService) {
-    if (LocalStorageService.isLocalStorageSupported()) {
-      return new LocalStorageService(PromiseService);
-    } else {
-      return new CookieService(PromiseService);
+  }, {
+    key: "factory",
+    value: function factory(PromiseService) {
+      if (LocalStorageService.isLocalStorageSupported()) {
+        return new LocalStorageService(PromiseService);
+      } else {
+        return new CookieService(PromiseService);
+      }
     }
-  }
+  }]);
 
-}
+  return LocalStorageService;
+}();
 
 exports.LocalStorageService = LocalStorageService;
 LocalStorageService.factory.$inject = ['PromiseService'];
 
-class SessionStorageService {
-  constructor(PromiseService) {
+var SessionStorageService =
+/*#__PURE__*/
+function () {
+  function SessionStorageService(PromiseService) {
+    _classCallCheck(this, SessionStorageService);
+
     this.promise = PromiseService;
   }
 
-  delete(name) {
-    window.sessionStorage.removeItem(name);
-  }
-
-  exist(name) {
-    return window.sessionStorage[name] !== undefined;
-  }
-
-  get(name) {
-    let value = null;
-
-    if (window.sessionStorage[name] !== undefined) {
-      try {
-        value = JSON.parse(window.sessionStorage[name]);
-      } catch (e) {
-        console.log('SessionStorageService.get.error parsing', name, e);
-      }
+  _createClass(SessionStorageService, [{
+    key: "delete",
+    value: function _delete(name) {
+      window.sessionStorage.removeItem(name);
     }
+  }, {
+    key: "exist",
+    value: function exist(name) {
+      return window.sessionStorage[name] !== undefined;
+    }
+  }, {
+    key: "get",
+    value: function get(name) {
+      var value = null;
 
-    return value;
-  }
-
-  set(name, value) {
-    try {
-      const cache = [];
-      const json = JSON.stringify(value, function (key, value) {
-        if (key === 'pool') {
-          return;
+      if (window.sessionStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.sessionStorage[name]);
+        } catch (e) {
+          console.log('SessionStorageService.get.error parsing', name, e);
         }
+      }
 
-        if (typeof value === 'object' && value !== null) {
-          if (cache.indexOf(value) !== -1) {
-            // Circular reference found, discard key
+      return value;
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      try {
+        var cache = [];
+        var json = JSON.stringify(value, function (key, value) {
+          if (key === 'pool') {
             return;
           }
 
-          cache.push(value);
-        }
+          if (_typeof(value) === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+              // Circular reference found, discard key
+              return;
+            }
 
-        return value;
-      });
-      window.sessionStorage.setItem(name, json);
-    } catch (e) {
-      console.log('SessionStorageService.set.error serializing', name, value, e);
-    }
-  }
-
-  on(name) {
-    return this.promise.make(promise => {
-      let i,
-          interval = 1000,
-          elapsed = 0,
-          timeout = TIMEOUT;
-
-      const storageEvent = e => {
-        if (i) {
-          clearTimeout(i);
-        }
-
-        if (e.originalEvent.key == name) {
-          try {
-            const value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
-
-            promise.resolve(value);
-          } catch (error) {
-            console.log('SessionStorageService.on.error parsing', name, error);
-            promise.reject('error parsing ' + name);
+            cache.push(value);
           }
+
+          return value;
+        });
+        window.sessionStorage.setItem(name, json);
+      } catch (e) {
+        console.log('SessionStorageService.set.error serializing', name, value, e);
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name) {
+      return this.promise.make(function (promise) {
+        var i,
+            interval = 1000,
+            elapsed = 0,
+            timeout = TIMEOUT;
+
+        var storageEvent = function storageEvent(e) {
+          if (i) {
+            clearTimeout(i);
+          }
+
+          if (e.originalEvent.key == name) {
+            try {
+              var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
+
+              promise.resolve(value);
+            } catch (error) {
+              console.log('SessionStorageService.on.error parsing', name, error);
+              promise.reject('error parsing ' + name);
+            }
+          }
+        };
+
+        angular.element(window).on('storage', storageEvent);
+        i = setTimeout(function () {
+          promise.reject('timeout');
+        }, timeout);
+      });
+    }
+  }], [{
+    key: "isSessionStorageSupported",
+    value: function isSessionStorageSupported() {
+      var supported = false;
+
+      try {
+        supported = 'sessionStorage' in window && window.sessionStorage !== null;
+
+        if (supported) {
+          window.sessionStorage.setItem('test', '1');
+          window.localsessionStorageStorage.removeItem('test');
+        } else {
+          supported = false;
         }
-      };
-
-      angular.element(window).on('storage', storageEvent);
-      i = setTimeout(function () {
-        promise.reject('timeout');
-      }, timeout);
-    });
-  }
-
-  static isSessionStorageSupported() {
-    let supported = false;
-
-    try {
-      supported = 'sessionStorage' in window && window.sessionStorage !== null;
-
-      if (supported) {
-        window.sessionStorage.setItem('test', '1');
-        window.localsessionStorageStorage.removeItem('test');
-      } else {
+      } catch (e) {
         supported = false;
       }
-    } catch (e) {
-      supported = false;
+
+      return supported;
     }
-
-    return supported;
-  }
-
-  static factory(PromiseService) {
-    if (SessionStorageService.isSessionStorageSupported()) {
-      return new SessionStorageService(PromiseService);
-    } else {
-      return new CookieService(PromiseService);
+  }, {
+    key: "factory",
+    value: function factory(PromiseService) {
+      if (SessionStorageService.isSessionStorageSupported()) {
+        return new SessionStorageService(PromiseService);
+      } else {
+        return new CookieService(PromiseService);
+      }
     }
-  }
+  }]);
 
-}
+  return SessionStorageService;
+}();
 
 exports.SessionStorageService = SessionStorageService;
 SessionStorageService.factory.$inject = ['PromiseService'];
 
-},{}],260:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29015,15 +30921,26 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const GTM_CAT = 'store-locator';
-const ZOOM_LEVEL = 13;
-const SHOW_INFO_WINDOW = false;
-const MAX_DISTANCE = 100;
-let GOOGLE_MAPS = null;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class StoreLocatorCtrl {
-  constructor($scope, $timeout, DomService, ApiService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'store-locator';
+var ZOOM_LEVEL = 13;
+var SHOW_INFO_WINDOW = false;
+var MAX_DISTANCE = 100;
+var GOOGLE_MAPS = null;
+
+var StoreLocatorCtrl =
+/*#__PURE__*/
+function () {
+  function StoreLocatorCtrl($scope, $timeout, DomService, ApiService) {
+    var _this = this;
+
+    _classCallCheck(this, StoreLocatorCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.domService = DomService;
@@ -29039,14 +30956,15 @@ class StoreLocatorCtrl {
     if (GOOGLE_MAPS !== null) {
       this.initMap();
     } else {
-      window.onGoogleMapsLoaded = () => {
+      window.onGoogleMapsLoaded = function () {
         GOOGLE_MAPS = google.maps;
-        this.initMap();
+
+        _this.initMap();
       };
 
-      const script = document.createElement('script');
+      var script = document.createElement('script');
       script.setAttribute('type', 'text/javascript');
-      script.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&callback=onGoogleMapsLoaded`);
+      script.setAttribute('src', "https://maps.googleapis.com/maps/api/js?key=".concat(this.apiKey, "&callback=onGoogleMapsLoaded"));
       (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(script);
       /*
       google.maps.event.addDomListener(window, 'load', () => {
@@ -29058,414 +30976,459 @@ class StoreLocatorCtrl {
 
 
     this.unsubscribe = new _rxjs.Subject();
-    this.mapCenter$.pipe((0, _operators.debounceTime)(1000), (0, _operators.takeUntil)(this.unsubscribe)).subscribe(position => {
-      this.findNearStores(this.stores, position);
+    this.mapCenter$.pipe((0, _operators.debounceTime)(1000), (0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (position) {
+      _this.findNearStores(_this.stores, position);
     });
-    this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(event => {});
-    $scope.$on('destroy', () => {
+    this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (event) {});
+    $scope.$on('destroy', function () {
       // console.log('destroy');
-      this.unsubscribe.next();
-      this.unsubscribe.complete();
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
     });
   }
 
-  initMap() {
-    // Basic options for a simple Google Map
-    // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
-    var mapOptions = {
-      // How zoomed in you want the map to start at (always required)
-      zoom: 7,
-      // The latitude and longitude to center the map (always required)
-      center: new google.maps.LatLng(41.4632232, 14.3898072),
-      // New York
-      // How you would like to style the map.
-      // This is where you would paste any style found on Snazzy Maps.
-      styles: [{
-        "featureType": "administrative",
-        "elementType": "geometry.fill",
-        "stylers": [{
-          "visibility": "on"
-        }]
-      }, {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-          "color": "#444444"
-        }]
-      }, {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [{
-          "color": "#f2f2f2"
-        }]
-      }, {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [{
-          "visibility": "off"
-        }]
-      }, {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [{
-          "saturation": -100
+  _createClass(StoreLocatorCtrl, [{
+    key: "initMap",
+    value: function initMap() {
+      var _this2 = this;
+
+      // Basic options for a simple Google Map
+      // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+      var mapOptions = {
+        // How zoomed in you want the map to start at (always required)
+        zoom: 7,
+        // The latitude and longitude to center the map (always required)
+        center: new google.maps.LatLng(41.4632232, 14.3898072),
+        // New York
+        // How you would like to style the map.
+        // This is where you would paste any style found on Snazzy Maps.
+        styles: [{
+          "featureType": "administrative",
+          "elementType": "geometry.fill",
+          "stylers": [{
+            "visibility": "on"
+          }]
         }, {
-          "lightness": 45
-        }]
-      }, {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [{
-          "visibility": "simplified"
-        }]
-      }, {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [{
-          "visibility": "off"
-        }]
-      }, {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [{
-          "visibility": "off"
-        }]
-      }, {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [{
-          "color": "#ffffff"
+          "featureType": "administrative",
+          "elementType": "labels.text.fill",
+          "stylers": [{
+            "color": "#444444"
+          }]
         }, {
-          "visibility": "on"
+          "featureType": "landscape",
+          "elementType": "all",
+          "stylers": [{
+            "color": "#f2f2f2"
+          }]
+        }, {
+          "featureType": "poi",
+          "elementType": "all",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "road",
+          "elementType": "all",
+          "stylers": [{
+            "saturation": -100
+          }, {
+            "lightness": 45
+          }]
+        }, {
+          "featureType": "road.highway",
+          "elementType": "all",
+          "stylers": [{
+            "visibility": "simplified"
+          }]
+        }, {
+          "featureType": "road.arterial",
+          "elementType": "labels.icon",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "transit",
+          "elementType": "all",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "water",
+          "elementType": "all",
+          "stylers": [{
+            "color": "#ffffff"
+          }, {
+            "visibility": "on"
+          }]
         }]
-      }]
-    }; // Get the HTML DOM element that will contain your map
-    // We are using a div with id="map" seen below in the <body>
+      }; // Get the HTML DOM element that will contain your map
+      // We are using a div with id="map" seen below in the <body>
 
-    var mapElement = document.getElementById('map');
+      var mapElement = document.getElementById('map');
 
-    if (!mapElement) {
-      return;
-    } // Create the Google Map using our element and options defined above
+      if (!mapElement) {
+        return;
+      } // Create the Google Map using our element and options defined above
 
 
-    var map = new google.maps.Map(mapElement, mapOptions);
-    map.addListener('dragend', () => {
-      const position = map.getCenter();
-      this.mapCenter$.next(position);
-    });
-    this.$timeout(() => {
-      this.map = map;
-    }); // console.log('timeout');
-  }
+      var map = new google.maps.Map(mapElement, mapOptions);
+      map.addListener('dragend', function () {
+        var position = map.getCenter();
 
-  calculateDistance(lat1, lon1, lat2, lon2, unit) {
-    if (lat1 == lat2 && lon1 == lon2) {
-      return 0;
-    } else {
-      const radlat1 = Math.PI * lat1 / 180;
-      const radlat2 = Math.PI * lat2 / 180;
-      const theta = lon1 - lon2;
-      const radtheta = Math.PI * theta / 180;
-      let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-
-      if (dist > 1) {
-        dist = 1;
-      }
-
-      dist = Math.acos(dist);
-      dist = dist * 180 / Math.PI;
-      dist = dist * 60 * 1.1515;
-
-      if (unit == "K") {
-        dist = dist * 1.609344;
-      }
-
-      if (unit == "N") {
-        dist = dist * 0.8684;
-      }
-
-      return dist;
-    }
-  }
-
-  addMarkers(stores) {
-    const markers = stores.map(store => {
-      const position = new google.maps.LatLng(store.latitude, store.longitude);
-      let content = `<div class="marker__content">
-				<div class="title"><span>${store.name}</span></div>
-				<div class="group group--info">
-					<div class="address">
-						${store.address}<br>
-						${store.zip} ${store.citta} ${store.cod_provincia} ${store.stato}<br>
-						<!--store.tel-->
-						<!--store.email-->
-						<!--store.webSite-->
-					</div>
-					<div class="distance">${window.BOMLabels.store_locator_approx} <b>${Math.floor(store.distance)} km</b></div>
-				</div>
-				<div class="group group--cta">
-					<!--store.pageurl-->
-					<a id="locator-marker" href="https://www.google.it/maps/dir/${this.position.lat()},${this.position.lng()}/${store.name}/@${store.latitude},${store.longitude}/" target="_blank" class="btn btn--link"><span>${window.BOMLabels.store_locator_reach_store}</span></a>
-				</div>
-			</div>`;
-      if (store.tel) content = content.replace('<!--store.tel-->', `<span>${store.tel}<br></span>`);
-      if (store.email) content = content.replace('<!--store.email-->', `<span><a href="mailto:${store.email}">${store.email}</a><br></span>`);
-      if (store.webSite) content = content.replace('<!--store.webSite-->', `<span><a target="_blank" href="${store.webSite}">${store.webSite}</a></span>`);
-      if (store.pageurl) content = content.replace('<!--store.pageurl-->', `<a id="locator-marker" href="${store.pageurl}" target="_blank" class="btn btn--link"><span>${window.BOMLabels.More_info}</span></a>`);
-      const marker = new google.maps.Marker({
-        position: position,
-        // map: this.map,
-        icon: store.importante ? '/img/store-locator/store-primary.png' : '/img/store-locator/store-secondary.png',
-        title: store.name,
-        store: store,
-        content: content
+        _this2.mapCenter$.next(position);
       });
-      marker.addListener('click', () => {
-        this.setMarkerWindow(marker.position, content);
-        this.scrollToStore(store);
+      this.$timeout(function () {
+        _this2.map = map;
+      }); // console.log('timeout');
+    }
+  }, {
+    key: "calculateDistance",
+    value: function calculateDistance(lat1, lon1, lat2, lon2, unit) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+      } else {
+        var radlat1 = Math.PI * lat1 / 180;
+        var radlat2 = Math.PI * lat2 / 180;
+        var theta = lon1 - lon2;
+        var radtheta = Math.PI * theta / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
 
-        _gtm.default.push({
-          event: 'dealerlocator',
-          action: 'marker-click',
-          label: store.name
+        if (dist > 1) {
+          dist = 1;
+        }
+
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist = dist * 60 * 1.1515;
+
+        if (unit == "K") {
+          dist = dist * 1.609344;
+        }
+
+        if (unit == "N") {
+          dist = dist * 0.8684;
+        }
+
+        return dist;
+      }
+    }
+  }, {
+    key: "addMarkers",
+    value: function addMarkers(stores) {
+      var _this3 = this;
+
+      var markers = stores.map(function (store) {
+        var position = new google.maps.LatLng(store.latitude, store.longitude);
+        var content = "<div class=\"marker__content\">\n\t\t\t\t<div class=\"title\"><span>".concat(store.name, "</span></div>\n\t\t\t\t<div class=\"group group--info\">\n\t\t\t\t\t<div class=\"address\">\n\t\t\t\t\t\t").concat(store.address, "<br>\n\t\t\t\t\t\t").concat(store.zip, " ").concat(store.citta, " ").concat(store.cod_provincia, " ").concat(store.stato, "<br>\n\t\t\t\t\t\t<!--store.tel-->\n\t\t\t\t\t\t<!--store.email-->\n\t\t\t\t\t\t<!--store.webSite-->\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"distance\">").concat(window.BOMLabels.store_locator_approx, " <b>").concat(Math.floor(store.distance), " km</b></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"group group--cta\">\n\t\t\t\t\t<!--store.pageurl-->\n\t\t\t\t\t<a id=\"locator-marker\" href=\"https://www.google.it/maps/dir/").concat(_this3.position.lat(), ",").concat(_this3.position.lng(), "/").concat(store.name, "/@").concat(store.latitude, ",").concat(store.longitude, "/\" target=\"_blank\" class=\"btn btn--link\"><span>").concat(window.BOMLabels.store_locator_reach_store, "</span></a>\n\t\t\t\t</div>\n\t\t\t</div>");
+        if (store.tel) content = content.replace('<!--store.tel-->', "<span>".concat(store.tel, "<br></span>"));
+        if (store.email) content = content.replace('<!--store.email-->', "<span><a href=\"mailto:".concat(store.email, "\">").concat(store.email, "</a><br></span>"));
+        if (store.webSite) content = content.replace('<!--store.webSite-->', "<span><a target=\"_blank\" href=\"".concat(store.webSite, "\">").concat(store.webSite, "</a></span>"));
+        if (store.pageurl) content = content.replace('<!--store.pageurl-->', "<a id=\"locator-marker\" href=\"".concat(store.pageurl, "\" target=\"_blank\" class=\"btn btn--link\"><span>").concat(window.BOMLabels.More_info, "</span></a>"));
+        var marker = new google.maps.Marker({
+          position: position,
+          // map: this.map,
+          icon: store.importante ? '/img/store-locator/store-primary.png' : '/img/store-locator/store-secondary.png',
+          title: store.name,
+          store: store,
+          content: content
         });
-      });
-      store.marker = marker;
-      /*
-      marker.addListener('mouseout', () => {
-      	this.setMarkerWindow(null);
-      });
-      */
+        marker.addListener('click', function () {
+          _this3.setMarkerWindow(marker.position, content);
 
-      return marker;
-      /*
-      function panTo(e) {
-      	if (current !== marker) {
-      		current = marker;
-      		var ll = new google.maps.LatLng(latlng[0], latlng[1]);
-      		map.panTo(ll);
-      		onMarkerDidSelect();
-      	}
+          _this3.scrollToStore(store);
+
+          _gtm.default.push({
+            event: 'dealerlocator',
+            action: 'marker-click',
+            label: store.name
+          });
+        });
+        store.marker = marker;
+        /*
+        marker.addListener('mouseout', () => {
+        	this.setMarkerWindow(null);
+        });
+        */
+
+        return marker;
+        /*
+        function panTo(e) {
+        	if (current !== marker) {
+        		current = marker;
+        		var ll = new google.maps.LatLng(latlng[0], latlng[1]);
+        		map.panTo(ll);
+        		onMarkerDidSelect();
+        	}
+        }
+        node.addEventListener('click', panTo);
+        node.addEventListener('mouseover', panTo);
+        */
+      });
+      var markerCluster = new MarkerClusterer(this.map, markers, {
+        imagePath: '/img/store-locator/cluster-'
+      });
+      var styles = markerCluster.getStyles();
+      styles.forEach(function (style) {
+        return style.textColor = '#ffffff';
+      });
+      markerCluster.setStyles(styles); // console.log('StoreLocatorCtrl.searchPosition', position, stores);
+
+      this.markers = markers;
+      this.markerCluster = markerCluster;
+    }
+  }, {
+    key: "getGeolocation",
+    value: function getGeolocation(map) {
+      var _this4 = this;
+
+      this.error = null;
+      this.busyLocation = true;
+      var position = this.map.getCenter(); // Try HTML5 geolocation.
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (location) {
+          // console.log(location.coords);
+          position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
+
+          _this4.setInfoWindow(position, 1);
+
+          _this4.searchPosition(position).finally(function () {
+            return _this4.busyLocation = false;
+          });
+
+          _this4.map.setCenter(position);
+
+          _this4.map.setZoom(ZOOM_LEVEL);
+        }, function () {
+          _this4.setInfoWindow(position, 2);
+
+          _this4.searchPosition(position).finally(function () {
+            return _this4.busyLocation = false;
+          });
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        this.setInfoWindow(position, 3);
+        this.searchPosition(position).finally(function () {
+          return _this4.busyLocation = false;
+        });
       }
-      node.addEventListener('click', panTo);
-      node.addEventListener('mouseover', panTo);
-      */
-    });
-    const markerCluster = new MarkerClusterer(this.map, markers, {
-      imagePath: '/img/store-locator/cluster-'
-    });
-    const styles = markerCluster.getStyles();
-    styles.forEach(style => style.textColor = '#ffffff');
-    markerCluster.setStyles(styles); // console.log('StoreLocatorCtrl.searchPosition', position, stores);
+    }
+  }, {
+    key: "loadStoresByPosition",
+    value: function loadStoresByPosition(position) {
+      var _this5 = this;
 
-    this.markers = markers;
-    this.markerCluster = markerCluster;
-  }
+      return this.apiService.storeLocator.position(position).then(function (success) {
+        var stores = success.data;
+        _this5.stores = stores; // console.log('StoreLocatorCtrl.loadStoresByPosition', position, stores);
 
-  getGeolocation(map) {
-    this.error = null;
-    this.busyLocation = true;
-    let position = this.map.getCenter(); // Try HTML5 geolocation.
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(location => {
-        // console.log(location.coords);
-        position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
-        this.setInfoWindow(position, 1);
-        this.searchPosition(position).finally(() => this.busyLocation = false);
-        this.map.setCenter(position);
-        this.map.setZoom(ZOOM_LEVEL);
-      }, () => {
-        this.setInfoWindow(position, 2);
-        this.searchPosition(position).finally(() => this.busyLocation = false);
+        _this5.addMarkers(stores);
       });
-    } else {
-      // Browser doesn't support Geolocation
-      this.setInfoWindow(position, 3);
-      this.searchPosition(position).finally(() => this.busyLocation = false);
     }
-  }
+  }, {
+    key: "loadAllStores",
+    value: function loadAllStores() {
+      var _this6 = this;
 
-  loadStoresByPosition(position) {
-    return this.apiService.storeLocator.position(position).then(success => {
-      const stores = success.data;
-      this.stores = stores; // console.log('StoreLocatorCtrl.loadStoresByPosition', position, stores);
+      if (this.stores) {
+        return Promise.resolve(this.stores);
+      }
 
-      this.addMarkers(stores);
-    });
-  }
+      return this.apiService.storeLocator.all().then(function (success) {
+        var stores = success.data;
+        stores.forEach(function (store) {
+          return store.distance = _this6.calculateDistance(store.latitude, store.longitude, _this6.position.lat(), _this6.position.lng(), 'K');
+        });
 
-  loadAllStores() {
-    if (this.stores) {
-      return Promise.resolve(this.stores);
-    }
+        _this6.addMarkers(stores);
 
-    return this.apiService.storeLocator.all().then(success => {
-      const stores = success.data;
-      stores.forEach(store => store.distance = this.calculateDistance(store.latitude, store.longitude, this.position.lat(), this.position.lng(), 'K'));
-      this.addMarkers(stores);
-      this.stores = stores;
-      return stores;
-    });
-  }
-
-  fitBounds(stores) {
-    if (stores.length) {
-      const bounds = new google.maps.LatLngBounds();
-      stores.forEach(store => {
-        const position = new google.maps.LatLng(store.latitude, store.longitude);
-        bounds.extend(position);
+        _this6.stores = stores;
+        return stores;
       });
-      this.map.fitBounds(bounds); // console.log('fitBounds');
     }
-  }
+  }, {
+    key: "fitBounds",
+    value: function fitBounds(stores) {
+      if (stores.length) {
+        var bounds = new google.maps.LatLngBounds();
+        stores.forEach(function (store) {
+          var position = new google.maps.LatLng(store.latitude, store.longitude);
+          bounds.extend(position);
+        });
+        this.map.fitBounds(bounds); // console.log('fitBounds');
+      }
+    }
+  }, {
+    key: "findNearStores",
+    value: function findNearStores(stores, position) {
+      var _this7 = this;
 
-  findNearStores(stores, position) {
-    if (stores) {
-      stores.forEach(store => {
-        store.distance = this.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
-        store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= MAX_DISTANCE
-        /* Km */
-        ;
+      if (stores) {
+        stores.forEach(function (store) {
+          store.distance = _this7.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
+          store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= MAX_DISTANCE
+          /* Km */
+          ;
 
-        if (store.visible) {
-          if (store.removed) this.markerCluster.addMarker(store.marker);
-          delete store.removed;
+          if (store.visible) {
+            if (store.removed) _this7.markerCluster.addMarker(store.marker);
+            delete store.removed;
+          } else {
+            _this7.markerCluster.removeMarker(store.marker);
+
+            store.removed = true;
+          }
+        });
+        stores = stores.slice();
+        stores.sort(function (a, b) {
+          return a.distance * (a.importante ? 0.5 : 1) - b.distance * (b.importante ? 0.5 : 1);
+        });
+        var visibleStores = stores.filter(function (store) {
+          return store.visible;
+        }).slice(0, 50);
+        this.$timeout(function () {
+          _this7.visibleStores = visibleStores;
+        }, 1); // console.log('findNearStores', visibleStores);
+
+        return visibleStores;
+      }
+    }
+  }, {
+    key: "searchPosition",
+    value: function searchPosition(position) {
+      var _this8 = this;
+
+      this.position = position;
+      this.map.setCenter(position);
+      this.map.setZoom(ZOOM_LEVEL);
+      this.setInfoWindow(position, 1);
+      return this.loadAllStores().then(function (stores) {
+        var visibleStores = _this8.findNearStores(stores, position);
+        /*
+        if (visibleStores) {
+        	this.fitBounds(visibleStores);
+        }
+        */
+
+      });
+    }
+  }, {
+    key: "panTo",
+    value: function panTo(store) {
+      var position = new google.maps.LatLng(store.latitude, store.longitude);
+      this.map.setZoom(ZOOM_LEVEL);
+      this.map.panTo(position);
+      var marker = this.markers.find(function (x) {
+        return x.store === store;
+      });
+      this.setMarkerWindow(marker.position, marker.content);
+    }
+  }, {
+    key: "onSubmit",
+    value: function onSubmit() {
+      var _this9 = this;
+
+      this.error = null;
+      this.busyFind = true;
+      var fakeFilter = {
+        '': {
+          value: this.model.address,
+          options: [{
+            value: this.model.address,
+            key: this.model.address
+          }]
+        }
+      };
+
+      _gtm.default.pageViewFilters(GTM_CAT, fakeFilter);
+
+      var geocoder = this.geocoder || new google.maps.Geocoder();
+      this.geocoder = geocoder;
+      geocoder.geocode({
+        address: this.model.address
+      }, function (results, status) {
+        _this9.model = {};
+
+        if (status == 'OK') {
+          var position = results[0].geometry.location; // console.log('location', location);
+          // const position = new google.maps.LatLng(location);
+
+          _this9.searchPosition(position).finally(function () {
+            return _this9.busyFind = false;
+          });
         } else {
-          this.markerCluster.removeMarker(store.marker);
-          store.removed = true;
+          _this9.$timeout(function () {
+            var message = 'Geocode was not successful for the following reason: ' + status; // console.log('StoreLocatorCtrl.onSubmit.error', message);
+
+            _this9.error = {
+              message: message
+            };
+            _this9.busyFind = false;
+          });
         }
       });
-      stores = stores.slice();
-      stores.sort((a, b) => {
-        return a.distance * (a.importante ? 0.5 : 1) - b.distance * (b.importante ? 0.5 : 1);
-      });
-      const visibleStores = stores.filter(store => store.visible).slice(0, 50);
-      this.$timeout(() => {
-        this.visibleStores = visibleStores;
-      }, 1); // console.log('findNearStores', visibleStores);
-
-      return visibleStores;
     }
-  }
+  }, {
+    key: "setInfoWindow",
+    value: function setInfoWindow(position, mode) {
+      if (SHOW_INFO_WINDOW) {
+        var infoWindow = this.infoWindow || new google.maps.InfoWindow();
+        this.infoWindow = infoWindow;
+        infoWindow.setPosition(position);
 
-  searchPosition(position) {
-    this.position = position;
-    this.map.setCenter(position);
-    this.map.setZoom(ZOOM_LEVEL);
-    this.setInfoWindow(position, 1);
-    return this.loadAllStores().then(stores => {
-      const visibleStores = this.findNearStores(stores, position);
-      /*
-      if (visibleStores) {
-      	this.fitBounds(visibleStores);
+        switch (mode) {
+          case 1:
+            infoWindow.setContent('Current location');
+            break;
+
+          case 2:
+            infoWindow.setContent('Error: The Geolocation service failed.');
+            break;
+
+          default:
+            infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
+        }
+
+        infoWindow.open(this.map);
       }
-      */
-    });
-  }
-
-  panTo(store) {
-    const position = new google.maps.LatLng(store.latitude, store.longitude);
-    this.map.setZoom(ZOOM_LEVEL);
-    this.map.panTo(position);
-    const marker = this.markers.find(x => x.store === store);
-    this.setMarkerWindow(marker.position, marker.content);
-  }
-
-  onSubmit() {
-    this.error = null;
-    this.busyFind = true;
-    const fakeFilter = {
-      '': {
-        value: this.model.address,
-        options: [{
-          value: this.model.address,
-          key: this.model.address
-        }]
-      }
-    };
-
-    _gtm.default.pageViewFilters(GTM_CAT, fakeFilter);
-
-    const geocoder = this.geocoder || new google.maps.Geocoder();
-    this.geocoder = geocoder;
-    geocoder.geocode({
-      address: this.model.address
-    }, (results, status) => {
-      this.model = {};
-
-      if (status == 'OK') {
-        const position = results[0].geometry.location; // console.log('location', location);
-        // const position = new google.maps.LatLng(location);
-
-        this.searchPosition(position).finally(() => this.busyFind = false);
-      } else {
-        this.$timeout(() => {
-          const message = 'Geocode was not successful for the following reason: ' + status; // console.log('StoreLocatorCtrl.onSubmit.error', message);
-
-          this.error = {
-            message
-          };
-          this.busyFind = false;
+    }
+  }, {
+    key: "setMarkerWindow",
+    value: function setMarkerWindow(position, content) {
+      if (position) {
+        var markerWindow = this.markerWindow || new google.maps.InfoWindow({
+          pixelOffset: new google.maps.Size(0, -35)
         });
-      }
-    });
-  }
-
-  setInfoWindow(position, mode) {
-    if (SHOW_INFO_WINDOW) {
-      const infoWindow = this.infoWindow || new google.maps.InfoWindow();
-      this.infoWindow = infoWindow;
-      infoWindow.setPosition(position);
-
-      switch (mode) {
-        case 1:
-          infoWindow.setContent('Current location');
-          break;
-
-        case 2:
-          infoWindow.setContent('Error: The Geolocation service failed.');
-          break;
-
-        default:
-          infoWindow.setContent('Error: Your browser doesn\'t support geolocation.');
-      }
-
-      infoWindow.open(this.map);
-    }
-  }
-
-  setMarkerWindow(position, content) {
-    if (position) {
-      const markerWindow = this.markerWindow || new google.maps.InfoWindow({
-        pixelOffset: new google.maps.Size(0, -35)
-      });
-      this.markerWindow = markerWindow;
-      markerWindow.setPosition(position);
-      markerWindow.setContent(content);
-      markerWindow.open(this.map);
-    } else {
-      if (this.markerWindow) {
-        this.markerWindow.close();
+        this.markerWindow = markerWindow;
+        markerWindow.setPosition(position);
+        markerWindow.setContent(content);
+        markerWindow.open(this.map);
+      } else {
+        if (this.markerWindow) {
+          this.markerWindow.close();
+        }
       }
     }
-  }
+  }, {
+    key: "scrollToStore",
+    value: function scrollToStore(store) {
+      var storesNode = document.querySelector('.section--stores');
+      var storeNode = document.querySelector("#store-".concat(store.id_SF)); // console.log(storesNode, storeNode);
 
-  scrollToStore(store) {
-    const storesNode = document.querySelector('.section--stores');
-    const storeNode = document.querySelector(`#store-${store.id_SF}`); // console.log(storesNode, storeNode);
+      storesNode.scrollTo(0, storeNode.offsetTop);
+    }
+  }]);
 
-    storesNode.scrollTo(0, storeNode.offsetTop);
-  }
-
-}
+  return StoreLocatorCtrl;
+}();
 
 StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 var _default = StoreLocatorCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239,"rxjs":2,"rxjs/operators":198}],261:[function(require,module,exports){
+},{"../gtm/gtm.service":241,"rxjs":2,"rxjs/operators":198}],263:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29477,11 +31440,20 @@ var _gtm = _interopRequireDefault(require("../gtm/gtm.service"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* jshint esversion: 6 */
-const GTM_CAT = 'stores';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-class StoresCtrl {
-  constructor($scope, $timeout, LocationService) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GTM_CAT = 'stores';
+
+var StoresCtrl =
+/*#__PURE__*/
+function () {
+  function StoresCtrl($scope, $timeout, LocationService) {
+    _classCallCheck(this, StoresCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
@@ -29492,133 +31464,158 @@ class StoresCtrl {
     this.applyFilters(false);
   }
 
-  deserializeFilters(initialFilter) {
-    const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
+  _createClass(StoresCtrl, [{
+    key: "deserializeFilters",
+    value: function deserializeFilters(initialFilter) {
+      var _this = this;
 
-      switch (x) {
-        case 'collections':
-          filter.doFilter = (item, value) => {
-            return item.collections.indexOf(value) !== -1;
-          };
+      var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
 
-          break;
+        switch (x) {
+          case 'collections':
+            filter.doFilter = function (item, value) {
+              return item.collections.indexOf(value) !== -1;
+            };
 
-        case 'countries':
-          filter.doFilter = (item, value) => {
-            return item.stato === value;
-          };
+            break;
 
-          break;
+          case 'countries':
+            filter.doFilter = function (item, value) {
+              return item.stato === value;
+            };
 
-        default:
-          filter.doFilter = (item, value) => {
-            return item.features.indexOf(value) !== -1;
-          };
+            break;
 
-      }
+          default:
+            filter.doFilter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
 
-      filter.options.unshift({
-        label: this.filters[x].placeholder,
-        value: null
-      });
-      const selectedOption = filter.options.find(o => Boolean(o.value === (locationFilters[x] || null)));
-      filter.value = selectedOption.value;
-      filter.placeholder = selectedOption.label;
-    });
-    return filters;
-  }
-
-  serializeFilters() {
-    let filters = {};
-    let any = false;
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-
-      if (filter.value !== null) {
-        filters[x] = filter.value;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      filters = this.initialFilters ? {} : null;
-    } // console.log('StoresCtrl.serializeFilters', filters);
-
-
-    this.locationService.serialize('filters', filters);
-    return filters;
-  }
-
-  applyFilters(serialize) {
-    if (serialize !== false) this.serializeFilters();
-    const filters = Object.keys(this.filters).map(x => this.filters[x]).filter(x => x.value !== null);
-    let filteredStores = this.stores.slice(); // console.log(filteredStores);
-
-    if (filters.length) {
-      filteredStores = filteredStores.filter(store => {
-        let has = true;
-        filters.forEach(filter => {
-          has = has && filter.doFilter(store, filter.value);
-        });
-        return has;
-      });
-    } // console.log(filteredStores, filters);
-
-
-    this.filteredStores = [];
-    this.$timeout(() => {
-      this.filteredStores = filteredStores;
-      this.updateFilterStates(filteredStores); // delayer for image update
-    }, 50);
-
-    _gtm.default.pageViewFilters(GTM_CAT, this.filters);
-  }
-
-  updateFilterStates(stores) {
-    // console.log('updateFilterStores', stores);
-    Object.keys(this.filters).forEach(x => {
-      const filter = this.filters[x];
-      filter.options.forEach(option => {
-        let has = false;
-
-        if (option.value) {
-          let i = 0;
-
-          while (i < stores.length && !has) {
-            const store = stores[i];
-            has = filter.doFilter(store, option.value);
-            i++;
-          }
-        } else {
-          has = true;
         }
 
-        option.disabled = !has;
-      }); // console.log(filter.options);
-    });
-  }
+        filter.options.unshift({
+          label: _this.filters[x].placeholder,
+          value: null
+        });
+        var selectedOption = filter.options.find(function (o) {
+          return Boolean(o.value === (locationFilters[x] || null));
+        });
+        filter.value = selectedOption.value;
+        filter.placeholder = selectedOption.label;
+      });
+      return filters;
+    }
+  }, {
+    key: "serializeFilters",
+    value: function serializeFilters() {
+      var _this2 = this;
 
-  setFilter(item, filter) {
-    item = item || filter.options[0];
-    filter.value = item.value;
-    filter.placeholder = item.label;
-    this.applyFilters();
-    this.$scope.$broadcast('onCloseDropdown');
-  }
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this2.filters[x];
 
-  removeFilter(filter) {
-    this.setFilter(null, filter);
-  }
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
 
-}
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      } // console.log('StoresCtrl.serializeFilters', filters);
+
+
+      this.locationService.serialize('filters', filters);
+      return filters;
+    }
+  }, {
+    key: "applyFilters",
+    value: function applyFilters(serialize) {
+      var _this3 = this;
+
+      if (serialize !== false) this.serializeFilters();
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this3.filters[x];
+      }).filter(function (x) {
+        return x.value !== null;
+      });
+      var filteredStores = this.stores.slice(); // console.log(filteredStores);
+
+      if (filters.length) {
+        filteredStores = filteredStores.filter(function (store) {
+          var has = true;
+          filters.forEach(function (filter) {
+            has = has && filter.doFilter(store, filter.value);
+          });
+          return has;
+        });
+      } // console.log(filteredStores, filters);
+
+
+      this.filteredStores = [];
+      this.$timeout(function () {
+        _this3.filteredStores = filteredStores;
+
+        _this3.updateFilterStates(filteredStores); // delayer for image update
+
+      }, 50);
+
+      _gtm.default.pageViewFilters(GTM_CAT, this.filters);
+    }
+  }, {
+    key: "updateFilterStates",
+    value: function updateFilterStates(stores) {
+      var _this4 = this;
+
+      // console.log('updateFilterStores', stores);
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this4.filters[x];
+        filter.options.forEach(function (option) {
+          var has = false;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < stores.length && !has) {
+              var store = stores[i];
+              has = filter.doFilter(store, option.value);
+              i++;
+            }
+          } else {
+            has = true;
+          }
+
+          option.disabled = !has;
+        }); // console.log(filter.options);
+      });
+    }
+  }, {
+    key: "setFilter",
+    value: function setFilter(item, filter) {
+      item = item || filter.options[0];
+      filter.value = item.value;
+      filter.placeholder = item.label;
+      this.applyFilters();
+      this.$scope.$broadcast('onCloseDropdown');
+    }
+  }, {
+    key: "removeFilter",
+    value: function removeFilter(filter) {
+      this.setFilter(null, filter);
+    }
+  }]);
+
+  return StoresCtrl;
+}();
 
 StoresCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 var _default = StoresCtrl;
 exports.default = _default;
 
-},{"../gtm/gtm.service":239}],262:[function(require,module,exports){
+},{"../gtm/gtm.service":241}],264:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29630,8 +31627,13 @@ var _rxjs = require("rxjs");
 
 var _operators = require("rxjs/operators");
 
-/* jshint esversion: 6 */
-const MOOD_TYPES = Object.freeze({
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var MOOD_TYPES = Object.freeze({
   Tile: 1,
   Horizontal: 2,
   Vertical: 3,
@@ -29639,102 +31641,130 @@ const MOOD_TYPES = Object.freeze({
   Decor: 5
 });
 exports.MOOD_TYPES = MOOD_TYPES;
-const ITEMS_PER_PAGE = 20;
+var ITEMS_PER_PAGE = 20;
 exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
 
-class WishlistCtrl {
-  constructor($scope, $timeout, WishlistService) {
+var WishlistCtrl =
+/*#__PURE__*/
+function () {
+  function WishlistCtrl($scope, $timeout, WishlistService) {
+    var _this = this;
+
+    _classCallCheck(this, WishlistCtrl);
+
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.wishlistService = WishlistService;
     this.items = [];
     this.moodTypes = MOOD_TYPES;
     this.unsubscribe = new _rxjs.Subject();
-    this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(count => this.count = count);
-    $scope.$on('destroy', () => {
+    this.wishlistService.count$.pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (count) {
+      return _this.count = count;
+    });
+    $scope.$on('destroy', function () {
       // console.log('destroy');
-      this.unsubscribe.next();
-      this.unsubscribe.complete();
+      _this.unsubscribe.next();
+
+      _this.unsubscribe.complete();
     });
     this.load();
   }
 
-  load() {
-    this.wishlistService.get().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(success => {
-      // console.log('WishlistCtrl.load', success);
-      if (success) {
-        let items = success.data.slice();
-        let wishlist = this.wishlistService.wishlist;
-        items.forEach(item => {
-          const index = this.wishlistService.indexOf(item);
+  _createClass(WishlistCtrl, [{
+    key: "load",
+    value: function load() {
+      var _this2 = this;
 
-          if (index >= 0) {
-            item.name = wishlist[index].name;
-            item.typeName = wishlist[index].typeName;
+      this.wishlistService.get().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (success) {
+        // console.log('WishlistCtrl.load', success);
+        if (success) {
+          var items = success.data.slice();
+          var wishlist = _this2.wishlistService.wishlist;
+          items.forEach(function (item) {
+            var index = _this2.wishlistService.indexOf(item);
+
+            if (index >= 0) {
+              item.name = wishlist[index].name;
+              item.typeName = wishlist[index].typeName;
+            }
+          });
+          /* FAKE */
+
+          /*
+          while (items.length < 200) {
+          	items = items.concat(items);
           }
-        });
-        /* FAKE */
+          items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
+          */
 
-        /*
-        while (items.length < 200) {
-        	items = items.concat(items);
+          /* FAKE */
+
+          _this2.items = [];
+          _this2.visibleItems = [];
+          _this2.maxItems = ITEMS_PER_PAGE;
+
+          _this2.$timeout(function () {
+            _this2.items = items;
+            _this2.visibleItems = items.slice(0, _this2.maxItems);
+          }, 50);
         }
-        items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-        */
+      }, function (error) {
+        return console.log('WishlistCtrl.load.error', error);
+      });
+    }
+  }, {
+    key: "clearAll",
+    value: function clearAll() {
+      var _this3 = this;
 
-        /* FAKE */
+      this.wishlistService.clearAll().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (success) {
+        _this3.items = [];
+        _this3.visibleItems = [];
+        _this3.maxItems = ITEMS_PER_PAGE;
+      }, function (error) {
+        return console.log('WishlistCtrl.clearAll.error', error);
+      });
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll(event) {
+      var _this4 = this;
 
-        this.items = [];
-        this.visibleItems = [];
-        this.maxItems = ITEMS_PER_PAGE;
-        this.$timeout(() => {
-          this.items = items;
-          this.visibleItems = items.slice(0, this.maxItems);
-        }, 50);
-      }
-    }, error => console.log('WishlistCtrl.load.error', error));
-  }
+      if (event.rect.bottom < event.windowRect.bottom) {
+        // console.log('more!');
+        if (!this.busy && this.maxItems < this.items.length) {
+          this.$timeout(function () {
+            _this4.busy = true;
 
-  clearAll() {
-    this.wishlistService.clearAll().pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(success => {
-      this.items = [];
-      this.visibleItems = [];
-      this.maxItems = ITEMS_PER_PAGE;
-    }, error => console.log('WishlistCtrl.clearAll.error', error));
-  }
-
-  onScroll(event) {
-    if (event.rect.bottom < event.windowRect.bottom) {
-      // console.log('more!');
-      if (!this.busy && this.maxItems < this.items.length) {
-        this.$timeout(() => {
-          this.busy = true;
-          this.$timeout(() => {
-            this.maxItems += ITEMS_PER_PAGE;
-            this.visibleItems = this.items.slice(0, this.maxItems);
-            this.busy = false; // console.log(this.visibleItems.length);
-          }, 1000);
-        }, 0);
+            _this4.$timeout(function () {
+              _this4.maxItems += ITEMS_PER_PAGE;
+              _this4.visibleItems = _this4.items.slice(0, _this4.maxItems);
+              _this4.busy = false; // console.log(this.visibleItems.length);
+            }, 1000);
+          }, 0);
+        }
       }
     }
-  }
+  }, {
+    key: "print",
+    value: function print() {
+      return window.print();
+      /*
+      const iframe = document.createElement('iframe');
+      iframe.onload = function() {
+      	console.log('onload');
+      	this.contentWindow.print();
+      	iframe.parentNode.removeChild(iframe);
+      };
+      iframe.style.width = '768px';
+      iframe.src = window.location.href + '?printable';
+      document.body.appendChild(iframe);
+      */
+    }
+  }]);
 
-  print() {
-    return window.print();
-    /*
-    const iframe = document.createElement('iframe');
-    iframe.onload = function() {
-    	console.log('onload');
-    	this.contentWindow.print();
-    	iframe.parentNode.removeChild(iframe);
-    };
-    iframe.style.width = '768px';
-    iframe.src = window.location.href + '?printable';
-    document.body.appendChild(iframe);
-    */
-  }
-
-}
+  return WishlistCtrl;
+}();
 
 WishlistCtrl.$inject = ['$scope', '$timeout', 'WishlistService'];
 var _default = WishlistCtrl;

@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 /* global window, document, angular, TweenMax, TimelineMax */
 
 export default class MoodboardDropdownDirective {

@@ -53,165 +53,546 @@
 
 </section>
 
-<section class="section section--intro-centered">
+<script id="script-listing" lazy-script>
+	window.filters = {
+		collections: {
+			label: "Collezioni",
+			placeholder: "Cerca una collezione...",
+			options: [{
+				value: 2821,
+				label: "3D wall design",
+				key: "3D wall design"
+			}, {
+				value: 14515,
+				label: "Aix",
+				key: "Aix"
+			}, {
+				value: 2873,
+				label: "Arbor",
+				key: "Arbor"
+			}, {
+				value: 2874,
+				label: "Arkshade",
+				key: "Arkshade"
+			}, {
+				value: 2875,
+				label: "Arty",
+				key: "Arty"
+			}, {
+				value: 2876,
+				label: "Axi",
+				key: "Axi"
+			}, {
+				value: 14516,
+				label: "Blaze",
+				key: "Blaze"
+			}, {
+				value: 10126,
+				label: "Boost",
+				key: "Boost"
+			}, {
+				value: 2877,
+				label: "Brave",
+				key: "Brave"
+			}, {
+				value: 2878,
+				label: "Brick Atelier",
+				key: "Brick Atelier"
+			}, {
+				value: 18063,
+				label: "Canone inverso",
+				key: "Canone inverso"
+			}, {
+				value: 14514,
+				label: "Dolmen Pro",
+				key: "Dolmen Pro"
+			}, {
+				value: 2879,
+				label: "Dwell",
+				key: "Dwell"
+			}, {
+				value: 14361,
+				label: "Echo",
+				key: "Echo"
+			}, {
+				value: 2880,
+				label: "Etic",
+				key: "Etic"
+			}, {
+				value: 2881,
+				label: "Etic Pro",
+				key: "Etic Pro"
+			}, {
+				value: 2882,
+				label: "Evolve",
+				key: "Evolve"
+			}, {
+				value: 2883,
+				label: "EWall",
+				key: "EWall"
+			}, {
+				value: 2884,
+				label: "Exence",
+				key: "Exence"
+			}, {
+				value: 2885,
+				label: "Granigliati",
+				key: "Granigliati"
+			}, {
+				value: 2886,
+				label: "GreenColors",
+				key: "GreenColors"
+			}, {
+				value: 2887,
+				label: "Ground Track",
+				key: "Ground Track"
+			}, {
+				value: 2888,
+				label: "Heartwood",
+				key: "Heartwood"
+			}, {
+				value: 2889,
+				label: "Klif",
+				key: "Klif"
+			}, {
+				value: 2890,
+				label: "Kone",
+				key: "Kone"
+			}, {
+				value: 2891,
+				label: "Mark",
+				key: "Mark"
+			}, {
+				value: 2237,
+				label: "Marvel",
+				key: "Marvel"
+			}, {
+				value: 2892,
+				label: "Marvel Dream",
+				key: "Marvel Dream"
+			}, {
+				value: 9285,
+				label: "Marvel Edge",
+				key: "Marvel Edge"
+			}, {
+				value: 2893,
+				label: "Marvel Gems",
+				key: "Marvel Gems"
+			}, {
+				value: 2894,
+				label: "Marvel Pro",
+				key: "Marvel Pro"
+			}, {
+				value: 2895,
+				label: "Marvel Stone",
+				key: "Marvel Stone"
+			}, {
+				value: 2896,
+				label: "Mek",
+				key: "Mek"
+			}, {
+				value: 2897,
+				label: "Nash",
+				key: "Nash"
+			}, {
+				value: 2898,
+				label: "Nid",
+				key: "Nid"
+			}, {
+				value: 14517,
+				label: "Raw",
+				key: "Raw"
+			}, {
+				value: 2899,
+				label: "Room",
+				key: "Room"
+			}, {
+				value: 2900,
+				label: "Seastone",
+				key: "Seastone"
+			}, {
+				value: 2901,
+				label: "Sunrock",
+				key: "Sunrock"
+			}, {
+				value: 2902,
+				label: "Trust",
+				key: "Trust"
+			}, {
+				value: 3200,
+				label: "Block",
+				key: "Block"
+			}, {
+				value: 3206,
+				label: "Block In",
+				key: "Block In"
+			}, {
+				value: 3212,
+				label: "Block Next",
+				key: "Block Next"
+			}, {
+				value: 3218,
+				label: "Breath",
+				key: "Breath"
+			}, {
+				value: 3224,
+				label: "Eyr",
+				key: "Eyr"
+			}, {
+				value: 9779,
+				label: "Flux",
+				key: "Flux"
+			}, {
+				value: 3235,
+				label: "Legend",
+				key: "Legend"
+			}, {
+				value: 3242,
+				label: "Level",
+				key: "Level"
+			}, {
+				value: 9772,
+				label: "Matheria",
+				key: "Matheria"
+			}, {
+				value: 9775,
+				label: "Peak",
+				key: "Peak"
+			}, {
+				value: 3251,
+				label: "Realm",
+				key: "Realm"
+			}, {
+				value: 3269,
+				label: "Vik",
+				key: "Vik"
+			}, {
+				value: 3274,
+				label: "Warp",
+				key: "Warp"
+			}, {
+				value: 3279,
+				label: "Zone",
+				key: "Zone"
+			}]
+		},
+		looks: {
+			key: "look",
+			label: "Effetto",
+			placeholder: "Tutti gli effetti",
+			options: [{
+				key: "Effetto Marmo",
+				value: 2811,
+				label: "Effetto Marmo",
+				image: "img/index/effect-01-marble.jpg"
+			}, {
+				key: "Effetto Pietra",
+				value: 2812,
+				label: "Effetto Pietra",
+				image: "img/index/effect-02-stone.jpg"
+			}, {
+				key: "Effetto Cemento",
+				value: 2813,
+				label: "Effetto Cemento",
+				image: "img/index/effect-03-cement.jpg"
+			}, {
+				key: "Effetto Legno",
+				value: 2810,
+				label: "Effetto Legno",
+				image: "img/index/effect-04-wood.jpg"
+			}, {
+				key: "Effetto Metallo",
+				value: 3648,
+				label: "Effetto Metallo",
+				image: "img/index/effect-05-metal.jpg"
+			}, {
+				key: "Effetto Tessuto",
+				value: 2814,
+				label: "Effetto Tessuto",
+				image: "img/index/effect-06-tissue.jpg"
+			}, {
+				key: "Colore",
+				value: 2815,
+				label: "Colore",
+				image: "img/index/effect-07-colour.jpg"
+			}, {
+				key: "3D",
+				value: 2816,
+				label: "3D Wall & Decor",
+				image: "img/index/effect-08-3d.jpg"
+			}]
+		}
+	};
+
+</script>
+
+<section class="section section--effects section--distinct" ng-controller="EffectsCtrl as effectsCtrl">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8 offset-md-4" appear>
-				<div class="title">Atlas Concorde, the specialist in ceramic excellence.</div>
+			<div class="col-md-10 offset-md-3" appear>
+				<div class="title">Atlas Concorde, specialista globale in <b>superfici ceramiche d'eccellenza</b></div>
+				<div class="abstract">Ispirazioni naturali e interpretazioni contemporanee: esplora le collezioni e scopri infinite suggestioni per ogni progetto architettonico.</div>
+			</div>
+		</div>
+
+		<div class="listing--effects">
+			<div class="listing__item" ng-repeat="item in effectsCtrl.looks.options track by $index" ng-click="effectsCtrl.setFilter(item, filter)">
+				<div class="picture">
+					<img ng-src="{{item.image}}" />
+					<div class="overlay">Guarda le collezioni</div>
+				</div>
+				<div class="title" ng-bind="item.label"></div>
+			</div>
+		</div>
+
+		<div class="group--filters">
+			<!-- SELECT -->
+			<div class="form__group">
+				<div has-dropdown=".control">
+					<div class="dropdown">
+						<ul class="nav nav--select">
+							<li ng-repeat="item in effectsCtrl.collections.options track by $index" ng-class="{ active: effectsCtrl.collections.value == item.value, disabled: item.disabled }">
+								<span class="option" ng-class="{ 'option--picture': item.image }" ng-click="effectsCtrl.setFilter(item, filter)">
+									<img ng-src="{{item.image}}" ng-if="item.image" />
+									<span ng-bind="item.label"></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<label class="label" ng-bind="effectsCtrl.collections.label"></label>
+					<div class="control control--select" ng-class="{ selected: effectsCtrl.collections.value }">
+						<div class="input">
+							<svg class="icon icon--close" ng-if="effectsCtrl.collections.value" ng-click="effectsCtrl.removeFilter(effectsCtrl.collections)"><use xlink:href="#close"></use></svg>
+							<div class="value">Sfoglia le collezioni per nome</div>
+							<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- SEARCH -->
+			<div class="form__group">
+				<div select-with-autocomplete="effectsCtrl.collections" handler="effectsCtrl"></div>
+			</div>
+			<a href="collections.html" class="btn btn--filter"><span>Vai a tutte le collezioni</span></a>
+		</div>
+
+	</div>
+</section>
+
+<section class="section section--divider">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-3" appear>
+				<div class="title">Highlight</div>
+				<div class="abstract">Le collezioni da scoprire, ora.</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--hilight">
+	<a href="#" class="picture picture--hilight" over-on=".content">
+		<img lazy data-src="img/index/hilight-01.jpg" />
+		<div class="overlay">
+			<div class="content">
+				<div class="title" appear>Marvel World</div>
+				<div class="abstract" appear>Una scenografia da vivere tutti i giorni</div>
+			</div>
+		</div>
+	</a>
+</section>
+
+<section class="section section--hilight">
+	<a href="#" class="picture picture--hilight" over-on=".content">
+		<img lazy data-src="img/index/hilight-02.jpg" />
+		<div class="overlay">
+			<div class="content">
+				<div class="title" appear>3D Wall Design</div>
+				<div class="abstract" appear>Three-Dimensional Wall Emotions</div>
+			</div>
+		</div>
+	</a>
+</section>
+
+<section class="section section--hilight">
+	<a href="#" class="picture picture--hilight" over-on=".content">
+		<img lazy data-src="img/index/hilight-03.jpg" />
+		<div class="overlay">
+			<div class="content">
+				<div class="title" appear>Aix</div>
+				<div class="abstract" appear>Il fascino delle pietre antiche</div>
+			</div>
+		</div>
+	</a>
+</section>
+
+<section class="section section--divider">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-3" appear>
+				<div class="title">Focus on</div>
+				<div class="abstract">Stili, formati, utilizzi: la versatilità della gamma Atlas Concorde per soluzioni uniche.</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--focus section--negative">
+	<div class="swiper-container" swiper-focus>
+		<div class="swiper-wrapper">
+			<!-- slide -->
+			<div class="swiper-slide" over-on=".btn--link">
+				<div class="picture picture--focus">
+					<img lazy data-src="img/index/focus-01.jpg" />
+					<div class="overlay"></div>
+				</div>
+				<div class="inner">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8 offset-md-4">
+								<div class="abstract">Giardini, piscine e arredi urbani: progettare coniugando la massima libertà stilistica e prestazioni tecniche eccellenti.</div>
+								<a href="#" class="btn btn--link"><span>Scopri l'Outdoor Design</span></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- slide -->
+			<div class="swiper-slide" over-on=".btn--link">
+				<div class="picture picture--focus">
+					<img lazy data-src="img/index/focus-02.jpg" />
+					<div class="overlay"></div>
+				</div>
+				<div class="inner">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8 offset-md-4">
+								<div class="abstract">I formati XL uniscono contenuti tecnici ed estetici per progetti dal grande impatto visivo.</div>
+								<a href="#" class="btn btn--link"><span>Scopri il grande formato XL</span></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- slide -->
+		</div>
+		<div class="swiper-button-prev swiper-button-white"></div>
+		<div class="swiper-button-next swiper-button-white"></div>
+		<div class="swiper--tabs">
+			<button class="btn btn--tab"><span>Gres Porcellanato per esterno</span></button>
+			<button class="btn btn--tab"><span>Gres Porcellanato in grande formato</span></button>
+		</div>
+	</div>
+
+</section>
+
+<section class="section section--divider">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-3" appear>
+				<div class="title">Le nostre referenze</div>
+				<div class="abstract">Una selezione dei migliori progetti di arredo con le superfici ceramiche Atlas Concorde realizzati da professionisti del settore.</div>
 				<div class="group--cta">
-					<a href="/atlas/collections.html" class="btn btn--discover"><span>Discover Our Collection</span></a>
+					<a href="#" class="btn btn--link"><span>Tutte le nostre referenze</span></a>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
 
-<section class="section section--cards" ng-if="root.brand == 'atlas-concorde'">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/01.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">Outdoor design</div>
-						<div class="abstract">The natural extension of interior areas; a perfect balance between functionality and aesthetic.</div>
-					</div>
-				</a>
+<section class="section section--references">
+	<div class="swiper-container" swiper-references>
+		<div class="swiper-wrapper">
+			<!-- slide -->
+			<div class="swiper-slide">
+				<div class="container">
+					<a href="#" class="picture picture--reference" over-on=".content">
+						<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/dbc75408-5dfb-4802-a6e0-7401cda12920/yz1hpd/std/1400x820/AtlasConcorde_Liu-Jo Flagship_ Italia_014.jpg?scalemode=auto" />
+						<div class="overlay">
+							<div class="content">
+								<div class="title" appear>LIU•JO Flagshipstore</div>
+								<div class="abstract" appear>Milano, Italia</div>
+							</div>
+						</div>
+					</a>
+				</div>
 			</div>
-			<div class="col-md-4 col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/02.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">XL Extralarge size tiles</div>
-						<div class="abstract">The perfect answer to all your needs in contemporary interior design.</div>
-					</div>
-				</a>
+			<!-- slide -->
+			<div class="swiper-slide" over-on=".btn--link">
+				<div class="container">
+					<a href="#" class="picture picture--reference" over-on=".content">
+						<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/37ca1540-315c-4b16-b882-63fbdcdad93a/yz1hpd/std/1400x820/AtlasConcorde_Hotel%20Edelweiss_Austria_03.jpg?scalemode=auto" />
+						<div class="overlay">
+							<div class="content">
+								<div class="title" appear>Das Edelweiss Mountain Resort</div>
+								<div class="abstract" appear>Salisburgo, Austria</div>
+							</div>
+						</div>
+					</a>
+				</div>
 			</div>
-			<div class="col-md-4 col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/03.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">3D wall design</div>
-						<div class="abstract">Clear-cut shapes, sinous ripples, multi-faceted patterns and elegant reliefs into the third dimension.</div>
-					</div>
-				</a>
+			<!-- slide -->
+			<div class="swiper-slide" over-on=".btn--link">
+				<div class="container">
+					<a href="#" class="picture picture--reference" over-on=".content">
+						<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/9db361b2-fbef-43f2-b55e-a8f9917186c9/yz1hpd/std/1400x820/AtlasConcorde_The Block_Nuova Zelanda_001.jpg?scalemode=auto" />
+						<div class="overlay">
+							<div class="content">
+								<div class="title" appear>The Block NZ</div>
+								<div class="abstract" appear>Auckland, Nuova Zelanda</div>
+							</div>
+						</div>
+					</a>
+				</div>
 			</div>
-			<div class="col-md-4 col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/04.jpg" alt="title" />
-					</div>
-					<div class="title">Marble look collection</div>
-					<div class="abstract">Marble-look floors and walls interpret with extraordinary realism the timeless charm of natural marble.</div>
-				</a>
+			<!-- slide -->
+			<div class="swiper-slide" over-on=".btn--link">
+				<div class="container">
+					<a href="#" class="picture picture--reference" over-on=".content">
+						<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/defcd3b9-90e5-4387-84d6-792d8ce5fc03/yz1hpd/std/1400x820/AtlasConcorde_Hotel Beukenhof_Paesi Bassi_006.jpg??scalemode=auto" />
+						<div class="overlay">
+							<div class="content">
+								<div class="title" appear>Hotel Beukenhof</div>
+								<div class="abstract" appear>Terweeweg, Paesi Bassi</div>
+							</div>
+						</div>
+					</a>
+				</div>
 			</div>
+			<!-- slide -->
 		</div>
+		<div class="swiper-button-prev swiper-button-black"></div>
+		<div class="swiper-button-next swiper-button-black"></div>
 	</div>
 </section>
 
-<section class="section section--cards" ng-if="root.brand == 'atlas-concorde-usa'">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection-xl" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/02.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">XL Extralarge size tiles</div>
-						<div class="abstract">The perfect answer to all your needs in contemporary interior design.</div>
-						<div class="group group--cta">
-							<div class="btn btn--link"><span><b>Discover the collections</b></span></div>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="col-sm-8 atlas-concorde-usa">
-				<a href="/atlas/collections.html" class="card--collection-xl" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/01-usa.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">Usa Collections</div>
-						<div class="abstract">The natural extension of interior areas; a perfect balance between functionality and aesthetic.</div>
-						<div class="group group--cta">
-							<div class="btn btn--link"><span><b>Discover the collections</b></span></div>
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="section section--cards" ng-if="root.brand == 'atlas-concorde-russia'">
+<section class="section section--contract">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection-xl" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/02.jpg" alt="title" />
+				<a href="#" class="card--contract" appear>
+					<div class="picture picture--contract">
+						<img lazy data-src="img/index/contract.jpg" alt="" />
 					</div>
 					<div class="content">
-						<div class="title">XL Extralarge size tiles</div>
-						<div class="abstract">The perfect answer to all your needs in contemporary interior design.</div>
+						<div class="title">Divisione Contract</div>
+						<div class="abstract">Contribuiamo a realizzare progetti unici nel loro genere, in differenti settori del contract design, dall'hospitality all'ambito residenziale, dalle opere pubbliche alle catene retail.</div>
 						<div class="group group--cta">
-							<div class="btn btn--link"><span><b>Discover the collections</b></span></div>
+							<div class="btn btn--link"><span>Scopri di più</span></div>
 						</div>
 					</div>
 				</a>
 			</div>
-			<div class="col-sm-8 atlas-concorde-russia">
-				<a href="/atlas/collections.html" class="card--collection-xl" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/01-russia.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">Russia Collections</div>
-						<div class="abstract">The natural extension of interior areas; a perfect balance between functionality and aesthetic.</div>
-						<div class="group group--cta">
-							<div class="btn btn--link"><span><b>Discover the collections</b></span></div>
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="section section--cards" ng-if="root.brand == 'atlas-concorde-solution'">
-	<div class="container">
-		<div class="row">
 			<div class="col-sm-8">
-				<a href="/atlas/collections.html" class="card--collection-xl" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/02.jpg" alt="title" />
+				<a href="#" class="card--contract" appear>
+					<div class="picture picture--contract">
+						<img lazy data-src="img/index/engineering.jpg" alt="" />
 					</div>
 					<div class="content">
-						<div class="title">XL Extralarge size tiles</div>
-						<div class="abstract">The perfect answer to all your needs in contemporary interior design.</div>
+						<div class="title">Divisione Engineering</div>
+						<div class="abstract">La divisione Engineering di Atlas Concorde nasce per rispondere alle esigenze dell’architettura contemporanea, offrendo concreta assistenza ai progettisti di tutto il mondo.</div>
 						<div class="group group--cta">
-							<div class="btn btn--link"><span><b>Discover the collections</b></span></div>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="col-sm-8 atlas-concorde-solution">
-				<a href="/atlas/collections.html" class="card--collection-xl" appear>
-					<div class="picture picture--horizontal">
-						<img lazy data-src="img/index/01-russia.jpg" alt="title" />
-					</div>
-					<div class="content">
-						<div class="title">Russia Collections</div>
-						<div class="abstract">The natural extension of interior areas; a perfect balance between functionality and aesthetic.</div>
-						<div class="group group--cta">
-							<div class="btn btn--link"><span><b>Discover the collections</b></span></div>
+							<div class="btn btn--link"><span>Scopri di più</span></div>
 						</div>
 					</div>
 				</a>
@@ -220,283 +601,80 @@
 	</div>
 </section>
 
-<section class="section section--beinspired-home">
+<section class="section section--inspirations">
 	<div class="background background--positive">
 		<img lazy data-src="img/index/background-texture.jpg" />
 	</div>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 offset-md-4" appear>
-				<div class="category">Be Inspired</div>
-				<div class="title">The style magazine</div>
-				<div class="abstract">Our special space dedicated to ceramics and design, where to find inspiring solutions, trends and ideas for creating great projects.</div>
-				<div class="group group--cta">
-					<a href="magazine.html" class="btn btn--link"><span><b>Read all articles</b></span></a>
-				</div>
+				<div class="title">Ispirazioni dal nostro magazine</div>
 			</div>
 		</div>
-		<div class="listing listing--beinspired">
-			<a href="magazine-detail.html" class="listing__item beinspired__item" appear>
-				<div class="picture picture--with-category" media="{ id: 1033, coId: 1 }" parallax>
-					<img lazy data-src="img/beinspired/01.jpg" alt="title" />
-					<span class="category">Contract</span>
+		<div class="listing listing--inspirations">
+			<a href="/it/magazine/canone-inverso/" class="listing__item" appear>
+				<div class="picture picture--with-category" media="{ coId:18075, id:'20827', typeName:'Magazine', name:'Canone Inverso: la prima decor collection firmata Piero Lissoni'}" parallax>
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/3a071e55-232f-4dc4-8846-7768e71caec6/yz1hpd/std/0x0/AtlasConcorde_CanoneInverso3_01.jpg?scalemode=manual&amp;cropmode=pixel&amp;adjustcrop=extend&amp;cropx=12&amp;cropy=2064&amp;cropw=3062&amp;croph=1346" alt="Canone Inverso: la prima decor collection firmata Piero Lissoni" />
 				</div>
 				<div class="content">
-					<!-- <div class="category">Contract</div>-->
-					<div class="title">14.500 square feet of Russian Poetry</div>
-					<div class="description">A talk with Dyonis Ottl about the new marble-look interior of Marriott Hotel in Voronezh.</div>
+					<div class="title">Canone Inverso: la prima decor collection firmata Piero Lissoni</div>
+					<div class="abstract">Atlas Concorde presenta la nuova collezione Canone Inverso. La firma &#232; di Piero Lissoni, architetto e designer noto per la sua inconfondibile cifra stilistica e l’eleganza composta delle sue realizzazioni.</div>
 				</div>
 			</a>
-			<a href="magazine-detail.html" class="listing__item beinspired__item" appear>
-				<div class="picture picture--with-category" media="{ id: 1034, coId: 1 }" parallax>
-					<img lazy data-src="img/beinspired/02.jpg" alt="title" />
-					<span class="category">Be inspired</span>
+			<a href="/it/magazine/pensare-in-grande-per-il-tuo-retail/" class="listing__item" appear>
+				<div class="picture picture--with-category" media="{ coId:17022, id:'a2860137-a7c5-4370-9321-6ba80ef73304', typeName:'Magazine', name:'Pensare in grande per il tuo retail'}" parallax>
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/a2860137-a7c5-4370-9321-6ba80ef73304/yz1hpd/std/0x0/AtlasConcorde_MarvelEdge_011_00_Calacatta-Brown.jpg" alt="Pensare in grande per il tuo retail" />
 				</div>
 				<div class="content">
-					<!-- <div class="category">Be inspired</div> -->
-					<div class="title">Like marble. But It’s not marble</div>
-					<div class="description">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div>
+					<div class="title">Pensare in grande per il tuo retail</div>
+					<div class="abstract">Due progetti realizzati con lastre in gres porcellanato effetto marmo in grande formato, scenografiche e funzionali, per due esperienze di shopping uniche.</div>
 				</div>
 			</a>
-			<a href="magazine-detail.html" class="listing__item beinspired__item" appear>
-				<div class="picture picture--with-category" media="{ id: 1035, coId: 1 }" parallax>
-					<img lazy data-src="img/beinspired/03.jpg" alt="title" />
-					<span class="category">Collections</span>
+			<a href="/it/magazine/il-fascino-intramontabile-dei-rivestimenti-bagno-effetto-marmo/" class="listing__item" appear>
+				<div class="picture picture--with-category" media="{ coId:16997, id:'07304af3-6b58-4723-b39e-498668dfcce9', typeName:'Magazine', name:'Il fascino intramontabile dei rivestimenti bagno effetto marmo'}" parallax>
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/07304af3-6b58-4723-b39e-498668dfcce9/yz1hpd/std/0x0/AtlasConcorde_MarvelDream_004_00_Ultramarine.jpg" alt="Il fascino intramontabile dei rivestimenti bagno effetto marmo" />
 				</div>
 				<div class="content">
-					<!-- <div class="category">Collections</div> -->
-					<div class="title">Marvel Wall, the highest ceramic expression of marble for charming and prestigious architectures</div>
-					<div class="description">Intense and brilliant wall tiles inspired by marble of eternal charm.</div>
+					<div class="title">Il fascino intramontabile dei rivestimenti bagno effetto marmo</div>
+					<div class="abstract">Un realismo e una definizione mai raggiunte prima permettono di trasformare l’ambiente pi&#249; intimo della casa in una raffinata oasi di bellezza e comfort.</div>
 				</div>
 			</a>
 		</div>
-		<!-- Swiper -->
-		<!--
-		<div class="swiper-container" swiper-tile appear>
-			<div class="swiper-wrapper">
-				<a href="magazine-detail.html" class="swiper-slide beinspired__item">
-					<div class="picture picture--with-category" media="{ id: 1033, coId: 1 }" parallax>
-						<img lazy data-src="img/beinspired/01.jpg" alt="title" />
-						<span class="category">Contract</span>
-					</div>
-					<div class="content">
-					<div class="title">14.500 square feet of Russian Poetry</div>
-					<div class="description">A talk with Dyonis Ottl about the new marble-look interior of Marriott Hotel in Voronezh.</div></div>
-				</a>
-				<a href="magazine-detail.html" class="swiper-slide beinspired__item">
-					<div class="picture picture--with-category" media="{ id: 1034, coId: 1 }" parallax>
-						<img lazy data-src="img/beinspired/02.jpg" alt="title" />
-						<span class="category">Be inspired</span>
-					</div>
-					<div class="content">
-					<div class="title">Like marble. But It’s not marble</div>
-					<div class="description">Porcelain floor and wall tiles looking like marble. Discover all the secrets.</div></div>
-				</a>
-				<a href="magazine-detail.html" class="swiper-slide beinspired__item">
-					<div class="picture picture--with-category" media="{ id: 1035, coId: 1 }" parallax>
-						<img lazy data-src="img/beinspired/03.jpg" alt="title" />
-						<span class="category">Collections</span>
-					</div>
-					<div class="content">
-					<div class="title">Marvel Wall, the highest ceramic expression of marble for charming and prestigious architectures</div>
-					<div class="description">Intense and brilliant wall tiles inspired by marble of eternal charm.</div></div>
-				</a>
-			</div>
-			<div class="swiper-pagination swiper-pagination-white"></div>
-			<div class="swiper-button-prev swiper-button-white"></div>
-			<div class="swiper-button-next swiper-button-white"></div>
-		</div>
-	-->
 	</div>
 </section>
 
-<section class="section section--intro-centered">
+<section class="section section--news">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 offset-md-4" appear>
-				<div class="title">Latest News</div>
+				<div class="title">Le ultime news</div>
 			</div>
 		</div>
-	</div>
-</section>
-
-<section class="section section--collections">
-	<div class="container">
-		<div class="listing listing--collections">
-			<a href="news-detail.html" class="listing__item" appear>
+		<div class="listing listing--news">
+			<a href="/it/news/collections/raw-witness-of-life/" class="listing__item" appear>
 				<div class="picture picture--with-category" parallax>
-					<img lazy data-src="img/index/05.jpg" alt="title" />
-					<span class="category">Company</span>
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/e00696b0-528c-4e67-92ab-7a7c72e9d20c/yz1hpd/std/0x0/AtlasConcorde_Raw_M01_02.jpg" alt="RAW. Witness of life" />
+					<span class="category">Prodotto</span>
 				</div>
-				<div class="title">Ceramic tiles. A safe choice. The new Confindustria Ceramica communications campaign is online</div>
-				<div class="abstract">The communications campaign “Ceramic tiles. A safe choice” launched by Confindustria Ceramica underscores the wide range of values ​​and benefits of this extraordinary surface.</div>
+				<div class="title">RAW. Witness of life</div>
+				<div class="abstract">Un bilanciamento perfetto tra passato e presente convive in Raw, la nuova collezione effetto cemento Atlas Concorde che ricrea la matericità di superfici vissute, riproducendo ad arte gli effetti dell’intonaco scrostato</div>
 			</a>
-			<a href="news-detail.html" class="listing__item" appear>
+			<a href="/it/news/collections/dolmen-pro-the-essence-of-the-material/" class="listing__item" appear>
 				<div class="picture picture--with-category" parallax>
-					<img lazy data-src="img/index/06.jpg" alt="title" />
-					<span class="category">Events</span>
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/0eb8ff29-87f5-49cd-bd2b-6ccddc3f5594/yz1hpd/std/0x0/AtlasConcorde_DolmenPro_M01_02.jpg" alt="DOLMEN PRO. The essence of the material" />
+					<span class="category">Prodotto</span>
 				</div>
-				<div class="title">The latest from Atlas Concorde at Coverings 2019</div>
-				<div class="abstract">Coverings, the North American trade fair event dedicated to ceramic tiles and natural stone, was recently held in Orlando.</div>
+				<div class="title">DOLMEN PRO. The essence of the material</div>
+				<div class="abstract">L’iconico Porfido del Trentino Alto Adige rivive in Dolmen Pro, l’ultima collezione effetto pietra Atlas Concorde caratterizzata dal fascino delle imperfezioni naturali</div>
 			</a>
-			<a href="news-detail.html" class="listing__item" appear>
+			<a href="/it/news/company/atlas-concorde-apre-il-primo-store-monomarca-in-francia/" class="listing__item" appear>
 				<div class="picture picture--with-category" parallax>
-					<img lazy data-src="img/index/07.jpg" alt="title" />
-					<span class="category">Events</span>
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/a7ad88d4-7a5d-40ae-a8ae-5c5c72c19809/yz1hpd/std/0x0/AtlasConcorde_Cannes_ France_104.jpg" alt="Atlas Concorde apre il primo store monomarca in Francia" />
+					<span class="category">Azienda</span>
 				</div>
-				<div class="title">Mosbuild 2019: Atlas Concorde’s new ceramic tiles in the spotlight of the Russian trade show</div>
-				<div class="abstract">At the latest edition of Mosbuild in Moscow Atlas Concorde presented its recent collections of porcelain floor tiles and white body wall tiles.</div>
+				<div class="title">Atlas Concorde apre il primo store monomarca in Francia</div>
+				<div class="abstract">Il negozio inaugurato a Cannes il 28 novembre offre un’esperienza di acquisto unica.</div>
 			</a>
-		</div>
-	</div>
-</section>
-
-<script type="text/javascript" lazy-script>
-	window.filters = {
-		looks: {
-			label: 'looks',
-			placeholder: 'Any',
-			options: [{
-				label: 'Wood look',
-				value: 21,
-				image: 'img/moodboard/looks/01.jpg',
-			}, {
-				label: 'Marble look',
-				value: 22,
-				image: 'img/moodboard/looks/02.jpg',
-			}, {
-				label: 'Stone look',
-				value: 23,
-				image: 'img/moodboard/looks/03.jpg',
-			}, {
-				label: 'Concrete look',
-				value: 24,
-				image: 'img/moodboard/looks/04.jpg',
-			}, {
-				label: 'Textile look',
-				value: 25,
-				image: 'img/moodboard/looks/05.jpg',
-			}, {
-				label: 'Colour look',
-				value: 26,
-				image: 'img/moodboard/looks/06.jpg',
-			}, {
-				label: '3D',
-				value: 27,
-				image: 'img/moodboard/looks/07.jpg',
-			}]
-		},
-	};
-
-</script>
-<section class="section section--beinspired-home section--moodboard-home" ng-controller="MoodboardSectionCtrl as moodboardCtrl">
-	<div class="background background--positive">
-		<img lazy data-src="img/index/section-moodboard-background-texture.jpg" />
-	</div>
-	<div class="container" appear>
-		<div class="category">Be Inspired</div>
-		<div class="title">Create your unique and distinctive moodboard</div>
-		<div class="abstract">Select your favorite look and discover how many surprising combinations and suggestions Atlas Concorde will offer to design your space.</div>
-		<div class="group group--cta">
-			<div has-dropdown="span" class="btn btn--link">
-				<div class="dropdown">
-					<ul class="nav nav--select">
-						<li ng-class="{ active: moodboardCtrl.color == item.value, disabled: item.disabled }" ng-repeat="item in moodboardCtrl.filters.looks.options track by $index">
-							<a ng-href="/atlas/moodboard.html{{item.query}}" class="option" ng-class="{ 'option--picture': item.image }">
-								<img ng-src="{{item.image}}" ng-if="item.image" />
-								<span ng-bind="item.label"></span>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<span><b>create your unique moodboard</b></span>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="section section--generic-intro-02">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-10 offset-md-2" appear>
-				<div class="abstract">Projects, made of Atlas Concorde. Be inspired by the architectural creativity.</div>
-				<div class="description">All our design projects, where excellence and engineering solutions mix together and create unique experience.</div>
-				<div class="group group--cta">
-					<a href="#" class="btn btn--link">
-						<span><b>Discover all our projects</b></span>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="section section--picture-text">
-
-	<!-- Swiper -->
-	<div class="swiper-container" swiper-projects appear>
-		<div class="swiper-wrapper">
-
-			<!-- Swiper Slide x 3 -->
-			<div class="swiper-slide" last-item ng-repeat="item in [1,2,3] track by $index">
-
-				<!-- Slide Content - aggiungere solo il container se slides.length === 1 -->
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-7 col-md-7">
-							<div class="picture picture--vertical" parallax appear>
-								<img lazy alt="title" class="ng-isolate-scope lazyed" src="img/index/08.jpg">
-							</div>
-						</div>
-						<div class="col-sm-8 offset-sm-1 col-md-5 offset-md-2">
-							<div class="group group--content" appear>
-								<div class="category">Projects</div>
-								<div class="abstract">Youphoria Beach Front Villas</div>
-								<div class="description">
-									<p>Located on the northwest coast of the beautiful island of Crete, Youphoria Villas are a fantastic example of Greek elegance. High quality furnishings and ecological characteristics reinterpreted in an innovative design make the villas the ideal place for a dream holiday.</p>
-								</div>
-								<div class="group group--cta">
-									<a href="#" class="btn btn--link"><span>Read more</span></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Slide Content -->
-
-			</div>
-
-		</div>
-		<!-- Add Pagination -->
-		<div class="swiper-pagination swiper-pagination-white"></div>
-		<!-- Add Navigation -->
-		<div class="swiper-button-prev swiper-button-black"></div>
-		<div class="swiper-button-next swiper-button-black"></div>
-	</div>
-	<!-- Swiper -->
-
-</section>
-
-<section class="section section--store section--distinct">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-5 offset-md-2" appear>
-				<div class="title">Atlas Concorde Contract Division, lorem ipsum.</div>
-				<div class="abstract">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-				<div class="description">
-					<ul>
-						<li>Consulenza di design</li>
-						<li>Facilità di manutenzione</li>
-						<li>Consulenza tecnica</li>
-						<li>Fase di cantiere</li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-md-8 offset-md-1">
-				<div class="picture picture--horizontal" media="{ id: 1036, coId: 1 } " parallax appear>
-					<img lazy data-src="img/index/09.jpg" alt="title" />
-				</div>
-			</div>
 		</div>
 	</div>
 </section>

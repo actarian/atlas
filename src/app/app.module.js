@@ -1,7 +1,5 @@
-/* jshint esversion: 6 */
-
 import AdvancedSearchCtrl from './advanced-search/advanced-search.controller';
-import Collections02Ctrl from './collections/collections-02.controller';
+import Collections01Ctrl from './collections/collections-01.controller';
 import CollectionsCtrl from './collections/collections.controller';
 import ContactsCtrl from './contacts/contacts.controller';
 import AppearDirective from './directives/appear.directive';
@@ -17,10 +15,11 @@ import LazyDirective from './directives/lazy.directive';
 import MediaDirective from './directives/media.directive';
 import { MuuriDirective } from './directives/muuri.directive';
 import ObjectFitDirective from './directives/object-fit.directive';
+import OverOnDirective from './directives/over-on.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
-import { SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
+import { SwiperFocusDirective, SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperReferencesDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
 import ThronDirective from './directives/thron.directive';
 // import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
@@ -28,6 +27,7 @@ import VisibilityDirective from './directives/visibility.directive';
 import WishlistDirective from './directives/wishlist.directive';
 import WorldDirective from './directives/world.directive';
 import ZoomableDirective from './directives/zoomable.directive';
+import EffectsCtrl from './effects/effects.controller';
 import FaqCtrl from './faq/faq.controller';
 import { ImageWithFeatures } from './filters/image-with-features.filter';
 import { NotInFilter } from './filters/notIn.filter';
@@ -101,12 +101,15 @@ app.directive('appear', AppearDirective.factory)
 	.directive('muuri', MuuriDirective.factory)
 	.directive('parallax', ParallaxDirective.factory)
 	.directive('objectFit', ObjectFitDirective.factory)
+	.directive('overOn', OverOnDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
 	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
+	.directive('swiperFocus', SwiperFocusDirective.factory)
 	.directive('swiperProjects', SwiperProjectsDirective.factory)
+	.directive('swiperReferences', SwiperReferencesDirective.factory)
 	.directive('swiperTile', SwiperTileDirective.factory)
 	.directive('swiperTimeline', SwiperTimelineDirective.factory)
 
@@ -121,7 +124,8 @@ app.directive('appear', AppearDirective.factory)
 app.controller('RootCtrl', RootCtrl)
 	.controller('AdvancedSearchCtrl', AdvancedSearchCtrl)
 	.controller('CollectionsCtrl', CollectionsCtrl)
-	.controller('Collections02Ctrl', Collections02Ctrl)
+	.controller('Collections01Ctrl', Collections01Ctrl)
+	.controller('EffectsCtrl', EffectsCtrl)
 	.controller('ContactsCtrl', ContactsCtrl)
 	.controller('FaqCtrl', FaqCtrl)
 	.controller('GalleriesCtrl', GalleriesCtrl)

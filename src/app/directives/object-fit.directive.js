@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 // Workaround for Edge 16+, which only implemented object-fit for <img> tags
 // TODO: Keep an eye on Edge to determine which version has full final support

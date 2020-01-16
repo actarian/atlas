@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 /* global window, document, angular, MoodboardSearch, TweenMax, TimelineMax */
 
 export default class MoodboardSearchDirective {

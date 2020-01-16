@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 
 const formatLabel = function(string = '', prepend = '', expression = undefined) {

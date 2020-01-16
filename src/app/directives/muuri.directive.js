@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 /* global window, document, angular, Muuri, TweenMax, TimelineMax */
 
 export class MuuriDirective {

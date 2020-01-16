@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { FRAGMENT_SHADER } from "../shared/shader";
 

@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import HasDropdownDirective from "./has-dropdown.directive";
 

@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 /* global angular */
 
 export default class PromiseService {

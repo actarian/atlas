@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, takeUntil } from 'rxjs/operators';

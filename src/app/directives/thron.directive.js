@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 let ID = 0;
 

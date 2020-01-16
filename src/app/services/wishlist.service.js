@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { BehaviorSubject, from } from "rxjs";
 import GtmService from '../gtm/gtm.service';

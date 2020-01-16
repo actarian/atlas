@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { map } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';

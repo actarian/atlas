@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import Rect from '../shared/rect';

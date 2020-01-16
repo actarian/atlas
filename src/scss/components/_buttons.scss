@@ -44,7 +44,7 @@ button,
 	margin: 0 5px;
 }
 
-.btn--discover {
+%btn--discover {
 	display: inline-block;
 
 	span {
@@ -96,6 +96,47 @@ button,
 		}
 	}
 
+}
+
+.btn--discover {
+	@extend %btn--discover;
+}
+
+.btn--tab {
+	@extend %btn--discover;
+
+	span {
+		transition: all ease-in-out 350ms;
+	}
+
+	&:hover,
+	&:focus,
+	&:active,
+	&.active {
+		span {
+			background: $foreground-negative;
+			border-color: $foreground-negative;
+			color: $primary;
+			box-shadow: 0 20px 20px -5px rgba(0, 0, 0, 0.15);
+		}
+	}
+
+	@media screen {
+		.section--negative & {
+
+			&:hover,
+			&:focus,
+			&:active,
+			&.active {
+				span {
+					background: $foreground-negative;
+					border-color: $foreground-negative;
+					color: $primary;
+					box-shadow: 0 20px 20px -5px rgba(0, 0, 0, 0.15);
+				}
+			}
+		}
+	}
 }
 
 .btn--gallery {
@@ -865,6 +906,112 @@ button,
 		}
 	}
 
+}
+
+.btn--filter {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 80px;
+	z-index: 1;
+	font-size: 15px;
+	font-weight: $font-regular;
+	text-transform: uppercase;
+	background: $background-tertiary;
+	color: $nav-product;
+	transition: ease-in-out 350ms;
+	transition-property: background-color, color, border, opacity;
+
+	&>span {
+		display: inline-block;
+		position: relative;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -4px;
+			width: 100%;
+			height: 2px;
+			background: $nav-product-active;
+			transform: scale(0, 1);
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&,
+	&:link,
+	&:active,
+	&:visited {
+		background: $primary-active;
+		color: $nav-product-active;
+	}
+
+	&:hover,
+	&.active {
+		background: $primary-active;
+		color: $nav-product-active;
+
+		&>span {
+			&:after {
+				transform: scale(1, 1);
+			}
+		}
+	}
+}
+
+.btn--toggle {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 80px;
+	z-index: 1;
+	font-size: 15px;
+	font-weight: $font-regular;
+	text-transform: uppercase;
+	transition: ease-in-out 350ms;
+	transition-property: background-color, color, border, opacity;
+
+	&>span {
+		display: inline-block;
+		position: relative;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -4px;
+			width: 100%;
+			height: 2px;
+			background: $nav-product-active;
+			transform: scale(0, 1);
+			transition: all ease-out 350ms;
+		}
+	}
+
+	&,
+	&:link,
+	&:active,
+	&:visited {
+		background: $background-tertiary;
+		color: $foreground-secondary;
+	}
+
+	&:hover,
+	&.active {
+		background: $primary-active;
+		color: $nav-product-active;
+	}
+
+	&:hover {
+		&>span {
+			&:after {
+				transform: scale(1, 1);
+			}
+		}
+	}
 }
 
 @mixin center {

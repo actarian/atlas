@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import Highway from '@dogstudio/highway';
 import { Subject } from 'rxjs';

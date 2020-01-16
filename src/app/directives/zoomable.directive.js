@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 
 import Rect from '../shared/rect';
 

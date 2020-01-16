@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 const DEFAULT_SWIPER_OPTIONS = {
 	slidesPerView: 'auto',
 	spaceBetween: 1,
@@ -61,6 +59,11 @@ export class SwiperDirective {
 		scope.$on('onResize', ($scope) => {
 			this.onResize(scope, element, attributes);
 		});
+		this.linked(scope, element, attributes, controller);
+	}
+
+	linked(scope, element, attributes, controller) {
+		// console.log('linked not overrided');
 	}
 
 	onResize(scope, element, attributes) {
@@ -295,6 +298,70 @@ export class SwiperHeroDirective extends SwiperDirective {
 
 SwiperHeroDirective.factory.$inject = [];
 
+export class SwiperFocusDirective extends SwiperDirective {
+
+	constructor() {
+		super();
+		this.options = {
+			speed: 600,
+			spaceBetween: 0,
+			keyboardControl: true,
+			mousewheelControl: false,
+			onSlideClick: function(swiper) {
+				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+			},
+			on: {
+				init: function() {
+					const swiper = this;
+					const container = swiper.$el[0];
+					const tabs = [...container.querySelectorAll('.btn--tab')];
+					tabs.forEach((tab, i) => i === 0 ? tab.classList.add('active') : tab.classList.remove('active'));
+				},
+				slideChange: function() {
+					const swiper = this;
+					const container = swiper.$el[0];
+					const tabs = [...container.querySelectorAll('.btn--tab')];
+					tabs.forEach((tab, i) => i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active'));
+				},
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
+			},
+		};
+	}
+
+	linked(scope, element, attributes, controller) {
+		const node = element[0];
+		const tabs = [...node.querySelectorAll('.btn--tab')];
+		const onOver = (event) => {
+			const index = tabs.indexOf(event.currentTarget);
+			element.swiper.slideTo(index, 1000, function() {
+				// console.log('swiper.complete');
+			});
+		}
+		tabs.forEach(tab => {
+			tab.addEventListener('mouseover', onOver);
+		});
+		scope.$on('$destroy', () => {
+			tabs.forEach(tab => {
+				tab.removeEventListener('mouseover', onOver);
+			});
+		});
+	}
+
+	static factory() {
+		return new SwiperFocusDirective();
+	}
+
+}
+
+SwiperFocusDirective.factory.$inject = [];
+
 export class SwiperProjectsDirective extends SwiperDirective {
 
 	constructor() {
@@ -332,6 +399,37 @@ export class SwiperProjectsDirective extends SwiperDirective {
 }
 
 SwiperProjectsDirective.factory.$inject = [];
+
+export class SwiperReferencesDirective extends SwiperDirective {
+
+	constructor() {
+		super();
+		this.options = {
+			speed: 600,
+			spaceBetween: 0,
+			keyboardControl: true,
+			mousewheelControl: false,
+			onSlideClick: function(swiper) {
+				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
+			},
+		};
+	}
+
+	static factory() {
+		return new SwiperReferencesDirective();
+	}
+
+}
+
+SwiperReferencesDirective.factory.$inject = [];
 
 export class SwiperTileDirective extends SwiperDirective {
 

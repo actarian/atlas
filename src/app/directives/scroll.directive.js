@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+
 import { distinctUntilChanged } from "rxjs/operators";
 
 export default class ScrollDirective {
