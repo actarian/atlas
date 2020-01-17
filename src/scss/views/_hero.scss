@@ -114,6 +114,7 @@
 
 		@include media-breakpoint-down(xs) {
 			height: 70vh;
+			max-height: 640px;
 
 			.container {
 				padding-top: 0;

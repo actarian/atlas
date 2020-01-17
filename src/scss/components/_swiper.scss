@@ -130,12 +130,29 @@
 	}
 }
 
+@mixin arrow($size: 1) {
+	width: 27px * $size;
+	height: 44px * $size;
+	background-size: 27px * $size 44px * $size;
+	// margin-top: -22px * $size;
+	margin: 0;
+	transform: translateY(-50%);
+}
+
 .swiper-button-prev,
 .swiper-button-next {
 
 	&:focus,
 	&:active {
 		outline: none !important;
+	}
+
+	@include media-breakpoint-up(md) {
+		@include arrow();
+	}
+
+	@include media-breakpoint-down(sm) {
+		@include arrow(0.6);
 	}
 }
 
@@ -528,9 +545,4 @@
 			}
 		}
 	}
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-	margin-top: -44px;
 }
