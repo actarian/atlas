@@ -18,12 +18,16 @@
 			<div class="group">
 				<ul class="nav nav--primary hidden-sm-down">
 					<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
-						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+						<span>Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections.html'"></ng-include>
 					</li>
 					<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
-						<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+						<span>Collections</span><!-- ng-click="root.toggleNav(1)" -->
 						<ng-include src="'templates/shared/submenu-collections-usa.html'"></ng-include>
+					</li>
+					<li has-dropdown="span" has-dropdown-consumer="root">
+						<span>Spaces</span>
+						<ng-include src="'templates/shared/submenu-spaces.html'"></ng-include>
 					</li>
 					<li has-dropdown="span" has-dropdown-consumer="root">
 						<span>Be Inspired</span>
