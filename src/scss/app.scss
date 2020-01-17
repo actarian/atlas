@@ -28,13 +28,16 @@
 @import 'views/footer';
 @import 'views/breadcrumb';
 @import 'views/hero';
-@import 'views/home';
-@import 'views/sections.scss';
+@import 'views/index';
+@import 'views/spaces';
+@import 'views/project';
+
+@import 'views/sections';
 @import 'views/advanced-search';
 @import 'views/collections';
 @import 'views/faqs';
 @import 'views/features';
-@import 'views/generics.scss';
+@import 'views/generics';
 @import 'views/moodboard';
 @import 'views/product';
 @import 'views/tiles';

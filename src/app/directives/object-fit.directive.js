@@ -54,7 +54,7 @@ export default class ObjectFitDirective {
 			this.polyfill(node);
 		};
 		window.addEventListener('resize', polyfill);
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			window.removeEventListener('resize', polyfill);
 		});
 

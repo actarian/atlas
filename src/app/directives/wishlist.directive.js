@@ -53,7 +53,7 @@ export default class WishlistDirective {
 			event.preventDefault();
 			event.stopPropagation();
 		};
-		element.on('$destroy', () => {});
+		scope.$on('$destroy', () => {});
 	}
 
 	static factory($timeout, WishlistService) {

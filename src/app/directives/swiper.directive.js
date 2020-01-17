@@ -47,7 +47,7 @@ export class SwiperDirective {
 		scope.$on('lastItem', (slide) => {
 			this.onSwiper(scope, element, attributes);
 		});
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			window.removeEventListener('beforeprint', onBeforePrint);
 			if (element.swiper) {
 				element.swiper.destroy();

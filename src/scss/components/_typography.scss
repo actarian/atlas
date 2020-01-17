@@ -58,6 +58,47 @@ strong {
 	font-size: 1.5rem;
 }
 
+%title {
+	margin-bottom: 15px;
+	text-align: center;
+	line-height: 1.28;
+	font-weight: $font-light;
+	color: $foreground;
+
+	b {
+		font-weight: $font-semibold;
+	}
+
+	@include media-breakpoint-up(md) {
+		font-size: 42px;
+	}
+
+	@include media-breakpoint-down(sm) {
+		font-size: 30px;
+		margin-bottom: 15px;
+	}
+}
+
+%abstract {
+	margin-bottom: 30px;
+	text-align: center;
+	line-height: 1.7;
+	font-weight: $font-regular;
+	color: $foreground-secondary;
+
+	p {
+		margin-bottom: 10px;
+	}
+
+	@include media-breakpoint-up(md) {
+		font-size: 20px;
+	}
+
+	@include media-breakpoint-down(sm) {
+		font-size: 16px;
+	}
+}
+
 %category {
 	letter-spacing: 1px;
 	font-weight: $font-semibold;
@@ -73,5 +114,80 @@ strong {
 	@include media-breakpoint-down(xs) {
 		font-size: 12px;
 	}
+}
 
+%category-02 {
+	letter-spacing: 1px;
+	font-weight: $font-semibold;
+	line-height: 2;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+	color: $foreground;
+
+	@include media-breakpoint-up(sm) {
+		font-size: 15px;
+	}
+
+	@include media-breakpoint-down(xs) {
+		font-size: 12px;
+	}
+}
+
+%text-title {
+	margin-bottom: 15px;
+	line-height: 1.28;
+	font-weight: $font-light;
+	color: $foreground;
+
+	b {
+		font-weight: $font-semibold;
+	}
+
+	@include media-breakpoint-up(md) {
+		font-size: 42px;
+	}
+
+	@include media-breakpoint-down(sm) {
+		font-size: 30px;
+		margin-bottom: 15px;
+	}
+}
+
+%text-abstract {
+	margin-bottom: 15px;
+	line-height: 1.46;
+	font-weight: $font-light;
+	color: $foreground;
+
+	b {
+		font-weight: $font-semibold;
+	}
+
+	@include media-breakpoint-up(md) {
+		font-size: 30px;
+	}
+
+	@include media-breakpoint-down(sm) {
+		font-size: 30px;
+		margin-bottom: 15px;
+	}
+}
+
+%text-description {
+	margin-bottom: 30px;
+	line-height: 1.7;
+	font-weight: $font-regular;
+	color: $foreground-secondary;
+
+	p {
+		margin-bottom: 10px;
+	}
+
+	@include media-breakpoint-up(md) {
+		font-size: 20px;
+	}
+
+	@include media-breakpoint-down(sm) {
+		font-size: 16px;
+	}
 }

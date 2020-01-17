@@ -1,5 +1,3 @@
-
-
 import GtmService from '../gtm/gtm.service';
 
 export default class VideoDirective {
@@ -191,7 +189,7 @@ export default class VideoDirective {
 			video.addEventListener('ended', onEnded);
 			video.addEventListener('timeupdate', onTimeUpdate);
 		}
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			if (video) {
 				// console.log('VideoDirective.$destroy');
 				video.removeEventListener('play', onPlay);

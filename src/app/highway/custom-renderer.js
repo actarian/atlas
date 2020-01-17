@@ -1,5 +1,3 @@
-
-
 import Highway from '@dogstudio/highway';
 import GtmService from '../gtm/gtm.service';
 
@@ -101,7 +99,7 @@ export default class CustomRenderer extends Highway.Renderer {
 				CustomRenderer.$newScope = $newScope;
 				CustomRenderer.content = content;
 				/*
-				element.on('$destroy', (event) => {
+				scope.$on('$destroy', (event) => {
 					console.log('.view -> $destroy', event);
 				});
 				*/
@@ -118,7 +116,7 @@ export default class CustomRenderer extends Highway.Renderer {
 			const view = [...document.querySelectorAll('.view')].shift();
 			const element = angular.element(view.childNodes);
 			/*
-			element.on('$destroy', (event) => {
+			scope.$on('$destroy', (event) => {
 				console.log('.view -> $destroy', event);
 			});
 			*/

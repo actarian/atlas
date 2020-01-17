@@ -107,7 +107,7 @@ export default class HasDropdownDirective {
 			document.removeEventListener('click', onDocumentClick);
 		};
 		addListeners();
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			removeListeners();
 			removeDocumentListeners();
 		});

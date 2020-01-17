@@ -5,3 +5,7 @@ $container-max-widths: (sm: calc(100vw - 120px),
 	md: calc(100vw - 180px),
 	lg: calc(100vw - 240px),
 	xl: 1530px) !default; // calc(100vw - 300px)) !default;
+$container-fluid-max-widths: (sm: calc(100vw - 80px),
+	md: calc(100vw - 120px),
+	lg: calc(100vw - 160px),
+	xl: calc(100vw - 200px)) !default; // calc(100vw - 300px)) !default;

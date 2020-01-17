@@ -69,11 +69,11 @@ export default class HrefDirective {
 				}
 			});
 			*/
-			element.on('$destroy', () => {
+			scope.$on('$destroy', () => {
 				node.removeEventListener('click', onClick);
 			});
 		}
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			node.removeEventListener('click', onClick);
 		});
 		return;

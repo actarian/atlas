@@ -31,8 +31,8 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			// background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.05) 70%);
-			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.02) 70%);
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 100%);
+			// filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3000000', endColorstr='#33000000',GradientType=0 );
 			pointer-events: none;
 		}
 	}
@@ -82,7 +82,7 @@
 	*/
 	font-size: 0;
 	line-height: 0;
-	box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
+	// box-shadow: 0 30px 50px -10px rgba(167, 146, 131, 0.7);
 
 	.section--negative & {
 		box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.4);
@@ -106,26 +106,7 @@
 
 $diff: 280px;
 
-.picture--square {
-	position: relative;
-	width: 100%;
-	margin: 0 auto;
-	overflow: hidden;
-
-	/*
-	&>.media {
-		@include aspect-clip(1, 1);
-	}
-	*/
-
-	/*
-	@include media-breakpoint-up(sm) {
-		max-width: calc((100vh - #{$diff}) / 1 * 1);
-	}
-	*/
-}
-
-.picture--vertical {
+.picture--vertical__ {
 	position: relative;
 	width: 100%;
 	margin: 0 auto;
@@ -150,7 +131,7 @@ $diff: 280px;
 	*/
 }
 
-.picture--horizontal {
+.picture--horizontal__ {
 	position: relative;
 	width: 100%;
 	margin: 0 auto;

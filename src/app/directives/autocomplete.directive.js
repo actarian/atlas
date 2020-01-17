@@ -1,5 +1,3 @@
-
-
 import HasDropdownDirective from "./has-dropdown.directive";
 
 export default class AutocompleteDirective {
@@ -123,7 +121,7 @@ export default class AutocompleteDirective {
 			// element.off('click', onClick);
 		};
 		addListeners();
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			removeListeners();
 		});
 	}

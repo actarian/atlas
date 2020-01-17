@@ -33,7 +33,7 @@ export class MuuriDirective {
 				element.muuri.refreshItems(items).layout();
 			}
 		});
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			window.removeEventListener('beforeprint', onBeforePrint);
 			if (element.muuri) {
 				element.muuri.destroy();

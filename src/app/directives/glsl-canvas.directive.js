@@ -1,5 +1,3 @@
-
-
 import { FRAGMENT_SHADER } from "../shared/shader";
 
 export default class GlslCanvasDirective {
@@ -69,7 +67,7 @@ export default class GlslCanvasDirective {
 		canvas.on('error', function(error) {
 			console.log(error);
 		});
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			if (tween) {
 				tween.kill();
 			}

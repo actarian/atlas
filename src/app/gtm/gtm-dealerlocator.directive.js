@@ -1,5 +1,3 @@
-
-
 import GtmService from './gtm.service';
 
 export default class gtmDealerLocatorDirective {
@@ -24,7 +22,7 @@ export default class gtmDealerLocatorDirective {
 
 		node.addEventListener('click', onClick);
 
-		element.on('$destroy', () => node.removeEventListener('click', onClick));
+		scope.$on('$destroy', () => node.removeEventListener('click', onClick));
 	}
 
 	static factory() {

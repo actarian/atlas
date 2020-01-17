@@ -1,8 +1,11 @@
 .section--breadcrumb {
-	padding: 30px 0;
+	padding: 15px 0;
 
 	@include media-breakpoint-up(sm) {
-		.container {
+		z-index: 1;
+
+		.container,
+		.container-fluid {
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
@@ -18,7 +21,9 @@
 	}
 
 	@include media-breakpoint-down(xs) {
-		.container {
+
+		.container,
+		.container-fluid {
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: flex-start;

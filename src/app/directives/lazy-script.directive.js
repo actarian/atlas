@@ -30,7 +30,7 @@ export default class LazyScriptDirective {
 			}
 		}
 		// }
-		// element.on('$destroy', () => {});
+		// scope.$on('$destroy', () => {});
 	}
 
 	static factory() {

@@ -1,5 +1,3 @@
-
-
 import GtmService from './gtm.service';
 
 export default class GtmCollectionDirective {
@@ -32,7 +30,7 @@ export default class GtmCollectionDirective {
 
 		node.addEventListener('click', onClick);
 
-		element.on('$destroy', () => node.removeEventListener('click', onClick));
+		scope.$on('$destroy', () => node.removeEventListener('click', onClick));
 	}
 
 	static factory() {

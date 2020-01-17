@@ -17,6 +17,7 @@ import { MuuriDirective } from './directives/muuri.directive';
 import ObjectFitDirective from './directives/object-fit.directive';
 import OverOnDirective from './directives/over-on.directive';
 import ParallaxDirective from './directives/parallax.directive';
+import ScrollToDirective from './directives/scroll-to.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperFocusDirective, SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperReferencesDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
@@ -103,6 +104,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('objectFit', ObjectFitDirective.factory)
 	.directive('overOn', OverOnDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
+	.directive('scrollTo', ScrollToDirective.factory)
 	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)

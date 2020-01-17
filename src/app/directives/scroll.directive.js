@@ -1,4 +1,3 @@
-
 import { distinctUntilChanged } from "rxjs/operators";
 
 export default class ScrollDirective {
@@ -33,7 +32,7 @@ export default class ScrollDirective {
 						// scope.$eval(attributes.scroll, { $event: event });
 					}
 				});
-				element.on('$destroy', () => {
+				scope.$on('$destroy', () => {
 					subscription.unsubscribe();
 				});
 			});
@@ -42,7 +41,7 @@ export default class ScrollDirective {
 		const callback = scope.$eval(attributes.scroll);
 		if (typeof callback === 'function') {
 			const subscription = this.domService.scroll$().subscribe(event => callback(event));
-			element.on('$destroy', () => {
+			scope.$on('$destroy', () => {
 				subscription.unsubscribe();
 			});
 		}

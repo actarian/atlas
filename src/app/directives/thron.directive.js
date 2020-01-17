@@ -81,7 +81,7 @@ export default class ThronDirective {
 				pauseVideo();
 			}
 		});
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			player.off('ready', onReady);
 			player.off('canPlay', onCanPlay);
 			player.off('playing', onPlaying);

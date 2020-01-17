@@ -53,7 +53,7 @@ export default class WorldDirective {
 				//pointInfoNode.addEventListener('mouseleave', onLeave);
 			});
 		};
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			node.removeEventListener('click', onClick);
 			[...node.querySelectorAll('.world__point')].forEach(node => {
 				node.removeEventListener('click', onClick);

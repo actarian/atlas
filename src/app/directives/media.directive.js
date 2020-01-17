@@ -1,5 +1,3 @@
-
-
 import GtmService from '../gtm/gtm.service';
 
 export default class MediaDirective {
@@ -137,7 +135,7 @@ export default class MediaDirective {
 			// event.preventDefault();
 			// event.stopPropagation();
 		};
-		element.on('$destroy', () => {});
+		scope.$on('$destroy', () => {});
 	}
 
 	static factory($timeout, WishlistService) {

@@ -45,7 +45,7 @@ export default class AppearDirective {
 		};
 		window.addEventListener('beforeprint', onBeforePrint);
 
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			window.removeEventListener('beforeprint', onBeforePrint);
 			subscription.unsubscribe();
 		});

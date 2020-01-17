@@ -1,5 +1,3 @@
-
-
 import { map } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
 import Rect from '../shared/rect';
@@ -43,7 +41,7 @@ export default class LazyDirective {
 		};
 		window.addEventListener('beforeprint', onBeforePrint);
 
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			window.removeEventListener('beforeprint', onBeforePrint);
 			subscription.unsubscribe();
 		});

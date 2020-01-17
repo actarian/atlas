@@ -1,5 +1,3 @@
-
-
 import { tap } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
@@ -34,7 +32,7 @@ export default class StickyDirective {
 		this.$timeout(() => {
 			const subscription = this.scroll$(element, attributes).subscribe();
 			content.addEventListener('click', onClick);
-			element.on('$destroy', () => {
+			scope.$on('$destroy', () => {
 				subscription.unsubscribe();
 				content.removeEventListener('click', onClick);
 			});

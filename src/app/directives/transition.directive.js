@@ -16,7 +16,7 @@ export default class TransitionDirective {
 	link(scope, element, attributes, controller) {
 		this.$timeout(() => {
 			const subscription = this.init(scope, element, attributes, controller);
-			element.on('$destroy', () => {
+			scope.$on('$destroy', () => {
 				subscription.unsubscribe();
 			});
 		});

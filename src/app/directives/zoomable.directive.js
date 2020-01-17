@@ -1,5 +1,3 @@
-
-
 import Rect from '../shared/rect';
 
 // let INDEX = 0;
@@ -77,7 +75,7 @@ export default class ZoomableDirective {
 		this.$timeout(() => {
 			addListeners();
 		});
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			triggers.forEach(x => x.removeEventListener('click', onClick));
 		});
 		console.log('ZoomableDirective', scope.$id);

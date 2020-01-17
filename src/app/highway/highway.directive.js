@@ -1,5 +1,3 @@
-
-
 import Highway from '@dogstudio/highway';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -114,7 +112,7 @@ export default class HighwayDirective {
 			// H.pushState_();
 		});
 		*/
-		element.on('$destroy', () => {
+		scope.$on('$destroy', () => {
 			// H.destroy();
 			subscription.unsubscribe();
 		});

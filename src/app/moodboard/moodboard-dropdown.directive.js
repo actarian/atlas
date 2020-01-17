@@ -50,7 +50,7 @@ export default class MoodboardDropdownDirective {
 		scope.removeFilter = (filter) => {
 			this.setFilter(null, filter);
 		};
-		element.on('$destroy', () => {});
+		scope.$on('$destroy', () => {});
 	}
 
 	static factory($compile) {

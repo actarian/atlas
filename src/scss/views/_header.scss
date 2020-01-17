@@ -191,6 +191,10 @@
 				font-weight: $font-bold;
 				color: $nav-header-secondary;
 			}
+
+			&>.wishlist--badge {
+				right: 0;
+			}
 		}
 
 		svg {
