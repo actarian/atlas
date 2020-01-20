@@ -5818,6 +5818,15 @@ page-transition {
 		pointer-events: none;
 	}
 	*/ }
+  @media (min-width: 1024px) {
+    .section--hero {
+      height: calc(100vh - 35px - 50px); } }
+  @media (min-width: 1440px) {
+    .section--hero {
+      height: calc(100vh - 35px - 80px); } }
+  @media (max-width: 767.98px) {
+    .section--hero {
+      height: 70vh; } }
 
 .section--hero-home .swiper-pagination-bullets,
 .swiper-container-horizontal > .section--hero-home .swiper-pagination-bullets {

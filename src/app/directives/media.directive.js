@@ -92,10 +92,10 @@ export default class MediaDirective {
 				btnGallery.click();
 				return;
 			}
-			if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+			if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
 				this.$timeout(() => {
 					let index = 0;
-					const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')].map((itemNode, i) => {
+					const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')].map((itemNode, i) => {
 						if (itemNode == node) {
 							index = i;
 						}
@@ -108,7 +108,7 @@ export default class MediaDirective {
 								item.title = img.getAttribute('alt');
 								const wishlist = itemNode.getAttribute('media');
 								if (wishlist) {
-									item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+									item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
 								}
 							} else {
 								console.log(itemNode, img);
@@ -121,7 +121,7 @@ export default class MediaDirective {
 							item.title = video.getAttribute('alt');
 							const wishlist = itemNode.getAttribute('video');
 							if (wishlist) {
-								item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
 							}
 						}
 						return item;
@@ -136,6 +136,12 @@ export default class MediaDirective {
 			// event.stopPropagation();
 		};
 		scope.$on('$destroy', () => {});
+	}
+
+	eval(string) {
+		return new Function(`() => {
+			return ${string};
+		}`)();
 	}
 
 	static factory($timeout, WishlistService) {

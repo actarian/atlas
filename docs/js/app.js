@@ -23568,11 +23568,11 @@ function () {
           return;
         }
 
-        if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+        if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
           _this.$timeout(function () {
             var index = 0;
 
-            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')).map(function (itemNode, i) {
+            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map(function (itemNode, i) {
               if (itemNode == node) {
                 index = i;
               }
@@ -23589,7 +23589,7 @@ function () {
                   var wishlist = itemNode.getAttribute('media');
 
                   if (wishlist) {
-                    item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                    item.wishlist = _this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
                   }
                 } else {
                   console.log(itemNode, _img);
@@ -23604,7 +23604,7 @@ function () {
                 var _wishlist = itemNode.getAttribute('video');
 
                 if (_wishlist) {
-                  item.wishlist = JSON.parse(_wishlist.indexOf('"') === -1 ? _wishlist.split(/[^\d\W]+/g).join('"') : _wishlist);
+                  item.wishlist = _this.eval(_wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
                 }
               }
 
@@ -23622,6 +23622,11 @@ function () {
       };
 
       scope.$on('$destroy', function () {});
+    }
+  }, {
+    key: "eval",
+    value: function _eval(string) {
+      return new Function("() => {\n\t\t\treturn ".concat(string, ";\n\t\t}"))();
     }
   }], [{
     key: "factory",
@@ -25521,11 +25526,11 @@ function () {
           _this.$timeout(function () {
             scope.$root.gallery = null;
           });
-        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal')) {
+        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
           _this.$timeout(function () {
             var index = 0;
 
-            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video]')).map(function (itemNode, i) {
+            var items = _toConsumableArray(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map(function (itemNode, i) {
               if (itemNode == node) {
                 index = i;
               }
@@ -25540,7 +25545,7 @@ function () {
                 var wishlist = itemNode.getAttribute('media');
 
                 if (wishlist) {
-                  item.wishlist = JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+                  item.wishlist = _this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
                 }
               } else {
                 var _video = itemNode.querySelector('video');
@@ -25554,7 +25559,7 @@ function () {
                 var _wishlist = itemNode.getAttribute('video');
 
                 if (_wishlist) {
-                  item.wishlist = JSON.parse(_wishlist.indexOf('"') === -1 ? _wishlist.split(/[^\d\W]+/g).join('"') : _wishlist);
+                  item.wishlist = _this.eval(_wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
                 }
               }
 
@@ -25589,6 +25594,11 @@ function () {
           video.removeEventListener('timeupdate', onTimeUpdate);
         }
       });
+    }
+  }, {
+    key: "eval",
+    value: function _eval(string) {
+      return new Function("() => {\n\t\t\treturn ".concat(string, ";\n\t\t}"))();
     }
   }], [{
     key: "factory",
