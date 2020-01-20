@@ -27,10 +27,10 @@ export default class AutocompleteDirective {
 		<label class="label" ng-bind="filter.label"></label>
 		<div class="control control--select" ng-class="{ selected: filter.value }">
 			<div class="input">
-				<svg class="icon icon--search" ng-if="!filter.value"><use xlink:href="#search"></use></svg>
 				<svg class="icon icon--close" ng-if="filter.value" ng-click="removeItem()"><use xlink:href="#close"></use></svg>
 				<input type="text" class="value" ng-model="autocomplete.query" ng-model-options="{ debounce: 200 }" ng-disabled="filter.value" placeholder="{{filter.placeholder}}" ng-change="onChange($event)" ng-click="onClick($event)"></input>
-				<svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg>
+				<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+				<!-- <svg class="icon icon--arrow-down"><use xlink:href="#arrow-down"></use></svg> -->
 			</div>
 		</div>
 		`;

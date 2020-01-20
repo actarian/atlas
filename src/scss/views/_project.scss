@@ -112,6 +112,30 @@
 
 }
 
+.section--alternate-horizontal-vertical {
+
+	.picture--horizontal {
+		margin-bottom: 30px;
+	}
+
+	.picture--vertical {
+		margin-bottom: 30px;
+	}
+
+}
+
+.section--alternate-square-horizontal {
+
+	.picture--square {
+		margin-bottom: 30px;
+	}
+
+	.picture--horizontal {
+		margin-bottom: 30px;
+	}
+
+}
+
 .picture--square {
 
 	@include media-breakpoint-up(sm) {

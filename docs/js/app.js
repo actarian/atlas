@@ -22451,7 +22451,7 @@ function () {
       onSetItem: '=?',
       onRemoveItem: '=?'
     };
-    this.template = "\n\t\t<div class=\"dropdown\">\n\t\t\t<ul class=\"nav nav--select\">\n\t\t\t\t<li ng-repeat=\"item in items track by $index\" ng-class=\"{ active: item.value == filter.value, disabled: item.disabled }\">\n\t\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setItem(item)\">\n\t\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t\t</span>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<label class=\"label\" ng-bind=\"filter.label\"></label>\n\t\t<div class=\"control control--select\" ng-class=\"{ selected: filter.value }\">\n\t\t\t<div class=\"input\">\n\t\t\t\t<svg class=\"icon icon--search\" ng-if=\"!filter.value\"><use xlink:href=\"#search\"></use></svg>\n\t\t\t\t<svg class=\"icon icon--close\" ng-if=\"filter.value\" ng-click=\"removeItem()\"><use xlink:href=\"#close\"></use></svg>\n\t\t\t\t<input type=\"text\" class=\"value\" ng-model=\"autocomplete.query\" ng-model-options=\"{ debounce: 200 }\" ng-disabled=\"filter.value\" placeholder=\"{{filter.placeholder}}\" ng-change=\"onChange($event)\" ng-click=\"onClick($event)\"></input>\n\t\t\t\t<svg class=\"icon icon--arrow-down\"><use xlink:href=\"#arrow-down\"></use></svg>\n\t\t\t</div>\n\t\t</div>\n\t\t";
+    this.template = "\n\t\t<div class=\"dropdown\">\n\t\t\t<ul class=\"nav nav--select\">\n\t\t\t\t<li ng-repeat=\"item in items track by $index\" ng-class=\"{ active: item.value == filter.value, disabled: item.disabled }\">\n\t\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setItem(item)\">\n\t\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t\t</span>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<label class=\"label\" ng-bind=\"filter.label\"></label>\n\t\t<div class=\"control control--select\" ng-class=\"{ selected: filter.value }\">\n\t\t\t<div class=\"input\">\n\t\t\t\t<svg class=\"icon icon--close\" ng-if=\"filter.value\" ng-click=\"removeItem()\"><use xlink:href=\"#close\"></use></svg>\n\t\t\t\t<input type=\"text\" class=\"value\" ng-model=\"autocomplete.query\" ng-model-options=\"{ debounce: 200 }\" ng-disabled=\"filter.value\" placeholder=\"{{filter.placeholder}}\" ng-change=\"onChange($event)\" ng-click=\"onClick($event)\"></input>\n\t\t\t\t<svg class=\"icon icon--search\"><use xlink:href=\"#search\"></use></svg>\n\t\t\t\t<!-- <svg class=\"icon icon--arrow-down\"><use xlink:href=\"#arrow-down\"></use></svg> -->\n\t\t\t</div>\n\t\t</div>\n\t\t";
   }
 
   _createClass(AutocompleteDirective, [{
@@ -26161,6 +26161,7 @@ function () {
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.locationService = LocationService;
+    this.collectionsUrl = window.collectionsUrl;
     this.filters = window.filters || {};
     this.collections = this.filters.collections || {
       options: []
@@ -26174,12 +26175,33 @@ function () {
   _createClass(EffectsCtrl, [{
     key: "setFilter",
     value: function setFilter(item, filter) {
-      /*
+      this.$scope.$broadcast('onCloseDropdown');
       item = item || filter.options[0];
       filter.value = item.value;
-      filter.placeholder = item.label;
-      */
-      this.$scope.$broadcast('onCloseDropdown');
+      this.navToCollections();
+    }
+  }, {
+    key: "navToCollections",
+    value: function navToCollections() {
+      var _this = this;
+
+      var filters = {};
+      var any = false;
+      Object.keys(this.filters).forEach(function (x) {
+        var filter = _this.filters[x];
+
+        if (filter.value !== null) {
+          filters[x] = filter.value;
+          any = true;
+        }
+      });
+
+      if (!any) {
+        filters = this.initialFilters ? {} : null;
+      }
+
+      var serialized = this.locationService.serialize_('filters', filters);
+      window.location.href = this.collectionsUrl + '?q=' + serialized;
     }
   }]);
 
@@ -30108,10 +30130,9 @@ function () {
       }
     }
   }, {
-    key: "deserialize",
-    value: function deserialize(key) {
-      var value = null;
-      var serialized = this.get('q'); // console.log(serialized);
+    key: "deserialize_",
+    value: function deserialize_(key, serialized) {
+      var value = null; // console.log(serialized);
 
       if (serialized) {
         var json = window.atob(serialized);
@@ -30126,10 +30147,10 @@ function () {
       return value || null;
     }
   }, {
-    key: "serialize",
-    value: function serialize(keyOrValue, value) {
+    key: "serialize_",
+    value: function serialize_(keyOrValue, value) {
+      var q = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var serialized = null;
-      var q = this.deserialize() || {};
 
       if (typeof keyOrValue === 'string') {
         q[keyOrValue] = value;
@@ -30139,6 +30160,19 @@ function () {
 
       var json = JSON.stringify(q);
       serialized = window.btoa(json);
+      return serialized;
+    }
+  }, {
+    key: "deserialize",
+    value: function deserialize(key) {
+      var serialized = this.get('q');
+      return this.deserialize_(key, serialized);
+    }
+  }, {
+    key: "serialize",
+    value: function serialize(keyOrValue, value) {
+      var q = this.deserialize();
+      var serialized = this.serialize_(keyOrValue, value, q);
       this.set('q', serialized);
     }
   }, {

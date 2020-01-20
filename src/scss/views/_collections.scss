@@ -142,7 +142,7 @@
 	}
 
 	&>.form__group {
-		padding: 10px 20px;
+		padding: 10px 0 10px 20px;
 		background: $background-tertiary;
 
 		&.form__group--distinct {
@@ -150,6 +150,10 @@
 			flex: 1 1 340px;
 			min-width: 340px;
 		}
+	}
+
+	&>.form__group+.form__group {
+		border-left: 1px solid $primary-20;
 	}
 
 	&>.form__group--white {
@@ -179,6 +183,7 @@
 		line-height: 36px;
 
 		.value {
+			flex: 1 1 auto;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
@@ -243,9 +248,9 @@
 	}
 
 	.icon--brand {
-		width: 270px;
-		height: 65px;
-		margin-bottom: 40px;
+		width: 270px * 0.8;
+		height: 65px * 0.8;
+		margin-bottom: 0;
 	}
 
 	.title {
@@ -263,7 +268,7 @@
 	}
 
 	@include media-breakpoint-up(sm) {
-		padding-top: 70px;
+		padding-top: 0;
 
 		.title {
 			font-size: 42px;
@@ -273,7 +278,7 @@
 	}
 
 	@include media-breakpoint-down(xs) {
-		padding-top: 70px;
+		padding-top: 0;
 
 		.title {
 			font-size: 36px;

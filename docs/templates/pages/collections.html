@@ -786,6 +786,9 @@ Ground track
 			<svg class="icon icon--close" ng-if="root.menuProductOpened"><use xlink:href="#close"></use></svg>
 		</button>
 	</section>
+
+	<ng-include src="'templates/shared/product-breadcrumb.html'"></ng-include>
+
 	<!-- SEO -->
 	<div class="section--collections-results" ng-if="!collectionsCtrl.filteredBrands">
 		<!--
@@ -801,9 +804,8 @@ Ground track
 	<div class="section--collections-results" ng-if="collectionsCtrl.filteredBrands">
 		<section class="section section--collections section--collections-v2" ng-class="brand.brand" ng-repeat="brand in collectionsCtrl.filteredBrands track by $index">
 			<div class="container-fluid">
-				<div class="row" ng-if="brand.brand != 'atlas-concorde'">
-					<div class="col-md-8 offset-md-4" appear>
-						<div class="category">Brand</div>
+				<div class="row">
+					<div class="col-md-10 offset-md-3 no-line" appear>
 						<svg ng-if="brand.brand === 'atlas-concorde'" class="icon icon--brand"><use xlink:href="#atlas-concorde"></use></svg>
 						<svg ng-if="brand.brand === 'atlas-concorde-solution'" class="icon icon--brand"><use xlink:href="#atlas-concorde-solution"></use></svg>
 						<svg ng-if="brand.brand === 'atlas-concorde-usa'" class="icon icon--brand"><use xlink:href="#atlas-concorde-usa"></use></svg>

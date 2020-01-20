@@ -1,4 +1,3 @@
-
 /* global angular */
 
 export default class LocationService {
@@ -21,9 +20,8 @@ export default class LocationService {
 		}
 	}
 
-	deserialize(key) {
+	deserialize_(key, serialized) {
 		let value = null;
-		const serialized = this.get('q');
 		// console.log(serialized);
 		if (serialized) {
 			const json = window.atob(serialized);
@@ -36,9 +34,8 @@ export default class LocationService {
 		return value || null;
 	}
 
-	serialize(keyOrValue, value) {
+	serialize_(keyOrValue, value, q = {}) {
 		let serialized = null;
-		let q = this.deserialize() || {};
 		if (typeof keyOrValue === 'string') {
 			q[keyOrValue] = value;
 		} else {
@@ -46,6 +43,17 @@ export default class LocationService {
 		}
 		const json = JSON.stringify(q);
 		serialized = window.btoa(json);
+		return serialized;
+	}
+
+	deserialize(key) {
+		const serialized = this.get('q');
+		return this.deserialize_(key, serialized);
+	}
+
+	serialize(keyOrValue, value) {
+		const q = this.deserialize();
+		const serialized = this.serialize_(keyOrValue, value, q);
 		this.set('q', serialized);
 	}
 
