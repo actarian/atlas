@@ -34,7 +34,8 @@ export default class LocationService {
 		return value || null;
 	}
 
-	serialize_(keyOrValue, value, q = {}) {
+	serialize_(keyOrValue, value, q) {
+		q = q || {};
 		let serialized = null;
 		if (typeof keyOrValue === 'string') {
 			q[keyOrValue] = value;

@@ -30158,8 +30158,8 @@ function () {
     }
   }, {
     key: "serialize_",
-    value: function serialize_(keyOrValue, value) {
-      var q = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    value: function serialize_(keyOrValue, value, q) {
+      q = q || {};
       var serialized = null;
 
       if (typeof keyOrValue === 'string') {
@@ -31069,7 +31069,7 @@ function () {
     this.busyFind = false;
     this.busyLocation = false;
     this.visibleStores = [];
-    this.mapCenter$ = new _rxjs.Subject(); //
+    this.mapBoundsChanged$ = new _rxjs.Subject(); //
     // When the window has finished loading create our google map below
 
     if (GOOGLE_MAPS !== null) {
@@ -31083,7 +31083,7 @@ function () {
 
       var script = document.createElement('script');
       script.setAttribute('type', 'text/javascript');
-      script.setAttribute('src', "https://maps.googleapis.com/maps/api/js?key=".concat(this.apiKey, "&callback=onGoogleMapsLoaded"));
+      script.setAttribute('src', "https://maps.googleapis.com/maps/api/js?key=".concat(this.apiKey, "&libraries=geometry&callback=onGoogleMapsLoaded"));
       (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(script);
       /*
       google.maps.event.addDomListener(window, 'load', () => {
@@ -31095,8 +31095,8 @@ function () {
 
 
     this.unsubscribe = new _rxjs.Subject();
-    this.mapCenter$.pipe((0, _operators.debounceTime)(1000), (0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (position) {
-      _this.findNearStores(_this.stores, position);
+    this.mapBoundsChanged$.pipe((0, _operators.debounceTime)(1000), (0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (bounds) {
+      _this.findNearStores(_this.stores, bounds.getCenter(), bounds);
     });
     this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe((0, _operators.takeUntil)(this.unsubscribe)).subscribe(function (event) {});
     $scope.$on('destroy', function () {
@@ -31192,10 +31192,8 @@ function () {
 
 
       var map = new google.maps.Map(mapElement, mapOptions);
-      map.addListener('dragend', function () {
-        var position = map.getCenter();
-
-        _this2.mapCenter$.next(position);
+      map.addListener('bounds_changed', function () {
+        _this2.mapBoundsChanged$.next(map.getBounds());
       });
       this.$timeout(function () {
         _this2.map = map;
@@ -31381,18 +31379,30 @@ function () {
     }
   }, {
     key: "findNearStores",
-    value: function findNearStores(stores, position) {
+    value: function findNearStores(stores, position, bounds) {
       var _this7 = this;
+
+      var distance = MAX_DISTANCE;
+      /* Km */
+
+      if (bounds) {
+        var northEast = bounds.getNorthEast();
+        var meters = google.maps.geometry.spherical.computeDistanceBetween(position, northEast);
+        distance = Math.max(distance, meters / 1000);
+        console.log('distance', distance, position.lat(), position.lng());
+      }
 
       if (stores) {
         stores.forEach(function (store) {
-          store.distance = _this7.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
-          store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= MAX_DISTANCE
-          /* Km */
-          ;
+          store.distance = _this7.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K'); // store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= distance;
+
+          store.visible = store.distance <= distance;
 
           if (store.visible) {
-            if (store.removed) _this7.markerCluster.addMarker(store.marker);
+            if (store.removed) {
+              _this7.markerCluster.addMarker(store.marker);
+            }
+
             delete store.removed;
           } else {
             _this7.markerCluster.removeMarker(store.marker);
@@ -31416,15 +31426,23 @@ function () {
     }
   }, {
     key: "searchPosition",
-    value: function searchPosition(position) {
+    value: function searchPosition(position, bounds) {
       var _this8 = this;
 
+      var distance = 0;
       this.position = position;
-      this.map.setCenter(position);
-      this.map.setZoom(ZOOM_LEVEL);
+
+      if (bounds) {
+        // this.map.setCenter(bounds.getCenter(), this.map.getBoundsZoomLevel(bounds)); // getBoundsZoomLevel old api
+        this.map.fitBounds(bounds);
+      } else {
+        this.map.setCenter(position);
+        this.map.setZoom(ZOOM_LEVEL);
+      }
+
       this.setInfoWindow(position, 1);
       return this.loadAllStores().then(function (stores) {
-        var visibleStores = _this8.findNearStores(stores, position);
+        var visibleStores = _this8.findNearStores(stores, position, bounds);
         /*
         if (visibleStores) {
         	this.fitBounds(visibleStores);
@@ -31471,10 +31489,20 @@ function () {
         _this9.model = {};
 
         if (status == 'OK') {
-          var position = results[0].geometry.location; // console.log('location', location);
-          // const position = new google.maps.LatLng(location);
+          var viewport = results[0].geometry.viewport; // const position = results[0].geometry.location;
 
-          _this9.searchPosition(position).finally(function () {
+          /*
+          var north = locations.Placemark[0].ExtendedData.LatLonBox.north;
+          var south = locations.Placemark[0].ExtendedData.LatLonBox.south;
+          var east  = locations.Placemark[0].ExtendedData.LatLonBox.east;
+          var west  = locations.Placemark[0].ExtendedData.LatLonBox.west;
+          const bounds = new google.maps.LatLngBounds(new google.maps.LatLng(south, west), new google.maps.LatLng(north, east));
+          map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
+          */
+
+          console.log('geocoder.geocode', results[0]); // const position = new google.maps.LatLng(location);
+
+          _this9.searchPosition(viewport.getCenter(), viewport).finally(function () {
             return _this9.busyFind = false;
           });
         } else {

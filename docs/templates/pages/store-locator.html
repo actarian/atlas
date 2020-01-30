@@ -1,7 +1,11 @@
 <script type="text/javascript" lazy-script>
 	window.apiKey = 'AIzaSyCT6lZ3i-iD7L4Y7jK244Fr1nJozTXR55M';
+	window.BOMLabels = { store_locator_reach_store: "Raggiungi il punto vendita", More_info: "Leggi di più", store_locator_approx: "Circa" };
+	window.userCountry = "IT";
 
 </script>
+
+
 <div ng-controller="StoreLocatorCtrl as locator">
 	<section class="section section--hero-store-locator section--negative" ng-show="!locator.position">
 		<div class="background" ng-if="!root.webglEnabled" parallax>

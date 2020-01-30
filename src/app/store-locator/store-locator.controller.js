@@ -1,5 +1,3 @@
-
-
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
@@ -27,7 +25,7 @@ class StoreLocatorCtrl {
 		this.busyFind = false;
 		this.busyLocation = false;
 		this.visibleStores = [];
-		this.mapCenter$ = new Subject();
+		this.mapBoundsChanged$ = new Subject();
 		//
 		// When the window has finished loading create our google map below
 		if (GOOGLE_MAPS !== null) {
@@ -39,7 +37,7 @@ class StoreLocatorCtrl {
 			};
 			const script = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
-			script.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&callback=onGoogleMapsLoaded`);
+			script.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&libraries=geometry&callback=onGoogleMapsLoaded`);
 			(document.getElementsByTagName('head')[0] || document.documentElement).appendChild(script);
 			/*
 			google.maps.event.addDomListener(window, 'load', () => {
@@ -50,11 +48,11 @@ class StoreLocatorCtrl {
 		}
 		//
 		this.unsubscribe = new Subject();
-		this.mapCenter$.pipe(
+		this.mapBoundsChanged$.pipe(
 			debounceTime(1000),
 			takeUntil(this.unsubscribe)
-		).subscribe(position => {
-			this.findNearStores(this.stores, position);
+		).subscribe(bounds => {
+			this.findNearStores(this.stores, bounds.getCenter(), bounds);
 		});
 		this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe(
 			takeUntil(this.unsubscribe)
@@ -86,9 +84,8 @@ class StoreLocatorCtrl {
 		}
 		// Create the Google Map using our element and options defined above
 		var map = new google.maps.Map(mapElement, mapOptions);
-		map.addListener('dragend', () => {
-			const position = map.getCenter();
-			this.mapCenter$.next(position);
+		map.addListener('bounds_changed', () => {
+			this.mapBoundsChanged$.next(map.getBounds());
 		});
 		this.$timeout(() => {
 			this.map = map;
@@ -189,7 +186,6 @@ class StoreLocatorCtrl {
 			node.addEventListener('mouseover', panTo);
 			*/
 		});
-
 		const markerCluster = new MarkerClusterer(this.map, markers, {
 			imagePath: '/img/store-locator/cluster-',
 		});
@@ -259,27 +255,33 @@ class StoreLocatorCtrl {
 		}
 	}
 
-	findNearStores(stores, position) {
+	findNearStores(stores, position, bounds) {
+		let distance = MAX_DISTANCE; /* Km */
+		if (bounds) {
+			const northEast = bounds.getNorthEast();
+			const meters = google.maps.geometry.spherical.computeDistanceBetween(position, northEast);
+			distance = Math.max(distance, meters / 1000);
+			console.log('distance', distance, position.lat(), position.lng());
+		}
 		if (stores) {
-
 			stores.forEach((store) => {
 				store.distance = this.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
-				store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= MAX_DISTANCE /* Km */ ;
-
+				// store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= distance;
+				store.visible = store.distance <= distance;
 				if (store.visible) {
-					if (store.removed) this.markerCluster.addMarker(store.marker);
+					if (store.removed) {
+						this.markerCluster.addMarker(store.marker);
+					}
 					delete store.removed;
 				} else {
 					this.markerCluster.removeMarker(store.marker);
 					store.removed = true;
 				}
 			});
-
 			stores = stores.slice();
 			stores.sort((a, b) => {
 				return a.distance * (a.importante ? 0.5 : 1) - b.distance * (b.importante ? 0.5 : 1);
 			});
-
 			const visibleStores = stores.filter(store => store.visible).slice(0, 50);
 			this.$timeout(() => {
 				this.visibleStores = visibleStores;
@@ -289,13 +291,19 @@ class StoreLocatorCtrl {
 		}
 	}
 
-	searchPosition(position) {
+	searchPosition(position, bounds) {
+		let distance = 0;
 		this.position = position;
-		this.map.setCenter(position);
-		this.map.setZoom(ZOOM_LEVEL);
+		if (bounds) {
+			// this.map.setCenter(bounds.getCenter(), this.map.getBoundsZoomLevel(bounds)); // getBoundsZoomLevel old api
+			this.map.fitBounds(bounds);
+		} else {
+			this.map.setCenter(position);
+			this.map.setZoom(ZOOM_LEVEL);
+		}
 		this.setInfoWindow(position, 1);
 		return this.loadAllStores().then(stores => {
-			const visibleStores = this.findNearStores(stores, position);
+			const visibleStores = this.findNearStores(stores, position, bounds);
 			/*
 			if (visibleStores) {
 				this.fitBounds(visibleStores);
@@ -315,7 +323,6 @@ class StoreLocatorCtrl {
 	onSubmit() {
 		this.error = null;
 		this.busyFind = true;
-
 		const fakeFilter = {
 			'': {
 				value: this.model.address,
@@ -328,16 +335,24 @@ class StoreLocatorCtrl {
 			}
 		};
 		GtmService.pageViewFilters(GTM_CAT, fakeFilter);
-
 		const geocoder = this.geocoder || new google.maps.Geocoder();
 		this.geocoder = geocoder;
 		geocoder.geocode({ address: this.model.address }, (results, status) => {
 			this.model = {};
 			if (status == 'OK') {
-				const position = results[0].geometry.location;
-				// console.log('location', location);
+				const viewport = results[0].geometry.viewport;
+				// const position = results[0].geometry.location;
+				/*
+				var north = locations.Placemark[0].ExtendedData.LatLonBox.north;
+				var south = locations.Placemark[0].ExtendedData.LatLonBox.south;
+				var east  = locations.Placemark[0].ExtendedData.LatLonBox.east;
+				var west  = locations.Placemark[0].ExtendedData.LatLonBox.west;
+				const bounds = new google.maps.LatLngBounds(new google.maps.LatLng(south, west), new google.maps.LatLng(north, east));
+				map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
+				*/
+				console.log('geocoder.geocode', results[0]);
 				// const position = new google.maps.LatLng(location);
-				this.searchPosition(position).finally(() => this.busyFind = false);
+				this.searchPosition(viewport.getCenter(), viewport).finally(() => this.busyFind = false);
 			} else {
 				this.$timeout(() => {
 					const message = 'Geocode was not successful for the following reason: ' + status;
