@@ -1,14 +1,11 @@
-
-
-import { combineLatest, fromEvent, merge, range, Subject } from 'rxjs';
-import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
+import { animationFrameScheduler, combineLatest, fromEvent, interval, merge, Subject } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, first, map, shareReplay, startWith, tap } from 'rxjs/operators';
 import Rect from '../shared/rect';
 
 export default class DomService {
 
 	constructor() {
-		this.scrollEmitter$ = DomService.scrollEmitter$;
+		this.secondaryScroll$_ = DomService.secondaryScroll$_;
 	}
 
 	get scrollTop() {
@@ -70,7 +67,7 @@ export default class DomService {
 		if (trident > 0) {
 			// IE 11 => return version number
 			const rv = ua.indexOf('rv:');
-			return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+			return 'msie' + parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
 		}
 		const edge = ua.indexOf('Edge/');
 		if (edge > 0) {
@@ -258,7 +255,7 @@ export default class DomService {
 			}),
 			filter(response => response !== undefined)
 		);
-		DomService.scrollEmitter$.next({ target: window });
+		DomService.secondaryScroll$_.next({ target: window });
 		return o;
 	}
 
@@ -322,7 +319,7 @@ export default class DomService {
 
 	static secondaryScroll$(target) {
 		return fromEvent(target, 'scroll').pipe(
-			tap(event => DomService.scrollEmitter$.next(event))
+			tap(event => DomService.secondaryScroll$_.next(event))
 		);
 	}
 
@@ -331,7 +328,7 @@ export default class DomService {
 DomService.factory.$inject = [];
 DomService.rafIntersection_ = {};
 DomService.scrollIntersection_ = {};
-DomService.raf$ = range(0, Number.POSITIVE_INFINITY, animationFrame);
+DomService.raf$ = interval(0, animationFrameScheduler);
 DomService.windowRect$ = function() {
 	const windowRect = new Rect({
 		width: window.innerWidth,
@@ -356,7 +353,7 @@ DomService.mainScroll$ = function() {
 		shareReplay()
 	);
 }();
-DomService.scrollEmitter$ = new Subject();
+DomService.secondaryScroll$_ = new Subject();
 DomService.scroll$ = function() {
 	const target = window;
 	let previousTop = DomService.getScrollTop(target);
@@ -366,7 +363,7 @@ DomService.scroll$ = function() {
 		direction: 0,
 		originalEvent: null,
 	};
-	return merge(DomService.mainScroll$, DomService.scrollEmitter$).pipe(
+	return merge(DomService.mainScroll$, DomService.secondaryScroll$_).pipe(
 		auditTime(1000 / 60),
 		map((originalEvent) => {
 			event.scrollTop = DomService.getScrollTop(originalEvent.target);

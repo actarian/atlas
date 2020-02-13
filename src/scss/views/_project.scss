@@ -260,6 +260,17 @@
 	}
 }
 
+.section--text-full {
+	padding: 50px 0 50px 0;
+
+	.title,
+	.abstract,
+	.description {
+		@extend %text-description-secondary;
+		text-align: left;
+	}
+}
+
 .section--horizontal {
 	// padding: 50px 0 20px 0;
 }

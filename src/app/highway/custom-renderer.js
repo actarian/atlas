@@ -34,9 +34,9 @@ export default class CustomRenderer extends Highway.Renderer {
 
 	updateSearchQuery() {
 		const page = this.properties.page;
-		const dataSearch = [...page.querySelectorAll('[data-search]')];
+		const dataSearch = Array.from(page.querySelectorAll('[data-search]'));
 		if (dataSearch.length) {
-			const pageDataSearch = [...document.querySelectorAll('[data-search]')];
+			const pageDataSearch = Array.from(document.querySelectorAll('[data-search]'));
 			pageDataSearch.forEach(node => {
 				node.setAttribute('data-search', dataSearch[0].getAttribute('data-search'));
 			});
@@ -53,8 +53,8 @@ export default class CustomRenderer extends Highway.Renderer {
 			} catch (e) {}
 		}
 		/*
-		const marketsAndLanguages = [...page.querySelectorAll('.nav--markets__secondary > li > a')];
-		const anchors = [...document.querySelectorAll('.nav--markets__secondary > li > a')];
+		const marketsAndLanguages = Array.from(page.querySelectorAll('.nav--markets__secondary > li > a'));
+		const anchors = Array.from(document.querySelectorAll('.nav--markets__secondary > li > a'));
 		anchors.forEach(a => {
 			const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
 			if (marketAndLanguage) {
@@ -88,7 +88,7 @@ export default class CustomRenderer extends Highway.Renderer {
 		if (!first) {
 			CustomRenderer.$timeout(() => {
 				const $compile = CustomRenderer.$compile;
-				const view = [...document.querySelectorAll('.view')].pop();
+				const view = Array.from(document.querySelectorAll('.view')).pop();
 				// console.log(view.childNodes);
 				const element = angular.element(view.childNodes);
 				const $scope = CustomRenderer.scope;
@@ -113,7 +113,7 @@ export default class CustomRenderer extends Highway.Renderer {
 		// console.log('onLeave', first);
 		if (first) {
 			first = false;
-			const view = [...document.querySelectorAll('.view')].shift();
+			const view = Array.from(document.querySelectorAll('.view')).shift();
 			const element = angular.element(view.childNodes);
 			/*
 			scope.$on('$destroy', (event) => {

@@ -1,16 +1,6 @@
-
-
-
-function push_(event) {
-	const dataLayer = window.dataLayer || [];
-	dataLayer.push(event);
-	console.log('GtmService.dataLayer', event);
-}
-
 export default class GtmService {
 	// Id da dare al tag script delle pagine con filtri.
 	// Questo indica a Highway di non eseguire il PageView. Sarà il controller a farlo
-	static FILTERS_SCRIPT_ID = 'script-listing';
 
 	static pageView(pathname) {
 
@@ -24,7 +14,7 @@ export default class GtmService {
 
 		Object.assign(obj, window.dataLayerData);
 
-		return push_(obj);
+		return GtmService.push(obj);
 	}
 
 	static pageViewFilters(cat, filters) {
@@ -45,7 +35,7 @@ export default class GtmService {
 
 			if (textValue) any = true;
 
-			let name = filters[key].key /* se array di filtri */ || key /* se oggetto filtro */;
+			let name = filters[key].key /* se array di filtri */ || key /* se oggetto filtro */ ;
 			if (name) name = encodeURIComponent(name) + '-';
 			values.push(name + encodeURIComponent(textValue));
 		}
@@ -56,7 +46,11 @@ export default class GtmService {
 	}
 
 	static push(event) {
-		return push_(event);
+		console.log('GtmService.dataLayer', event);
+		const dataLayer = window.dataLayer || [];
+		return dataLayer.push(event);
 	}
 
 }
+
+GtmService.FILTERS_SCRIPT_ID = 'script-listing';

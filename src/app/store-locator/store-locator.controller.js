@@ -142,7 +142,7 @@ class StoreLocatorCtrl {
 			if (store.tel)
 				content = content.replace('<!--store.tel-->', `<span>${store.tel}<br></span>`);
 			if (store.email)
-				content = content.replace('<!--store.email-->', `<span><a href="mailto:${store.email}">${store.email}</a><br></span>`);
+				content = content.replace('<!--store.email-->', `<span><a href="/atlas/mailto:${store.email}">${store.email}</a><br></span>`);
 			if (store.webSite)
 				content = content.replace('<!--store.webSite-->', `<span><a target="_blank" href="${store.webSite}">${store.webSite}</a></span>`);
 			if (store.pageurl)
@@ -186,6 +186,7 @@ class StoreLocatorCtrl {
 			node.addEventListener('mouseover', panTo);
 			*/
 		});
+
 		const markerCluster = new MarkerClusterer(this.map, markers, {
 			imagePath: '/img/store-locator/cluster-',
 		});
@@ -261,7 +262,7 @@ class StoreLocatorCtrl {
 			const northEast = bounds.getNorthEast();
 			const meters = google.maps.geometry.spherical.computeDistanceBetween(position, northEast);
 			distance = Math.max(distance, meters / 1000);
-			console.log('distance', distance, position.lat(), position.lng());
+			console.log('distance', distance);
 		}
 		if (stores) {
 			stores.forEach((store) => {
@@ -269,9 +270,7 @@ class StoreLocatorCtrl {
 				// store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= distance;
 				store.visible = store.distance <= distance;
 				if (store.visible) {
-					if (store.removed) {
-						this.markerCluster.addMarker(store.marker);
-					}
+					if (store.removed) this.markerCluster.addMarker(store.marker);
 					delete store.removed;
 				} else {
 					this.markerCluster.removeMarker(store.marker);
@@ -342,16 +341,6 @@ class StoreLocatorCtrl {
 			if (status == 'OK') {
 				const viewport = results[0].geometry.viewport;
 				// const position = results[0].geometry.location;
-				/*
-				var north = locations.Placemark[0].ExtendedData.LatLonBox.north;
-				var south = locations.Placemark[0].ExtendedData.LatLonBox.south;
-				var east  = locations.Placemark[0].ExtendedData.LatLonBox.east;
-				var west  = locations.Placemark[0].ExtendedData.LatLonBox.west;
-				const bounds = new google.maps.LatLngBounds(new google.maps.LatLng(south, west), new google.maps.LatLng(north, east));
-				map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
-				*/
-				console.log('geocoder.geocode', results[0]);
-				// const position = new google.maps.LatLng(location);
 				this.searchPosition(viewport.getCenter(), viewport).finally(() => this.busyFind = false);
 			} else {
 				this.$timeout(() => {

@@ -1,0 +1,143 @@
+<!-- @@master = ./templates/layout.html { "class": "page-class", "title": "Atlas Concorde: piastrelle in ceramica per pavimenti e rivestimenti" } -->
+<!-- @@block = main-->
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="/atlas/img/product/marvel/porcelain-tiles/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/product/marvel/porcelain-tiles/hero-secondary.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 offset-md-2">
+					<div class="category">Marvel Edge</div>
+					<div class="title"><b>Wall tiles.</b> Contemporary style</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- @@include ./templates/shared/menu-product.html -->
+<section class="section section--tiles">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4" appear>
+				<div class="category">Marvel Edge</div>
+				<div class="title">Colour range</div>
+			</div>
+		</div>
+		<div class="row listing listing--tiles">
+			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Clair', 'Absolute Brown'] track by $index" appear>
+				<div class="picture" media>
+					<img lazy data-src="/atlas/img/product/marvel/tile-{{$index == 0 ? '09' : $index + 9}}.jpg" alt="title" />
+				</div>
+				<div class="title">{{item}}</div>
+				<div class="group group--cta">
+					<a href="/atlas/product-absolute-brown.html" class="btn btn--category"><span>Polished</span></a>
+					<a href="/atlas/product-absolute-brown.html" class="btn btn--category"><span>Matte</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--sizes">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4" appear>
+				<div class="title">Available in these sizes</div>
+			</div>
+		</div>
+		<div class="listing listing--sizes">
+			<div class="listing__item aspect--278x120" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished rectified</b><br>
+					120x278 cm<br>
+					47 1/4”x109 1/2”<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--120x120" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished rectified</b><br>
+					120x120 cm<br>
+					47 1/4”x47 1/4”<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--240x120" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished rectified</b><br>
+					120x240 cm<br>
+					XL<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--75x75" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished rectified</b><br>
+					75x75 cm<br>
+					29 1/2”x29 1/2”<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--150x75" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished rectified</b><br>
+					75x150 cm<br>
+					29 1/2”x59”<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--30x60" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished / Matterectified</b><br>
+					30x60 cm<br>
+					11 3/4”x23 5/8”<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--60x60" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished / Matte rectified</b><br>
+					60x60 cm<br>
+					23 5/8”x23 5/8”<br>
+				</div>
+			</div>
+			<div class="listing__item aspect--90x45" appear>
+				<div class="picture"></div>
+				<div class="group group--size">
+					<b>Polished rectified</b><br>
+					45x90 cm<br>
+					17 3/4”x35 3/8”<br>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- @@include ./templates/shared/download.html -->
+<!-- @@include ./templates/shared/store.html -->
+<!-- @@include ./templates/shared/beinspired.html -->
+
+<!-- @@close-->
+<!-- @@block = breadcrumb-->
+<section class="section section--breadcrumb">
+	<div class="container">
+		<ul class="nav nav--breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="collections.html">Our Collections</a></li>
+			<li><a href="product-project.html">Marvel Edge</a></li>
+			<li><a href="product-wall-tiles.html">Wall Tiles</a></li>
+		</ul>
+	</div>
+</section>
+<!-- @@close-->
+
+
+<!-- @@block = css-->
+<!-- additional css here -->
+<!-- @@close-->
+<!-- @@block = js-->
+<!-- additional js here -->
+<!-- @@close-->

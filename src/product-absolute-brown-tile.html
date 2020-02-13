@@ -1,0 +1,653 @@
+<!-- @@master = ./templates/layout.html { "class": "page-class", "title": "Atlas Concorde: piastrelle in ceramica per pavimenti e rivestimenti" } -->
+<!-- @@block = main-->
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled">
+		<img lazy data-src="/atlas/img/product/marvel/absolute-brown/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/product/marvel/absolute-brown/hero-secondary.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 offset-md-2">
+					<div class="category">Marvel Edge</div>
+					<div class="title"><b>Absolute Brown</b> polished</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- @@include ./templates/shared/menu-product.html -->
+
+<section class="section section--tile">
+	<div class="container">
+		<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }">
+			<div class="zoomable__content">
+				<div class="tile" ng-if="true">
+					<div class="picture zoomable__trigger">
+						<img lazy data-src="/atlas/img/product/marvel/absolute-brown-tile/240x120-01.jpg" alt="title" />
+						<div class="width"><span>240 cm</span></div>
+						<div class="height"><span>120 cm</span></div>
+					</div>
+				</div>
+				<div class="row" ng-if="true">
+					<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
+						<div class="group group--tile">
+							<button type="button" class="btn btn--zoom zoomable__trigger">
+								<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+								<svg class="icon icon--close"><use xlink:href="#close"></use></svg>
+							</button>
+							<div>Available in <b>5 patterns</b></div>
+							<button type="button" class="btn btn--wishlist">
+								<svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg>
+							</button>
+						</div>
+					</div>
+				</div>
+				<!-- Swiper -->
+				<div class="swiper-container" swiper-tile appear ng-if="false">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" last-item ng-repeat="item in [1, 2, 4] track by $index">
+							<div class="tile" ng-if="item == 1">
+								<div class="picture zoomable__trigger">
+									<img lazy data-src="/atlas/img/product/marvel/absolute-brown-tile/240x120-0{{item}}.jpg" alt="title" />
+									<div class="width"><span>240 cm</span></div>
+									<div class="height"><span>120 cm</span></div>
+								</div>
+							</div>
+							<div class="tile" ng-if="item == 2">
+								<div class="picture zoomable__trigger">
+									<img lazy="" alt="" class="ng-isolate-scope" src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/f6b7379d-3950-4d33-b282-8caea6b449d4/yz1hpd/std/4096x512/AtlasConcorde_Arbor_Tobacco_30x240_Matte_AMHX_1.jpg?scalemode=centered">
+									<div class="width"><span>240 cm 94½"</span></div>
+									<div class="height"><span>30 cm 11¾"</span></div>
+								</div>
+							</div>
+							<div class="tile" ng-if="item == 3">
+								<div class="picture zoomable__trigger">
+									<img lazy="" alt="" class="ng-isolate-scope lazyed" src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/46449732-3bd4-4251-acd2-8861a89c8079/yz1hpd/std/1417x177/AtlasConcorde_Arbor_Tobacco_7,5x60_Matte_AN34_1.jpg?scalemode=centered">
+									<div class="width"><span>60 cm 23⅝"</span></div>
+									<div class="height"><span>7,5 cm 3"</span></div>
+								</div>
+							</div>
+							<div class="tile" ng-if="item == 4">
+								<div class="picture zoomable__trigger">
+									<img lazy="" alt="" class="ng-isolate-scope lazyed" src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/e27c827d-844b-489d-a348-cc19c4c17516/yz1hpd/std/2835x2835/AtlasConcorde_Boost_White_120x120_Grip_AMGN_1.jpg?scalemode=centered">
+									<div class="width"><span>120 cm 47¼"</span></div>
+									<div class="height"><span>120 cm 47¼"</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Add Pagination -->
+					<div class="swiper-pagination swiper-pagination-white"></div>
+					<!-- Add Navigation -->
+					<div class="swiper-button-prev swiper-button-white"></div>
+					<div class="swiper-button-next swiper-button-white"></div>
+					<div class="row">
+						<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
+							<div class="group group--tile">
+								<button type="button" class="btn btn--zoom zoomable__trigger">
+									<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+									<svg class="icon icon--close"><use xlink:href="#close"></use></svg>
+								</button>
+								<div>Available in <b>5 patterns</b></div>
+								<button type="button" class="btn btn--wishlist"><svg class="icon icon--wishlist">
+									<use xlink:href="#wishlist"></use>
+								</svg></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 offset-md-2 col-lg-10 offset-lg-3">
+				<div class="listing listing--groups">
+					<a href="/it/collezioni/marble-look-collection/">
+						<img lazy data-src="/atlas/img/svg/features/marvel-world.svg">
+					</a>
+					<a href="/it/collezioni/marble-look-collection/">
+						<img lazy data-src="/atlas/img/svg/features/marvel-world.svg">
+					</a>
+					<a href="/it/collezioni/marble-look-collection/">
+						<img lazy data-src="/atlas/img/svg/features/marvel-world.svg">
+					</a>
+					<a href="/it/collezioni/marble-look-collection/">
+						<img lazy data-src="/atlas/img/svg/features/marvel-world.svg">
+					</a>
+				</div>
+				<div class="title">Marvel Edge Absolute Brown</div>
+				<div class="abstract">120x240 Polished</div>
+				<div class="description">120x240 cm 29½"x59"<br /> rettificato</div>
+				<!-- <svg class="icon icon--made-in-italy"><use xlink:href="#made-in-italy"></use></svg> -->
+				<img class="made-in" lazy data-src="/atlas/img/svg/flags/atlasconcorde.svg" alt="Made in Italy" />
+				<div class="row listing listing--features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/spessore.svg" alt="Spessore" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">9,5 mm</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/medium-traffic.svg" alt="Calpestio medio" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">Calpestio medio</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/appearance-v2.svg" alt="V2" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">V2</div>
+						</div>
+					</div>
+				</div>
+				<div class="picture--technical">
+					<img lazy data-src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/0b2f0094-7f40-49fc-8103-0ac95c7634ad/yz1hpd/std/0x0/Minibrick_00.jpg?scalemode=auto">
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--technical-info">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4" appear>
+				<div class="title">Technical info</div>
+				<div class="abstract">Conforme alla norma EN 14411 Appendice G gruppo BIa Group: BIa (G)</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--technical-features">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche di regolarità</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>
+									Lunghezza e larghezza <b>&pm;0.3% &pm;1.0mm</b>
+								</p>
+								<p>
+									Spessore <b>&pm;5.0% &pm;0.5mm</b>
+								</p>
+								<p>
+									Rettilineità degli spigoli <b>&pm;0.3% &pm;0.8mm</b>
+								</p>
+								<p>
+									Ortogonalità <b>&pm;0.3% &pm;1.5mm</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-flatness.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>
+									Planarità <b>&pm;0.3% &pm;1.5mm</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche strutturali</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/structural-water-absorbtion.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="abstract">
+								<p>
+									<b>ISO 10545-3</b> Massa d'acqua assorbita <b>&le;0.1%</b>
+								</p>
+								<p>
+									<b>ASTM C373-18</b> Massa d'acqua assorbita <b>&le;0.5%</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche meccaniche massive</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/bulk-bending-strength.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-4</div>
+							<div class="abstract">
+								<p>
+									Sforzo di rottura <b>S &ge;1500 N</b>
+								</p>
+								<p>
+									Resistenza alla flessione <b>R &ge;40 N/mm&sup2;</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/bulk-impact-resistance.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-5</div>
+							<div class="abstract">
+								<p>
+									Resistenza all'impatto <b>&ge;0.55</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche meccaniche superficiali</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/bulk-mohs-hardness.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">EN 101</div>
+							<div class="abstract">
+								<p>
+									Durezza Mohs <b>MOHS 5</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/bulk-abrasion-resistance.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-6</div>
+							<div class="abstract">
+								<p>
+									Resistenza all'abrasione profonda delle piastrelle non smaltate <b>&le;150mm&sup3;</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche termo igrometriche</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/thermal-expansion.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">10545-8</div>
+							<div class="abstract">
+								<p>
+									Coefficiente di dilatazione termica lineare <b>&le;7 1/mk</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/thermal-shock.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">10545-9</div>
+							<div class="abstract">
+								<p>
+									Resistenza agli sbalzi termici <b>Resiste</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/thermal-moisture.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">10545-10</div>
+							<div class="abstract">
+								<p>
+									Dilatazione all'umidità (in mm/m) <b>&le;0.01% (0.1mm/m)</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/thermal-frost-resistance.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">10545-12</div>
+							<div class="abstract">
+								<p>
+									Resistenza al gelo <b>Resiste</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Proprietà fisiche</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/physical-bond-strength.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">EN 1348</div>
+							<div class="abstract">
+								<p>
+									Adesione a trazione con adesivi cementizi migliorati <b>&ge;1.0 N/mm&sup2; (Class C2 - EN 12004)</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/physical-reaction-to-fire.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="abstract">
+								<p>
+									Reazione al fuoco <b>A1 - A1<sub>fl</sub></b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche chimiche</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/chemical-resistance.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-13</div>
+							<div class="abstract">
+								<p>
+									Resistenza a prodotti chimici di uso domestico ed agli additivi per piscina <b>A</b>
+								</p>
+								<p>
+									Resistenza abasse concentrazioni di acidi e alcali <b>LA</b>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/chemical-staining.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-14</div>
+							<div class="abstract">
+								<p>
+									Resistenza alle macchie <b>5</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Caratteristiche di sicurezza</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/safety.svg" alt="" />
+						</div>
+						<div class="group group--feature">
+							<div class="abstract">
+								<p>
+									<b>DIN 51130</b> Metodo della rampa "calzato" <b>N.C.</b>
+								</p>
+								<p>
+									<b>BS 7976</b> Metodo del pendolo <b>&ge; 36 Dry &le; 24 Wet</b>
+								</p>
+								<p>
+									<b>AS 4586</b> Metodo del pendolo <b>Class P3</b>
+								</p>
+								<p>
+									<b>UNE-ENV 12633</b> Metodo del pendolo <b>Class 0</b>
+								</p>
+								<p>
+									<b>B.C.R.A. Rep. CEC/81</b> Coefficiente di attrito <b>&gt;0.40Asciutto &lt;0.40Bagnato</b>
+								</p>
+								<p>
+									<b>ANSI A137.1</b> Coefficiente di attrito dinamico <b>&lt; 0.42 Wet</b>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Certificazioni</div>
+				<div class="listing listing--certifications">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/certifications/dnlgl.png">
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/certifications/epd.svg">
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/certifications/pef.svg">
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/certifications/fdes.svg">
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/certifications/hpdc.png">
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/certifications/iso14021.svg">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!--
+<section class="section section--technical-info">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4" appear>
+				<div class="title">Technical info</div>
+				<div class="abstract">Conforme alla norma EN 14411 Appendice G gruppo Bla Group Bla (G)</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--technical-features">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Regularity Features</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="Regularity Thickness" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>Length and width <b>±0.3% ±1.0mm</b></p>
+								<p>Thickness <b>±0.3% ±1.0mm</b></p>
+								<p>Straightness of sides <b>±0.3% ±1.0mm</b></p>
+								<p>Rectangularity <b>±0.3% ±1.0mm</b></p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="Regularity Thickness" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>Length and width <b>±0.3% ±1.0mm</b></p>
+								<p>Thickness <b>±0.3% ±1.0mm</b></p>
+								<p>Straightness of sides <b>±0.3% ±1.0mm</b></p>
+								<p>Rectangularity <b>±0.3% ±1.0mm</b></p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="Regularity Thickness" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>Length and width <b>±0.3% ±1.0mm</b></p>
+								<p>Thickness <b>±0.3% ±1.0mm</b></p>
+								<p>Straightness of sides <b>±0.3% ±1.0mm</b></p>
+								<p>Rectangularity <b>±0.3% ±1.0mm</b></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Regularity Features</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="Regularity Thickness" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>Length and width <b>±0.3% ±1.0mm</b></p>
+								<p>Thickness <b>±0.3% ±1.0mm</b></p>
+								<p>Straightness of sides <b>±0.3% ±1.0mm</b></p>
+								<p>Rectangularity <b>±0.3% ±1.0mm</b></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 offset-lg-2">
+				<div class="category">Regularity Features</div>
+				<div class="listing listing--technical-features">
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="Regularity Thickness" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>Length and width <b>±0.3% ±1.0mm</b></p>
+								<p>Thickness <b>±0.3% ±1.0mm</b></p>
+								<p>Straightness of sides <b>±0.3% ±1.0mm</b></p>
+								<p>Rectangularity <b>±0.3% ±1.0mm</b></p>
+							</div>
+						</div>
+					</div>
+					<div class="listing__item" appear>
+						<div class="group group--icon">
+							<img lazy data-src="/atlas/img/svg/features/regularity-thickness.svg" alt="Regularity Thickness" />
+						</div>
+						<div class="group group--feature">
+							<div class="feature">ISO 10545-2</div>
+							<div class="abstract">
+								<p>Length and width <b>±0.3% ±1.0mm</b></p>
+								<p>Thickness <b>±0.3% ±1.0mm</b></p>
+								<p>Straightness of sides <b>±0.3% ±1.0mm</b></p>
+								<p>Rectangularity <b>±0.3% ±1.0mm</b></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+-->
+
+<!-- @@include ./templates/shared/download.html -->
+<!-- @@include ./templates/shared/store.html -->
+
+<!-- @@close-->
+<!-- @@block = breadcrumb-->
+<section class="section section--breadcrumb">
+	<div class="container">
+		<ul class="nav nav--breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="collections.html">Our Collections</a></li>
+			<li><a href="product-project.html">Marvel Edge</a></li>
+			<li><a href="product-absolute-brown.html">Absolute Brown Polished</a></li>
+			<li><a href="product-absolute-brown-tile.html">75x75</a></li>
+		</ul>
+	</div>
+</section>
+<!-- @@close-->
+
+
+<!-- @@block = css-->
+<!-- additional css here -->
+<!-- @@close-->
+<!-- @@block = js-->
+<!-- additional js here -->
+<!-- @@close-->

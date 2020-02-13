@@ -1,3 +1,7 @@
+import GtmService from '../gtm/gtm.service';
+
+const GTM_EVENT = 'ricerca-homepage';
+
 class EffectsCtrl {
 
 	constructor(
@@ -12,13 +16,22 @@ class EffectsCtrl {
 		this.filters = window.filters || {};
 		this.collections = this.filters.collections || { options: [] };
 		this.looks = this.filters.looks || { options: [] };
-		console.log(this.filters);
 	}
 
 	setFilter(item, filter) {
+		filter = filter || window.filters.collections;
 		this.$scope.$broadcast('onCloseDropdown');
 		item = item || filter.options[0];
 		filter.value = item.value;
+
+		if (filter === this.looks) {
+			this.track('collections-_look-Effetto' + item.key);
+		} else {
+			if (filter === this.collections) {
+				this.track('collections-' + item.key + '-');
+			}
+		}
+
 		this.navToCollections();
 	}
 
@@ -39,6 +52,12 @@ class EffectsCtrl {
 		window.location.href = this.collectionsUrl + '?q=' + serialized;
 	}
 
+	track(queryhp) {
+		GtmService.push({
+			"queryhp": queryhp,
+			"event": GTM_EVENT
+		});
+	}
 }
 
 EffectsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];

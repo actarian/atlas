@@ -1,5 +1,3 @@
-/* global angular */
-
 export default class LocationService {
 
 	constructor(

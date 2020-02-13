@@ -1,5 +1,3 @@
-
-
 let ID = 0;
 
 export default class ThronDirective {

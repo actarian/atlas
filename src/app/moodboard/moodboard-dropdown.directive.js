@@ -1,6 +1,3 @@
-
-/* global window, document, angular, TweenMax, TimelineMax */
-
 export default class MoodboardDropdownDirective {
 
 	constructor(

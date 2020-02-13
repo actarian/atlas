@@ -117,6 +117,67 @@ export class SwiperDirective {
 
 SwiperDirective.factory.$inject = [];
 
+export class SwiperGalleryHeroDirective extends SwiperDirective {
+
+	constructor() {
+		super();
+		this.options = {
+			slidesPerView: 'auto',
+			centeredSlides: true,
+			spaceBetween: 30,
+			loop: true,
+			keyboardControl: true,
+			mousewheelControl: false,
+			on: {
+				init: function() {
+					const swiper = this;
+					setTimeout(() => {
+						swiper.update();
+					})
+				},
+			},
+			onSlideClick: function(swiper) {
+				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+			},
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+			keyboard: {
+				enabled: true,
+				onlyInViewport: true,
+			},
+		};
+	}
+
+	onResize(scope, element, attributes) {
+		if (element.swiper) {
+			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
+			element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
+			element.swiper.update();
+			if (element.swiper._opening) {
+				element.swiper._opening = false;
+				const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+				if (initialSlide) {
+					element.swiper.slideTo(initialSlide, 0);
+				}
+			}
+		}
+		// console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
+	}
+
+	static factory() {
+		return new SwiperGalleryHeroDirective();
+	}
+
+}
+
+SwiperGalleryHeroDirective.factory.$inject = [];
+
 export class SwiperGalleryDirective extends SwiperDirective {
 
 	constructor() {
@@ -132,6 +193,14 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			// autoplay: 5,
 			keyboardControl: true,
 			mousewheelControl: false,
+			on: {
+				init: function() {
+					const swiper = this;
+					setTimeout(() => {
+						swiper.update();
+					})
+				},
+			},
 			onSlideClick: function(swiper) {
 				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
 			},
@@ -245,7 +314,7 @@ export class SwiperHeroDirective extends SwiperDirective {
 	}
 
 	toggleVideo(element, scope, id) {
-		const slides = [...element[0].querySelectorAll('.swiper-slide')];
+		const slides = Array.from(element[0].querySelectorAll('.swiper-slide'));
 		slides.forEach(slide => {
 			const node = slide.querySelector('video, [data-thron]');
 			if (node) {
@@ -314,13 +383,13 @@ export class SwiperFocusDirective extends SwiperDirective {
 				init: function() {
 					const swiper = this;
 					const container = swiper.$el[0];
-					const tabs = [...container.querySelectorAll('.btn--tab')];
+					const tabs = Array.from(container.querySelectorAll('.btn--tab'));
 					tabs.forEach((tab, i) => i === 0 ? tab.classList.add('active') : tab.classList.remove('active'));
 				},
 				slideChange: function() {
 					const swiper = this;
 					const container = swiper.$el[0];
-					const tabs = [...container.querySelectorAll('.btn--tab')];
+					const tabs = Array.from(container.querySelectorAll('.btn--tab'));
 					tabs.forEach((tab, i) => i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active'));
 				},
 			},
@@ -337,7 +406,7 @@ export class SwiperFocusDirective extends SwiperDirective {
 
 	linked(scope, element, attributes, controller) {
 		const node = element[0];
-		const tabs = [...node.querySelectorAll('.btn--tab')];
+		const tabs = Array.from(node.querySelectorAll('.btn--tab'));
 		const onOver = (event) => {
 			const index = tabs.indexOf(event.currentTarget);
 			element.swiper.slideTo(index, 1000, function() {
@@ -485,7 +554,7 @@ export class SwiperTimelineDirective extends SwiperDirective {
 				init: function() {
 					const swiper = this;
 					const container = swiper.$el[0];
-					const lis = [...container.querySelectorAll('.nav--timeline>li')];
+					const lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
 					lis.forEach((x, i) => {
 						x.addEventListener('click', () => {
 							swiper.slideTo(i, 600);
@@ -496,7 +565,7 @@ export class SwiperTimelineDirective extends SwiperDirective {
 				slideChange: function() {
 					const swiper = this;
 					const container = swiper.$el[0];
-					const lis = [...container.querySelectorAll('.nav--timeline>li')];
+					const lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
 					lis.forEach((x, i) => {
 						if (i === swiper.activeIndex) {
 							x.classList.add('active');

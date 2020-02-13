@@ -1,5 +1,3 @@
-
-
 // Workaround for Edge 16+, which only implemented object-fit for <img> tags
 // TODO: Keep an eye on Edge to determine which version has full final support
 const edgeVersion = window.navigator.userAgent.match(/Edge\/(\d{2})\./);

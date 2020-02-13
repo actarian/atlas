@@ -1,6 +1,3 @@
-
-/* global window, document, angular, MoodboardSearch, TweenMax, TimelineMax */
-
 export default class MoodboardSearchDirective {
 
 	constructor(
@@ -38,7 +35,7 @@ export default class MoodboardSearchDirective {
 
 	animateUnderlines(node) {
 		this.animated = true;
-		const values = [...node.querySelectorAll('.moodboard__underline')];
+		const values = Array.from(node.querySelectorAll('.moodboard__underline'));
 		values.forEach(x => {
 			TweenMax.set(x, { transformOrigin: '0 50%', scaleX: 0 });
 		});
@@ -77,7 +74,7 @@ export default class MoodboardSearchDirective {
 			this.animated = false;
 			// console.log('animateOff');
 			// TweenMax.killAll();
-			const values = [...node.querySelectorAll('.moodboard__underline')];
+			const values = Array.from(node.querySelectorAll('.moodboard__underline'));
 			TweenMax.set(values, { transformOrigin: '0 50%', scaleX: 0 });
 			TweenMax.to(values, 0.50, {
 				scaleX: 1,

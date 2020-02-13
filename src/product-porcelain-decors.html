@@ -1,0 +1,122 @@
+<!-- @@master = ./templates/layout.html { "class": "page-class", "title": "Atlas Concorde: piastrelle in ceramica per pavimenti e rivestimenti" } -->
+<!-- @@block = main-->
+<section class="section section--hero-secondary section--negative">
+	<div class="background" ng-if="!root.webglEnabled" parallax>
+		<img lazy data-src="/atlas/img/product/marvel/porcelain-decors/hero-secondary.jpg?width=1920&height=670&mode=crop" alt="title" />
+	</div>
+	<div class="background" ng-if="root.webglEnabled">
+		<canvas glsl-canvas="img/product/marvel/porcelain-decors/hero-secondary.jpg" class="glsl-canvas"></canvas>
+	</div>
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 offset-md-2">
+					<div class="category">Marvel Edge</div>
+					<div class="title"><b>Porcelain decors</b>, a symphony of colors</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- @@include ./templates/shared/menu-product.html -->
+<section class="section section--decor-tiles">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4" appear>
+				<div class="category">Marvel Edge</div>
+				<div class="title">3D Mosaic</div>
+			</div>
+		</div>
+		<div class="row listing listing--decor-tiles">
+			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
+				<!-- , 'Agata Azul', 'Gold Onyx', 'Red Luxury' -->
+				<div class="picture">
+					<img lazy data-src="/atlas/img/product/marvel/porcelain-decors/{{root.pad($index + 1)}}.jpg" alt="title" />
+				</div>
+				<div class="group group--cta">
+					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico 3D</span></a>
+					<div class="abstract">30.5x26.4 cm 12”x10</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--decor-tiles">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-4" appear>
+				<div class="category">Porcelain Decors</div>
+				<div class="title">Mosaic</div>
+			</div>
+		</div>
+		<div class="row listing listing--decor-tiles">
+			<div class="col-sm-8 col-md-4 listing__item" appear>
+				<div class="picture">
+					<img lazy data-src="/atlas/img/product/marvel/porcelain-decors/06.jpg" alt="title" />
+				</div>
+				<div class="group group--cta">
+					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico 3D</span></a>
+					<div class="abstract">30.5x26.4 cm 12”x10</div>
+				</div>
+			</div>
+		</div>
+		<div class="row listing listing--decor-tiles">
+			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
+				<div class="picture">
+					<img lazy data-src="/atlas/img/product/marvel/porcelain-decors/{{root.pad($index + 7)}}.jpg" alt="title" />
+				</div>
+				<div class="group group--cta">
+					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico Esagono Lappato</span></a>
+					<div class="abstract">30x35 cm - 11 3/4''x13 3/4''</div>
+				</div>
+			</div>
+		</div>
+		<div class="row listing listing--decor-tiles">
+			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
+				<div class="picture">
+					<img lazy data-src="/atlas/img/product/marvel/porcelain-decors/{{root.pad($index + 12)}}.jpg" alt="title" />
+				</div>
+				<div class="group group--cta">
+					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico Twill Lappato</span></a>
+					<div class="abstract">30x31 cm 11"x12"</div>
+				</div>
+			</div>
+		</div>
+		<div class="row listing listing--decor-tiles">
+			<div class="col-sm-8 col-md-4 listing__item" ng-repeat="item in ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Gold Onyx', 'Agata Azul', 'Red Luxury', 'Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown'] track by $index" appear>
+				<div class="picture">
+					<img lazy data-src="/atlas/img/product/marvel/porcelain-decors/{{root.pad($index + 17)}}.jpg" alt="title" />
+				</div>
+				<div class="group group--cta">
+					<a href="#" class="btn btn--category"><span>MARVEL {{item}} Mosaico Lappato</span></a>
+					<div class="abstract">30x30 cm 11 3/4”x11 3/4”</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- @@include ./templates/shared/download.html -->
+<!-- @@include ./templates/shared/store.html -->
+<!-- @@include ./templates/shared/beinspired.html -->
+
+<!-- @@close-->
+<!-- @@block = breadcrumb-->
+<section class="section section--breadcrumb">
+	<div class="container">
+		<ul class="nav nav--breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="collections.html">Our Collections</a></li>
+			<li><a href="product-project.html">Marvel Edge</a></li>
+			<li><a href="product-porcelain-decors.html">Porcelain Decors</a></li>
+		</ul>
+	</div>
+</section>
+<!-- @@close-->
+
+
+<!-- @@block = css-->
+<!-- additional css here -->
+<!-- @@close-->
+<!-- @@block = js-->
+<!-- additional js here -->
+<!-- @@close-->

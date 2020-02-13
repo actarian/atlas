@@ -20,7 +20,7 @@ import ParallaxDirective from './directives/parallax.directive';
 import ScrollToDirective from './directives/scroll-to.directive';
 import ScrollDirective from './directives/scroll.directive';
 import StickyDirective from './directives/sticky.directive';
-import { SwiperFocusDirective, SwiperGalleryDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperReferencesDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
+import { SwiperFocusDirective, SwiperGalleryDirective, SwiperGalleryHeroDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperReferencesDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
 import ThronDirective from './directives/thron.directive';
 // import TransitionDirective from './directives/transition.directive';
 import VideoDirective from './directives/video.directive';
@@ -108,6 +108,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)
+	.directive('swiperGalleryHero', SwiperGalleryHeroDirective.factory)
 	.directive('swiperHero', SwiperHeroDirective.factory)
 	.directive('swiperFocus', SwiperFocusDirective.factory)
 	.directive('swiperProjects', SwiperProjectsDirective.factory)

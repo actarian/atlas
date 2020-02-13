@@ -1,0 +1,327 @@
+<!-- @@master = ./templates/layout.html { "class": "page-class", "title": "Atlas Concorde: piastrelle in ceramica per pavimenti e rivestimenti" } -->
+<!-- @@block = main-->
+<section class="section section--hero-secondary">
+	<div class="aspect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 offset-md-2">
+					<div class="category" appear>Magazine</div>
+					<div class="title" appear><b>Like marble,</b> but It’s not marble</div>
+					<div class="author" appear>
+						<div class="author__avatar"><img src="/atlas/img/magazine-detail/avatar.jpg" title="Chiara Rimella" /></div>
+						<div class="author__info">
+							<div>Posted on July 27, 2018</div>
+							<div>by <a href="#social" target="_blank">Chiara Rimella</a></div>
+							<div>Atlas Concorde Editor’s Board</div>
+						</div>
+					</div>
+					<!--
+					<div class="btn--group">
+						<div class="btn btn--share">
+							<span class="label">Share</span> <span class="addthis_inline_share_toolbox" data-url="https://www.addthis.com/blog/" data-title="The AddThis Blog" data-media="http://i.imgur.com/sI5mrZP.png" ng-non-bindable></span>
+						</div>
+					</div>
+					-->
+					<div class="btn--group">
+						<div class="btn btn--share">
+							<span class="label">Share</span> <span class="addthis_inline_share_toolbox"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="background background--relative" ng-if="!root.webglEnabled" parallax appear>
+		<img lazy data-src="/atlas/img/magazine-detail/hero.jpg?width=1920&height=930&mode=crop" alt="title" />
+	</div>
+	<div class="background background--relative" ng-if="root.webglEnabled" appear>
+		<canvas glsl-canvas="img/magazine-detail/hero.jpg" class="glsl-canvas"></canvas>
+	</div>
+</section>
+<section class="section section--generic-intro-02">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-2" appear>
+				<div class="title">You would never say that...</div>
+				<div class="abstract">Porcelain floors and walls tiles. Looking like real marble.</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--picture-text">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-7 col-md-5 offset-md-2">
+				<div class="picture picture--vertical" media="{ id: 1017, coId: 101 }" parallax appear>
+					<img lazy data-src="/atlas/img/magazine-detail/01.jpg" alt="title" />
+				</div>
+			</div>
+			<div class="col-sm-8 offset-sm-1 col-md-5 offset-md-2">
+				<div class="description" appear>
+					Finely crafted interiors in each and every detail encounter a new way of living the city and the search for unique experiences: from dining to wellness, right down to business meetings. International airports, large hotels, exclusive modern buildings, spas and wellness centres are designed with specific and innovative concepts that combine elegance and comfort, meeting the needs of those who want to bring together business, entertainment and relaxation.
+					Atlas Concorde has always dedicated special attention to these hospitality spaces, marked by absolute elegance, by offering <b>surfaces that furnish unmistakably sophisticated and stylish environments</b> where luxury and design coexist.
+				</div>
+				<div class="group group--cta" appear>
+					<a href="/atlas/product-gallery-detail.html" class="btn btn--link"><span><b>Discover more on marble trend</b></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--generic-intro-02">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-2">
+				<div class="title" appear>There was a little cute house</div>
+				<div class="abstract" appear>Porcelain tile. A contemporary material for a classic marble look.</div>
+				<div class="description" appear>
+					<p>The complete projects for floors and walls interpret the allure of fine and <b>up-to-date marbles with surprising realism</b> and attention to details. Atlas Concorde’s outstanding technical research and production give life to furnishing surfaces that faithfully reproduce the natural material in its graphic depth and the variety of its natural veining.</p>
+					<p>A wide range of formats and finishes have been conceived for numerous applications and intended uses: halls, receptions, waiting rooms, business lounges, suites, bathrooms and spas. The beauty and splendour of the marbles are revived in a surface that guarantees the <b>excellent technical and functional advantages of porcelain stoneware</b>: perfect technical reproducibility of the same surface over time, resistance to wear, stains and contact with detergents.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--gallery" appear>
+	<div class="swiper-container" swiper-gallery initial-slide="0">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<img src="/atlas/img/magazine-detail/02.jpg?height=780&mode=crop" alt="title" />
+			</div>
+			<div class="swiper-slide">
+				<img src="/atlas/img/magazine-detail/03.jpg?height=780&mode=crop" alt="title" />
+			</div>
+			<div class="swiper-slide">
+				<img src="/atlas/img/magazine-detail/04.jpg?height=780&mode=crop" alt="title" />
+			</div>
+		</div>
+		<!-- Add Pagination -->
+		<div class="swiper-pagination swiper-pagination-white"></div>
+		<!-- Add Navigation -->
+		<div class="swiper-button-prev swiper-button-white"></div>
+		<div class="swiper-button-next swiper-button-white"></div>
+	</div>
+</section>
+
+
+<section class="section section--gallery" data-component-id="9181">
+	<div class="zoomable" zoomable ng-class="{ zoomed: zoomed }">
+		<div class="zoomable__content">
+			<div class="swiper-container" appear swiper-gallery initial-slide="0">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media="{ id: 2001, coId: 101 }">
+							<img ng-src="/atlas/img/product/marvel/02.jpg" alt="title">
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture" video="{ id: 2002, coId: 101 }">
+							<video muted playsinline poster="https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getThumbnail/gruppoconcorde/0x0/2aef9d6b-762c-4562-92b3-3120fb3a22c3.jpg" data-object-fit="cover">
+								<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/2aef9d6b-762c-4562-92b3-3120fb3a22c3/yz1hpd/WEBHD/AtlasConcorde_Arbor_002_Short_01.mp4" type="video/mp4">
+							</video>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture" video="{ id: 2003, coId: 101 }">
+							<video muted playsinline poster="https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getThumbnail/gruppoconcorde/0x0/95356533-66f5-4c41-84b0-61b49b9a7024.jpg" data-object-fit="cover">
+								<source src="https://gruppoconcorde-cdn.thron.com/delivery/public/video/gruppoconcorde/95356533-66f5-4c41-84b0-61b49b9a7024/yz1hpd/WEBHD/AtlasConcorde_Arbor_002_Short_08.mp4" type="video/mp4">
+							</video>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media="{ id: 2004, coId: 101 }">
+							<img src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/7082e24a-3fd8-4ba3-a27b-6d6b4ca0d69f/yz1hpd/std/0x1200/AtlasConcorde_Coverings2019_USA_12.jpg" alt="Contract" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 12</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media="{ id: 2005, coId: 101 }">
+							<img src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/6b9e4816-b040-49b3-a2a5-9719818c6504/yz1hpd/std/0x1200/AtlasConcorde_Coverings2019_USA_32.jpg" alt="Contract" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 32</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media="{ id: 2006, coId: 101 }">
+							<img src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/e16e391b-fc55-457a-a195-0405a9d693a1/yz1hpd/std/0x1200/nomefile bom.jpg" alt="Contract" />
+						</div>
+						<div class="title">nomefile bom</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media="{ id: 2007, coId: 101 }">
+							<img src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/a3d5fe3f-04e8-4572-9f35-5ca5ad943407/yz1hpd/std/0x1200/AtlasConcorde_Coverings2019_USA_15.jpg" alt="Contract" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 15</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="picture zoomable__trigger" media="{ id: 2008, coId: 101 }">
+							<img src="https://gruppoconcorde-cdn.thron.com/delivery/public/image/gruppoconcorde/fb8e2253-4491-45b9-8d96-398be81abbfc/yz1hpd/std/0x1200/AtlasConcorde_Coverings2019_USA_34.jpg" alt="Contract" />
+						</div>
+						<div class="title">AtlasConcorde Coverings2019 USA 34</div>
+					</div>
+				</div>
+				<!-- Add Pagination -->
+				<div class="swiper-pagination swiper-pagination-white"></div>
+				<!-- Add Navigation -->
+				<div class="swiper-button-prev swiper-button-white"></div>
+				<div class="swiper-button-next swiper-button-white"></div>
+			</div>
+		</div>
+		<div class="zoomable__close"><svg class="icon icon--close"><use xlink:href="#close"></use></svg></div>
+	</div>
+</section>
+
+<section class="section section--generic-intro-02">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-2">
+				<div class="title" appear>An harmonious coating care</div>
+				<div class="abstract" appear>How to match the right porcelain tile floor with the right wall tile.</div>
+				<div class="description" appear>
+					<p>Floor and wall tiles in which the marble- and stone-effect surfaces co-exist and cross-fertilize each other, <b>creating combinations of materials, juxtapositions of colour and encounters between glossy and matt finishes</b> that make the destined spaces unique. Halls, reception areas, waiting rooms, business lounges, suites, fitness rooms and spas are embellished with surfaces that combine the graphic depth of marble and stone to achieve compositions of unmistakeable style, in line with the latest trends in architecture and contemporary design.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--horizontal-vertical">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-7">
+				<div class="picture picture--horizontal" media="{ id: 1004, coId: 101 }" parallax appear>
+					<img lazy data-src="/atlas/img/magazine-detail/05.jpg" alt="title" />
+				</div>
+			</div>
+			<div class="col-sm-7 offset-sm-2">
+				<div class="picture picture--vertical" media="{ id: 1005, coId: 101 }" parallax appear>
+					<img lazy data-src="/atlas/img/magazine-detail/06.jpg" alt="title" />
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--text">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5 offset-md-2" appear>
+				<div class="title">Marble-effect surfaces, with <b>porcelain tile flooring and coordinated wall tiles,</b> that are inspired by precious marbles.</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--full">
+	<div class="container">
+		<div class="picture picture--horizontal" media="{ id: 1031, coId: 101 }" parallax appear>
+			<img lazy data-src="/atlas/img/magazine-detail/07.jpg" alt="title" />
+		</div>
+	</div>
+</section>
+<section class="section section--generic-intro-02">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-2">
+				<div class="title" appear>What our expert says</div>
+				<div class="abstract" appear>Why porcelain tiles are so brilliant!</div>
+				<div class="description" appear>
+					<p>The veins running through marble can be a rainbow of colours (design hint: marble with pinkish veins works great alongside pink-hued accessories, like copper), and while many think that real marble is the key to finding these colour variations, digitally-printed marble effect porcelain often has more colour variations, because it’s been specially designed in this manner.</p>
+					<p>These tiles offer the incredible look of real marble and the resilience and hard wearing nature of porcelain. If you’re thinking about redecorating this year, then marble really is a top choice, and it’s right on trend, too.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--picture-text">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-7 col-md-5 offset-md-2">
+				<div class="picture picture--vertical" media="{ id: 1017, coId: 101 }" parallax appear>
+					<img lazy data-src="/atlas/img/magazine-detail/08.jpg" alt="title" />
+				</div>
+			</div>
+			<div class="col-sm-8 offset-sm-1 col-md-5 offset-md-2">
+				<div class="abstract" appear>The glossy, shiny surface is easy to clean, the <b>colour remains unchanged</b>, and is resistant to stains and chemical agents.</div>
+				<div class="description" appear>The veins running through marble can be a rainbow of colours (design hint: marble with pinkish veins works great alongside pink-hued accessories, like copper), and while many think that real marble is the key to finding these colour variations, digitally-printed marble effect porcelain often has more colour variations, because it’s been specially designed in this manner.</div>
+				<!--
+				<div class="group group--cta" appear>
+					<a href="/atlas/product-gallery-detail.html" class="btn btn--link"><span><b>discover more on marble trend</b></span></a>
+				</div>
+				-->
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--full">
+	<div class="container">
+		<div class="picture picture--horizontal" media="{ id: 1031, coId: 101 }" parallax appear>
+			<img lazy data-src="/atlas/img/magazine-detail/09.jpg" alt="title" />
+		</div>
+	</div>
+</section>
+<section class="section section--generic-intro-02">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 offset-md-2">
+				<div class="title" appear>Design trend</div>
+				<div class="abstract" appear>Lighting: marble everything</div>
+				<div class="description" appear>The recent marble revival trend has expanded into the world of lighting. Here are some of our favorite table, floor, and ceiling lamps, most made of marble, others of alabaster and onyx, and all in shapes that are elemental and refined.</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--horizontal">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-9 offset-sm-5">
+				<div class="picture picture--horizontal" media="{ id: 1032, coId: 101 }" parallax appear>
+					<img lazy data-src="/atlas/img/magazine-detail/10.jpg" alt="title" />
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section--picture-text text--primary">
+	<div class="background background--positive">
+		<img lazy data-src="/atlas/img/magazine-detail/background-texture.jpg" />
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-7 col-md-7">
+				<div class="picture picture--vertical" media="{ id: 1017, coId: 101 }" parallax appear>
+					<img lazy data-src="/atlas/img/magazine-detail/11.jpg" alt="title" />
+				</div>
+			</div>
+			<div class="col-sm-8 offset-sm-1 col-md-5 offset-md-2" appear>
+				<div class="title">The collection</div>
+				<div class="abstract">Marvel world.<br> Meticulous perfection.</div>
+				<div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</div>
+				<div class="group group--cta">
+					<a href="/atlas/product-project.html" class="btn btn--link"><span><b>Discover marvel world</b></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- @@include ./templates/shared/beinspired.html -->
+
+<!-- @@close-->
+<!-- @@block = breadcrumb-->
+<section class="section section--breadcrumb">
+	<div class="container">
+		<ul class="nav nav--breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li><span>Be Inspired</span></li>
+			<li><a href="magazine.html">Magazine</a></li>
+			<li><a href="magainze-detail.html">Like marble, but It’s not marble</a></li>
+		</ul>
+	</div>
+</section>
+<!-- @@close-->
+
+
+<!-- @@block = css-->
+<!-- additional css here -->
+<!-- @@close-->
+<!-- @@block = js-->
+<!-- additional js here -->
+<!-- @@close-->

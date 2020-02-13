@@ -1,6 +1,3 @@
-
-
-
 class ContactsCtrl {
 
 	constructor(
@@ -41,9 +38,11 @@ class ContactsCtrl {
 					this.error = error;
 					this.state.error(error);
 				}
-			)/*.finally(() => {
-				this.state.ready();
-			})*/;
+			)
+			/*.finally(() => {
+							this.state.ready();
+						})*/
+			;
 			/*
 			this.$timeout(() => {
 				this.state.ready();

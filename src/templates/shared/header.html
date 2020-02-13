@@ -1,0 +1,107 @@
+<!-- HEADER -->
+<header class="section--header" ng-class="{ scrolled: root.scrolled, filters: root.menuProductOpened }" scroll="root.onScroll($event)" ng-cloak>
+	<div class="menu menu--primary">
+		<div class="container">
+			<div class="group">
+				<a href="/atlas/index.html" class="brand">
+					<!-- ng-click="root.toggleBrand($event)" -->
+					<svg class="icon icon--brand" ng-if="root.brand == 'atlas-concorde'"><use xlink:href="#50-atlas-concorde-negative"></use></svg>
+					<svg class="icon icon--brand" ng-if="root.brand == 'atlas-concorde-solution'"><use xlink:href="#50-atlas-concorde-solution-negative"></use></svg>
+					<svg class="icon icon--brand" ng-if="root.brand == 'atlas-concorde-usa'"><use xlink:href="#50-atlas-concorde-usa-negative"></use></svg>
+					<svg class="icon icon--brand" ng-if="root.brand == 'atlas-concorde-russia'"><use xlink:href="#50-atlas-concorde-russia-negative"></use></svg>
+					<svg class="icon icon--brand-positive" ng-if="root.brand == 'atlas-concorde'"><use xlink:href="#50-atlas-concorde"></use></svg>
+					<svg class="icon icon--brand-positive" ng-if="root.brand == 'atlas-concorde-solution'"><use xlink:href="#50-atlas-concorde-solution"></use></svg>
+					<svg class="icon icon--brand-positive" ng-if="root.brand == 'atlas-concorde-usa'"><use xlink:href="#50-atlas-concorde-usa"></use></svg>
+					<svg class="icon icon--brand-positive" ng-if="root.brand == 'atlas-concorde-russia'"><use xlink:href="#50-atlas-concorde-russia"></use></svg>
+				</a>
+			</div>
+			<div class="group">
+				<ul class="nav nav--primary hidden-sm-down">
+					<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
+						<span>Collections</span><!-- ng-click="root.toggleNav(1)" -->
+						<!-- @@include ./submenu-collections.html -->
+					</li>
+					<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
+						<span>Collections</span><!-- ng-click="root.toggleNav(1)" -->
+						<!-- @@include ./submenu-collections-usa.html -->
+					</li>
+					<li has-dropdown="span" has-dropdown-consumer="root">
+						<span>Spaces</span>
+						<!-- @@include ./submenu-spaces.html -->
+					</li>
+					<li has-dropdown="span" has-dropdown-consumer="root">
+						<span>Be Inspired</span>
+						<!-- @@include ./submenu-beinspired.html -->
+					</li>
+					<li has-dropdown="span" has-dropdown-consumer="root">
+						<span>Projects</span>
+						<!-- @@include ./submenu-projects.html -->
+					</li>
+					<li class="group group--search" ng-class="{ active: root.searchOpened }" ng-click="root.searchOpened = true">
+						<input class="control--search" type="text" ng-model="root.search" placeholder="I'm looking for..." ng-blur="root.searchOpened = false" ng-keyup="$event.keyCode == 13 && root.onSearch(root.search)" data-search="https://atlasconcorde.wslabs.it/it/cerca_nel_sito?q=##query##" />
+						<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+					</li>
+				</ul>
+				<button type="button" class="btn btn--menu hidden-md-up" ng-click="root.menuOpened = !root.menuOpened">
+					<svg class="icon icon--menu" ng-if="!root.menuOpened"><use xlink:href="#menu"></use></svg>
+					<svg class="icon icon--close" ng-if="root.menuOpened"><use xlink:href="#close"></use></svg>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="header__menu" ng-class="{ opened: root.menuOpened }">
+		<div class="menu menu--secondary" ng-class="{ 'hidden-sm-down': !root.menuOpened }">
+			<div class="container">
+				<div class="group hidden-md-up">
+					<ul class="nav nav--primary">
+						<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand != 'atlas-concorde-usa' && root.brand != 'atlas-concorde-russia'">
+							<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+							<!-- @@include ./submenu-collections.html -->
+						</li>
+						<li has-dropdown="span" has-dropdown-consumer="root" ng-if="root.brand == 'atlas-concorde-usa' || root.brand == 'atlas-concorde-russia'">
+							<span>Explore Our Collections</span><!-- ng-click="root.toggleNav(1)" -->
+							<!-- @@include ./submenu-collections-usa.html -->
+						</li>
+						<li has-dropdown="span" has-dropdown-consumer="root">
+							<span>Be Inspired</span>
+							<!-- @@include ./submenu-beinspired.html -->
+						</li>
+						<li has-dropdown="span" has-dropdown-consumer="root">
+							<span>Projects</span>
+							<!-- @@include ./submenu-projects.html -->
+						</li>
+					</ul>
+				</div>
+				<div class="group">
+					<ul class="nav nav--secondary">
+						<li><a href="/atlas/store-locator.html">Store locator</a></li>
+						<li><a href="/atlas/company.html">Company</a></li>
+						<li><a href="/atlas/contacts.html">Contacts</a></li>
+						<li><a href="/atlas/news.html">News</a></li>
+					</ul>
+				</div>
+				<div class="group">
+					<ul class="nav nav--secondary">
+						<li><a href="/atlas/faq.html">Faq</a></li>
+						<li><a href="/atlas/wishlist.html">Wishlist <svg class="icon icon--wishlist"><use xlink:href="#wishlist"></use></svg></a> <span class="wishlist--badge" ng-bind="root.wishlistCount" ng-if="root.wishlistCount"></span></li>
+						<li has-dropdown="span" has-dropdown-consumer="root">
+							<span>International / English <svg class="icon icon--angle-down"><use xlink:href="#angle-down"></use></svg></span>
+							<!-- @@include ./submenu-markets.html -->
+						</li>
+					</ul>
+				</div>
+				<div class="group group--search hidden-md-up">
+					<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
+					<input class="control--search" placeholder="I’m looking for..." ng-model="root.search" placeholder="cerca..." ng-keyup="$event.keyCode == 13 && root.onSearch(root.search)" data-search="https://atlasconcorde.wslabs.it/it/cerca_nel_sito?q=##query##">
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="loader--cube">
+	<div class="cube__item cube__item--1"></div>
+	<div class="cube__item cube__item--2"></div>
+	<div class="cube__item cube__item--4"></div>
+	<div class="cube__item cube__item--3"></div>
+</div>

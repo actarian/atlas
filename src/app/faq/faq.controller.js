@@ -1,5 +1,3 @@
-
-
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, map, shareReplay, takeUntil } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
@@ -94,7 +92,7 @@ class FaqCtrl {
 	}
 
 	search$() {
-		const node = document.querySelector('.control--search');
+		const node = document.querySelector('#faq-search');
 		return fromEvent(node, 'input').pipe(
 			debounceTime(1000),
 			map(function(event) {

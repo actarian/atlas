@@ -1,6 +1,3 @@
-
-/* global angular */
-
 const TIMEOUT = 5 * 60 * 1000; // five minutes
 
 export class CookieService {

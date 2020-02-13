@@ -47,7 +47,7 @@ export default class HighwayDirective {
 				let top = 0;
 				const sectionProduct = element[0].querySelector('.section--product');
 				if (wasProduct && sectionProduct && window.innerWidth > 860) {
-					const anchors = [...sectionProduct.querySelectorAll('a')];
+					const anchors = Array.from(sectionProduct.querySelectorAll('a'));
 					let selectedAnchor = anchors.find(x => window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length);
 					// console.log(anchors, selectedAnchor);
 					if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {

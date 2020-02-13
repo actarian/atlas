@@ -1,5 +1,3 @@
-
-
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
@@ -24,7 +22,7 @@ class RootCtrl {
 			this.wishlistCount = count;
 		});
 		$scope.$on('onMuuri', () => {
-			this.domService.scrollEmitter$.next({ target: window });
+			this.domService.secondaryScroll$_.next({ target: window });
 		});
 		$scope.$on('destroy', () => {
 			// console.log('destroy');
@@ -43,9 +41,7 @@ class RootCtrl {
 	onScroll(event) {
 		const scrolled = event.scroll.scrollTop > 40;
 		const direction = event.scroll.direction;
-		// console.log(this.$scope.hasDropdown, Object.keys(this).filter(x => typeof this[x] === 'boolean').map(x => `${x}: ${this[x]}`).join(','));
 		if (this.droppedIn) {
-			// console.log('onScroll.onCloseDropdown');
 			this.$scope.$broadcast('onCloseDropdown');
 		}
 		if (event.scroll.direction) {
@@ -67,7 +63,6 @@ class RootCtrl {
 			// console.log(top);
 		});
 		*/
-		// console.log('onInit');
 		this.$timeout(() => {
 			this.init = true;
 			const view = document.querySelector('.view');
@@ -99,6 +94,9 @@ class RootCtrl {
 		}
 		if (this.droppinIn || this.menuOpened || this.menuProductOpened) {
 			classes['droppin-in'] = true;
+		}
+		if (this.domService.isIE()) {
+			classes[this.domService.isIE()] = true;
 		}
 		return classes;
 	}
@@ -171,6 +169,7 @@ class RootCtrl {
 	}
 
 	onDroppedIn(node) {
+		// console.log('onDroppedIn', node);
 		return new Promise((resolve, reject) => {
 			this.droppedIn = true;
 			this.droppinIn = true;

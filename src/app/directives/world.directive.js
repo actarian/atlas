@@ -1,6 +1,3 @@
-
-
-
 // let INDEX = 0;
 
 export default class WorldDirective {
@@ -20,9 +17,9 @@ export default class WorldDirective {
 		const node = element[0];
 		const img = node.querySelector('img');
 		const nodePoints = node.querySelector('.points');
-		const /*onEnter*/onClick = (event) => {
+		const /*onEnter*/ onClick = (event) => {
 			event.stopImmediatePropagation();
-			[...node.querySelectorAll('.world__point')].forEach(x => {
+			Array.from(node.querySelectorAll('.world__point')).forEach(x => {
 				if (x === event.currentTarget) {
 					x.classList.add('active');
 				} else {
@@ -55,13 +52,13 @@ export default class WorldDirective {
 		};
 		scope.$on('$destroy', () => {
 			node.removeEventListener('click', onClick);
-			[...node.querySelectorAll('.world__point')].forEach(node => {
+			Array.from(node.querySelectorAll('.world__point')).forEach(node => {
 				node.removeEventListener('click', onClick);
 			});
-			//[...node.querySelectorAll('.world__point')].forEach(node => {
+			//Array.from(node.querySelectorAll('.world__point')).forEach(node => {
 			//	node.removeEventListener('mouseenter', onEnter);
 			//});
-			//[...node.querySelectorAll('.world__point .world__info')].forEach(node => {
+			//Array.from(node.querySelectorAll('.world__point .world__info')).forEach(node => {
 			//	node.removeEventListener('mouseleave', onLeave);
 			//});
 		});

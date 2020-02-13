@@ -1,5 +1,3 @@
-
-
 import { first } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
 const GTM_CAT = 'moodboard';

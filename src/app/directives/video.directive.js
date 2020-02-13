@@ -146,7 +146,7 @@ export default class VideoDirective {
 			} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
 				this.$timeout(() => {
 					let index = 0;
-					const items = [...document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')].map((itemNode, i) => {
+					const items = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map((itemNode, i) => {
 						if (itemNode == node) {
 							index = i;
 						}

@@ -36,7 +36,7 @@ export default class ZoomableDirective {
 			}
 		};
 		const onClick = () => {
-			// const slides = [...node.querySelectorAll('.swiper-slide')];
+			// const slides = Array.from(node.querySelectorAll('.swiper-slide'));
 			if (node.classList.contains('zoomed')) {
 				this.zoomOut(scope, node, content, rect);
 				if (attributes.zoomed !== undefined) {
@@ -54,7 +54,7 @@ export default class ZoomableDirective {
 			if (close) {
 				close.addEventListener('click', onClose);
 			}
-			triggers = [...node.querySelectorAll('.zoomable__trigger')];
+			triggers = Array.from(node.querySelectorAll('.zoomable__trigger'));
 			// console.log('ZoomableDirective', node, content, triggers);
 			triggers.forEach(x => x.addEventListener('click', onClick));
 		};

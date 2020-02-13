@@ -1,0 +1,55 @@
+.section--table {
+	padding: 50px 0;
+
+	@include media-breakpoint-down(xs) {
+		.container {
+			overflow-y: hidden;
+			overflow-x: auto;
+		}
+	}
+}
+
+.flex--table {
+
+	.flex--row {
+		display: flex;
+		align-items: center;
+
+		.flex__item {
+			min-width: 30%;
+			flex: 1 1 30%;
+			padding: 10px 0;
+			margin-bottom: 20px;
+			border-bottom: 1px solid $border;
+			font-size: 15px;
+			line-height: 1;
+			color: $foreground-secondary;
+
+			&--title {
+				border-bottom: 2px solid $border;
+				text-transform: uppercase;
+				font-size: 20px;
+				font-weight: $font-light;
+				color: $foreground;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		display: table;
+
+		.flex--row {
+			display: table-row;
+
+			.flex__item {
+				display: table-cell;
+				white-space: nowrap;
+				padding-right: 20px;
+			}
+		}
+	}
+}
+
+.section--tiles+.section--table {
+	margin-top: -50px;
+}

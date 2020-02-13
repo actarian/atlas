@@ -1,6 +1,3 @@
-
-
-
 export default class LazyScriptDirective {
 
 	constructor() {

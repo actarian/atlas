@@ -1,5 +1,3 @@
-
-
 //import { of } from "rxjs";
 
 export const ITEMS_PER_PAGE = 20;
@@ -130,7 +128,7 @@ class AdvancedSearchCtrl {
 				.map(x => {
 					// duplico i prodotti e minimal
 					const item = Object.assign({}, x);
-					item.minimals = [...x.minimals];
+					item.minimals = Array.from(x.minimals);
 					return item;
 				})
 				.filter(item => {

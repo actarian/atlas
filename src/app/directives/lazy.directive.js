@@ -68,6 +68,13 @@ export default class LazyDirective {
 				// se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
 				// src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
 				src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
+				/*
+				if (node.offsetWidth >= node.offsetHeight) {
+					src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
+				} else {
+					src = splitted[0] + '/std/0x' + Math.floor(node.offsetHeight * 1.1).toString() + splitted[1].substr(3);
+				}
+				*/
 				if (!src.match(/[&?]scalemode=?/)) {
 					src += src.indexOf('?') !== -1 ? '&' : '?';
 					// src += 'scalemode=auto';

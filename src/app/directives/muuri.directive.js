@@ -1,4 +1,3 @@
-
 /* global window, document, angular, Muuri, TweenMax, TimelineMax */
 
 export class MuuriDirective {
@@ -29,7 +28,7 @@ export class MuuriDirective {
 			return;
 			if (element.muuri) {
 				const node = element[0];
-				const items = [...node.querySelectorAll('.listing__item')];
+				const items = Array.from(node.querySelectorAll('.listing__item'));
 				element.muuri.refreshItems(items).layout();
 			}
 		});
@@ -50,7 +49,7 @@ export class MuuriDirective {
 			// const items = scope.$eval(attributes.muuri);
 			const previousItems = element.muuri.getItems().map(x => x.getElement());
 			// console.log('MuuriDirective.previousItems', previousItems);
-			const items = [...node.querySelectorAll('.listing__item')];
+			const items = Array.from(node.querySelectorAll('.listing__item'));
 			// console.log('MuuriDirective.newItems', items);
 			const newItems = items.filter(x => previousItems.indexOf(x) === -1);
 			const removeItems = previousItems.filter(x => items.indexOf(x) === -1);

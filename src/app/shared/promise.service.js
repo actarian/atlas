@@ -1,6 +1,3 @@
-
-/* global angular */
-
 export default class PromiseService {
 
 	constructor(
