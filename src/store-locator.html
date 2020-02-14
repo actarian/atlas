@@ -76,7 +76,7 @@
 							{{item.address}}<br>
 							{{item.zip}} {{item.city}} {{item.cod_provincia}} {{item.stato_IT}}<br>
 							<span ng-if="item.tel">{{item.tel}}<br></span>
-							<span ng-if="item.email"><a ng-href="/atlas/mailto:{{item.email}}">{{item.email}}</a></span>
+							<span ng-if="item.email"><a ng-href="mailto:{{item.email}}">{{item.email}}</a></span>
 						</div>
 						<div class="distance">At approx. <b>{{item.distance | number : 0}} km</b></div>
 					</div>

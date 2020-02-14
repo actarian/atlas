@@ -142,7 +142,7 @@ class StoreLocatorCtrl {
 			if (store.tel)
 				content = content.replace('<!--store.tel-->', `<span>${store.tel}<br></span>`);
 			if (store.email)
-				content = content.replace('<!--store.email-->', `<span><a href="/atlas/mailto:${store.email}">${store.email}</a><br></span>`);
+				content = content.replace('<!--store.email-->', `<span><a href="mailto:${store.email}">${store.email}</a><br></span>`);
 			if (store.webSite)
 				content = content.replace('<!--store.webSite-->', `<span><a target="_blank" href="${store.webSite}">${store.webSite}</a></span>`);
 			if (store.pageurl)
