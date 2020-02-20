@@ -44,13 +44,12 @@ class RootCtrl {
 		if (this.droppedIn) {
 			this.$scope.$broadcast('onCloseDropdown');
 		}
-		if (event.scroll.direction) {
-			if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
-				this.$timeout(() => {
-					this.scrolled = scrolled;
-					this.direction = direction;
-				}, 1);
-			}
+		// console.log('RootController', 'scrolled', scrolled, 'direction', direction);
+		if (this.direction !== direction || (direction && this.scrolled !== scrolled)) {
+			this.$timeout(() => {
+				this.scrolled = scrolled;
+				this.direction = direction;
+			}, 1);
 		}
 	}
 

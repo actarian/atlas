@@ -44,22 +44,25 @@ export default class HighwayDirective {
 
 		const onProductMenu = () => {
 			setTimeout(() => {
-				let top = 0;
 				const sectionProduct = element[0].querySelector('.section--product');
-				if (wasProduct && sectionProduct && window.innerWidth > 860) {
-					const anchors = Array.from(sectionProduct.querySelectorAll('a'));
-					let selectedAnchor = anchors.find(x => window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length);
-					// console.log(anchors, selectedAnchor);
-					if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
-						const sectionProductTop = sectionProduct.getBoundingClientRect().top;
-						top = sectionProductTop + DomService.getScrollTop(window);
+				if (sectionProduct) {
+					let top = 0;
+					if (wasProduct && window.innerWidth > 860) {
+						const anchors = Array.from(sectionProduct.querySelectorAll('a'));
+						let selectedAnchor = anchors.find(x => window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length);
+						// console.log(anchors, selectedAnchor);
+						if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
+							const sectionProductTop = sectionProduct.getBoundingClientRect().top;
+							top = sectionProductTop + DomService.getScrollTop(window);
+						}
 					}
+					// console.log('HighwayDirective.onProductMenu', top);
+					window.scrollTo(0, top);
+					// console.log('wasProduct', wasProduct);
+					// console.log(wasProduct, sectionProduct);
+					// console.log('isProduct', wasProduct);
 				}
-				window.scrollTo(0, top);
-				// console.log('wasProduct', wasProduct);
-				// console.log(wasProduct, sectionProduct);
 				wasProduct = Boolean(sectionProduct);
-				// console.log('isProduct', wasProduct);
 			}, 100);
 		}
 

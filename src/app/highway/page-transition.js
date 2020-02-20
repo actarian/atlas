@@ -1,5 +1,3 @@
-
-
 import Highway from '@dogstudio/highway';
 import DomService from '../services/dom.service';
 import Rect from '../shared/rect';

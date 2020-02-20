@@ -20,6 +20,7 @@ export class State {
 		this.isErroring = false;
 		this.isSuccess = false;
 		this.isSuccessing = false;
+		this.isSending = false;
 		this.button = null;
 		this.errors = [];
 	}
@@ -123,6 +124,7 @@ export class State {
 		this.errors = [];
 		this.$timeout(() => {
 			this.isSuccessing = false;
+			this.isSending = true;
 		}, DELAY);
 	}
 

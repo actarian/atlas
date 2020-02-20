@@ -720,7 +720,20 @@
 	  _proto.deserializeFilters = function deserializeFilters(initialFilter) {
 	    var _this = this;
 
-	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
+	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+	    console.log('CollectionsCtrl.deserializeFilters', locationFilters);
+
+	    if (Object.keys(locationFilters).length > 0) {
+	      window.onload = function () {
+	        setTimeout(function () {
+	          var filtersNode = document.querySelector('.section--filters');
+
+	          if (filtersNode) {
+	            _this.scrollIntoView(filtersNode);
+	          }
+	        }, 150);
+	      };
+	    }
 
 	    Object.keys(this.filters).forEach(function (x) {
 	      var filter = _this.filters[x];
@@ -827,6 +840,10 @@
 	      brand.looks = looks.map(function (x) {
 	        var look = Object.assign({}, x);
 	        look.collections = brand.collections.filter(function (collection) {
+	          if (_this4.filters.looks.value && x.value !== _this4.filters.looks.value) {
+	            return false;
+	          }
+
 	          var has = _this4.filters.looks.doFilter(collection, look.value);
 
 	          filters.forEach(function (filter) {
@@ -842,6 +859,8 @@
 	          return has;
 	        });
 	        return look;
+	      }).filter(function (x) {
+	        return x.collections.length;
 	      }); // .filter(x => x.collections.length)
 	      // console.log(has, collection, filters);
 
@@ -902,6 +921,12 @@
 
 	  _proto.removeFilter = function removeFilter(filter) {
 	    this.setFilter(null, filter);
+	  };
+
+	  _proto.scrollIntoView = function scrollIntoView(node) {
+	    var curtop = document.body.scrollTop || document.documentElement.scrollTop;
+	    var top = curtop + node.getBoundingClientRect().top;
+	    window.scroll(0, top);
 	  };
 
 	  return CollectionsCtrl;
@@ -5170,13 +5195,14 @@
 	        var previous;
 
 	        var subscription = _this.domService.scrollIntersection$(node).pipe(distinctUntilChanged(function (a, b) {
+	          // console.log('ScrollDirective', b.scroll.scrollTop, previous);
 	          var differs = b.scroll.scrollTop !== previous;
 	          previous = b.scroll.scrollTop;
 	          return !differs;
 	        })).subscribe(function (event) {
 	          var callback = scope.$eval(attributes.scroll, {
 	            $event: event
-	          });
+	          }); // console.log('ScrollDirective.event', callback);
 
 	          if (typeof callback === 'function') {
 	            callback(event); // scope.$eval(attributes.scroll, { $event: event });
@@ -14917,25 +14943,30 @@
 
 	    var onProductMenu = function onProductMenu() {
 	      setTimeout(function () {
-	        var top = 0;
 	        var sectionProduct = element[0].querySelector('.section--product');
 
-	        if (wasProduct && sectionProduct && window.innerWidth > 860) {
-	          var anchors = Array.from(sectionProduct.querySelectorAll('a'));
-	          var selectedAnchor = anchors.find(function (x) {
-	            return window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length;
-	          }); // console.log(anchors, selectedAnchor);
+	        if (sectionProduct) {
+	          var top = 0;
 
-	          if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
-	            var sectionProductTop = sectionProduct.getBoundingClientRect().top;
-	            top = sectionProductTop + DomService.getScrollTop(window);
-	          }
+	          if (wasProduct && window.innerWidth > 860) {
+	            var anchors = Array.from(sectionProduct.querySelectorAll('a'));
+	            var selectedAnchor = anchors.find(function (x) {
+	              return window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length;
+	            }); // console.log(anchors, selectedAnchor);
+
+	            if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
+	              var sectionProductTop = sectionProduct.getBoundingClientRect().top;
+	              top = sectionProductTop + DomService.getScrollTop(window);
+	            }
+	          } // console.log('HighwayDirective.onProductMenu', top);
+
+
+	          window.scrollTo(0, top); // console.log('wasProduct', wasProduct);
+	          // console.log(wasProduct, sectionProduct);
+	          // console.log('isProduct', wasProduct);
 	        }
 
-	        window.scrollTo(0, top); // console.log('wasProduct', wasProduct);
-	        // console.log(wasProduct, sectionProduct);
-
-	        wasProduct = Boolean(sectionProduct); // console.log('isProduct', wasProduct);
+	        wasProduct = Boolean(sectionProduct);
 	      }, 100);
 	    };
 	    /*
@@ -15823,15 +15854,14 @@
 
 	    if (this.droppedIn) {
 	      this.$scope.$broadcast('onCloseDropdown');
-	    }
+	    } // console.log('RootController', 'scrolled', scrolled, 'direction', direction);
 
-	    if (event.scroll.direction) {
-	      if (direction && (this.direction !== direction || this.scrolled !== scrolled)) {
-	        this.$timeout(function () {
-	          _this2.scrolled = scrolled;
-	          _this2.direction = direction;
-	        }, 1);
-	      }
+
+	    if (this.direction !== direction || direction && this.scrolled !== scrolled) {
+	      this.$timeout(function () {
+	        _this2.scrolled = scrolled;
+	        _this2.direction = direction;
+	      }, 1);
 	    }
 	  };
 
@@ -16387,6 +16417,7 @@
 	    this.isErroring = false;
 	    this.isSuccess = false;
 	    this.isSuccessing = false;
+	    this.isSending = false;
 	    this.button = null;
 	    this.errors = [];
 	  };
@@ -16500,6 +16531,7 @@
 	    this.errors = [];
 	    this.$timeout(function () {
 	      _this2.isSuccessing = false;
+	      _this2.isSending = true;
 	    }, DELAY);
 	  };
 
@@ -17068,7 +17100,7 @@
 	      var position = new google.maps.LatLng(store.latitude, store.longitude);
 	      var content = "<div class=\"marker__content\">\n\t\t\t\t<div class=\"title\"><span>" + store.name + "</span></div>\n\t\t\t\t<div class=\"group group--info\">\n\t\t\t\t\t<div class=\"address\">\n\t\t\t\t\t\t" + store.address + "<br>\n\t\t\t\t\t\t" + store.zip + " " + store.citta + " " + store.cod_provincia + " " + store.stato + "<br>\n\t\t\t\t\t\t<!--store.tel-->\n\t\t\t\t\t\t<!--store.email-->\n\t\t\t\t\t\t<!--store.webSite-->\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"distance\">" + window.BOMLabels.store_locator_approx + " <b>" + Math.floor(store.distance) + " km</b></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"group group--cta\">\n\t\t\t\t\t<!--store.pageurl-->\n\t\t\t\t\t<a id=\"locator-marker\" href=\"https://www.google.it/maps/dir/" + _this3.position.lat() + "," + _this3.position.lng() + "/" + store.name + "/@" + store.latitude + "," + store.longitude + "/\" target=\"_blank\" class=\"btn btn--link\"><span>" + window.BOMLabels.store_locator_reach_store + "</span></a>\n\t\t\t\t</div>\n\t\t\t</div>";
 	      if (store.tel) content = content.replace('<!--store.tel-->', "<span>" + store.tel + "<br></span>");
-	      if (store.email) content = content.replace('<!--store.email-->', "<span><a href=\"/atlas/mailto:" + store.email + "\">" + store.email + "</a><br></span>");
+	      if (store.email) content = content.replace('<!--store.email-->', "<span><a href=\"mailto:" + store.email + "\">" + store.email + "</a><br></span>");
 	      if (store.webSite) content = content.replace('<!--store.webSite-->', "<span><a target=\"_blank\" href=\"" + store.webSite + "\">" + store.webSite + "</a></span>");
 	      if (store.pageurl) content = content.replace('<!--store.pageurl-->', "<a id=\"locator-marker\" href=\"" + store.pageurl + "\" target=\"_blank\" class=\"btn btn--link\"><span>" + window.BOMLabels.More_info + "</span></a>");
 	      var marker = new google.maps.Marker({

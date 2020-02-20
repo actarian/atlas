@@ -21,12 +21,14 @@ export default class ScrollDirective {
 				let previous;
 				const subscription = this.domService.scrollIntersection$(node).pipe(
 					distinctUntilChanged((a, b) => {
+						// console.log('ScrollDirective', b.scroll.scrollTop, previous);
 						const differs = b.scroll.scrollTop !== previous;
 						previous = b.scroll.scrollTop;
 						return !differs;
 					})
 				).subscribe(event => {
 					const callback = scope.$eval(attributes.scroll, { $event: event });
+					// console.log('ScrollDirective.event', callback);
 					if (typeof callback === 'function') {
 						callback(event);
 						// scope.$eval(attributes.scroll, { $event: event });

@@ -37,7 +37,19 @@ class CollectionsCtrl {
 
 	deserializeFilters(initialFilter) {
 		const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
-		// console.log('CollectionsCtrl.deserializeFilters', filters);
+		console.log('CollectionsCtrl.deserializeFilters', locationFilters);
+
+		if (Object.keys(locationFilters).length > 0) {
+			window.onload = () => {
+				setTimeout(() => {
+					const filtersNode = document.querySelector('.section--filters');
+					if (filtersNode) {
+						this.scrollIntoView(filtersNode);
+					}
+				}, 150);
+			}
+		}
+
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -113,6 +125,9 @@ class CollectionsCtrl {
 			brand.looks = looks.map(x => {
 				const look = Object.assign({}, x);
 				look.collections = brand.collections.filter(collection => {
+					if (this.filters.looks.value && x.value !== this.filters.looks.value) {
+						return false;
+					}
 					let has = this.filters.looks.doFilter(collection, look.value);
 					filters.forEach(filter => {
 						if (filter !== skipFilter) {
@@ -125,7 +140,7 @@ class CollectionsCtrl {
 					return has;
 				});
 				return look;
-			}); // .filter(x => x.collections.length)
+			}).filter(x => x.collections.length); // .filter(x => x.collections.length)
 			// console.log(has, collection, filters);
 			resultCounts += collections.length;
 			if (brand.looks.length) {
@@ -168,6 +183,12 @@ class CollectionsCtrl {
 
 	removeFilter(filter) {
 		this.setFilter(null, filter);
+	}
+
+	scrollIntoView(node) {
+		const curtop = (document.body.scrollTop || document.documentElement.scrollTop);
+		const top = curtop + node.getBoundingClientRect().top;
+		window.scroll(0, top);
 	}
 
 }
