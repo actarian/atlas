@@ -1,4 +1,259 @@
+.section--hero-search {
+	background: $background-tertiary;
+
+	.group--control {
+		.btn--secondary {
+			border: 2px solid $background-header;
+			display: flex;
+			align-items: center;
+			color: $background-header;
+			font-weight: $font-bold;
+
+			&.btn--busy {
+				.icon--search {
+					opacity: 0;
+				}
+
+				&:before {
+					background: $background-header;
+				}
+
+				&>span {
+					&::before {
+						background: $background-header;
+					}
+
+					&::after {
+						background: $background-header;
+					}
+				}
+			}
+
+			.icon--search {
+				width: 20px;
+				height: 20px;
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.tabmenu {
+	border-bottom: 1px solid $border;
+	padding: 0;
+	margin: 0 0 50px 0;
+}
+
+.nav--search {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&>li {
+		span {
+			display: block;
+			position: relative;
+			cursor: pointer;
+			transition: all 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990);
+
+			&:before {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 2px;
+				bottom: 0;
+				background: $primary;
+				opacity: 0;
+				transition: all 700ms 0ms cubic-bezier(0.320, 0.000, 0.290, 0.990);
+			}
+		}
+
+		&:hover,
+		&.active {
+			span {
+				color: $primary;
+
+				&:before {
+					opacity: 1;
+				}
+			}
+
+		}
+	}
+}
+
 .section--search {
+	min-height: 100vh;
+	padding: 40px 0;
+
+	.category {
+		text-align: left;
+		margin-bottom: 70px;
+	}
+
+	&__result {
+		align-items: center;
+		margin-bottom: 50px;
+
+		.picture {
+			transition: all ease-in-out 400ms;
+		}
+
+		&:not(:hover) {
+			.picture {
+				box-shadow: none;
+			}
+		}
+
+		.title {
+			font-size: 40px;
+			font-weight: $font-light;
+			line-height: 1;
+			margin-bottom: 15px;
+		}
+
+		.abstract {
+			font-size: 18px;
+			line-height: 1.7;
+			margin-bottom: 15px;
+			min-height: 60px;
+			color: $foreground-secondary;
+		}
+
+		.group--cta {
+			margin: 0;
+			justify-content: flex-start;
+			align-items: flex-start;
+			text-align: left;
+		}
+
+		.btn--link {
+			text-transform: none;
+		}
+
+		&:hover {
+			.btn--link-secondary {
+				&:after {
+					transform: scale(0, 1);
+					background: $primary;
+				}
+			}
+		}
+
+		@include media-breakpoint-down(sm) {
+			.picture {
+				margin-bottom: 40px;
+			}
+		}
+	}
+
+	&__sizes {
+		margin-bottom: 40px;
+		display: flex;
+		flex-wrap: wrap;
+		border-bottom: 1px solid $border;
+
+		&>.listing__item {
+			margin-bottom: 40px;
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-start;
+			cursor: pointer;
+
+			&>.picture {
+				flex: 0 0 160px;
+				max-width: 160px;
+				margin-right: 20px;
+
+				background: $background;
+				// border: 1px solid #898c8e;
+				transition: all ease-in-out 400ms;
+
+				&>img {
+					width: 100%;
+					object-fit: cover;
+				}
+			}
+
+			&>.content {
+				flex: 1 1 auto;
+				font-size: 14px;
+				line-height: 24px;
+			}
+
+			.title,
+			.abstract {
+				display: block;
+				font-weight: $font-bold;
+			}
+
+			.title,
+			.abstract,
+			.description {
+				margin-bottom: 10px;
+			}
+
+			.group--cta {
+				margin: 0;
+				justify-content: flex-start;
+				align-items: flex-start;
+				text-align: left;
+			}
+
+			.btn--link {
+				text-transform: none;
+			}
+
+			&:not(:hover) {
+				.picture {
+					box-shadow: none;
+				}
+			}
+		}
+
+		@include media-breakpoint-up(lg) {
+			$gutter: 100px;
+			margin-left: - $gutter / 2;
+			margin-right: - $gutter / 2;
+
+			&>.listing__item {
+				@include as-col(4, 12, $gutter);
+			}
+		}
+
+		@include media-breakpoint-down(md) {
+			$gutter: 40px;
+			margin-left: - $gutter / 2;
+			margin-right: - $gutter / 2;
+
+			&>.listing__item {
+				@include as-col(6, 12, $gutter);
+			}
+		}
+
+		@include media-breakpoint-down(sm) {
+			display: block;
+			$gutter: 30px;
+			margin-left: - $gutter / 2;
+			margin-right: - $gutter / 2;
+
+			&>.listing__item {
+				@include as-col(12, 12, $gutter);
+
+				&>.picture {
+					flex: 0 0 100px;
+					max-width: 100px;
+				}
+			}
+		}
+
+	}
+}
+
+.section--search_old {
 	min-height: 100vh;
 
 	.category {
@@ -15,7 +270,7 @@
 	}
 }
 
-.listing--search-result {
+.listing--search-result_old {
 	&>.listing__item {
 		width: 100%;
 		padding-bottom: 20px;

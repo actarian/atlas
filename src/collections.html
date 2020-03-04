@@ -820,7 +820,7 @@ Ground track
 							<span>{{look.label}}</span>
 						</div>
 						<div class="listing listing--look">
-							<a ng-href="{{collection.url}}" class="listing__item" appear ng-repeat="collection in look.collections track by $index">
+							<a href="{{collection.url}}" class="listing__item" appear ng-repeat="collection in look.collections track by $index">
 								<div class="picture picture--with-category">
 									<img lazy data-src="{{collection.images | imageWithFeatures : [collectionsCtrl.filters.typologies.value] }}" alt="title" />
 								</div>

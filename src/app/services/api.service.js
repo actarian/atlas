@@ -1,8 +1,6 @@
-
-
 import { from } from 'rxjs';
 
-export const API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
+export const API_DEV = window.location.port === '40321' || window.location.host === 'actarian.github.io';
 export const API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
 export default class ApiService {
@@ -44,6 +42,13 @@ export default class ApiService {
 						return from($http.get('data/moodboard.json'));
 					}
 				},
+			},
+			search: (filters) => {
+				if (!API_DEV) {
+					return from($http.post('', filters));
+				} else {
+					return from($http.get('data/search.json'));
+				}
 			},
 			storeLocator: {
 				all: () => {

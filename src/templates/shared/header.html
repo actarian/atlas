@@ -29,7 +29,7 @@
 						<span>Spaces</span>
 						<!-- @@include ./submenu-spaces.html -->
 					</li>
-					<li has-dropdown="span" has-dropdown-consumer="root">
+					<li has-dropdown="span" has-dropdown-consumer="root">						
 						<span>Be Inspired</span>
 						<!-- @@include ./submenu-beinspired.html -->
 					</li>
@@ -38,7 +38,7 @@
 						<!-- @@include ./submenu-projects.html -->
 					</li>
 					<li class="group group--search" ng-class="{ active: root.searchOpened }" ng-click="root.searchOpened = true">
-						<input class="control--search" type="text" ng-model="root.search" placeholder="I'm looking for..." ng-blur="root.searchOpened = false" ng-keyup="$event.keyCode == 13 && root.onSearch(root.search)" data-search="https://atlasconcorde.wslabs.it/it/cerca_nel_sito?q=##query##" />
+						<input class="control--search" type="text" ng-model="root.search" placeholder="I'm looking for..." ng-blur="root.searchOpened = false" ng-keyup="$event.keyCode == 13 && root.onSearch(root.search)" data-search="/atlas/search.html?q=##query##" />
 						<svg class="icon icon--search"><use xlink:href="#search"></use></svg>
 					</li>
 				</ul>

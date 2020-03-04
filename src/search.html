@@ -1,955 +1,104 @@
 <!-- @@master = ./templates/layout.html { "class": "page-class", "title": "Atlas Concorde: piastrelle in ceramica per pavimenti e rivestimenti" } -->
+
 <!-- @@block = main-->
-<section class="section section--hero-secondary section--negative" data-component-id="0">
-	<div class="background" ng-if="!root.webglEnabled" parallax> <img lazy data-src="/atlas/img/index/hero.jpg" /> </div>
-	<div class="background" ng-if="root.webglEnabled"> <canvas glsl-canvas="img/index/hero.jpg" class="glsl-canvas"></canvas> </div>
-	<div class="aspect">
+
+<script type="text/javascript" lazy-script>
+	window.filters = {
+		types: {
+			options: [{
+				label: 'Collezioni',
+				value: 1,
+			}, {
+				label: 'Ambienti',
+				value: 2,
+			}, {
+				label: 'News',
+				value: 3,
+			}, {
+				label: 'Magazine',
+				value: 4,
+			}, {
+				label: 'Referenze',
+				value: 5,
+			}]
+		}
+	};
+
+</script>
+
+<div ng-controller="SearchCtrl as searchCtrl">
+
+	<section class="section section--hero-secondary section--hero-search" data-component-id="0">
+		<div class="aspect">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 offset-md-2">
+						<h2 class="title">Cerca nel sito</h2>
+						<form name="form" class="form" role="form" novalidate="" autocomplete="off" ng-submit="form.$valid && searchCtrl.onSubmit()" ng-keyup="$event.keyCode == 13 && form.$valid && searchCtrl.onSubmit()">
+							<div class="group group--control">
+								<input type="text" name="query" placeholder="es. marvel" required ng-model="searchCtrl.model.query" />
+								<button type="submit" class="btn btn--secondary" ng-class="{ 'btn--busy': searchCtrl.busy }"><svg class="icon icon--search"><use xlink:href="#search"></use></svg> <span>Cerca nel sito</span></button>
+							</div>
+						</form>
+						<div class="group group--error" ng-if="searchCtrl.error">
+							<span>{{searchCtrl.error.message}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--search" ng-if="searchCtrl.model.query">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-9 offset-md-2">
-					<h2 class="title">Cerca nel sito
+			<div class="category">Abbiamo trovato <strong>{{searchCtrl.items.length}} risultati</strong></div>
+		</div>
+		<div class="tabmenu">
+			<div class="container">
+				<ul class="nav--search">
+					<li ng-class="{ active: searchCtrl.filters.types.value == option.value }" ng-repeat="option in searchCtrl.filters.types.options track by $index"><span ng-click="searchCtrl.setFilter(option, searchCtrl.filters.types)">Risultati in <strong ng-bind="option.label"></strong></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container" ng-if="searchCtrl.filteredSearch">
+			<div ng-repeat="item in searchCtrl.filteredSearch track by $index">
+				<div class="row section--search__result" appear>
+					<div class="col-sm-6 col-md-8 col-lg-5">
+						<div class="picture picture--with-category">
+							<img lazy data-src="{{item.image}}" alt="title" />
+							<span class="category" ng-bind="item.category"></span>
+						</div>
+					</div>
+					<div class="col-sm-10 col-md-8 col-lg-7 offset-lg-1">
+						<div class="content">
+							<div class="title" ng-bind="item.title"></div>
+							<div class="abstract" ng-bind="item.abstract" ng-if="item.abstract"></div>
+							<div class="group group--cta">
+								<a href="/atlas/references-detail.html" class="btn btn--link"><span>Vai alla pagina trovata</span></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="section--search__sizes" appear ng-if="item.sizes && item.sizes.length">
+					<div class="listing__item" ng-repeat="size in item.sizes track by $index" appear>
+						<div class="picture">
+							<img lazy data-src="{{size.image}}" alt="{{size.alt}}">
+						</div>
+						<div class="content">
+							<div class="title" ng-bind="size.title"></div>
+							<div class="abstract" ng-bind="size.abstract"></div>
+							<div class="description" ng-bind="size.description"></div>
+							<div class="group group--cta">
+								<a ng-href="{{size.url}}" class="btn btn--link"><span>Vai alla pagina trovata</span></a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	</div>
-</section>
+	</section>
 
-<section class="section section--search">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-10 offset-md-2" appear>
-				<div class="category">Trovati 152 risultati per boost</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-10 offset-md-2 col--primary">
-				<div class="listing listing--search-result">
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/">
-						<div class="group">
-							<h2 class="title"><span>Boost</span></h2>
-							<div class="abstract">Il design metropolitano si veste di originalità. Gres porcellanato e rivestimento in pasta bianca ridefiniscono il concetto di effetto cemento in ceramica. </div>
-						</div>
-						<button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/news/collections/boost-collection/">
-						<div class="group">
-							<h2 class="title"><span>BOOST | COLLECTION</span></h2>
-							<div class="abstract">Le sfumature calde dell’ossidazione convivono con gli aloni più freddi tipici del cemento, per una&nbsp;superficie ceramica&nbsp;che si distingue per la sua identità decisa. L’a... </div>
-						</div>
-						<button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/ambientazioni/kitchen/">
-						<div class="group">
-							<h2 class="title"><span>Kitchen</span></h2>
-							<div class="abstract"></div>
-						</div>
-						<button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/strutturato/120x240x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>Boost White 120x240 20mm</span></h2>
-							<div class="abstract"></div>
-						</div>
-						<button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div>
-						<button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/strutturato/120x240x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>Boost Grey 120x240 20mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/urban-white/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST 3D Urban White 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/urban-pearl/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST 3D Urban Pearl 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/urban-grey/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST 3D Urban Grey 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/white/grip/120x120x2_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/pearl/grip/120x120x2_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/grey/grip/120x120x2_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/smoke/grip/120x120x2_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/tarmac/grip/120x120x2_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/160x320x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 160x320RT</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/75x150_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 75x150</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/30x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 30x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/60x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 60x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/45x90_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 45x90</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/120x120_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/matt/75x75_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 75x75</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/white/grip/120x120_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/30x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 30x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/60x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 60x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/45x90_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 45x90</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/120x120_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/75x75_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 75x75</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/matt/75x150_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 75x150</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/pearl/grip/120x120_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/30x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 30x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/60x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 60x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/45x90_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 45x90</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/120x120_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/75x75_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 75x75</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/75x150_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 75x150</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/grey/grip/120x120_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/30x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 30x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/60x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 60x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/45x90_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 45x90</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/120x120_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/75x75_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 75x75</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/75x150_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 75x150</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/160x320x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 160x320RT</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120X240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/smoke/grip/120x120_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/30x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 30x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/60x60_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 60x60</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/45x90_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 45x90</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/120x120_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/75x75_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 75x75</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120X240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>Boost Tarmac 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/matt/75x150_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 75x150</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres/tarmac/grip/120x120_griprettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120 GRIP</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/white/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/pearl/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/grey/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/smoke/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/sage/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Sage 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall/red/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Red 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/3d-wall/urban-white/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST 3D Urban White 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/3d-wall/urban-pearl/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST 3D Urban Pearl 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/3d-wall/urban-grey/matt/40x80_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST 3D Urban Grey 40x80</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/white/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/white/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/white/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/white/strutturato/120x240x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>Boost White 120x240 20mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/grey/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/grey/strutturato/120x240x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>Boost Grey 120x240 20mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/grey/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/grey/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/smoke/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/smoke/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/smoke/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/tarmac/strutturato/120x120x20_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/tarmac/strutturato/90x90x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 90x90 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/outdoor/tarmac/strutturato/60x120x2_strutturatorettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 60X120 20 mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/white/matt/160x320x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 160x320RT</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/white/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/white/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/white/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/white/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/pearl/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/pearl/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/pearl/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/pearl/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/grey/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/grey/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/grey/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/grey/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/smoke/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120X240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/smoke/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/smoke/matt/160x320x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 160x320RT</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/smoke/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/smoke/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/tarmac/matt/120x240_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120X240</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/tarmac/matt/120x278_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>Boost Tarmac 120x278</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/tarmac/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120 6mm</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/xl/tarmac/matt/120x120x2_mattrettificato/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac 120x120</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-smoke-mosaico-hex-yellow_mattrettificato__25x28-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke Mosaico Hex Yellow</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-smoke-mosaico-hex-black_mattrettificato__25x28-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke Mosaico Hex Black</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-tarmac-mosaico-hex-jade_mattrettificato__25x28-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac Mosaico Hex Jade</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-tarmac-mosaico-hex-black_mattrettificato__25x28-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac Mosaico Hex Black</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-white-mosaico-shapes_mattrettificato__31x33-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White Mosaico Shapes</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-grey-mosaico-matt_mattrettificato__30x30/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey Mosaico Matt</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-smoke-mosaico-matt_mattrettificato__30x30/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke Mosaico Matt</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-tarmac-mosaico-matt_mattrettificato__30x30/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac Mosaico Matt</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-pearl-mosaico-shapes_mattrettificato__31x33-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl Mosaico Shapes</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-grey-mosaico-shapes_mattrettificato__31x33-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey Mosaico Shapes</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-smoke-mosaico-shapes_mattrettificato__31x33-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke Mosaico Shapes</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-tarmac-mosaico-shapes_mattrettificato__31x33-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Tarmac Mosaico Shapes</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-white-mosaico-matt_mattrettificato__30x30/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White Mosaico Matt</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/gres-decors/boost-pearl-mosaico-matt_mattrettificato__30x30/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl Mosaico Matt</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall-decors/boost-grey-minibrick_mattrettificato__30-5x30-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Grey Minibrick</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall-decors/boost-smoke-minibrick_mattrettificato__30-5x30-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Smoke Minibrick</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall-decors/boost-sage-minibrick_mattrettificato__30-5x30-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Sage Minibrick</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall-decors/boost-red-minibrick_mattrettificato__30-5x30-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Red Minibrick</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall-decors/boost-white-minibrick_mattrettificato__30-5x30-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST White Minibrick</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/boost/wall-decors/boost-pearl-minibrick_mattrettificato__30-5x30-5/">
-						<div class="group">
-							<h2 class="title"><span>BOOST Pearl Minibrick</span></h2>
-							<div class="abstract"></div>
-						</div>
-						<button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/news/events/lospitalita-secondo-atlas-concorde-al-sia-guest-2018/">
-						<div class="group">
-							<h2 class="title"><span>L’ospitalit&#224; secondo Atlas Concorde al SIA Guest 2018</span></h2>
-							<div class="abstract">In un&nbsp;concept space&nbsp;moderno e funzionale, i visitatori potranno toccare con mano le soluzioni Atlas Concorde per il&nbsp;settore dell’ospitalità. Collezioni dai diversi e... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/news/events/cersaie-2018-tutte-le-novita-atlas-concorde/">
-						<div class="group">
-							<h2 class="title"><span>Cersaie 2018: tutte le novit&#224; Atlas Concorde</span></h2>
-							<div class="abstract">Ad accogliere i visitatori&nbsp;Design for living, un moderno&nbsp;concept space&nbsp;strutturato come un percorso attraverso gli ambienti di una villa di pregio. Al centro della s... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/news/events/hospitality-leisure-design-atlas-concorde-in-mostra-al-bdny-di-new-york/">
-						<div class="group">
-							<h2 class="title"><span>Hospitality &amp; leisure design: Atlas Concorde in mostra al BDNY di New York</span></h2>
-							<div class="abstract">Nella città che detta stile e tendenze mondiali, Atlas Concorde presenta superfici per&nbsp;pavimenti&nbsp;e&nbsp;rivestimenti&nbsp;di design, rivolti al mondo dell’accoglienza&nbs... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/news/events/design-for-living-un-concept-innovativo-per-atlas-concorde-al-cersaie-2018/">
-						<div class="group">
-							<h2 class="title"><span>Design for living: un concept innovativo per Atlas Concorde al Cersaie 2018</span></h2>
-							<div class="abstract">Tra i protagonisti,&nbsp;Marvel Edge&nbsp;che, a partire dalla&nbsp;Hall&nbsp;centrale, ha incantato i visitatori con superfici ispirate all’essenza di otto marmi prestigiosi. La s... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/news/events/atlas-concorde-in-partnership-con-il-distributore-al-ethead-alla-fiera-gulf-construction-expo-in-bahrain/">
-						<div class="group">
-							<h2 class="title"><span>Atlas Concorde in partnership con il distributore Al Ethead alla fiera Gulf Construction Expo in Bahrain</span></h2>
-							<div class="abstract">L’appuntamento fieristico che si svolge presso il&nbsp;Bahrain International Exhibition Center Sanabis&nbsp;dal&nbsp;23 al 25 aprile 2019, permette all’azienda di creare un dialogo... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/news/events/atlas-concorde-in-vietnam-per-la-fiera-vifa-gu/">
-						<div class="group">
-							<h2 class="title"><span>Atlas Concorde in Vietnam per la fiera VIFA GU</span></h2>
-							<div class="abstract">Nello spazio espositivo sono presentate al pubblico diverse collezioni, offrendo una panoramica sulla completa e vasta gamma di superfici in gres porcellanato e rivestimenti in pas... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/our-references/hotel-ornella/">
-						<div class="group">
-							<h2 class="title"><span>Hotel Ornella</span></h2>
-							<div class="abstract">All’interno dell’affasciante struttura,&nbsp;i materiali Atlas Concorde&nbsp;sono stati selezionati per aggiungere un tocco di stile e glamour ad alcune zone indoor e outdoor. Attr... </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/collezioni/ac/canone-inverso/">
-						<div class="group">
-							<h2 class="title"><span>Canone Inverso</span></h2>
-							<div class="abstract">La prima decor collection di Atlas Concorde firmata Piero Lissoni </div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a><a class="listing__item" appear href="/it/collezioni/ac/canone-inverso/ambientazioni/cucina/">
-						<div class="group">
-							<h2 class="title"><span>Cucina</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-					<a class="listing__item" appear href="/it/collezioni/ac/canone-inverso/ambientazioni/bagno-3/">
-						<div class="group">
-							<h2 class="title"><span>Bagno</span></h2>
-							<div class="abstract"></div>
-						</div><button type="button" class="btn btn--secondary">view</button>
-					</a>
-				</div>
-			</div>
-			</a>
-		</div>
-	</div>
-</section>
-
-<section class="section section--breadcrumb hidden-sm-down">
-	<div class="container">
-		<ul class="nav nav--breadcrumb">
-			<li> <a href="/it/">Home</a> </li>
-			<li><a href="/it/cerca_nel_sito/">Cerca nel sito</a></li>
-		</ul>
-	</div>
-</section>
+</div>
 
 <!-- @@close-->
 <!-- @@block = breadcrumb-->

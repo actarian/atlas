@@ -228,20 +228,20 @@
 	.icon--brand-positive {
 
 		@include media-breakpoint-up(sm) {
-			width: 218px;
-			height: 35px;
+			width: 210px;
+			height: 50px;
 			margin-right: 25px;
 			margin-top: 1px;
 		}
 
 		@include media-breakpoint-up(lg) {
-			width: 312px;
+			width: 210px;
 			height: 50px;
 			margin-top: 1px;
 		}
 
 		@include media-breakpoint-down(xs) {
-			width: 58vw;
+			width: 42vw;
 			height: 10vw;
 		}
 	}

@@ -49,6 +49,7 @@ import MoodboardCtrl from './moodboard/moodboard.controller';
 import NewsCtrl from './news/news.controller';
 import ReferencesCtrl from './references/references.controller';
 import RootCtrl from './root.controller';
+import SearchCtrl from './search/search.controller';
 import ApiService from './services/api.service';
 import DomService from './services/dom.service';
 import WishlistService from './services/wishlist.service';
@@ -137,6 +138,7 @@ app.controller('RootCtrl', RootCtrl)
 	.controller('MoodboardSectionCtrl', MoodboardSectionCtrl)
 	.controller('NewsCtrl', NewsCtrl)
 	.controller('ReferencesCtrl', ReferencesCtrl)
+	.controller('SearchCtrl', SearchCtrl)
 	.controller('StoreLocatorCtrl', StoreLocatorCtrl)
 	.controller('StoresCtrl', StoresCtrl)
 	.controller('WishlistCtrl', WishlistCtrl);

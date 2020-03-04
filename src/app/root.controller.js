@@ -7,12 +7,14 @@ class RootCtrl {
 		$scope,
 		$timeout,
 		DomService,
+		LocationService,
 		ApiService,
 		WishlistService
 	) {
 		this.$scope = $scope;
 		this.$timeout = $timeout;
 		this.domService = DomService;
+		this.locationService = LocationService;
 		this.apiService = ApiService;
 		this.wishlistService = WishlistService;
 		this.unsubscribe = new Subject();
@@ -33,6 +35,7 @@ class RootCtrl {
 
 	onSearch(query) {
 		// console.log('onSearch', query);
+		query = this.locationService.serialize_('query', query, {});
 		this.searchOpened = false;
 		const url = document.querySelector('[data-search]').getAttribute('data-search');
 		window.location.href = url.replace('##query##', query);
@@ -234,6 +237,6 @@ class RootCtrl {
 
 }
 
-RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService', 'WishlistService'];
+RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'LocationService', 'ApiService', 'WishlistService'];
 
 export default RootCtrl;

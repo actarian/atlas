@@ -86,6 +86,7 @@ export default class CustomRenderer extends Highway.Renderer {
 	onEnter() {
 		// console.log('onEnter');
 		if (!first) {
+			window.scroll(0, 0);
 			CustomRenderer.$timeout(() => {
 				const $compile = CustomRenderer.$compile;
 				const view = Array.from(document.querySelectorAll('.view')).pop();

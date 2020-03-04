@@ -28,16 +28,11 @@
 			}, {
 				"input": "src/app/app.bootstrap.js",
 				"output": "docs/js/app.js",
-				"rollup": {
-					"output": {
-						"format": "umd",
-						"globals": {
-							"gsap": "gsap",
-							"rxjs": "rxjs",
-							"rxjs/operators": "rxjs.operators"
-						},
-						"external": ["gsap", "rxjs"]
-					}
+				"format": "umd",
+				"globals": {
+					"gsap": "gsap",
+					"rxjs": "rxjs",
+					"rxjs/operators": "rxjs.operators"
 				},
 				"minify": false
 			}],
@@ -74,12 +69,12 @@
 			}]
 		}
 	},
-	"tfs": false,
 	"server": {
 		"root": "./docs",
 		"path": "/atlas/",
 		"host": "localhost",
-		"port": 40999,
+		"port": 40321,
 		"log": false
-	}
+	},
+	"tfs": false
 }

@@ -77,7 +77,7 @@
 	}
 }
 
-.section--vertical-vertical__ {
+.section--vertical-vertical_old {
 
 	@include media-breakpoint-up(sm) {
 
@@ -101,7 +101,7 @@
 	}
 }
 
-.section--horizontal-vertical__ {
+.section--horizontal-vertical_old {
 
 	.row>div {
 		display: flex;
@@ -123,7 +123,7 @@
 	}
 }
 
-.section--vertical-horizontal__ {
+.section--vertical-horizontal_old {
 
 	.row>div {
 		display: flex;
@@ -145,7 +145,7 @@
 	}
 }
 
-.section--horizontal-horizontal__ {
+.section--horizontal-horizontal_old {
 
 	@include media-breakpoint-up(sm) {
 		padding-bottom: 80px;
@@ -165,7 +165,7 @@
 	}
 }
 
-.section--horizontal__ {
+.section--horizontal_old {
 	@include media-breakpoint-up(sm) {
 		padding-bottom: 80px;
 	}
@@ -175,7 +175,7 @@
 	}
 }
 
-.section--horizontal-02__ {
+.section--horizontal-02_old {
 	@include media-breakpoint-up(sm) {
 		padding-bottom: 80px;
 	}
@@ -185,7 +185,7 @@
 	}
 }
 
-.section--text__ {
+.section--text_old {
 
 	.title {
 		color: $foreground;
@@ -222,7 +222,7 @@
 	}
 }
 
-.section--text-02__ {
+.section--text-02_old {
 	.title {
 		color: $foreground;
 		margin-bottom: 30px;
@@ -259,7 +259,7 @@
 	}
 }
 
-.section--full__ {
+.section--full_old {
 	text-align: center;
 	padding-bottom: 80px;
 
@@ -297,7 +297,7 @@
 	}
 }
 
-.section--full-02__ {
+.section--full-02_old {
 	// text-align: center;
 	padding-bottom: 80px;
 
@@ -337,7 +337,7 @@
 	}
 }
 
-.with--text__ {
+.with--text_old {
 	padding-bottom: 60px;
 
 	@include media-breakpoint-up(sm) {
@@ -357,7 +357,7 @@
 	}
 }
 
-.section--intro-centered-02__ {
+.section--intro-centered-02_old {
 	text-align: center;
 
 	.category {

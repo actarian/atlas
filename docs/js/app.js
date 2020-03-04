@@ -4,18 +4,12 @@
  * License: ISC
  */
 
-(function (factory) {
-	typeof define === 'function' && define.amd ? define('app', factory) :
-	factory();
-}((function () { 'use strict';
+(function (operators, rxjs) {
+	'use strict';
 
-	var GtmService =
-	/*#__PURE__*/
-	function () {
+	var GtmService = function () {
 	  function GtmService() {}
 
-	  // Id da dare al tag script delle pagine con filtri.
-	  // Questo indica a Highway di non eseguire il PageView. Sarà il controller a farlo
 	  GtmService.pageView = function pageView(pathname) {
 	    var obj = {
 	      event: 'PageViewCustomEvent',
@@ -47,11 +41,7 @@
 	      }
 
 	      if (textValue) any = true;
-	      var name = filters[key].key
-	      /* se array di filtri */
-	      || key
-	      /* se oggetto filtro */
-	      ;
+	      var name = filters[key].key || key;
 	      if (name) name = encodeURIComponent(name) + '-';
 	      values.push(name + encodeURIComponent(textValue));
 	    };
@@ -74,88 +64,32 @@
 	}();
 	GtmService.FILTERS_SCRIPT_ID = 'script-listing';
 
-	//import { of } from "rxjs";
 	var ITEMS_PER_PAGE = 20;
 	var GTM_CAT = 'ricerca-avanzata';
 
-	var AdvancedSearchCtrl =
-	/*#__PURE__*/
-	function () {
+	var AdvancedSearchCtrl = function () {
 	  function AdvancedSearchCtrl($scope, $timeout, LocationService, ApiService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
 	    this.locationService = LocationService;
-	    this.apiService = ApiService; //this.items = [];
-
+	    this.apiService = ApiService;
 	    this.filteredItems = [];
 	    this.filters = window.filters || [];
 	    this.selectedFilters = [];
 	    this.items = window.items || [];
 	    this.initialFilters = window.initialFilters || null;
 	    this.deserializeFilters(this.initialFilters);
-	    this.applyFilters(false); // !!!
-	    //this.apiService.advancedSearch.get().subscribe(
-	    //	// this.fakeSearch$().subscribe(
-	    //	success => {
-	    //		let items = success.data;
-	    //		this.items = items;
-	    //		this.applyFilters();
-	    //	}
-	    //);
+	    this.applyFilters(false);
 	  }
 
 	  var _proto = AdvancedSearchCtrl.prototype;
 
 	  _proto.deserializeFilters = function deserializeFilters() {
-	    var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('AdvancedSearchCtrl.deserializeFilters', filters);
-
+	    var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {};
 	    this.filters.forEach(function (filter) {
-	      //if (filter.type === 'minimal') {
-	      //	filter.doFilter = (item, value) => {
-	      //		let has = false;
-	      //		(item.minimals || [item]).forEach(x => {
-	      //			has = has || x.features.indexOf(value) !== -1;
-	      //		});
-	      //		return has;
-	      //	};
-	      //} else {
 	      filter.doFilter = function (item, value) {
 	        return item.features.indexOf(value) !== -1;
-	      }; //}
-	      //switch (filter.key) {
-	      //	case 'finish':
-	      //		filter.doFilter = (item, value) => {
-	      //			let has = false;
-	      //			const size = this.filters.find(x => x.key == 'size' && x.value !== null);
-	      //			item.minimals.forEach(x => {
-	      //				has = has || (x.finish.id === value && (!size || x.size.id === size.value));
-	      //			});
-	      //			return has;
-	      //		};
-	      //		break;
-	      //	case 'size':
-	      //		filter.doFilter = (item, value) => {
-	      //			let has = false;
-	      //			const finish = this.filters.find(x => x.key == 'finish' && x.value !== null);
-	      //			item.minimals.forEach(x => {
-	      //				has = has || (x.size.id === value && (!finish || x.finish.id === finish.value));
-	      //			});
-	      //			return has;
-	      //		};
-	      //		break;
-	      //	default:
-	      //		filter.doFilter = (item, value) => {
-	      //			return item.features.indexOf(value) !== -1;
-	      //		};
-	      //}
-
-	      /*
-	      filter.options.unshift({
-	      	label: filter.placeholder,
-	      	value: null,
-	      });
-	      */
-
+	      };
 
 	      var selectedOption = filter.options.find(function (o) {
 	        return Boolean(o.value === (locationFilters[filter.key] || null));
@@ -167,8 +101,7 @@
 	      } else {
 	        filter.value = null;
 	        filter.placeholder = null;
-	      } // console.log(x, filters[x], filter.value);
-
+	      }
 	    });
 	    return this.filters;
 	  };
@@ -185,8 +118,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('AdvancedSearchCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -195,34 +127,25 @@
 	  _proto.applyFilters = function applyFilters(serialize) {
 	    var _this = this;
 
-	    // console.log('AdvancedSearchCtrl.applyFilters', this.filters);
 	    if (serialize !== false) this.serializeFilters();
 	    var selectedFilters = this.filters.filter(function (x) {
 	      return x.value !== null;
-	    }); //const finishFilter = this.filters.find(x => x.key == 'finish' && x.value !== null);
-	    //const sizeFilter = this.filters.find(x => x.key == 'size' && x.value !== null);
-
+	    });
 	    var filteredItems;
 
 	    if (selectedFilters.length) {
 	      filteredItems = this.items.map(function (x) {
-	        // duplico i prodotti e minimal
 	        var item = Object.assign({}, x);
 	        item.minimals = Array.from(x.minimals);
 	        return item;
 	      }).filter(function (item) {
-	        // filtro tutti i minimal con tutti i filtri contemporeamente
 	        selectedFilters.forEach(function (filter) {
 	          item.minimals = item.minimals.filter(function (minimal) {
 	            return filter.doFilter(minimal, filter.value);
 	          });
 	        });
 	        return item.minimals.length > 0;
-	      }); //item.minimals = item.minimals.filter(x => {
-	      //	let has = true;
-	      //	has = has && (!finishFilter || x.finish.id === finishFilter.value) && (!sizeFilter || x.size.id === sizeFilter.value);
-	      //	return has;
-	      //});
+	      });
 	    } else {
 	      filteredItems = this.items.slice();
 	    }
@@ -289,7 +212,7 @@
 	        }
 
 	        option.disabled = !has;
-	      }); // console.log(filter.options);
+	      });
 	    });
 	  };
 
@@ -318,7 +241,6 @@
 	    var _this3 = this;
 
 	    if (event.rect.bottom < event.windowRect.bottom) {
-	      // console.log('more!');
 	      if (!this.busy && this.maxItems < this.filteredItems.length) {
 	        this.$timeout(function () {
 	          _this3.busy = true;
@@ -326,67 +248,12 @@
 	          _this3.$timeout(function () {
 	            _this3.maxItems += ITEMS_PER_PAGE;
 	            _this3.visibleItems = _this3.filteredItems.slice(0, _this3.maxItems);
-	            _this3.busy = false; // console.log(this.visibleItems.length);
+	            _this3.busy = false;
 	          }, 1000);
 	        }, 0);
 	      }
 	    }
-	  } //fakeSearch$(count = 2000) {
-	  //	const items = [];
-	  //	const collections = ['Marvel Dream', 'Marvel Edge', 'Boost'];
-	  //	const tiles = ['Imperial White', 'Royal Calacatta', 'Elegant Sable', 'Gris Supreme', 'Absolute Brown', 'Agata Azul', 'Gold Onyx', 'Red Luxury', 'Gris Clair'];
-	  //	const finishes = this.filters.find(x => x.key === 'finish').options;
-	  //	const sizes = this.filters.find(x => x.key === 'size').options;
-	  //	let UID = 1;
-	  //	while (items.length < count) {
-	  //		const collectionIndex = Math.floor(Math.random() * collections.length);
-	  //		const collectionName = collections[collectionIndex];
-	  //		const tileIndex = Math.floor(Math.random() * tiles.length);
-	  //		const tileName = tiles[tileIndex];
-	  //		const tileImage = `img/advanced-search/tile-0${tileIndex+1}.jpg`;
-	  //		const minimals = [];
-	  //		const count = 1 + Math.floor(Math.random() * 15);
-	  //		while (minimals.length < count) {
-	  //			const finish = finishes[Math.floor(Math.random() * finishes.length)];
-	  //			const size = sizes[Math.floor(Math.random() * sizes.length)];
-	  //			minimals.push({
-	  //				id: minimals.length + 1,
-	  //				url: '#',
-	  //				finish: {
-	  //					id: finish.value,
-	  //					name: finish.label
-	  //				},
-	  //				size: {
-	  //					id: size.value,
-	  //					name: size.label
-	  //				},
-	  //			});
-	  //		}
-	  //		const features = [];
-	  //		this.filters.forEach(filter => {
-	  //			if (filter.key !== 'finish' && filter.key !== 'size') {
-	  //				features.push(filter.options[Math.floor(Math.random() * filter.options.length)].value);
-	  //			}
-	  //		});
-	  //		items.push({
-	  //			id: UID++,
-	  //			collection: {
-	  //				id: collectionIndex + 1,
-	  //				name: collectionName,
-	  //			},
-	  //			tile: {
-	  //				id: tileIndex + 1,
-	  //				name: tileName,
-	  //				image: tileImage
-	  //			},
-	  //			minimals,
-	  //			features,
-	  //		});
-	  //	}
-	  //	// console.log(JSON.stringify(items));
-	  //	return of({ data: items });
-	  //}
-	  ;
+	  };
 
 	  return AdvancedSearchCtrl;
 	}();
@@ -395,9 +262,7 @@
 
 	var GTM_CAT$1 = 'collezioni';
 
-	var Collections01Ctrl =
-	/*#__PURE__*/
-	function () {
+	var Collections01Ctrl = function () {
 	  function Collections01Ctrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -406,10 +271,7 @@
 	    this.brands = window.brands || [];
 	    this.initialFilters = window.initialFilters || null;
 	    this.deserializeFilters(this.initialFilters);
-	    this.applyFilters(false); // this.filteredReferences = this.references.slice();
-	    // this.updateFilterStates();
-	    // console.log(this.filters);
-	    // console.log(this.brands);
+	    this.applyFilters(false);
 	  }
 
 	  var _proto = Collections01Ctrl.prototype;
@@ -422,8 +284,7 @@
 	  _proto.deserializeFilters = function deserializeFilters(initialFilter) {
 	    var _this = this;
 
-	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {}; // console.log('CollectionsCtrl.deserializeFilters', filters);
-
+	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
 	    Object.keys(this.filters).forEach(function (x) {
 	      var filter = _this.filters[x];
 
@@ -471,8 +332,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('CollectionsCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -481,18 +341,12 @@
 	  _proto.applyFilters = function applyFilters(serialize) {
 	    var _this3 = this;
 
-	    /*
-	    const filters = Object.keys(this.filters).map((x) => {
-	    	return Object.assign({ type: x }, this.filters[x]);
-	    }).filter(x => x.value !== null);
-	    */
 	    if (serialize !== false) this.serializeFilters();
 
 	    var _this$getFilteredBran = this.getFilteredBrands(),
 	        filteredBrands = _this$getFilteredBran.filteredBrands,
 	        resultCounts = _this$getFilteredBran.resultCounts,
-	        totalCounts = _this$getFilteredBran.totalCounts; // console.log(filteredBrands, filters);
-
+	        totalCounts = _this$getFilteredBran.totalCounts;
 
 	    if (this.test) {
 	      filteredBrands.forEach(function (brand) {
@@ -509,27 +363,6 @@
 	        });
 	      });
 	    }
-	    /*
-	    const order = [3, 2, 2, 1, 1, 1];
-	    let i = 0;
-	    filteredBrands.forEach(brand => {
-	    	brand.collections.sort((a, b) => {
-	    		const size = order[i % order.length];
-	    		console.log(size);
-	    		if (a.size === size) {
-	    			i++;
-	    			return -1;
-	    		}
-	    		if (b.size === size) {
-	    			i++;
-	    			return 1;
-	    		}
-	    		return 0;
-	    	});
-	    	// console.log(brand.collections.map(x => x.size).join(','));
-	    });
-	    */
-
 
 	    filteredBrands.forEach(function (brand) {
 	      brand.collections = _this3.getSortedPattern(brand.collections);
@@ -540,8 +373,7 @@
 	      _this3.resultCounts = resultCounts;
 	      _this3.totalCounts = totalCounts;
 
-	      _this3.updateFilterStates(); // delayer for image update
-
+	      _this3.updateFilterStates();
 	    }, 50);
 	    GtmService.pageViewFilters(GTM_CAT$1, this.filters);
 	  };
@@ -549,8 +381,7 @@
 	  _proto.getSortedSize = function getSortedSize(items) {
 	    items.sort(function (a, b) {
 	      return b.size - a.size;
-	    }); // console.log(items.map(x => x.size).join(','));
-
+	    });
 	    return items;
 	  };
 
@@ -616,7 +447,7 @@
 	          }
 
 	          totalCounts++;
-	        }); // console.log(has, collection, filters);
+	        });
 
 	        if (filteredCollections.length) {
 	          brand.collections = filteredCollections;
@@ -662,7 +493,7 @@
 	        }
 
 	        option.disabled = !has;
-	      }); // console.log(filter.options);
+	      });
 	    });
 	  };
 
@@ -685,34 +516,16 @@
 
 	var GTM_CAT$2 = 'collezioni';
 
-	var CollectionsCtrl =
-	/*#__PURE__*/
-	function () {
+	var CollectionsCtrl = function () {
 	  function CollectionsCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
 	    this.locationService = LocationService;
 	    this.filters = window.filters || {};
-	    this.brands = window.brands || []; // sorting alphabetically
-
-	    /*
-	    this.brands.forEach(brand => {
-	    	if (brand.collections) {
-	    		brand.collections.sort(function(a, b) {
-	    			if (a.title < b.title) { return -1; }
-	    			if (a.title > b.title) { return 1; }
-	    			return 0;
-	    		})
-	    	}
-	    });
-	    */
-
+	    this.brands = window.brands || [];
 	    this.initialFilters = window.initialFilters || null;
 	    this.deserializeFilters(this.initialFilters);
-	    this.applyFilters(false); // this.filteredReferences = this.references.slice();
-	    // this.updateFilterStates();
-	    // console.log(this.filters);
-	    // console.log(this.brands);
+	    this.applyFilters(false);
 	  }
 
 	  var _proto = CollectionsCtrl.prototype;
@@ -782,8 +595,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('CollectionsCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -792,18 +604,12 @@
 	  _proto.applyFilters = function applyFilters(serialize) {
 	    var _this3 = this;
 
-	    /*
-	    const filters = Object.keys(this.filters).map((x) => {
-	    	return Object.assign({ type: x }, this.filters[x]);
-	    }).filter(x => x.value !== null);
-	    */
 	    if (serialize !== false) this.serializeFilters();
 
 	    var _this$getFilteredBran = this.getFilteredBrands(),
 	        filteredBrands = _this$getFilteredBran.filteredBrands,
 	        resultCounts = _this$getFilteredBran.resultCounts,
-	        totalCounts = _this$getFilteredBran.totalCounts; // console.log(filteredBrands, filters);
-
+	        totalCounts = _this$getFilteredBran.totalCounts;
 
 	    this.filteredBrands = [];
 	    this.$timeout(function () {
@@ -811,8 +617,7 @@
 	      _this3.resultCounts = resultCounts;
 	      _this3.totalCounts = totalCounts;
 
-	      _this3.updateFilterStates(); // delayer for image update
-
+	      _this3.updateFilterStates();
 	    }, 50);
 	    GtmService.pageViewFilters(GTM_CAT$2, this.filters);
 	  };
@@ -861,9 +666,7 @@
 	        return look;
 	      }).filter(function (x) {
 	        return x.collections.length;
-	      }); // .filter(x => x.collections.length)
-	      // console.log(has, collection, filters);
-
+	      });
 	      resultCounts += collections.length;
 
 	      if (brand.looks.length) {
@@ -907,7 +710,7 @@
 	        }
 
 	        option.disabled = !has;
-	      }); // console.log(filter.options);
+	      });
 	    });
 	  };
 
@@ -934,9 +737,7 @@
 
 	CollectionsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-	var ContactsCtrl =
-	/*#__PURE__*/
-	function () {
+	var ContactsCtrl = function () {
 	  function ContactsCtrl($scope, $location, $timeout, $http, StateService) {
 	    this.$scope = $scope;
 	    this.$location = $location;
@@ -981,16 +782,7 @@
 	        _this2.error = error;
 
 	        _this2.state.error(error);
-	      })
-	      /*.finally(() => {
-	      				this.state.ready();
-	      			})*/
-	      ;
-	      /*
-	      this.$timeout(() => {
-	      	this.state.ready();
-	      }, 2000);
-	      */
+	      });
 	    }
 	  };
 
@@ -1003,9 +795,7 @@
 
 	ContactsCtrl.$inject = ['$scope', '$location', '$timeout', '$http', 'StateService'];
 
-	var AppearDirective =
-	/*#__PURE__*/
-	function () {
+	var AppearDirective = function () {
 	  function AppearDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -1023,29 +813,16 @@
 	    var section = this.getSection(node);
 	    element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
 	    var subscription = this.domService.appear$(node).subscribe(function (event) {
-	      // -0.05
-	      // console.log(event.rect.top);
 	      var rect = event.rect;
 	      var x = rect.left;
-	      var y = 0; // event.rect.top;
-
+	      var y = 0;
 	      var index = Math.floor(y / 320) * Math.floor(window.innerWidth / 320) + Math.floor(x / 320);
 	      var timeout = index * 50;
 	      setTimeout(function () {
 	        if (node.classList) {
 	          node.classList.add('appeared');
 	        }
-	      }, timeout); // (i - firstVisibleIndex));
-
-	      /*
-	      if (index > 0) {
-	      	setTimeout(() => {
-	      		node.classList.add('appeared');
-	      	}, timeout); // (i - firstVisibleIndex));
-	      } else {
-	      	node.classList.add('appeared');
-	      }
-	      */
+	      }, timeout);
 	    });
 
 	    var onBeforePrint = function onBeforePrint() {
@@ -1084,9 +861,7 @@
 	}();
 	AppearDirective.factory.$inject = ['DomService'];
 
-	var HasDropdownDirective =
-	/*#__PURE__*/
-	function () {
+	var HasDropdownDirective = function () {
 	  function HasDropdownDirective($timeout) {
 	    this.$timeout = $timeout;
 	    this.restrict = 'A';
@@ -1101,13 +876,10 @@
 	    var node = element[0];
 	    var uid = HasDropdownDirective.dropDownUid++;
 	    var opened = null;
-	    var consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null; // scope.hasDropdown = null;
-	    // console.log(attributes.hasDropdown);
-
+	    var consumer = attributes.hasDropdownConsumer !== undefined ? scope.$eval(attributes.hasDropdownConsumer) : null;
 	    var trigger = attributes.hasDropdown !== '' ? node.querySelector(attributes.hasDropdown) : node;
 
 	    var onClick = function onClick(event) {
-	      // console.log(trigger, node, attributes.hasDropdown);
 	      if (opened === null) {
 	        openDropdown();
 	      } else if (trigger !== node) {
@@ -1116,7 +888,7 @@
 	    };
 
 	    var onDocumentClick = function onDocumentClick(event) {
-	      var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+	      var clickedInside = node === event.target || node.contains(event.target);
 
 	      if (!clickedInside) {
 	        closeDropdown();
@@ -1124,11 +896,6 @@
 	    };
 
 	    var onShowHide = function onShowHide(value) {
-	      /*
-	      if (uid === 4) {
-	      	console.log('onShowHide', scope.hasDropdown, uid);
-	      }
-	      */
 	      if (scope.hasDropdown === uid) {
 	        node.classList.add('opened');
 	      } else {
@@ -1145,27 +912,11 @@
 
 	        if (consumer) {
 	          var dropdown = node.querySelector('[dropdown]');
-	          consumer.onDroppedIn(dropdown).then(function (success) {// console.log('success');
-	          });
-	          /*
-	          if (scope.hasDropdown === uid) {
-	          	// consumer.onDroppedOut(dropdown);
-	          } else {
-	          	consumer.onDroppedIn(dropdown);
-	          }
-	          // console.log(consumer, dropdown);
-	          */
+	          consumer.onDroppedIn(dropdown).then(function (success) {});
 	        }
 
 	        _this.$timeout(function () {
 	          scope.hasDropdown = uid;
-	          /*
-	          if (scope.hasDropdown === uid) {
-	          	// scope.hasDropdown = null;
-	          } else {
-	          	scope.hasDropdown = uid;
-	          }
-	          */
 	        });
 	      }
 	    };
@@ -1179,7 +930,7 @@
 
 	          if (consumer) {
 	            var dropdown = node.querySelector('[dropdown]');
-	            consumer.onDroppedOut(dropdown); // console.log(consumer, dropdown);
+	            consumer.onDroppedOut(dropdown);
 	          }
 
 	          if (scope.hasDropdown === uid) {
@@ -1225,9 +976,7 @@
 	HasDropdownDirective.dropDownUid = 0;
 	HasDropdownDirective.factory.$inject = ['$timeout'];
 
-	var AutocompleteDirective =
-	/*#__PURE__*/
-	function () {
+	var AutocompleteDirective = function () {
 	  function AutocompleteDirective($timeout) {
 	    this.$timeout = $timeout;
 	    this.restrict = 'A';
@@ -1253,7 +1002,7 @@
 	    };
 	    var filter = scope.filter;
 	    scope.items = scope.filter.options;
-	    node.initialFocus = null; // scope.$parent.hasDropdown = null;
+	    node.initialFocus = null;
 
 	    scope.setItem = function (item) {
 	      filter.value = item.value;
@@ -1285,16 +1034,15 @@
 	      } else {
 	        scope.items = filter.options;
 	        scope.$parent.hasDropdown = null;
-	      } // console.log('onChange', autocomplete.query, autocomplete.results);
-
+	      }
 	    };
 
 	    var onClickInput = function onClickInput(event) {
-	      event.stopPropagation(); // console.log('onClickInput', event);
+	      event.stopPropagation();
 	    };
 
 	    var onClick = function onClick(event) {
-	      var clickedInside = node === event.target || node.contains(event.target); // || !document.contains(event.target)
+	      var clickedInside = node === event.target || node.contains(event.target);
 
 	      if (clickedInside) {
 	        node.initialFocus = true;
@@ -1309,8 +1057,7 @@
 	          scope.items = filter.options;
 	          autocomplete.query = null;
 	          autocomplete.results = [];
-	        }); // console.log(node, clickedInside, scope.$parent.hasDropdown);
-
+	        });
 	      } else if (node.initialFocus !== null) {
 	        node.initialFocus = false;
 
@@ -1326,7 +1073,6 @@
 	    };
 
 	    scope.$parent.$watch('hasDropdown', function (value) {
-	      // console.log('hasDropdown', value, uid);
 	      if (scope.$parent.hasDropdown === uid) {
 	        node.classList.add('opened');
 	      } else {
@@ -1336,12 +1082,12 @@
 
 	    var addListeners = function addListeners() {
 	      input.addEventListener('click', onClickInput);
-	      document.addEventListener('click', onClick); // element.on('click', onClick);
+	      document.addEventListener('click', onClick);
 	    };
 
 	    var removeListeners = function removeListeners() {
 	      input.removeEventListener('click', onClickInput);
-	      document.removeEventListener('click', onClick); // element.off('click', onClick);
+	      document.removeEventListener('click', onClick);
 	    };
 
 	    addListeners();
@@ -1358,9 +1104,7 @@
 	}();
 	AutocompleteDirective.factory.$inject = ['$timeout'];
 
-	var CookiesDirective =
-	/*#__PURE__*/
-	function () {
+	var CookiesDirective = function () {
 	  function CookiesDirective($timeout, StorageService) {
 	    this.$timeout = $timeout;
 	    this.storage = StorageService;
@@ -1380,8 +1124,7 @@
 	    }
 
 	    scope.onAcceptCookies = function (event) {
-	      _this.storage.set('cookiesAccepted', true); // accept();
-
+	      _this.storage.set('cookiesAccepted', true);
 
 	      TweenMax.to(node, 0.5, {
 	        bottom: '-100%',
@@ -1404,13 +1147,7 @@
 
 	var FRAGMENT_SHADER = "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_pow;\nuniform float u_top;\nuniform float u_strength;\nuniform sampler2D u_texture;\nuniform vec2 u_textureResolution;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy / u_resolution.xy;\n\tfloat rr = u_resolution.x / u_resolution.y;\n\tfloat tr = u_textureResolution.x / u_textureResolution.y;\n\tif (tr > rr) {\n\t\tst.x = ((st.x - 0.5) * rr / tr) + 0.5;\n\t} else {\n\t\tst.y = ((st.y - 0.5) / rr * tr) + 0.5;\n\t}\n\tfloat top = u_top / u_resolution.y;\n\tvec2 mx = u_mouse / u_resolution;\n\tvec2 dx = vec2(cos(u_time * 0.5), sin(u_time * 0.6)) * 4.0 * u_strength;\n\n\tfloat noise = random(st) * 0.08;\n\n\tfloat c = cos((st.x + dx.x - mx.x * 0.4) * 6.0 + 2.0 * dx.y);\n\tfloat s = sin((st.y + top + dx.y - mx.y * 0.2) * 3.0 + 1.0 * dx.x);\n\tfloat b = (length(vec2(c + s, c)) + 2.0) * u_strength;\n\n\tfloat center = length(st - 0.5);\n\tvec2 sty = vec2(st.x, st.y + top);\n\tfloat scale = 0.95 * (1.0 - b * center * u_pow);\n\tvec2 stb = (sty - 0.5) * scale + 0.5;\n\n\tvec3 video = texture2D(u_texture, stb).rgb;\n\tvec3 bulge = vec3(b);\n\n\tvec3 color = vec3(0.0);\n\tcolor = vec3(video - noise);\n\t// color = vec3(video);\n\t// color = vec3(video - bulge * 0.1 - noise);\n\t// color = vec3(bulge);\n\t// color = vec3(noise);\n\t// color = vec3(center);\n\t// color = vec3(u_pow * center);\n\t// color = vec3(bulge - noise) * length(st - 0.5) * u_pow;\n\n\tgl_FragColor = vec4(color, 1.0);\n}\n";
 
-	var GlslCanvasDirective =
-	/*#__PURE__*/
-	function () {
-	  /*
-	  removed "node_modules/glsl-canvas-js/dist/glsl-canvas.js",
-	  from gulpfile.config.json
-	  */
+	var GlslCanvasDirective = function () {
 	  function GlslCanvasDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -1423,8 +1160,7 @@
 	    var node = element[0];
 	    var canvas = new GlslCanvas(node, {
 	      fragmentString: FRAGMENT_SHADER
-	    }); // const canvas = new GlslCanvas(node);
-
+	    });
 	    canvas.setTexture('u_texture', attributes.glslCanvas, {
 	      repeat: true
 	    });
@@ -1437,7 +1173,6 @@
 	    var tween;
 
 	    var onOver = function onOver(event) {
-	      // console.log('onOver');
 	      if (tween) {
 	        tween.kill();
 	      }
@@ -1445,18 +1180,14 @@
 	      tween = TweenMax.to(pow, 3, {
 	        pow: 0.0,
 	        ease: Expo.easeOut,
-	        // Back.easeOut.config(1.7),
-	        // Elastic.easeOut.config(1, 0.3),
 	        overwrite: 'all',
 	        onUpdate: function onUpdate() {
-	          // console.log(pow.pow);
 	          canvas.setUniform('u_pow', pow.pow);
 	        }
 	      });
 	    };
 
 	    var onOut = function onOut(event) {
-	      // console.log('onOut');
 	      if (tween) {
 	        tween.kill();
 	      }
@@ -1464,11 +1195,8 @@
 	      tween = TweenMax.to(pow, 3, {
 	        pow: 1.0,
 	        ease: Expo.easeOut,
-	        // Back.easeOut.config(1.7),
-	        // Elastic.easeOut.config(1, 0.3),
 	        overwrite: 'all',
 	        onUpdate: function onUpdate() {
-	          // console.log(pow.pow);
 	          canvas.setUniform('u_pow', pow.pow);
 	        }
 	      });
@@ -1502,9 +1230,7 @@
 	}();
 	GlslCanvasDirective.factory.$inject = ['DomService'];
 
-	var HilightDirective =
-	/*#__PURE__*/
-	function () {
+	var HilightDirective = function () {
 	  function HilightDirective() {
 	    this.restrict = 'A';
 	  }
@@ -1528,17 +1254,14 @@
 	        } else {
 	          node.innerHTML = hilight;
 	        }
-	      } // console.log(hilight, query, node.innerHTML);
-
+	      }
 	    };
 
 	    scope.$watch(attributes.hilight, function (current, previous) {
-	      // console.log('HilightDirective.hilight', current, previous);
 	      hilight = current;
 	      update();
 	    });
 	    scope.$watch(attributes.query, function (current, previous) {
-	      // console.log('HilightDirective.query', current, previous);
 	      query = current;
 	      update();
 	    });
@@ -1553,9 +1276,7 @@
 	}();
 	HilightDirective.factory.$inject = [];
 
-	var HrefDirective =
-	/*#__PURE__*/
-	function () {
+	var HrefDirective = function () {
 	  function HrefDirective() {
 	    this.restrict = 'A';
 	  }
@@ -1567,16 +1288,13 @@
 	    var node = element[0];
 
 	    var onClick = function onClick() {
-	      window.location.href = node.getAttribute('href')
-	      /* attributes.href mantiene il valore iniziale */
-	      ;
+	      window.location.href = node.getAttribute('href');
 	    };
 
 	    {
 	      if (attributes.routerDisabled === undefined) {
 	        scope.$emit('onHrefNode', node);
 	      } else {
-	        // console.log(attributes.routerDisabled, node);
 	        node.addEventListener('click', onClick);
 	      }
 
@@ -1604,9 +1322,7 @@
 	}();
 	HrefDirective.factory.$inject = [];
 
-	var LastItemDirective =
-	/*#__PURE__*/
-	function () {
+	var LastItemDirective = function () {
 	  function LastItemDirective($timeout) {
 	    this.$timeout = $timeout;
 	    this.restrict = 'A';
@@ -1630,9 +1346,7 @@
 	}();
 	LastItemDirective.factory.$inject = ['$timeout'];
 
-	var LazyScriptDirective =
-	/*#__PURE__*/
-	function () {
+	var LazyScriptDirective = function () {
 	  function LazyScriptDirective() {
 	    this.restrict = 'A';
 	    this.scope = false;
@@ -1641,7 +1355,6 @@
 	  var _proto = LazyScriptDirective.prototype;
 
 	  _proto.link = function link(scope, element, attributes, controller) {
-	    // if (attributes.type === 'text/javascript-lazy') {
 	    if (attributes.src !== undefined) {
 	      fetch(attributes.src, {
 	        mode: 'no-cors'
@@ -1662,9 +1375,7 @@
 	      } catch (error) {
 	        console.log('LazyScriptDirective.error', error);
 	      }
-	    } // }
-	    // scope.$on('$destroy', () => {});
-
+	    }
 	  };
 
 	  LazyScriptDirective.factory = function factory() {
@@ -1675,2551 +1386,7 @@
 	}();
 	LazyScriptDirective.factory.$inject = [];
 
-	/*! *****************************************************************************
-	Copyright (c) Microsoft Corporation. All rights reserved.
-	Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-	this file except in compliance with the License. You may obtain a copy of the
-	License at http://www.apache.org/licenses/LICENSE-2.0
-
-	THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-	KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-	WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-	MERCHANTABLITY OR NON-INFRINGEMENT.
-
-	See the Apache Version 2.0 License for specific language governing permissions
-	and limitations under the License.
-	***************************************************************************** */
-	/* global Reflect, Promise */
-
-	var extendStatics = function(d, b) {
-	    extendStatics = Object.setPrototypeOf ||
-	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-	    return extendStatics(d, b);
-	};
-
-	function __extends(d, b) {
-	    extendStatics(d, b);
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function isFunction(x) {
-	    return typeof x === 'function';
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var _enable_super_gross_mode_that_will_cause_bad_things = false;
-	var config = {
-	    Promise: undefined,
-	    set useDeprecatedSynchronousErrorHandling(value) {
-	        if (value) {
-	            var error = /*@__PURE__*/ new Error();
-	            /*@__PURE__*/ console.warn('DEPRECATED! RxJS was set to use deprecated synchronous error handling behavior by code at: \n' + error.stack);
-	        }
-	        _enable_super_gross_mode_that_will_cause_bad_things = value;
-	    },
-	    get useDeprecatedSynchronousErrorHandling() {
-	        return _enable_super_gross_mode_that_will_cause_bad_things;
-	    },
-	};
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function hostReportError(err) {
-	    setTimeout(function () { throw err; }, 0);
-	}
-
-	/** PURE_IMPORTS_START _config,_util_hostReportError PURE_IMPORTS_END */
-	var empty = {
-	    closed: true,
-	    next: function (value) { },
-	    error: function (err) {
-	        if (config.useDeprecatedSynchronousErrorHandling) {
-	            throw err;
-	        }
-	        else {
-	            hostReportError(err);
-	        }
-	    },
-	    complete: function () { }
-	};
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var isArray = /*@__PURE__*/ (function () { return Array.isArray || (function (x) { return x && typeof x.length === 'number'; }); })();
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function isObject(x) {
-	    return x !== null && typeof x === 'object';
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var UnsubscriptionErrorImpl = /*@__PURE__*/ (function () {
-	    function UnsubscriptionErrorImpl(errors) {
-	        Error.call(this);
-	        this.message = errors ?
-	            errors.length + " errors occurred during unsubscription:\n" + errors.map(function (err, i) { return i + 1 + ") " + err.toString(); }).join('\n  ') : '';
-	        this.name = 'UnsubscriptionError';
-	        this.errors = errors;
-	        return this;
-	    }
-	    UnsubscriptionErrorImpl.prototype = /*@__PURE__*/ Object.create(Error.prototype);
-	    return UnsubscriptionErrorImpl;
-	})();
-	var UnsubscriptionError = UnsubscriptionErrorImpl;
-
-	/** PURE_IMPORTS_START _util_isArray,_util_isObject,_util_isFunction,_util_UnsubscriptionError PURE_IMPORTS_END */
-	var Subscription = /*@__PURE__*/ (function () {
-	    function Subscription(unsubscribe) {
-	        this.closed = false;
-	        this._parentOrParents = null;
-	        this._subscriptions = null;
-	        if (unsubscribe) {
-	            this._unsubscribe = unsubscribe;
-	        }
-	    }
-	    Subscription.prototype.unsubscribe = function () {
-	        var errors;
-	        if (this.closed) {
-	            return;
-	        }
-	        var _a = this, _parentOrParents = _a._parentOrParents, _unsubscribe = _a._unsubscribe, _subscriptions = _a._subscriptions;
-	        this.closed = true;
-	        this._parentOrParents = null;
-	        this._subscriptions = null;
-	        if (_parentOrParents instanceof Subscription) {
-	            _parentOrParents.remove(this);
-	        }
-	        else if (_parentOrParents !== null) {
-	            for (var index = 0; index < _parentOrParents.length; ++index) {
-	                var parent_1 = _parentOrParents[index];
-	                parent_1.remove(this);
-	            }
-	        }
-	        if (isFunction(_unsubscribe)) {
-	            try {
-	                _unsubscribe.call(this);
-	            }
-	            catch (e) {
-	                errors = e instanceof UnsubscriptionError ? flattenUnsubscriptionErrors(e.errors) : [e];
-	            }
-	        }
-	        if (isArray(_subscriptions)) {
-	            var index = -1;
-	            var len = _subscriptions.length;
-	            while (++index < len) {
-	                var sub = _subscriptions[index];
-	                if (isObject(sub)) {
-	                    try {
-	                        sub.unsubscribe();
-	                    }
-	                    catch (e) {
-	                        errors = errors || [];
-	                        if (e instanceof UnsubscriptionError) {
-	                            errors = errors.concat(flattenUnsubscriptionErrors(e.errors));
-	                        }
-	                        else {
-	                            errors.push(e);
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	        if (errors) {
-	            throw new UnsubscriptionError(errors);
-	        }
-	    };
-	    Subscription.prototype.add = function (teardown) {
-	        var subscription = teardown;
-	        if (!teardown) {
-	            return Subscription.EMPTY;
-	        }
-	        switch (typeof teardown) {
-	            case 'function':
-	                subscription = new Subscription(teardown);
-	            case 'object':
-	                if (subscription === this || subscription.closed || typeof subscription.unsubscribe !== 'function') {
-	                    return subscription;
-	                }
-	                else if (this.closed) {
-	                    subscription.unsubscribe();
-	                    return subscription;
-	                }
-	                else if (!(subscription instanceof Subscription)) {
-	                    var tmp = subscription;
-	                    subscription = new Subscription();
-	                    subscription._subscriptions = [tmp];
-	                }
-	                break;
-	            default: {
-	                throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
-	            }
-	        }
-	        var _parentOrParents = subscription._parentOrParents;
-	        if (_parentOrParents === null) {
-	            subscription._parentOrParents = this;
-	        }
-	        else if (_parentOrParents instanceof Subscription) {
-	            if (_parentOrParents === this) {
-	                return subscription;
-	            }
-	            subscription._parentOrParents = [_parentOrParents, this];
-	        }
-	        else if (_parentOrParents.indexOf(this) === -1) {
-	            _parentOrParents.push(this);
-	        }
-	        else {
-	            return subscription;
-	        }
-	        var subscriptions = this._subscriptions;
-	        if (subscriptions === null) {
-	            this._subscriptions = [subscription];
-	        }
-	        else {
-	            subscriptions.push(subscription);
-	        }
-	        return subscription;
-	    };
-	    Subscription.prototype.remove = function (subscription) {
-	        var subscriptions = this._subscriptions;
-	        if (subscriptions) {
-	            var subscriptionIndex = subscriptions.indexOf(subscription);
-	            if (subscriptionIndex !== -1) {
-	                subscriptions.splice(subscriptionIndex, 1);
-	            }
-	        }
-	    };
-	    Subscription.EMPTY = (function (empty) {
-	        empty.closed = true;
-	        return empty;
-	    }(new Subscription()));
-	    return Subscription;
-	}());
-	function flattenUnsubscriptionErrors(errors) {
-	    return errors.reduce(function (errs, err) { return errs.concat((err instanceof UnsubscriptionError) ? err.errors : err); }, []);
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var rxSubscriber = /*@__PURE__*/ (function () {
-	    return typeof Symbol === 'function'
-	        ? /*@__PURE__*/ Symbol('rxSubscriber')
-	        : '@@rxSubscriber_' + /*@__PURE__*/ Math.random();
-	})();
-
-	/** PURE_IMPORTS_START tslib,_util_isFunction,_Observer,_Subscription,_internal_symbol_rxSubscriber,_config,_util_hostReportError PURE_IMPORTS_END */
-	var Subscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(Subscriber, _super);
-	    function Subscriber(destinationOrNext, error, complete) {
-	        var _this = _super.call(this) || this;
-	        _this.syncErrorValue = null;
-	        _this.syncErrorThrown = false;
-	        _this.syncErrorThrowable = false;
-	        _this.isStopped = false;
-	        switch (arguments.length) {
-	            case 0:
-	                _this.destination = empty;
-	                break;
-	            case 1:
-	                if (!destinationOrNext) {
-	                    _this.destination = empty;
-	                    break;
-	                }
-	                if (typeof destinationOrNext === 'object') {
-	                    if (destinationOrNext instanceof Subscriber) {
-	                        _this.syncErrorThrowable = destinationOrNext.syncErrorThrowable;
-	                        _this.destination = destinationOrNext;
-	                        destinationOrNext.add(_this);
-	                    }
-	                    else {
-	                        _this.syncErrorThrowable = true;
-	                        _this.destination = new SafeSubscriber(_this, destinationOrNext);
-	                    }
-	                    break;
-	                }
-	            default:
-	                _this.syncErrorThrowable = true;
-	                _this.destination = new SafeSubscriber(_this, destinationOrNext, error, complete);
-	                break;
-	        }
-	        return _this;
-	    }
-	    Subscriber.prototype[rxSubscriber] = function () { return this; };
-	    Subscriber.create = function (next, error, complete) {
-	        var subscriber = new Subscriber(next, error, complete);
-	        subscriber.syncErrorThrowable = false;
-	        return subscriber;
-	    };
-	    Subscriber.prototype.next = function (value) {
-	        if (!this.isStopped) {
-	            this._next(value);
-	        }
-	    };
-	    Subscriber.prototype.error = function (err) {
-	        if (!this.isStopped) {
-	            this.isStopped = true;
-	            this._error(err);
-	        }
-	    };
-	    Subscriber.prototype.complete = function () {
-	        if (!this.isStopped) {
-	            this.isStopped = true;
-	            this._complete();
-	        }
-	    };
-	    Subscriber.prototype.unsubscribe = function () {
-	        if (this.closed) {
-	            return;
-	        }
-	        this.isStopped = true;
-	        _super.prototype.unsubscribe.call(this);
-	    };
-	    Subscriber.prototype._next = function (value) {
-	        this.destination.next(value);
-	    };
-	    Subscriber.prototype._error = function (err) {
-	        this.destination.error(err);
-	        this.unsubscribe();
-	    };
-	    Subscriber.prototype._complete = function () {
-	        this.destination.complete();
-	        this.unsubscribe();
-	    };
-	    Subscriber.prototype._unsubscribeAndRecycle = function () {
-	        var _parentOrParents = this._parentOrParents;
-	        this._parentOrParents = null;
-	        this.unsubscribe();
-	        this.closed = false;
-	        this.isStopped = false;
-	        this._parentOrParents = _parentOrParents;
-	        return this;
-	    };
-	    return Subscriber;
-	}(Subscription));
-	var SafeSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(SafeSubscriber, _super);
-	    function SafeSubscriber(_parentSubscriber, observerOrNext, error, complete) {
-	        var _this = _super.call(this) || this;
-	        _this._parentSubscriber = _parentSubscriber;
-	        var next;
-	        var context = _this;
-	        if (isFunction(observerOrNext)) {
-	            next = observerOrNext;
-	        }
-	        else if (observerOrNext) {
-	            next = observerOrNext.next;
-	            error = observerOrNext.error;
-	            complete = observerOrNext.complete;
-	            if (observerOrNext !== empty) {
-	                context = Object.create(observerOrNext);
-	                if (isFunction(context.unsubscribe)) {
-	                    _this.add(context.unsubscribe.bind(context));
-	                }
-	                context.unsubscribe = _this.unsubscribe.bind(_this);
-	            }
-	        }
-	        _this._context = context;
-	        _this._next = next;
-	        _this._error = error;
-	        _this._complete = complete;
-	        return _this;
-	    }
-	    SafeSubscriber.prototype.next = function (value) {
-	        if (!this.isStopped && this._next) {
-	            var _parentSubscriber = this._parentSubscriber;
-	            if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
-	                this.__tryOrUnsub(this._next, value);
-	            }
-	            else if (this.__tryOrSetError(_parentSubscriber, this._next, value)) {
-	                this.unsubscribe();
-	            }
-	        }
-	    };
-	    SafeSubscriber.prototype.error = function (err) {
-	        if (!this.isStopped) {
-	            var _parentSubscriber = this._parentSubscriber;
-	            var useDeprecatedSynchronousErrorHandling = config.useDeprecatedSynchronousErrorHandling;
-	            if (this._error) {
-	                if (!useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
-	                    this.__tryOrUnsub(this._error, err);
-	                    this.unsubscribe();
-	                }
-	                else {
-	                    this.__tryOrSetError(_parentSubscriber, this._error, err);
-	                    this.unsubscribe();
-	                }
-	            }
-	            else if (!_parentSubscriber.syncErrorThrowable) {
-	                this.unsubscribe();
-	                if (useDeprecatedSynchronousErrorHandling) {
-	                    throw err;
-	                }
-	                hostReportError(err);
-	            }
-	            else {
-	                if (useDeprecatedSynchronousErrorHandling) {
-	                    _parentSubscriber.syncErrorValue = err;
-	                    _parentSubscriber.syncErrorThrown = true;
-	                }
-	                else {
-	                    hostReportError(err);
-	                }
-	                this.unsubscribe();
-	            }
-	        }
-	    };
-	    SafeSubscriber.prototype.complete = function () {
-	        var _this = this;
-	        if (!this.isStopped) {
-	            var _parentSubscriber = this._parentSubscriber;
-	            if (this._complete) {
-	                var wrappedComplete = function () { return _this._complete.call(_this._context); };
-	                if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
-	                    this.__tryOrUnsub(wrappedComplete);
-	                    this.unsubscribe();
-	                }
-	                else {
-	                    this.__tryOrSetError(_parentSubscriber, wrappedComplete);
-	                    this.unsubscribe();
-	                }
-	            }
-	            else {
-	                this.unsubscribe();
-	            }
-	        }
-	    };
-	    SafeSubscriber.prototype.__tryOrUnsub = function (fn, value) {
-	        try {
-	            fn.call(this._context, value);
-	        }
-	        catch (err) {
-	            this.unsubscribe();
-	            if (config.useDeprecatedSynchronousErrorHandling) {
-	                throw err;
-	            }
-	            else {
-	                hostReportError(err);
-	            }
-	        }
-	    };
-	    SafeSubscriber.prototype.__tryOrSetError = function (parent, fn, value) {
-	        if (!config.useDeprecatedSynchronousErrorHandling) {
-	            throw new Error('bad call');
-	        }
-	        try {
-	            fn.call(this._context, value);
-	        }
-	        catch (err) {
-	            if (config.useDeprecatedSynchronousErrorHandling) {
-	                parent.syncErrorValue = err;
-	                parent.syncErrorThrown = true;
-	                return true;
-	            }
-	            else {
-	                hostReportError(err);
-	                return true;
-	            }
-	        }
-	        return false;
-	    };
-	    SafeSubscriber.prototype._unsubscribe = function () {
-	        var _parentSubscriber = this._parentSubscriber;
-	        this._context = null;
-	        this._parentSubscriber = null;
-	        _parentSubscriber.unsubscribe();
-	    };
-	    return SafeSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
-	var OuterSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(OuterSubscriber, _super);
-	    function OuterSubscriber() {
-	        return _super !== null && _super.apply(this, arguments) || this;
-	    }
-	    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-	        this.destination.next(innerValue);
-	    };
-	    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
-	        this.destination.error(error);
-	    };
-	    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
-	        this.destination.complete();
-	    };
-	    return OuterSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
-	var InnerSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(InnerSubscriber, _super);
-	    function InnerSubscriber(parent, outerValue, outerIndex) {
-	        var _this = _super.call(this) || this;
-	        _this.parent = parent;
-	        _this.outerValue = outerValue;
-	        _this.outerIndex = outerIndex;
-	        _this.index = 0;
-	        return _this;
-	    }
-	    InnerSubscriber.prototype._next = function (value) {
-	        this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++, this);
-	    };
-	    InnerSubscriber.prototype._error = function (error) {
-	        this.parent.notifyError(error, this);
-	        this.unsubscribe();
-	    };
-	    InnerSubscriber.prototype._complete = function () {
-	        this.parent.notifyComplete(this);
-	        this.unsubscribe();
-	    };
-	    return InnerSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var subscribeToArray = function (array) {
-	    return function (subscriber) {
-	        for (var i = 0, len = array.length; i < len && !subscriber.closed; i++) {
-	            subscriber.next(array[i]);
-	        }
-	        subscriber.complete();
-	    };
-	};
-
-	/** PURE_IMPORTS_START _hostReportError PURE_IMPORTS_END */
-	var subscribeToPromise = function (promise) {
-	    return function (subscriber) {
-	        promise.then(function (value) {
-	            if (!subscriber.closed) {
-	                subscriber.next(value);
-	                subscriber.complete();
-	            }
-	        }, function (err) { return subscriber.error(err); })
-	            .then(null, hostReportError);
-	        return subscriber;
-	    };
-	};
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function getSymbolIterator() {
-	    if (typeof Symbol !== 'function' || !Symbol.iterator) {
-	        return '@@iterator';
-	    }
-	    return Symbol.iterator;
-	}
-	var iterator = /*@__PURE__*/ getSymbolIterator();
-
-	/** PURE_IMPORTS_START _symbol_iterator PURE_IMPORTS_END */
-	var subscribeToIterable = function (iterable) {
-	    return function (subscriber) {
-	        var iterator$1 = iterable[iterator]();
-	        do {
-	            var item = iterator$1.next();
-	            if (item.done) {
-	                subscriber.complete();
-	                break;
-	            }
-	            subscriber.next(item.value);
-	            if (subscriber.closed) {
-	                break;
-	            }
-	        } while (true);
-	        if (typeof iterator$1.return === 'function') {
-	            subscriber.add(function () {
-	                if (iterator$1.return) {
-	                    iterator$1.return();
-	                }
-	            });
-	        }
-	        return subscriber;
-	    };
-	};
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var observable = /*@__PURE__*/ (function () { return typeof Symbol === 'function' && Symbol.observable || '@@observable'; })();
-
-	/** PURE_IMPORTS_START _symbol_observable PURE_IMPORTS_END */
-	var subscribeToObservable = function (obj) {
-	    return function (subscriber) {
-	        var obs = obj[observable]();
-	        if (typeof obs.subscribe !== 'function') {
-	            throw new TypeError('Provided object does not correctly implement Symbol.observable');
-	        }
-	        else {
-	            return obs.subscribe(subscriber);
-	        }
-	    };
-	};
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var isArrayLike = (function (x) { return x && typeof x.length === 'number' && typeof x !== 'function'; });
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function isPromise(value) {
-	    return !!value && typeof value.subscribe !== 'function' && typeof value.then === 'function';
-	}
-
-	/** PURE_IMPORTS_START _subscribeToArray,_subscribeToPromise,_subscribeToIterable,_subscribeToObservable,_isArrayLike,_isPromise,_isObject,_symbol_iterator,_symbol_observable PURE_IMPORTS_END */
-	var subscribeTo = function (result) {
-	    if (!!result && typeof result[observable] === 'function') {
-	        return subscribeToObservable(result);
-	    }
-	    else if (isArrayLike(result)) {
-	        return subscribeToArray(result);
-	    }
-	    else if (isPromise(result)) {
-	        return subscribeToPromise(result);
-	    }
-	    else if (!!result && typeof result[iterator] === 'function') {
-	        return subscribeToIterable(result);
-	    }
-	    else {
-	        var value = isObject(result) ? 'an invalid object' : "'" + result + "'";
-	        var msg = "You provided " + value + " where a stream was expected."
-	            + ' You can provide an Observable, Promise, Array, or Iterable.';
-	        throw new TypeError(msg);
-	    }
-	};
-
-	/** PURE_IMPORTS_START _Subscriber PURE_IMPORTS_END */
-	function canReportError(observer) {
-	    while (observer) {
-	        var _a = observer, closed_1 = _a.closed, destination = _a.destination, isStopped = _a.isStopped;
-	        if (closed_1 || isStopped) {
-	            return false;
-	        }
-	        else if (destination && destination instanceof Subscriber) {
-	            observer = destination;
-	        }
-	        else {
-	            observer = null;
-	        }
-	    }
-	    return true;
-	}
-
-	/** PURE_IMPORTS_START _Subscriber,_symbol_rxSubscriber,_Observer PURE_IMPORTS_END */
-	function toSubscriber(nextOrObserver, error, complete) {
-	    if (nextOrObserver) {
-	        if (nextOrObserver instanceof Subscriber) {
-	            return nextOrObserver;
-	        }
-	        if (nextOrObserver[rxSubscriber]) {
-	            return nextOrObserver[rxSubscriber]();
-	        }
-	    }
-	    if (!nextOrObserver && !error && !complete) {
-	        return new Subscriber(empty);
-	    }
-	    return new Subscriber(nextOrObserver, error, complete);
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function noop() { }
-
-	/** PURE_IMPORTS_START _noop PURE_IMPORTS_END */
-	function pipeFromArray(fns) {
-	    if (!fns) {
-	        return noop;
-	    }
-	    if (fns.length === 1) {
-	        return fns[0];
-	    }
-	    return function piped(input) {
-	        return fns.reduce(function (prev, fn) { return fn(prev); }, input);
-	    };
-	}
-
-	/** PURE_IMPORTS_START _util_canReportError,_util_toSubscriber,_symbol_observable,_util_pipe,_config PURE_IMPORTS_END */
-	var Observable = /*@__PURE__*/ (function () {
-	    function Observable(subscribe) {
-	        this._isScalar = false;
-	        if (subscribe) {
-	            this._subscribe = subscribe;
-	        }
-	    }
-	    Observable.prototype.lift = function (operator) {
-	        var observable = new Observable();
-	        observable.source = this;
-	        observable.operator = operator;
-	        return observable;
-	    };
-	    Observable.prototype.subscribe = function (observerOrNext, error, complete) {
-	        var operator = this.operator;
-	        var sink = toSubscriber(observerOrNext, error, complete);
-	        if (operator) {
-	            sink.add(operator.call(sink, this.source));
-	        }
-	        else {
-	            sink.add(this.source || (config.useDeprecatedSynchronousErrorHandling && !sink.syncErrorThrowable) ?
-	                this._subscribe(sink) :
-	                this._trySubscribe(sink));
-	        }
-	        if (config.useDeprecatedSynchronousErrorHandling) {
-	            if (sink.syncErrorThrowable) {
-	                sink.syncErrorThrowable = false;
-	                if (sink.syncErrorThrown) {
-	                    throw sink.syncErrorValue;
-	                }
-	            }
-	        }
-	        return sink;
-	    };
-	    Observable.prototype._trySubscribe = function (sink) {
-	        try {
-	            return this._subscribe(sink);
-	        }
-	        catch (err) {
-	            if (config.useDeprecatedSynchronousErrorHandling) {
-	                sink.syncErrorThrown = true;
-	                sink.syncErrorValue = err;
-	            }
-	            if (canReportError(sink)) {
-	                sink.error(err);
-	            }
-	            else {
-	                console.warn(err);
-	            }
-	        }
-	    };
-	    Observable.prototype.forEach = function (next, promiseCtor) {
-	        var _this = this;
-	        promiseCtor = getPromiseCtor(promiseCtor);
-	        return new promiseCtor(function (resolve, reject) {
-	            var subscription;
-	            subscription = _this.subscribe(function (value) {
-	                try {
-	                    next(value);
-	                }
-	                catch (err) {
-	                    reject(err);
-	                    if (subscription) {
-	                        subscription.unsubscribe();
-	                    }
-	                }
-	            }, reject, resolve);
-	        });
-	    };
-	    Observable.prototype._subscribe = function (subscriber) {
-	        var source = this.source;
-	        return source && source.subscribe(subscriber);
-	    };
-	    Observable.prototype[observable] = function () {
-	        return this;
-	    };
-	    Observable.prototype.pipe = function () {
-	        var operations = [];
-	        for (var _i = 0; _i < arguments.length; _i++) {
-	            operations[_i] = arguments[_i];
-	        }
-	        if (operations.length === 0) {
-	            return this;
-	        }
-	        return pipeFromArray(operations)(this);
-	    };
-	    Observable.prototype.toPromise = function (promiseCtor) {
-	        var _this = this;
-	        promiseCtor = getPromiseCtor(promiseCtor);
-	        return new promiseCtor(function (resolve, reject) {
-	            var value;
-	            _this.subscribe(function (x) { return value = x; }, function (err) { return reject(err); }, function () { return resolve(value); });
-	        });
-	    };
-	    Observable.create = function (subscribe) {
-	        return new Observable(subscribe);
-	    };
-	    return Observable;
-	}());
-	function getPromiseCtor(promiseCtor) {
-	    if (!promiseCtor) {
-	        promiseCtor =  Promise;
-	    }
-	    if (!promiseCtor) {
-	        throw new Error('no Promise impl found');
-	    }
-	    return promiseCtor;
-	}
-
-	/** PURE_IMPORTS_START _InnerSubscriber,_subscribeTo,_Observable PURE_IMPORTS_END */
-	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex, innerSubscriber) {
-	    if (innerSubscriber === void 0) {
-	        innerSubscriber = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
-	    }
-	    if (innerSubscriber.closed) {
-	        return undefined;
-	    }
-	    if (result instanceof Observable) {
-	        return result.subscribe(innerSubscriber);
-	    }
-	    return subscribeTo(result)(innerSubscriber);
-	}
-
-	/** PURE_IMPORTS_START tslib,_OuterSubscriber,_util_subscribeToResult PURE_IMPORTS_END */
-	function audit(durationSelector) {
-	    return function auditOperatorFunction(source) {
-	        return source.lift(new AuditOperator(durationSelector));
-	    };
-	}
-	var AuditOperator = /*@__PURE__*/ (function () {
-	    function AuditOperator(durationSelector) {
-	        this.durationSelector = durationSelector;
-	    }
-	    AuditOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new AuditSubscriber(subscriber, this.durationSelector));
-	    };
-	    return AuditOperator;
-	}());
-	var AuditSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(AuditSubscriber, _super);
-	    function AuditSubscriber(destination, durationSelector) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.durationSelector = durationSelector;
-	        _this.hasValue = false;
-	        return _this;
-	    }
-	    AuditSubscriber.prototype._next = function (value) {
-	        this.value = value;
-	        this.hasValue = true;
-	        if (!this.throttled) {
-	            var duration = void 0;
-	            try {
-	                var durationSelector = this.durationSelector;
-	                duration = durationSelector(value);
-	            }
-	            catch (err) {
-	                return this.destination.error(err);
-	            }
-	            var innerSubscription = subscribeToResult(this, duration);
-	            if (!innerSubscription || innerSubscription.closed) {
-	                this.clearThrottle();
-	            }
-	            else {
-	                this.add(this.throttled = innerSubscription);
-	            }
-	        }
-	    };
-	    AuditSubscriber.prototype.clearThrottle = function () {
-	        var _a = this, value = _a.value, hasValue = _a.hasValue, throttled = _a.throttled;
-	        if (throttled) {
-	            this.remove(throttled);
-	            this.throttled = null;
-	            throttled.unsubscribe();
-	        }
-	        if (hasValue) {
-	            this.value = null;
-	            this.hasValue = false;
-	            this.destination.next(value);
-	        }
-	    };
-	    AuditSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex) {
-	        this.clearThrottle();
-	    };
-	    AuditSubscriber.prototype.notifyComplete = function () {
-	        this.clearThrottle();
-	    };
-	    return AuditSubscriber;
-	}(OuterSubscriber));
-
-	/** PURE_IMPORTS_START tslib,_Subscription PURE_IMPORTS_END */
-	var Action = /*@__PURE__*/ (function (_super) {
-	    __extends(Action, _super);
-	    function Action(scheduler, work) {
-	        return _super.call(this) || this;
-	    }
-	    Action.prototype.schedule = function (state, delay) {
-	        return this;
-	    };
-	    return Action;
-	}(Subscription));
-
-	/** PURE_IMPORTS_START tslib,_Action PURE_IMPORTS_END */
-	var AsyncAction = /*@__PURE__*/ (function (_super) {
-	    __extends(AsyncAction, _super);
-	    function AsyncAction(scheduler, work) {
-	        var _this = _super.call(this, scheduler, work) || this;
-	        _this.scheduler = scheduler;
-	        _this.work = work;
-	        _this.pending = false;
-	        return _this;
-	    }
-	    AsyncAction.prototype.schedule = function (state, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if (this.closed) {
-	            return this;
-	        }
-	        this.state = state;
-	        var id = this.id;
-	        var scheduler = this.scheduler;
-	        if (id != null) {
-	            this.id = this.recycleAsyncId(scheduler, id, delay);
-	        }
-	        this.pending = true;
-	        this.delay = delay;
-	        this.id = this.id || this.requestAsyncId(scheduler, this.id, delay);
-	        return this;
-	    };
-	    AsyncAction.prototype.requestAsyncId = function (scheduler, id, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        return setInterval(scheduler.flush.bind(scheduler, this), delay);
-	    };
-	    AsyncAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if (delay !== null && this.delay === delay && this.pending === false) {
-	            return id;
-	        }
-	        clearInterval(id);
-	        return undefined;
-	    };
-	    AsyncAction.prototype.execute = function (state, delay) {
-	        if (this.closed) {
-	            return new Error('executing a cancelled action');
-	        }
-	        this.pending = false;
-	        var error = this._execute(state, delay);
-	        if (error) {
-	            return error;
-	        }
-	        else if (this.pending === false && this.id != null) {
-	            this.id = this.recycleAsyncId(this.scheduler, this.id, null);
-	        }
-	    };
-	    AsyncAction.prototype._execute = function (state, delay) {
-	        var errored = false;
-	        var errorValue = undefined;
-	        try {
-	            this.work(state);
-	        }
-	        catch (e) {
-	            errored = true;
-	            errorValue = !!e && e || new Error(e);
-	        }
-	        if (errored) {
-	            this.unsubscribe();
-	            return errorValue;
-	        }
-	    };
-	    AsyncAction.prototype._unsubscribe = function () {
-	        var id = this.id;
-	        var scheduler = this.scheduler;
-	        var actions = scheduler.actions;
-	        var index = actions.indexOf(this);
-	        this.work = null;
-	        this.state = null;
-	        this.pending = false;
-	        this.scheduler = null;
-	        if (index !== -1) {
-	            actions.splice(index, 1);
-	        }
-	        if (id != null) {
-	            this.id = this.recycleAsyncId(scheduler, id, null);
-	        }
-	        this.delay = null;
-	    };
-	    return AsyncAction;
-	}(Action));
-
-	var Scheduler = /*@__PURE__*/ (function () {
-	    function Scheduler(SchedulerAction, now) {
-	        if (now === void 0) {
-	            now = Scheduler.now;
-	        }
-	        this.SchedulerAction = SchedulerAction;
-	        this.now = now;
-	    }
-	    Scheduler.prototype.schedule = function (work, delay, state) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        return new this.SchedulerAction(this, work).schedule(state, delay);
-	    };
-	    Scheduler.now = function () { return Date.now(); };
-	    return Scheduler;
-	}());
-
-	/** PURE_IMPORTS_START tslib,_Scheduler PURE_IMPORTS_END */
-	var AsyncScheduler = /*@__PURE__*/ (function (_super) {
-	    __extends(AsyncScheduler, _super);
-	    function AsyncScheduler(SchedulerAction, now) {
-	        if (now === void 0) {
-	            now = Scheduler.now;
-	        }
-	        var _this = _super.call(this, SchedulerAction, function () {
-	            if (AsyncScheduler.delegate && AsyncScheduler.delegate !== _this) {
-	                return AsyncScheduler.delegate.now();
-	            }
-	            else {
-	                return now();
-	            }
-	        }) || this;
-	        _this.actions = [];
-	        _this.active = false;
-	        _this.scheduled = undefined;
-	        return _this;
-	    }
-	    AsyncScheduler.prototype.schedule = function (work, delay, state) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if (AsyncScheduler.delegate && AsyncScheduler.delegate !== this) {
-	            return AsyncScheduler.delegate.schedule(work, delay, state);
-	        }
-	        else {
-	            return _super.prototype.schedule.call(this, work, delay, state);
-	        }
-	    };
-	    AsyncScheduler.prototype.flush = function (action) {
-	        var actions = this.actions;
-	        if (this.active) {
-	            actions.push(action);
-	            return;
-	        }
-	        var error;
-	        this.active = true;
-	        do {
-	            if (error = action.execute(action.state, action.delay)) {
-	                break;
-	            }
-	        } while (action = actions.shift());
-	        this.active = false;
-	        if (error) {
-	            while (action = actions.shift()) {
-	                action.unsubscribe();
-	            }
-	            throw error;
-	        }
-	    };
-	    return AsyncScheduler;
-	}(Scheduler));
-
-	/** PURE_IMPORTS_START _AsyncAction,_AsyncScheduler PURE_IMPORTS_END */
-	var async = /*@__PURE__*/ new AsyncScheduler(AsyncAction);
-
-	/** PURE_IMPORTS_START _isArray PURE_IMPORTS_END */
-	function isNumeric(val) {
-	    return !isArray(val) && (val - parseFloat(val) + 1) >= 0;
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function isScheduler(value) {
-	    return value && typeof value.schedule === 'function';
-	}
-
-	/** PURE_IMPORTS_START _Observable,_scheduler_async,_util_isNumeric,_util_isScheduler PURE_IMPORTS_END */
-	function timer(dueTime, periodOrScheduler, scheduler) {
-	    if (dueTime === void 0) {
-	        dueTime = 0;
-	    }
-	    var period = -1;
-	    if (isNumeric(periodOrScheduler)) {
-	        period = Number(periodOrScheduler) < 1 && 1 || Number(periodOrScheduler);
-	    }
-	    else if (isScheduler(periodOrScheduler)) {
-	        scheduler = periodOrScheduler;
-	    }
-	    if (!isScheduler(scheduler)) {
-	        scheduler = async;
-	    }
-	    return new Observable(function (subscriber) {
-	        var due = isNumeric(dueTime)
-	            ? dueTime
-	            : (+dueTime - scheduler.now());
-	        return scheduler.schedule(dispatch, due, {
-	            index: 0, period: period, subscriber: subscriber
-	        });
-	    });
-	}
-	function dispatch(state) {
-	    var index = state.index, period = state.period, subscriber = state.subscriber;
-	    subscriber.next(index);
-	    if (subscriber.closed) {
-	        return;
-	    }
-	    else if (period === -1) {
-	        return subscriber.complete();
-	    }
-	    state.index = index + 1;
-	    this.schedule(state, period);
-	}
-
-	/** PURE_IMPORTS_START _scheduler_async,_audit,_observable_timer PURE_IMPORTS_END */
-	function auditTime(duration, scheduler) {
-	    if (scheduler === void 0) {
-	        scheduler = async;
-	    }
-	    return audit(function () { return timer(duration, scheduler); });
-	}
-
-	/** PURE_IMPORTS_START _Observable,_Subscription PURE_IMPORTS_END */
-	function scheduleArray(input, scheduler) {
-	    return new Observable(function (subscriber) {
-	        var sub = new Subscription();
-	        var i = 0;
-	        sub.add(scheduler.schedule(function () {
-	            if (i === input.length) {
-	                subscriber.complete();
-	                return;
-	            }
-	            subscriber.next(input[i++]);
-	            if (!subscriber.closed) {
-	                sub.add(this.schedule());
-	            }
-	        }));
-	        return sub;
-	    });
-	}
-
-	/** PURE_IMPORTS_START _Observable,_util_subscribeToArray,_scheduled_scheduleArray PURE_IMPORTS_END */
-	function fromArray(input, scheduler) {
-	    if (!scheduler) {
-	        return new Observable(subscribeToArray(input));
-	    }
-	    else {
-	        return scheduleArray(input, scheduler);
-	    }
-	}
-
-	/** PURE_IMPORTS_START tslib,_util_isScheduler,_util_isArray,_OuterSubscriber,_util_subscribeToResult,_fromArray PURE_IMPORTS_END */
-	var NONE = {};
-	function combineLatest() {
-	    var observables = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        observables[_i] = arguments[_i];
-	    }
-	    var resultSelector = null;
-	    var scheduler = null;
-	    if (isScheduler(observables[observables.length - 1])) {
-	        scheduler = observables.pop();
-	    }
-	    if (typeof observables[observables.length - 1] === 'function') {
-	        resultSelector = observables.pop();
-	    }
-	    if (observables.length === 1 && isArray(observables[0])) {
-	        observables = observables[0];
-	    }
-	    return fromArray(observables, scheduler).lift(new CombineLatestOperator(resultSelector));
-	}
-	var CombineLatestOperator = /*@__PURE__*/ (function () {
-	    function CombineLatestOperator(resultSelector) {
-	        this.resultSelector = resultSelector;
-	    }
-	    CombineLatestOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new CombineLatestSubscriber(subscriber, this.resultSelector));
-	    };
-	    return CombineLatestOperator;
-	}());
-	var CombineLatestSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(CombineLatestSubscriber, _super);
-	    function CombineLatestSubscriber(destination, resultSelector) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.resultSelector = resultSelector;
-	        _this.active = 0;
-	        _this.values = [];
-	        _this.observables = [];
-	        return _this;
-	    }
-	    CombineLatestSubscriber.prototype._next = function (observable) {
-	        this.values.push(NONE);
-	        this.observables.push(observable);
-	    };
-	    CombineLatestSubscriber.prototype._complete = function () {
-	        var observables = this.observables;
-	        var len = observables.length;
-	        if (len === 0) {
-	            this.destination.complete();
-	        }
-	        else {
-	            this.active = len;
-	            this.toRespond = len;
-	            for (var i = 0; i < len; i++) {
-	                var observable = observables[i];
-	                this.add(subscribeToResult(this, observable, observable, i));
-	            }
-	        }
-	    };
-	    CombineLatestSubscriber.prototype.notifyComplete = function (unused) {
-	        if ((this.active -= 1) === 0) {
-	            this.destination.complete();
-	        }
-	    };
-	    CombineLatestSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-	        var values = this.values;
-	        var oldVal = values[outerIndex];
-	        var toRespond = !this.toRespond
-	            ? 0
-	            : oldVal === NONE ? --this.toRespond : this.toRespond;
-	        values[outerIndex] = innerValue;
-	        if (toRespond === 0) {
-	            if (this.resultSelector) {
-	                this._tryResultSelector(values);
-	            }
-	            else {
-	                this.destination.next(values.slice());
-	            }
-	        }
-	    };
-	    CombineLatestSubscriber.prototype._tryResultSelector = function (values) {
-	        var result;
-	        try {
-	            result = this.resultSelector.apply(this, values);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.destination.next(result);
-	    };
-	    return CombineLatestSubscriber;
-	}(OuterSubscriber));
-
-	/** PURE_IMPORTS_START _Observable,_Subscription,_symbol_observable PURE_IMPORTS_END */
-	function scheduleObservable(input, scheduler) {
-	    return new Observable(function (subscriber) {
-	        var sub = new Subscription();
-	        sub.add(scheduler.schedule(function () {
-	            var observable$1 = input[observable]();
-	            sub.add(observable$1.subscribe({
-	                next: function (value) { sub.add(scheduler.schedule(function () { return subscriber.next(value); })); },
-	                error: function (err) { sub.add(scheduler.schedule(function () { return subscriber.error(err); })); },
-	                complete: function () { sub.add(scheduler.schedule(function () { return subscriber.complete(); })); },
-	            }));
-	        }));
-	        return sub;
-	    });
-	}
-
-	/** PURE_IMPORTS_START _Observable,_Subscription PURE_IMPORTS_END */
-	function schedulePromise(input, scheduler) {
-	    return new Observable(function (subscriber) {
-	        var sub = new Subscription();
-	        sub.add(scheduler.schedule(function () {
-	            return input.then(function (value) {
-	                sub.add(scheduler.schedule(function () {
-	                    subscriber.next(value);
-	                    sub.add(scheduler.schedule(function () { return subscriber.complete(); }));
-	                }));
-	            }, function (err) {
-	                sub.add(scheduler.schedule(function () { return subscriber.error(err); }));
-	            });
-	        }));
-	        return sub;
-	    });
-	}
-
-	/** PURE_IMPORTS_START _Observable,_Subscription,_symbol_iterator PURE_IMPORTS_END */
-	function scheduleIterable(input, scheduler) {
-	    if (!input) {
-	        throw new Error('Iterable cannot be null');
-	    }
-	    return new Observable(function (subscriber) {
-	        var sub = new Subscription();
-	        var iterator$1;
-	        sub.add(function () {
-	            if (iterator$1 && typeof iterator$1.return === 'function') {
-	                iterator$1.return();
-	            }
-	        });
-	        sub.add(scheduler.schedule(function () {
-	            iterator$1 = input[iterator]();
-	            sub.add(scheduler.schedule(function () {
-	                if (subscriber.closed) {
-	                    return;
-	                }
-	                var value;
-	                var done;
-	                try {
-	                    var result = iterator$1.next();
-	                    value = result.value;
-	                    done = result.done;
-	                }
-	                catch (err) {
-	                    subscriber.error(err);
-	                    return;
-	                }
-	                if (done) {
-	                    subscriber.complete();
-	                }
-	                else {
-	                    subscriber.next(value);
-	                    this.schedule();
-	                }
-	            }));
-	        }));
-	        return sub;
-	    });
-	}
-
-	/** PURE_IMPORTS_START _symbol_observable PURE_IMPORTS_END */
-	function isInteropObservable(input) {
-	    return input && typeof input[observable] === 'function';
-	}
-
-	/** PURE_IMPORTS_START _symbol_iterator PURE_IMPORTS_END */
-	function isIterable(input) {
-	    return input && typeof input[iterator] === 'function';
-	}
-
-	/** PURE_IMPORTS_START _scheduleObservable,_schedulePromise,_scheduleArray,_scheduleIterable,_util_isInteropObservable,_util_isPromise,_util_isArrayLike,_util_isIterable PURE_IMPORTS_END */
-	function scheduled(input, scheduler) {
-	    if (input != null) {
-	        if (isInteropObservable(input)) {
-	            return scheduleObservable(input, scheduler);
-	        }
-	        else if (isPromise(input)) {
-	            return schedulePromise(input, scheduler);
-	        }
-	        else if (isArrayLike(input)) {
-	            return scheduleArray(input, scheduler);
-	        }
-	        else if (isIterable(input) || typeof input === 'string') {
-	            return scheduleIterable(input, scheduler);
-	        }
-	    }
-	    throw new TypeError((input !== null && typeof input || input) + ' is not observable');
-	}
-
-	/** PURE_IMPORTS_START _Observable,_util_subscribeTo,_scheduled_scheduled PURE_IMPORTS_END */
-	function from(input, scheduler) {
-	    if (!scheduler) {
-	        if (input instanceof Observable) {
-	            return input;
-	        }
-	        return new Observable(subscribeTo(input));
-	    }
-	    else {
-	        return scheduled(input, scheduler);
-	    }
-	}
-
-	/** PURE_IMPORTS_START _util_isScheduler,_fromArray,_scheduled_scheduleArray PURE_IMPORTS_END */
-	function of() {
-	    var args = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        args[_i] = arguments[_i];
-	    }
-	    var scheduler = args[args.length - 1];
-	    if (isScheduler(scheduler)) {
-	        args.pop();
-	        return scheduleArray(args, scheduler);
-	    }
-	    else {
-	        return fromArray(args);
-	    }
-	}
-
-	/** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
-	function map(project, thisArg) {
-	    return function mapOperation(source) {
-	        if (typeof project !== 'function') {
-	            throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
-	        }
-	        return source.lift(new MapOperator(project, thisArg));
-	    };
-	}
-	var MapOperator = /*@__PURE__*/ (function () {
-	    function MapOperator(project, thisArg) {
-	        this.project = project;
-	        this.thisArg = thisArg;
-	    }
-	    MapOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
-	    };
-	    return MapOperator;
-	}());
-	var MapSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(MapSubscriber, _super);
-	    function MapSubscriber(destination, project, thisArg) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.project = project;
-	        _this.count = 0;
-	        _this.thisArg = thisArg || _this;
-	        return _this;
-	    }
-	    MapSubscriber.prototype._next = function (value) {
-	        var result;
-	        try {
-	            result = this.project.call(this.thisArg, value, this.count++);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.destination.next(result);
-	    };
-	    return MapSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START tslib,_util_subscribeToResult,_OuterSubscriber,_InnerSubscriber,_map,_observable_from PURE_IMPORTS_END */
-	function mergeMap(project, resultSelector, concurrent) {
-	    if (concurrent === void 0) {
-	        concurrent = Number.POSITIVE_INFINITY;
-	    }
-	    if (typeof resultSelector === 'function') {
-	        return function (source) { return source.pipe(mergeMap(function (a, i) { return from(project(a, i)).pipe(map(function (b, ii) { return resultSelector(a, b, i, ii); })); }, concurrent)); };
-	    }
-	    else if (typeof resultSelector === 'number') {
-	        concurrent = resultSelector;
-	    }
-	    return function (source) { return source.lift(new MergeMapOperator(project, concurrent)); };
-	}
-	var MergeMapOperator = /*@__PURE__*/ (function () {
-	    function MergeMapOperator(project, concurrent) {
-	        if (concurrent === void 0) {
-	            concurrent = Number.POSITIVE_INFINITY;
-	        }
-	        this.project = project;
-	        this.concurrent = concurrent;
-	    }
-	    MergeMapOperator.prototype.call = function (observer, source) {
-	        return source.subscribe(new MergeMapSubscriber(observer, this.project, this.concurrent));
-	    };
-	    return MergeMapOperator;
-	}());
-	var MergeMapSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(MergeMapSubscriber, _super);
-	    function MergeMapSubscriber(destination, project, concurrent) {
-	        if (concurrent === void 0) {
-	            concurrent = Number.POSITIVE_INFINITY;
-	        }
-	        var _this = _super.call(this, destination) || this;
-	        _this.project = project;
-	        _this.concurrent = concurrent;
-	        _this.hasCompleted = false;
-	        _this.buffer = [];
-	        _this.active = 0;
-	        _this.index = 0;
-	        return _this;
-	    }
-	    MergeMapSubscriber.prototype._next = function (value) {
-	        if (this.active < this.concurrent) {
-	            this._tryNext(value);
-	        }
-	        else {
-	            this.buffer.push(value);
-	        }
-	    };
-	    MergeMapSubscriber.prototype._tryNext = function (value) {
-	        var result;
-	        var index = this.index++;
-	        try {
-	            result = this.project(value, index);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.active++;
-	        this._innerSub(result, value, index);
-	    };
-	    MergeMapSubscriber.prototype._innerSub = function (ish, value, index) {
-	        var innerSubscriber = new InnerSubscriber(this, value, index);
-	        var destination = this.destination;
-	        destination.add(innerSubscriber);
-	        var innerSubscription = subscribeToResult(this, ish, undefined, undefined, innerSubscriber);
-	        if (innerSubscription !== innerSubscriber) {
-	            destination.add(innerSubscription);
-	        }
-	    };
-	    MergeMapSubscriber.prototype._complete = function () {
-	        this.hasCompleted = true;
-	        if (this.active === 0 && this.buffer.length === 0) {
-	            this.destination.complete();
-	        }
-	        this.unsubscribe();
-	    };
-	    MergeMapSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-	        this.destination.next(innerValue);
-	    };
-	    MergeMapSubscriber.prototype.notifyComplete = function (innerSub) {
-	        var buffer = this.buffer;
-	        this.remove(innerSub);
-	        this.active--;
-	        if (buffer.length > 0) {
-	            this._next(buffer.shift());
-	        }
-	        else if (this.active === 0 && this.hasCompleted) {
-	            this.destination.complete();
-	        }
-	    };
-	    return MergeMapSubscriber;
-	}(OuterSubscriber));
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	function identity(x) {
-	    return x;
-	}
-
-	/** PURE_IMPORTS_START _mergeMap,_util_identity PURE_IMPORTS_END */
-	function mergeAll(concurrent) {
-	    if (concurrent === void 0) {
-	        concurrent = Number.POSITIVE_INFINITY;
-	    }
-	    return mergeMap(identity, concurrent);
-	}
-
-	/** PURE_IMPORTS_START _mergeAll PURE_IMPORTS_END */
-	function concatAll() {
-	    return mergeAll(1);
-	}
-
-	/** PURE_IMPORTS_START _of,_operators_concatAll PURE_IMPORTS_END */
-	function concat() {
-	    var observables = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        observables[_i] = arguments[_i];
-	    }
-	    return concatAll()(of.apply(void 0, observables));
-	}
-
-	/** PURE_IMPORTS_START tslib,_Subscriber,_scheduler_async PURE_IMPORTS_END */
-	function debounceTime(dueTime, scheduler) {
-	    if (scheduler === void 0) {
-	        scheduler = async;
-	    }
-	    return function (source) { return source.lift(new DebounceTimeOperator(dueTime, scheduler)); };
-	}
-	var DebounceTimeOperator = /*@__PURE__*/ (function () {
-	    function DebounceTimeOperator(dueTime, scheduler) {
-	        this.dueTime = dueTime;
-	        this.scheduler = scheduler;
-	    }
-	    DebounceTimeOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
-	    };
-	    return DebounceTimeOperator;
-	}());
-	var DebounceTimeSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(DebounceTimeSubscriber, _super);
-	    function DebounceTimeSubscriber(destination, dueTime, scheduler) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.dueTime = dueTime;
-	        _this.scheduler = scheduler;
-	        _this.debouncedSubscription = null;
-	        _this.lastValue = null;
-	        _this.hasValue = false;
-	        return _this;
-	    }
-	    DebounceTimeSubscriber.prototype._next = function (value) {
-	        this.clearDebounce();
-	        this.lastValue = value;
-	        this.hasValue = true;
-	        this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
-	    };
-	    DebounceTimeSubscriber.prototype._complete = function () {
-	        this.debouncedNext();
-	        this.destination.complete();
-	    };
-	    DebounceTimeSubscriber.prototype.debouncedNext = function () {
-	        this.clearDebounce();
-	        if (this.hasValue) {
-	            var lastValue = this.lastValue;
-	            this.lastValue = null;
-	            this.hasValue = false;
-	            this.destination.next(lastValue);
-	        }
-	    };
-	    DebounceTimeSubscriber.prototype.clearDebounce = function () {
-	        var debouncedSubscription = this.debouncedSubscription;
-	        if (debouncedSubscription !== null) {
-	            this.remove(debouncedSubscription);
-	            debouncedSubscription.unsubscribe();
-	            this.debouncedSubscription = null;
-	        }
-	    };
-	    return DebounceTimeSubscriber;
-	}(Subscriber));
-	function dispatchNext(subscriber) {
-	    subscriber.debouncedNext();
-	}
-
-	/** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
-	function defaultIfEmpty(defaultValue) {
-	    if (defaultValue === void 0) {
-	        defaultValue = null;
-	    }
-	    return function (source) { return source.lift(new DefaultIfEmptyOperator(defaultValue)); };
-	}
-	var DefaultIfEmptyOperator = /*@__PURE__*/ (function () {
-	    function DefaultIfEmptyOperator(defaultValue) {
-	        this.defaultValue = defaultValue;
-	    }
-	    DefaultIfEmptyOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
-	    };
-	    return DefaultIfEmptyOperator;
-	}());
-	var DefaultIfEmptySubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(DefaultIfEmptySubscriber, _super);
-	    function DefaultIfEmptySubscriber(destination, defaultValue) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.defaultValue = defaultValue;
-	        _this.isEmpty = true;
-	        return _this;
-	    }
-	    DefaultIfEmptySubscriber.prototype._next = function (value) {
-	        this.isEmpty = false;
-	        this.destination.next(value);
-	    };
-	    DefaultIfEmptySubscriber.prototype._complete = function () {
-	        if (this.isEmpty) {
-	            this.destination.next(this.defaultValue);
-	        }
-	        this.destination.complete();
-	    };
-	    return DefaultIfEmptySubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START _Observable PURE_IMPORTS_END */
-	var EMPTY = /*@__PURE__*/ new Observable(function (subscriber) { return subscriber.complete(); });
-	function empty$1(scheduler) {
-	    return scheduler ? emptyScheduled(scheduler) : EMPTY;
-	}
-	function emptyScheduled(scheduler) {
-	    return new Observable(function (subscriber) { return scheduler.schedule(function () { return subscriber.complete(); }); });
-	}
-
-	/** PURE_IMPORTS_START _Observable PURE_IMPORTS_END */
-	function throwError(error, scheduler) {
-	    if (!scheduler) {
-	        return new Observable(function (subscriber) { return subscriber.error(error); });
-	    }
-	    else {
-	        return new Observable(function (subscriber) { return scheduler.schedule(dispatch$1, 0, { error: error, subscriber: subscriber }); });
-	    }
-	}
-	function dispatch$1(_a) {
-	    var error = _a.error, subscriber = _a.subscriber;
-	    subscriber.error(error);
-	}
-
-	/** PURE_IMPORTS_START _observable_empty,_observable_of,_observable_throwError PURE_IMPORTS_END */
-	var Notification = /*@__PURE__*/ (function () {
-	    function Notification(kind, value, error) {
-	        this.kind = kind;
-	        this.value = value;
-	        this.error = error;
-	        this.hasValue = kind === 'N';
-	    }
-	    Notification.prototype.observe = function (observer) {
-	        switch (this.kind) {
-	            case 'N':
-	                return observer.next && observer.next(this.value);
-	            case 'E':
-	                return observer.error && observer.error(this.error);
-	            case 'C':
-	                return observer.complete && observer.complete();
-	        }
-	    };
-	    Notification.prototype.do = function (next, error, complete) {
-	        var kind = this.kind;
-	        switch (kind) {
-	            case 'N':
-	                return next && next(this.value);
-	            case 'E':
-	                return error && error(this.error);
-	            case 'C':
-	                return complete && complete();
-	        }
-	    };
-	    Notification.prototype.accept = function (nextOrObserver, error, complete) {
-	        if (nextOrObserver && typeof nextOrObserver.next === 'function') {
-	            return this.observe(nextOrObserver);
-	        }
-	        else {
-	            return this.do(nextOrObserver, error, complete);
-	        }
-	    };
-	    Notification.prototype.toObservable = function () {
-	        var kind = this.kind;
-	        switch (kind) {
-	            case 'N':
-	                return of(this.value);
-	            case 'E':
-	                return throwError(this.error);
-	            case 'C':
-	                return empty$1();
-	        }
-	        throw new Error('unexpected notification kind value');
-	    };
-	    Notification.createNext = function (value) {
-	        if (typeof value !== 'undefined') {
-	            return new Notification('N', value);
-	        }
-	        return Notification.undefinedValueNotification;
-	    };
-	    Notification.createError = function (err) {
-	        return new Notification('E', undefined, err);
-	    };
-	    Notification.createComplete = function () {
-	        return Notification.completeNotification;
-	    };
-	    Notification.completeNotification = new Notification('C');
-	    Notification.undefinedValueNotification = new Notification('N', undefined);
-	    return Notification;
-	}());
-
-	/** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
-	function distinctUntilChanged(compare, keySelector) {
-	    return function (source) { return source.lift(new DistinctUntilChangedOperator(compare, keySelector)); };
-	}
-	var DistinctUntilChangedOperator = /*@__PURE__*/ (function () {
-	    function DistinctUntilChangedOperator(compare, keySelector) {
-	        this.compare = compare;
-	        this.keySelector = keySelector;
-	    }
-	    DistinctUntilChangedOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
-	    };
-	    return DistinctUntilChangedOperator;
-	}());
-	var DistinctUntilChangedSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(DistinctUntilChangedSubscriber, _super);
-	    function DistinctUntilChangedSubscriber(destination, compare, keySelector) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.keySelector = keySelector;
-	        _this.hasKey = false;
-	        if (typeof compare === 'function') {
-	            _this.compare = compare;
-	        }
-	        return _this;
-	    }
-	    DistinctUntilChangedSubscriber.prototype.compare = function (x, y) {
-	        return x === y;
-	    };
-	    DistinctUntilChangedSubscriber.prototype._next = function (value) {
-	        var key;
-	        try {
-	            var keySelector = this.keySelector;
-	            key = keySelector ? keySelector(value) : value;
-	        }
-	        catch (err) {
-	            return this.destination.error(err);
-	        }
-	        var result = false;
-	        if (this.hasKey) {
-	            try {
-	                var compare = this.compare;
-	                result = compare(this.key, key);
-	            }
-	            catch (err) {
-	                return this.destination.error(err);
-	            }
-	        }
-	        else {
-	            this.hasKey = true;
-	        }
-	        if (!result) {
-	            this.key = key;
-	            this.destination.next(value);
-	        }
-	    };
-	    return DistinctUntilChangedSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var ArgumentOutOfRangeErrorImpl = /*@__PURE__*/ (function () {
-	    function ArgumentOutOfRangeErrorImpl() {
-	        Error.call(this);
-	        this.message = 'argument out of range';
-	        this.name = 'ArgumentOutOfRangeError';
-	        return this;
-	    }
-	    ArgumentOutOfRangeErrorImpl.prototype = /*@__PURE__*/ Object.create(Error.prototype);
-	    return ArgumentOutOfRangeErrorImpl;
-	})();
-	var ArgumentOutOfRangeError = ArgumentOutOfRangeErrorImpl;
-
-	/** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
-	function filter(predicate, thisArg) {
-	    return function filterOperatorFunction(source) {
-	        return source.lift(new FilterOperator(predicate, thisArg));
-	    };
-	}
-	var FilterOperator = /*@__PURE__*/ (function () {
-	    function FilterOperator(predicate, thisArg) {
-	        this.predicate = predicate;
-	        this.thisArg = thisArg;
-	    }
-	    FilterOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
-	    };
-	    return FilterOperator;
-	}());
-	var FilterSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(FilterSubscriber, _super);
-	    function FilterSubscriber(destination, predicate, thisArg) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.predicate = predicate;
-	        _this.thisArg = thisArg;
-	        _this.count = 0;
-	        return _this;
-	    }
-	    FilterSubscriber.prototype._next = function (value) {
-	        var result;
-	        try {
-	            result = this.predicate.call(this.thisArg, value, this.count++);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        if (result) {
-	            this.destination.next(value);
-	        }
-	    };
-	    return FilterSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var EmptyErrorImpl = /*@__PURE__*/ (function () {
-	    function EmptyErrorImpl() {
-	        Error.call(this);
-	        this.message = 'no elements in sequence';
-	        this.name = 'EmptyError';
-	        return this;
-	    }
-	    EmptyErrorImpl.prototype = /*@__PURE__*/ Object.create(Error.prototype);
-	    return EmptyErrorImpl;
-	})();
-	var EmptyError = EmptyErrorImpl;
-
-	/** PURE_IMPORTS_START tslib,_util_EmptyError,_Subscriber PURE_IMPORTS_END */
-	function throwIfEmpty(errorFactory) {
-	    if (errorFactory === void 0) {
-	        errorFactory = defaultErrorFactory;
-	    }
-	    return function (source) {
-	        return source.lift(new ThrowIfEmptyOperator(errorFactory));
-	    };
-	}
-	var ThrowIfEmptyOperator = /*@__PURE__*/ (function () {
-	    function ThrowIfEmptyOperator(errorFactory) {
-	        this.errorFactory = errorFactory;
-	    }
-	    ThrowIfEmptyOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new ThrowIfEmptySubscriber(subscriber, this.errorFactory));
-	    };
-	    return ThrowIfEmptyOperator;
-	}());
-	var ThrowIfEmptySubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(ThrowIfEmptySubscriber, _super);
-	    function ThrowIfEmptySubscriber(destination, errorFactory) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.errorFactory = errorFactory;
-	        _this.hasValue = false;
-	        return _this;
-	    }
-	    ThrowIfEmptySubscriber.prototype._next = function (value) {
-	        this.hasValue = true;
-	        this.destination.next(value);
-	    };
-	    ThrowIfEmptySubscriber.prototype._complete = function () {
-	        if (!this.hasValue) {
-	            var err = void 0;
-	            try {
-	                err = this.errorFactory();
-	            }
-	            catch (e) {
-	                err = e;
-	            }
-	            this.destination.error(err);
-	        }
-	        else {
-	            return this.destination.complete();
-	        }
-	    };
-	    return ThrowIfEmptySubscriber;
-	}(Subscriber));
-	function defaultErrorFactory() {
-	    return new EmptyError();
-	}
-
-	/** PURE_IMPORTS_START tslib,_Subscriber,_util_ArgumentOutOfRangeError,_observable_empty PURE_IMPORTS_END */
-	function take(count) {
-	    return function (source) {
-	        if (count === 0) {
-	            return empty$1();
-	        }
-	        else {
-	            return source.lift(new TakeOperator(count));
-	        }
-	    };
-	}
-	var TakeOperator = /*@__PURE__*/ (function () {
-	    function TakeOperator(total) {
-	        this.total = total;
-	        if (this.total < 0) {
-	            throw new ArgumentOutOfRangeError;
-	        }
-	    }
-	    TakeOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new TakeSubscriber(subscriber, this.total));
-	    };
-	    return TakeOperator;
-	}());
-	var TakeSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(TakeSubscriber, _super);
-	    function TakeSubscriber(destination, total) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.total = total;
-	        _this.count = 0;
-	        return _this;
-	    }
-	    TakeSubscriber.prototype._next = function (value) {
-	        var total = this.total;
-	        var count = ++this.count;
-	        if (count <= total) {
-	            this.destination.next(value);
-	            if (count === total) {
-	                this.destination.complete();
-	                this.unsubscribe();
-	            }
-	        }
-	    };
-	    return TakeSubscriber;
-	}(Subscriber));
-
-	/** PURE_IMPORTS_START _util_EmptyError,_filter,_take,_defaultIfEmpty,_throwIfEmpty,_util_identity PURE_IMPORTS_END */
-	function first(predicate, defaultValue) {
-	    var hasDefaultValue = arguments.length >= 2;
-	    return function (source) { return source.pipe(predicate ? filter(function (v, i) { return predicate(v, i, source); }) : identity, take(1), hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(function () { return new EmptyError(); })); };
-	}
-
-	/** PURE_IMPORTS_START  PURE_IMPORTS_END */
-	var ObjectUnsubscribedErrorImpl = /*@__PURE__*/ (function () {
-	    function ObjectUnsubscribedErrorImpl() {
-	        Error.call(this);
-	        this.message = 'object unsubscribed';
-	        this.name = 'ObjectUnsubscribedError';
-	        return this;
-	    }
-	    ObjectUnsubscribedErrorImpl.prototype = /*@__PURE__*/ Object.create(Error.prototype);
-	    return ObjectUnsubscribedErrorImpl;
-	})();
-	var ObjectUnsubscribedError = ObjectUnsubscribedErrorImpl;
-
-	/** PURE_IMPORTS_START tslib,_Subscription PURE_IMPORTS_END */
-	var SubjectSubscription = /*@__PURE__*/ (function (_super) {
-	    __extends(SubjectSubscription, _super);
-	    function SubjectSubscription(subject, subscriber) {
-	        var _this = _super.call(this) || this;
-	        _this.subject = subject;
-	        _this.subscriber = subscriber;
-	        _this.closed = false;
-	        return _this;
-	    }
-	    SubjectSubscription.prototype.unsubscribe = function () {
-	        if (this.closed) {
-	            return;
-	        }
-	        this.closed = true;
-	        var subject = this.subject;
-	        var observers = subject.observers;
-	        this.subject = null;
-	        if (!observers || observers.length === 0 || subject.isStopped || subject.closed) {
-	            return;
-	        }
-	        var subscriberIndex = observers.indexOf(this.subscriber);
-	        if (subscriberIndex !== -1) {
-	            observers.splice(subscriberIndex, 1);
-	        }
-	    };
-	    return SubjectSubscription;
-	}(Subscription));
-
-	/** PURE_IMPORTS_START tslib,_Observable,_Subscriber,_Subscription,_util_ObjectUnsubscribedError,_SubjectSubscription,_internal_symbol_rxSubscriber PURE_IMPORTS_END */
-	var SubjectSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(SubjectSubscriber, _super);
-	    function SubjectSubscriber(destination) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.destination = destination;
-	        return _this;
-	    }
-	    return SubjectSubscriber;
-	}(Subscriber));
-	var Subject = /*@__PURE__*/ (function (_super) {
-	    __extends(Subject, _super);
-	    function Subject() {
-	        var _this = _super.call(this) || this;
-	        _this.observers = [];
-	        _this.closed = false;
-	        _this.isStopped = false;
-	        _this.hasError = false;
-	        _this.thrownError = null;
-	        return _this;
-	    }
-	    Subject.prototype[rxSubscriber] = function () {
-	        return new SubjectSubscriber(this);
-	    };
-	    Subject.prototype.lift = function (operator) {
-	        var subject = new AnonymousSubject(this, this);
-	        subject.operator = operator;
-	        return subject;
-	    };
-	    Subject.prototype.next = function (value) {
-	        if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        if (!this.isStopped) {
-	            var observers = this.observers;
-	            var len = observers.length;
-	            var copy = observers.slice();
-	            for (var i = 0; i < len; i++) {
-	                copy[i].next(value);
-	            }
-	        }
-	    };
-	    Subject.prototype.error = function (err) {
-	        if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        this.hasError = true;
-	        this.thrownError = err;
-	        this.isStopped = true;
-	        var observers = this.observers;
-	        var len = observers.length;
-	        var copy = observers.slice();
-	        for (var i = 0; i < len; i++) {
-	            copy[i].error(err);
-	        }
-	        this.observers.length = 0;
-	    };
-	    Subject.prototype.complete = function () {
-	        if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        this.isStopped = true;
-	        var observers = this.observers;
-	        var len = observers.length;
-	        var copy = observers.slice();
-	        for (var i = 0; i < len; i++) {
-	            copy[i].complete();
-	        }
-	        this.observers.length = 0;
-	    };
-	    Subject.prototype.unsubscribe = function () {
-	        this.isStopped = true;
-	        this.closed = true;
-	        this.observers = null;
-	    };
-	    Subject.prototype._trySubscribe = function (subscriber) {
-	        if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        else {
-	            return _super.prototype._trySubscribe.call(this, subscriber);
-	        }
-	    };
-	    Subject.prototype._subscribe = function (subscriber) {
-	        if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        else if (this.hasError) {
-	            subscriber.error(this.thrownError);
-	            return Subscription.EMPTY;
-	        }
-	        else if (this.isStopped) {
-	            subscriber.complete();
-	            return Subscription.EMPTY;
-	        }
-	        else {
-	            this.observers.push(subscriber);
-	            return new SubjectSubscription(this, subscriber);
-	        }
-	    };
-	    Subject.prototype.asObservable = function () {
-	        var observable = new Observable();
-	        observable.source = this;
-	        return observable;
-	    };
-	    Subject.create = function (destination, source) {
-	        return new AnonymousSubject(destination, source);
-	    };
-	    return Subject;
-	}(Observable));
-	var AnonymousSubject = /*@__PURE__*/ (function (_super) {
-	    __extends(AnonymousSubject, _super);
-	    function AnonymousSubject(destination, source) {
-	        var _this = _super.call(this) || this;
-	        _this.destination = destination;
-	        _this.source = source;
-	        return _this;
-	    }
-	    AnonymousSubject.prototype.next = function (value) {
-	        var destination = this.destination;
-	        if (destination && destination.next) {
-	            destination.next(value);
-	        }
-	    };
-	    AnonymousSubject.prototype.error = function (err) {
-	        var destination = this.destination;
-	        if (destination && destination.error) {
-	            this.destination.error(err);
-	        }
-	    };
-	    AnonymousSubject.prototype.complete = function () {
-	        var destination = this.destination;
-	        if (destination && destination.complete) {
-	            this.destination.complete();
-	        }
-	    };
-	    AnonymousSubject.prototype._subscribe = function (subscriber) {
-	        var source = this.source;
-	        if (source) {
-	            return this.source.subscribe(subscriber);
-	        }
-	        else {
-	            return Subscription.EMPTY;
-	        }
-	    };
-	    return AnonymousSubject;
-	}(Subject));
-
-	/** PURE_IMPORTS_START _Observable,_util_isScheduler,_operators_mergeAll,_fromArray PURE_IMPORTS_END */
-	function merge() {
-	    var observables = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        observables[_i] = arguments[_i];
-	    }
-	    var concurrent = Number.POSITIVE_INFINITY;
-	    var scheduler = null;
-	    var last = observables[observables.length - 1];
-	    if (isScheduler(last)) {
-	        scheduler = observables.pop();
-	        if (observables.length > 1 && typeof observables[observables.length - 1] === 'number') {
-	            concurrent = observables.pop();
-	        }
-	    }
-	    else if (typeof last === 'number') {
-	        concurrent = observables.pop();
-	    }
-	    if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
-	        return observables[0];
-	    }
-	    return mergeAll(concurrent)(fromArray(observables, scheduler));
-	}
-
-	/** PURE_IMPORTS_START tslib,_Subscriber,_Notification PURE_IMPORTS_END */
-	var ObserveOnSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(ObserveOnSubscriber, _super);
-	    function ObserveOnSubscriber(destination, scheduler, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        var _this = _super.call(this, destination) || this;
-	        _this.scheduler = scheduler;
-	        _this.delay = delay;
-	        return _this;
-	    }
-	    ObserveOnSubscriber.dispatch = function (arg) {
-	        var notification = arg.notification, destination = arg.destination;
-	        notification.observe(destination);
-	        this.unsubscribe();
-	    };
-	    ObserveOnSubscriber.prototype.scheduleMessage = function (notification) {
-	        var destination = this.destination;
-	        destination.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, new ObserveOnMessage(notification, this.destination)));
-	    };
-	    ObserveOnSubscriber.prototype._next = function (value) {
-	        this.scheduleMessage(Notification.createNext(value));
-	    };
-	    ObserveOnSubscriber.prototype._error = function (err) {
-	        this.scheduleMessage(Notification.createError(err));
-	        this.unsubscribe();
-	    };
-	    ObserveOnSubscriber.prototype._complete = function () {
-	        this.scheduleMessage(Notification.createComplete());
-	        this.unsubscribe();
-	    };
-	    return ObserveOnSubscriber;
-	}(Subscriber));
-	var ObserveOnMessage = /*@__PURE__*/ (function () {
-	    function ObserveOnMessage(notification, destination) {
-	        this.notification = notification;
-	        this.destination = destination;
-	    }
-	    return ObserveOnMessage;
-	}());
-
-	/** PURE_IMPORTS_START tslib,_Subject,_util_ObjectUnsubscribedError PURE_IMPORTS_END */
-	var BehaviorSubject = /*@__PURE__*/ (function (_super) {
-	    __extends(BehaviorSubject, _super);
-	    function BehaviorSubject(_value) {
-	        var _this = _super.call(this) || this;
-	        _this._value = _value;
-	        return _this;
-	    }
-	    Object.defineProperty(BehaviorSubject.prototype, "value", {
-	        get: function () {
-	            return this.getValue();
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    BehaviorSubject.prototype._subscribe = function (subscriber) {
-	        var subscription = _super.prototype._subscribe.call(this, subscriber);
-	        if (subscription && !subscription.closed) {
-	            subscriber.next(this._value);
-	        }
-	        return subscription;
-	    };
-	    BehaviorSubject.prototype.getValue = function () {
-	        if (this.hasError) {
-	            throw this.thrownError;
-	        }
-	        else if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        else {
-	            return this._value;
-	        }
-	    };
-	    BehaviorSubject.prototype.next = function (value) {
-	        _super.prototype.next.call(this, this._value = value);
-	    };
-	    return BehaviorSubject;
-	}(Subject));
-
-	/** PURE_IMPORTS_START tslib,_AsyncAction PURE_IMPORTS_END */
-	var QueueAction = /*@__PURE__*/ (function (_super) {
-	    __extends(QueueAction, _super);
-	    function QueueAction(scheduler, work) {
-	        var _this = _super.call(this, scheduler, work) || this;
-	        _this.scheduler = scheduler;
-	        _this.work = work;
-	        return _this;
-	    }
-	    QueueAction.prototype.schedule = function (state, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if (delay > 0) {
-	            return _super.prototype.schedule.call(this, state, delay);
-	        }
-	        this.delay = delay;
-	        this.state = state;
-	        this.scheduler.flush(this);
-	        return this;
-	    };
-	    QueueAction.prototype.execute = function (state, delay) {
-	        return (delay > 0 || this.closed) ?
-	            _super.prototype.execute.call(this, state, delay) :
-	            this._execute(state, delay);
-	    };
-	    QueueAction.prototype.requestAsyncId = function (scheduler, id, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if ((delay !== null && delay > 0) || (delay === null && this.delay > 0)) {
-	            return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
-	        }
-	        return scheduler.flush(this);
-	    };
-	    return QueueAction;
-	}(AsyncAction));
-
-	/** PURE_IMPORTS_START tslib,_AsyncScheduler PURE_IMPORTS_END */
-	var QueueScheduler = /*@__PURE__*/ (function (_super) {
-	    __extends(QueueScheduler, _super);
-	    function QueueScheduler() {
-	        return _super !== null && _super.apply(this, arguments) || this;
-	    }
-	    return QueueScheduler;
-	}(AsyncScheduler));
-
-	/** PURE_IMPORTS_START _QueueAction,_QueueScheduler PURE_IMPORTS_END */
-	var queue = /*@__PURE__*/ new QueueScheduler(QueueAction);
-
-	/** PURE_IMPORTS_START tslib,_Subject,_scheduler_queue,_Subscription,_operators_observeOn,_util_ObjectUnsubscribedError,_SubjectSubscription PURE_IMPORTS_END */
-	var ReplaySubject = /*@__PURE__*/ (function (_super) {
-	    __extends(ReplaySubject, _super);
-	    function ReplaySubject(bufferSize, windowTime, scheduler) {
-	        if (bufferSize === void 0) {
-	            bufferSize = Number.POSITIVE_INFINITY;
-	        }
-	        if (windowTime === void 0) {
-	            windowTime = Number.POSITIVE_INFINITY;
-	        }
-	        var _this = _super.call(this) || this;
-	        _this.scheduler = scheduler;
-	        _this._events = [];
-	        _this._infiniteTimeWindow = false;
-	        _this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
-	        _this._windowTime = windowTime < 1 ? 1 : windowTime;
-	        if (windowTime === Number.POSITIVE_INFINITY) {
-	            _this._infiniteTimeWindow = true;
-	            _this.next = _this.nextInfiniteTimeWindow;
-	        }
-	        else {
-	            _this.next = _this.nextTimeWindow;
-	        }
-	        return _this;
-	    }
-	    ReplaySubject.prototype.nextInfiniteTimeWindow = function (value) {
-	        var _events = this._events;
-	        _events.push(value);
-	        if (_events.length > this._bufferSize) {
-	            _events.shift();
-	        }
-	        _super.prototype.next.call(this, value);
-	    };
-	    ReplaySubject.prototype.nextTimeWindow = function (value) {
-	        this._events.push(new ReplayEvent(this._getNow(), value));
-	        this._trimBufferThenGetEvents();
-	        _super.prototype.next.call(this, value);
-	    };
-	    ReplaySubject.prototype._subscribe = function (subscriber) {
-	        var _infiniteTimeWindow = this._infiniteTimeWindow;
-	        var _events = _infiniteTimeWindow ? this._events : this._trimBufferThenGetEvents();
-	        var scheduler = this.scheduler;
-	        var len = _events.length;
-	        var subscription;
-	        if (this.closed) {
-	            throw new ObjectUnsubscribedError();
-	        }
-	        else if (this.isStopped || this.hasError) {
-	            subscription = Subscription.EMPTY;
-	        }
-	        else {
-	            this.observers.push(subscriber);
-	            subscription = new SubjectSubscription(this, subscriber);
-	        }
-	        if (scheduler) {
-	            subscriber.add(subscriber = new ObserveOnSubscriber(subscriber, scheduler));
-	        }
-	        if (_infiniteTimeWindow) {
-	            for (var i = 0; i < len && !subscriber.closed; i++) {
-	                subscriber.next(_events[i]);
-	            }
-	        }
-	        else {
-	            for (var i = 0; i < len && !subscriber.closed; i++) {
-	                subscriber.next(_events[i].value);
-	            }
-	        }
-	        if (this.hasError) {
-	            subscriber.error(this.thrownError);
-	        }
-	        else if (this.isStopped) {
-	            subscriber.complete();
-	        }
-	        return subscription;
-	    };
-	    ReplaySubject.prototype._getNow = function () {
-	        return (this.scheduler || queue).now();
-	    };
-	    ReplaySubject.prototype._trimBufferThenGetEvents = function () {
-	        var now = this._getNow();
-	        var _bufferSize = this._bufferSize;
-	        var _windowTime = this._windowTime;
-	        var _events = this._events;
-	        var eventsCount = _events.length;
-	        var spliceCount = 0;
-	        while (spliceCount < eventsCount) {
-	            if ((now - _events[spliceCount].time) < _windowTime) {
-	                break;
-	            }
-	            spliceCount++;
-	        }
-	        if (eventsCount > _bufferSize) {
-	            spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
-	        }
-	        if (spliceCount > 0) {
-	            _events.splice(0, spliceCount);
-	        }
-	        return _events;
-	    };
-	    return ReplaySubject;
-	}(Subject));
-	var ReplayEvent = /*@__PURE__*/ (function () {
-	    function ReplayEvent(time, value) {
-	        this.time = time;
-	        this.value = value;
-	    }
-	    return ReplayEvent;
-	}());
-
-	/** PURE_IMPORTS_START _ReplaySubject PURE_IMPORTS_END */
-	function shareReplay(configOrBufferSize, windowTime, scheduler) {
-	    var config;
-	    if (configOrBufferSize && typeof configOrBufferSize === 'object') {
-	        config = configOrBufferSize;
-	    }
-	    else {
-	        config = {
-	            bufferSize: configOrBufferSize,
-	            windowTime: windowTime,
-	            refCount: false,
-	            scheduler: scheduler
-	        };
-	    }
-	    return function (source) { return source.lift(shareReplayOperator(config)); };
-	}
-	function shareReplayOperator(_a) {
-	    var _b = _a.bufferSize, bufferSize = _b === void 0 ? Number.POSITIVE_INFINITY : _b, _c = _a.windowTime, windowTime = _c === void 0 ? Number.POSITIVE_INFINITY : _c, useRefCount = _a.refCount, scheduler = _a.scheduler;
-	    var subject;
-	    var refCount = 0;
-	    var subscription;
-	    var hasError = false;
-	    var isComplete = false;
-	    return function shareReplayOperation(source) {
-	        refCount++;
-	        if (!subject || hasError) {
-	            hasError = false;
-	            subject = new ReplaySubject(bufferSize, windowTime, scheduler);
-	            subscription = source.subscribe({
-	                next: function (value) { subject.next(value); },
-	                error: function (err) {
-	                    hasError = true;
-	                    subject.error(err);
-	                },
-	                complete: function () {
-	                    isComplete = true;
-	                    subscription = undefined;
-	                    subject.complete();
-	                },
-	            });
-	        }
-	        var innerSub = subject.subscribe(this);
-	        this.add(function () {
-	            refCount--;
-	            innerSub.unsubscribe();
-	            if (subscription && !isComplete && useRefCount && refCount === 0) {
-	                subscription.unsubscribe();
-	                subscription = undefined;
-	                subject = undefined;
-	            }
-	        });
-	    };
-	}
-
-	/** PURE_IMPORTS_START _observable_concat,_util_isScheduler PURE_IMPORTS_END */
-	function startWith() {
-	    var array = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        array[_i] = arguments[_i];
-	    }
-	    var scheduler = array[array.length - 1];
-	    if (isScheduler(scheduler)) {
-	        array.pop();
-	        return function (source) { return concat(array, source, scheduler); };
-	    }
-	    else {
-	        return function (source) { return concat(array, source); };
-	    }
-	}
-
-	/** PURE_IMPORTS_START tslib,_OuterSubscriber,_util_subscribeToResult PURE_IMPORTS_END */
-	function takeUntil(notifier) {
-	    return function (source) { return source.lift(new TakeUntilOperator(notifier)); };
-	}
-	var TakeUntilOperator = /*@__PURE__*/ (function () {
-	    function TakeUntilOperator(notifier) {
-	        this.notifier = notifier;
-	    }
-	    TakeUntilOperator.prototype.call = function (subscriber, source) {
-	        var takeUntilSubscriber = new TakeUntilSubscriber(subscriber);
-	        var notifierSubscription = subscribeToResult(takeUntilSubscriber, this.notifier);
-	        if (notifierSubscription && !takeUntilSubscriber.seenValue) {
-	            takeUntilSubscriber.add(notifierSubscription);
-	            return source.subscribe(takeUntilSubscriber);
-	        }
-	        return takeUntilSubscriber;
-	    };
-	    return TakeUntilOperator;
-	}());
-	var TakeUntilSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(TakeUntilSubscriber, _super);
-	    function TakeUntilSubscriber(destination) {
-	        var _this = _super.call(this, destination) || this;
-	        _this.seenValue = false;
-	        return _this;
-	    }
-	    TakeUntilSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-	        this.seenValue = true;
-	        this.complete();
-	    };
-	    TakeUntilSubscriber.prototype.notifyComplete = function () {
-	    };
-	    return TakeUntilSubscriber;
-	}(OuterSubscriber));
-
-	/** PURE_IMPORTS_START tslib,_Subscriber,_util_noop,_util_isFunction PURE_IMPORTS_END */
-	function tap(nextOrObserver, error, complete) {
-	    return function tapOperatorFunction(source) {
-	        return source.lift(new DoOperator(nextOrObserver, error, complete));
-	    };
-	}
-	var DoOperator = /*@__PURE__*/ (function () {
-	    function DoOperator(nextOrObserver, error, complete) {
-	        this.nextOrObserver = nextOrObserver;
-	        this.error = error;
-	        this.complete = complete;
-	    }
-	    DoOperator.prototype.call = function (subscriber, source) {
-	        return source.subscribe(new TapSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
-	    };
-	    return DoOperator;
-	}());
-	var TapSubscriber = /*@__PURE__*/ (function (_super) {
-	    __extends(TapSubscriber, _super);
-	    function TapSubscriber(destination, observerOrNext, error, complete) {
-	        var _this = _super.call(this, destination) || this;
-	        _this._tapNext = noop;
-	        _this._tapError = noop;
-	        _this._tapComplete = noop;
-	        _this._tapError = error || noop;
-	        _this._tapComplete = complete || noop;
-	        if (isFunction(observerOrNext)) {
-	            _this._context = _this;
-	            _this._tapNext = observerOrNext;
-	        }
-	        else if (observerOrNext) {
-	            _this._context = observerOrNext;
-	            _this._tapNext = observerOrNext.next || noop;
-	            _this._tapError = observerOrNext.error || noop;
-	            _this._tapComplete = observerOrNext.complete || noop;
-	        }
-	        return _this;
-	    }
-	    TapSubscriber.prototype._next = function (value) {
-	        try {
-	            this._tapNext.call(this._context, value);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.destination.next(value);
-	    };
-	    TapSubscriber.prototype._error = function (err) {
-	        try {
-	            this._tapError.call(this._context, err);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.destination.error(err);
-	    };
-	    TapSubscriber.prototype._complete = function () {
-	        try {
-	            this._tapComplete.call(this._context);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        return this.destination.complete();
-	    };
-	    return TapSubscriber;
-	}(Subscriber));
-
-	var Rect =
-	/*#__PURE__*/
-	function () {
+	var Rect = function () {
 	  function Rect(rect) {
 	    this.top = 0;
 	    this.right = 0;
@@ -4247,13 +1414,10 @@
 	    var rects = node.getClientRects();
 
 	    if (!rects.length) {
-	      // console.log(rects, node);
 	      return rect;
 	    }
 
-	    var boundingRect = node.getBoundingClientRect(); // rect.top: boundingRect.top + defaultView.pageYOffset,
-	    // rect.left: boundingRect.left + defaultView.pageXOffset,
-
+	    var boundingRect = node.getBoundingClientRect();
 	    rect.top = boundingRect.top;
 	    rect.left = boundingRect.left;
 	    rect.width = boundingRect.width;
@@ -4335,10 +1499,7 @@
 	  return Rect;
 	}();
 
-	var LazyDirective =
-	/*#__PURE__*/
-	function () {
-	  // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
+	var LazyDirective = function () {
 	  function LazyDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -4383,7 +1544,6 @@
 	  };
 
 	  _proto.immediate = function immediate(scope, image) {
-	    // this.onAppearsInViewport(image, scope, attributes);
 	    if (!image.classList.contains('lazyed')) {
 	      var src = this.getThronSrc(image, scope.src);
 	      image.src = src;
@@ -4399,27 +1559,13 @@
 	    var splitted = src.split('/std/');
 
 	    if (splitted.length > 1) {
-	      // Contenuto Thron
 	      if (splitted[1].match(/^0x0\//)) {
-	        // se non sono state richieste dimensioni specifiche, imposto le dimensioni necessarie alla pagina
-	        // src = splitted[0] + '/std/' + Math.floor(image.width * 1.1).toString() + 'x' + Math.floor(image.height * 1.1).toString() + splitted[1].substr(3);
 	        src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
-	        /*
-	        if (node.offsetWidth >= node.offsetHeight) {
-	        	src = splitted[0] + '/std/' + Math.floor(node.offsetWidth * 1.1).toString() + 'x0' + splitted[1].substr(3);
-	        } else {
-	        	src = splitted[0] + '/std/0x' + Math.floor(node.offsetHeight * 1.1).toString() + splitted[1].substr(3);
-	        }
-	        */
 
 	        if (!src.match(/[&?]scalemode=?/)) {
-	          src += src.indexOf('?') !== -1 ? '&' : '?'; // src += 'scalemode=auto';
+	          src += src.indexOf('?') !== -1 ? '&' : '?';
 	        }
-	      } //if (window.devicePixelRatio > 1) {
-	      //	src += src.indexOf('?') !== -1 ? '&' : '?';
-	      //	src += 'dpr=' + Math.floor(window.devicePixelRatio * 100).toString();
-	      //}
-
+	      }
 	    }
 
 	    return src;
@@ -4427,12 +1573,10 @@
 
 	  _proto.onAppearsInViewport = function onAppearsInViewport(image, scope, attributes) {
 	    if (scope.srcset) {
-	      // attributes.$set('srcset', scope.srcset);
 	      image.setAttribute('srcset', scope.srcset);
 	      image.removeAttribute('data-srcset');
 
 	      if (scope.src) {
-	        // attributes.$set('src', scope.src);
 	        image.setAttribute('src', this.getThronSrc(image, scope.src));
 	        image.removeAttribute('data-src');
 	      }
@@ -4443,7 +1587,6 @@
 	      var src = this.getThronSrc(image, scope.src);
 	      image.removeAttribute('data-src');
 	      this.onImagePreload(image, src, function (srcOrUndefined) {
-	        // image.setAttribute('src', src);
 	        image.classList.remove('lazying');
 	        image.classList.add('lazyed');
 	        scope.$emit('lazyImage', image);
@@ -4457,7 +1600,7 @@
 	  };
 
 	  _proto.lazy$ = function lazy$(node) {
-	    return this.domService.rafAndRect$().pipe(map(function (datas) {
+	    return this.domService.rafAndRect$().pipe(operators.map(function (datas) {
 	      var windowRect = datas[1];
 	      var rect = Rect.fromNode(node);
 	      var intersection = rect.intersection(windowRect);
@@ -4466,13 +1609,11 @@
 	  };
 
 	  _proto.onImagePreload = function onImagePreload(image, src, callback) {
-	    // const img = new Image();
 	    image.onload = function () {
 	      image.onload = image.onerror = null;
 
 	      if (typeof callback === 'function') {
-	        // setTimeout(() => {
-	        callback(image.src); // }, 10);
+	        callback(image.src);
 	      }
 	    };
 
@@ -4483,9 +1624,8 @@
 	        imageurl: image.src,
 	        pageurl: window.location.href
 	      });
-	      image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAC/CAMAAAA1kLK0AAAATlBMVEX////MzMyZmZn39/fHx8fPz8+Ojo7FxcXDw8Pn5+fS0tLq6url5eX8/PyUlJTi4uLX19fv7++JiYm9vb3d3d2FhYWtra2qqqqAgICdnZ2sCR5lAAAJUElEQVR4nO2d6YKzKgyGa7VaN1zqdL7e/42eigERkGobrM7J+2umM3V5DEkICKeQxHUKT6SnCASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgE6NsgynFcvvzqhXwNRBk2RVdnQRBEXM8fsrormm/x+AqIsqnqAO5+Iv5ZXTVfgLE9iLDoIegIpjiCutj8srYFUaaZG8III0s3tYtNQTT1MgqCRd1sd20bgkiDZDmFQUmQbnV1m4Go5owhimTYsP612ub6NgKRWm60v/lL1nVF+lQfSi+BjUcUbWIVm4BogshkUKdmlCybtL4YNKJgA1+xAYiwjjQKQZc78qYw7/T4GtX+r9I7CK1VPCm8zpfKppsakf/24RtEmUWT+8nyhdlBmU9jbZT5TSs8g2jUm4lWWnhYT7/t1VP4BVFdlRtJ1jf0sEsUFFefkdQriFrJoK7v+btQPUZSY1+hciJ/IErF30XR26cJlfYRBd4chT8QoWLUyUdGXSlG8T7QF/IGIlSf44fnCFXb8nW9nkAoHJLuY3suu8Q3CU8gVA45xgFz3zbhB0Sp+Aek4yvNI/LhMf2AUJwbij30Ki8jXaxjKvIC4qIGDDQS42GjC9oxpXyA6Cb9pSseCdlviTq0Ywp5AJFqFTkfJBL0zig+iMaoTCKSkK0jwe6BoYMoFUcp/QTa81PSduTQgQ5ClqOiskjwScgEJULugGGDaFTbTT2QkCdALk8ggyind17IegReFB3pojYOZBAicgrDHUngeUzR+HBjKC6IUDwtmQWPfgKNhMzfE9RLRwWRiZse22+FT6IRZpYhHbAXKgiRQkw8ugcSonFgJhOoIKRnnLgxfD8xdm5xjtcLE4Q0CC1WpmPsQIqiInIgmgQmiMvcczJINGnuUPr6ksTx8LqhiCCkQZgNQCdR/cQOtffF58IzCUQQtcOX6ySK+OxQ/NqXiH4oWqKNB0LkEPbUN9VyTCcJ9tokRA0TLZfAA1FFzmarZ1ZOEgtMAhwS2oQaPBCBPWRIGSTaj0wiFSEU6fLRQMh6zGxXSM+sUgeJ9qUTFN07LHeJBgK6W66ekG4T+c/w+PtIwTQSr01iwQnXCAuEeECW0Zfq9tTQGrQcM29Zy36vWV1n19/nj2rjuE1lugJZosHpjWOBEJd1MS8raBlj7dAa9HzipnjFJmBKY2ETtRZXcJlF/9YNIIGAmGFz4hceH+wkNNVsJpbElljkOOUbwgKRzYf1AQSExFf9juvUg8Zs8B42ECJxwemMI4EIHcEMQJxjfuc2EmpzStnoKtj5kha3dgaEDNg4d4ADonG4cAHizHQS3EbK2/33936TE9CbhyTx4J9l8QwIETdQAigSiAKuyZYRShBAQqny83/vemf6jKD3Yvj/5gwkYsD6y+wgIM2OCow7QAIBNSNr5j+CMEkMNjL4Bdbeh6/n8AUGR8tmQICTwBnhQAIhQpn1b0okGDymkllxEpBZnSHInmrwmHBpdWwHcXL3btYJB4RIp6wOXAUBUVTJrCYkzv8GM7+z0bvy3+wgRK0YI6XCARG60t0JCCOfuPJbz8EGHj/c8zX8V/bg36/nnKX0lii3gAJCBA1rajAFYWZWnEQqQwt/vDc2hM+6aa6z4VP0QFHCBg4IuCJ7T1ADcW75GedIxNzPCAsR3TE7COjxoszcxwFROYKGAWIweINEMYkVj+l37CBE2MBIsnFAQGNNrF5LA8Gu8HmqeUwgEfPsNGELQJSJwzWtFA6I2hE9DR8hn1+a2Eiw3/7nql0A4oRYwf0CiP6EIaeh5xODn+BtIzwmCBHQrX/UQMT9Z+mPlmNCPsEjBA8r8RIQrvRlpbYHwfrPungmx2xFF2OJj/gTIMzMSpD4v4GYyazy+P8CgvsI3sGcyTEH93FMH7E+aii9Kp1EdeCosT6P+B1IDDZgqd4dNI9YlVkm/YcBpJEaiasgcT1mZrm+rxGKctzQz0h0Egfta6zrfXIfGU1q2zoJzUUcpve5ph5xZrf+01LYvp1EvsRH7K8esaJCdRZD3c3PQ7UQo3rXvgaxvwrV8polN4lhqLv4B7//OKt3DhD7q1kurmJzPdoh3uVi/FsnIXLMVyD2V8VeOq4h72so24d3QNEOmVUyJZEyN4g9jmssG+kaG8cZ/Ftx76uSjLXcu+SzJA4z0rVo7FMl8ZBDnfUw9snbea5XapgLxB7HPpeMhk9JMGuo1at3srZ9lNHwBfMjdLVX819NEuAxDzM/4vWMGVMxs3k5g0Q7B2KfM2bC+VA2B+JpFExdaisfZoxZSVhAlPucQ+WYVTcPoh//VmfVDTmm4jF5POgHQi0gdjqrzjHt0QWCwxjnWQ6ZVa5lVo11WsBO51k6Zt5e9MmkDg2ZlUKCt5aGmSB2O/N2fi524Hw5Q9O/IbPSs21znuVu52LPz87PL9kKDRZlkDDw7nd2vnxfA2dNGaNmNZV4M3qH72vICi5OgqNHUU2iB77DN3iw37NykpAv8Ozxna75t/zek4uE+Msu3/IbTQL57U6TRIpuEH7eBMZaKCrXqndCpSSEc55e/t8N/0R6ZgXa/bvhttUCPpOVxP5XC7CsH/Gp9MzqdIz1I4wVRT6X6SeOsKKIvsYMhoyK7iHWmPGxKNB07SLZy933qkPqOlRoB1bHO6SD2Ps6VGPjQFyodyShLAe495XJFNvFy39HjyltY/dr1SnPD6kf2ksncYTVC5X1LL2ROMZ6ln6WIh2j6HFWOFXWvI0s74q/KWUd5MOseassFPXx4uBCoWIQx1kFebJOOnIN81DrYtNK6cqBae18cWTaTQFE+2tITXdLeetEYX1Vj4F9hcqJfILQ9uDpVp8qrP/GHjy0K9MofZ+uevk+Xdlf2qfrRDu3Kaew7uU3++/lX93L72Tf3fEyt7ujudflX9ndsdf8fp+12O+z+x/s99mLdoCVoj2BpWiXaCnaN1w5I+0kL1U2FY+SBg7+WV29zrjw9RUQvcqw6bfIDkTYeP7Qh9LGsWuyV30NBKgMpb5EAPRtELsRgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAPUGQuP4DT2RwhyUkgc4AAAAASUVORK5CYII='; // setTimeout(() => {
-
-	      callback(); // }, 10);
+	      image.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAC/CAMAAAA1kLK0AAAATlBMVEX////MzMyZmZn39/fHx8fPz8+Ojo7FxcXDw8Pn5+fS0tLq6url5eX8/PyUlJTi4uLX19fv7++JiYm9vb3d3d2FhYWtra2qqqqAgICdnZ2sCR5lAAAJUElEQVR4nO2d6YKzKgyGa7VaN1zqdL7e/42eigERkGobrM7J+2umM3V5DEkICKeQxHUKT6SnCASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgEiECACASIQIAIBIhAgAgE6NsgynFcvvzqhXwNRBk2RVdnQRBEXM8fsrormm/x+AqIsqnqAO5+Iv5ZXTVfgLE9iLDoIegIpjiCutj8srYFUaaZG8III0s3tYtNQTT1MgqCRd1sd20bgkiDZDmFQUmQbnV1m4Go5owhimTYsP612ub6NgKRWm60v/lL1nVF+lQfSi+BjUcUbWIVm4BogshkUKdmlCybtL4YNKJgA1+xAYiwjjQKQZc78qYw7/T4GtX+r9I7CK1VPCm8zpfKppsakf/24RtEmUWT+8nyhdlBmU9jbZT5TSs8g2jUm4lWWnhYT7/t1VP4BVFdlRtJ1jf0sEsUFFefkdQriFrJoK7v+btQPUZSY1+hciJ/IErF30XR26cJlfYRBd4chT8QoWLUyUdGXSlG8T7QF/IGIlSf44fnCFXb8nW9nkAoHJLuY3suu8Q3CU8gVA45xgFz3zbhB0Sp+Aek4yvNI/LhMf2AUJwbij30Ki8jXaxjKvIC4qIGDDQS42GjC9oxpXyA6Cb9pSseCdlviTq0Ywp5AJFqFTkfJBL0zig+iMaoTCKSkK0jwe6BoYMoFUcp/QTa81PSduTQgQ5ClqOiskjwScgEJULugGGDaFTbTT2QkCdALk8ggyind17IegReFB3pojYOZBAicgrDHUngeUzR+HBjKC6IUDwtmQWPfgKNhMzfE9RLRwWRiZse22+FT6IRZpYhHbAXKgiRQkw8ugcSonFgJhOoIKRnnLgxfD8xdm5xjtcLE4Q0CC1WpmPsQIqiInIgmgQmiMvcczJINGnuUPr6ksTx8LqhiCCkQZgNQCdR/cQOtffF58IzCUQQtcOX6ySK+OxQ/NqXiH4oWqKNB0LkEPbUN9VyTCcJ9tokRA0TLZfAA1FFzmarZ1ZOEgtMAhwS2oQaPBCBPWRIGSTaj0wiFSEU6fLRQMh6zGxXSM+sUgeJ9qUTFN07LHeJBgK6W66ekG4T+c/w+PtIwTQSr01iwQnXCAuEeECW0Zfq9tTQGrQcM29Zy36vWV1n19/nj2rjuE1lugJZosHpjWOBEJd1MS8raBlj7dAa9HzipnjFJmBKY2ETtRZXcJlF/9YNIIGAmGFz4hceH+wkNNVsJpbElljkOOUbwgKRzYf1AQSExFf9juvUg8Zs8B42ECJxwemMI4EIHcEMQJxjfuc2EmpzStnoKtj5kha3dgaEDNg4d4ADonG4cAHizHQS3EbK2/33936TE9CbhyTx4J9l8QwIETdQAigSiAKuyZYRShBAQqny83/vemf6jKD3Yvj/5gwkYsD6y+wgIM2OCow7QAIBNSNr5j+CMEkMNjL4Bdbeh6/n8AUGR8tmQICTwBnhQAIhQpn1b0okGDymkllxEpBZnSHInmrwmHBpdWwHcXL3btYJB4RIp6wOXAUBUVTJrCYkzv8GM7+z0bvy3+wgRK0YI6XCARG60t0JCCOfuPJbz8EGHj/c8zX8V/bg36/nnKX0lii3gAJCBA1rajAFYWZWnEQqQwt/vDc2hM+6aa6z4VP0QFHCBg4IuCJ7T1ADcW75GedIxNzPCAsR3TE7COjxoszcxwFROYKGAWIweINEMYkVj+l37CBE2MBIsnFAQGNNrF5LA8Gu8HmqeUwgEfPsNGELQJSJwzWtFA6I2hE9DR8hn1+a2Eiw3/7nql0A4oRYwf0CiP6EIaeh5xODn+BtIzwmCBHQrX/UQMT9Z+mPlmNCPsEjBA8r8RIQrvRlpbYHwfrPungmx2xFF2OJj/gTIMzMSpD4v4GYyazy+P8CgvsI3sGcyTEH93FMH7E+aii9Kp1EdeCosT6P+B1IDDZgqd4dNI9YlVkm/YcBpJEaiasgcT1mZrm+rxGKctzQz0h0Egfta6zrfXIfGU1q2zoJzUUcpve5ph5xZrf+01LYvp1EvsRH7K8esaJCdRZD3c3PQ7UQo3rXvgaxvwrV8polN4lhqLv4B7//OKt3DhD7q1kurmJzPdoh3uVi/FsnIXLMVyD2V8VeOq4h72so24d3QNEOmVUyJZEyN4g9jmssG+kaG8cZ/Ftx76uSjLXcu+SzJA4z0rVo7FMl8ZBDnfUw9snbea5XapgLxB7HPpeMhk9JMGuo1at3srZ9lNHwBfMjdLVX819NEuAxDzM/4vWMGVMxs3k5g0Q7B2KfM2bC+VA2B+JpFExdaisfZoxZSVhAlPucQ+WYVTcPoh//VmfVDTmm4jF5POgHQi0gdjqrzjHt0QWCwxjnWQ6ZVa5lVo11WsBO51k6Zt5e9MmkDg2ZlUKCt5aGmSB2O/N2fi524Hw5Q9O/IbPSs21znuVu52LPz87PL9kKDRZlkDDw7nd2vnxfA2dNGaNmNZV4M3qH72vICi5OgqNHUU2iB77DN3iw37NykpAv8Ozxna75t/zek4uE+Msu3/IbTQL57U6TRIpuEH7eBMZaKCrXqndCpSSEc55e/t8N/0R6ZgXa/bvhttUCPpOVxP5XC7CsH/Gp9MzqdIz1I4wVRT6X6SeOsKKIvsYMhoyK7iHWmPGxKNB07SLZy933qkPqOlRoB1bHO6SD2Ps6VGPjQFyodyShLAe495XJFNvFy39HjyltY/dr1SnPD6kf2ksncYTVC5X1LL2ROMZ6ln6WIh2j6HFWOFXWvI0s74q/KWUd5MOseassFPXx4uBCoWIQx1kFebJOOnIN81DrYtNK6cqBae18cWTaTQFE+2tITXdLeetEYX1Vj4F9hcqJfILQ9uDpVp8qrP/GHjy0K9MofZ+uevk+Xdlf2qfrRDu3Kaew7uU3++/lX93L72Tf3fEyt7ujudflX9ndsdf8fp+12O+z+x/s99mLdoCVoj2BpWiXaCnaN1w5I+0kL1U2FY+SBg7+WV29zrjw9RUQvcqw6bfIDkTYeP7Qh9LGsWuyV30NBKgMpb5EAPRtELsRgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAEQgQgQARCBCBABEIEIEAPUGQuP4DT2RwhyUkgc4AAAAASUVORK5CYII=';
+	      callback();
 	    };
 
 	    image.src = src;
@@ -4499,9 +1639,7 @@
 	}();
 	LazyDirective.factory.$inject = ['DomService'];
 
-	var MediaDirective =
-	/*#__PURE__*/
-	function () {
+	var MediaDirective = function () {
 	  function MediaDirective($timeout, WishlistService) {
 	    this.$timeout = $timeout;
 	    this.wishlistService = WishlistService;
@@ -4532,8 +1670,7 @@
 	          url: window.location.href,
 	          media: img.src,
 	          description: img.title || pageTitle
-	        }; // console.log('MediaDirective.onPin', pin);
-
+	        };
 	        GtmService.push({
 	          event: 'Pinterest',
 	          wish_name: scope.item.name || scope.item.coId,
@@ -4546,7 +1683,6 @@
 	    scope.$watch(function () {
 	      return _this.wishlistService.has(scope.item);
 	    }, function (current, previous) {
-	      // console.log(current, previous, node);
 	      if (scope.wishlistActive !== current) {
 	        scope.wishlistActive = current;
 
@@ -4581,7 +1717,6 @@
 	      var btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
 
 	      if (btnGallery !== null) {
-	        // console.log(btnGallery);
 	        btnGallery.click();
 	        return;
 	      }
@@ -4606,7 +1741,7 @@
 	                var wishlist = itemNode.getAttribute('media');
 
 	                if (wishlist) {
-	                  item.wishlist = _this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+	                  item.wishlist = _this.eval(wishlist);
 	                }
 	              } else {
 	                console.log(itemNode, _img);
@@ -4621,7 +1756,7 @@
 	              var _wishlist = itemNode.getAttribute('video');
 
 	              if (_wishlist) {
-	                item.wishlist = _this.eval(_wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+	                item.wishlist = _this.eval(_wishlist);
 	              }
 	            }
 
@@ -4632,9 +1767,7 @@
 	            items: items
 	          };
 	        });
-	      } // event.preventDefault();
-	      // event.stopPropagation();
-
+	      }
 	    };
 
 	    scope.$on('$destroy', function () {});
@@ -4652,10 +1785,7 @@
 	}();
 	MediaDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-	/* global window, document, angular, Muuri, TweenMax, TimelineMax */
-	var MuuriDirective =
-	/*#__PURE__*/
-	function () {
+	var MuuriDirective = function () {
 	  function MuuriDirective() {
 	    this.restrict = 'A';
 	  }
@@ -4682,11 +1812,9 @@
 
 	    window.addEventListener('beforeprint', onBeforePrint);
 	    scope.$on('lastItem', function (slide) {
-	      // console.log('MuuriDirective.lastItem', slide);
 	      _this.onMuuri(scope, element, attributes);
 	    });
 	    scope.$on('lazyImage', function (slide) {
-	      // console.log('lazyImage', element.muuri);
 	      return;
 	    });
 	    scope.$on('$destroy', function () {
@@ -4703,14 +1831,11 @@
 
 	  _proto.onMuuri = function onMuuri(scope, element, attributes) {
 	    if (element.muuri) {
-	      var node = element[0]; // const items = scope.$eval(attributes.muuri);
-
+	      var node = element[0];
 	      var previousItems = element.muuri.getItems().map(function (x) {
 	        return x.getElement();
-	      }); // console.log('MuuriDirective.previousItems', previousItems);
-
-	      var items = Array.from(node.querySelectorAll('.listing__item')); // console.log('MuuriDirective.newItems', items);
-
+	      });
+	      var items = Array.from(node.querySelectorAll('.listing__item'));
 	      var newItems = items.filter(function (x) {
 	        return previousItems.indexOf(x) === -1;
 	      });
@@ -4718,11 +1843,10 @@
 	        return items.indexOf(x) === -1;
 	      });
 	      element.muuri.remove(removeItems);
-	      element.muuri.add(newItems); // element.muuri.refreshItems(items).layout();
+	      element.muuri.add(newItems);
 	    } else {
 	      element.muuri = new Muuri(element[0], {
 	        layoutDuration: 0,
-	        // 400,
 	        layoutEasing: 'ease',
 	        layout: {
 	          fillGaps: true,
@@ -4745,16 +1869,11 @@
 	}();
 	MuuriDirective.factory.$inject = [];
 
-	// Workaround for Edge 16+, which only implemented object-fit for <img> tags
-	// TODO: Keep an eye on Edge to determine which version has full final support
 	var edgeVersion = window.navigator.userAgent.match(/Edge\/(\d{2})\./);
-	var edgePartialSupport = edgeVersion ? parseInt(edgeVersion[1], 10) >= 16 : false; // If the browser does support object-fit, we don't need to continue
-
+	var edgePartialSupport = edgeVersion ? parseInt(edgeVersion[1], 10) >= 16 : false;
 	var hasSupport = 'objectFit' in document.documentElement.style !== false;
 
-	var ObjectFitDirective =
-	/*#__PURE__*/
-	function () {
+	var ObjectFitDirective = function () {
 	  function ObjectFitDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -4765,8 +1884,7 @@
 	  _proto.link = function link(scope, element, attributes, controller) {
 	    var _this = this;
 
-	    var node = element[0]; // console.log('ObjectFitDirective', node);
-	    // if the page is being rendered on the server, don't continue
+	    var node = element[0];
 
 	    if (typeof window === 'undefined') {
 	      return;
@@ -4777,21 +1895,6 @@
 	    }
 
 	    this.polyfill(node);
-	    /*
-	    	if (typeof node === 'undefined' || node instanceof Event) {
-	    		// If left blank, or a default event, all node on the page will be polyfilled.
-	    		node = document.querySelectorAll('[data-object-fit]');
-	    	} else if (node && node.nodeName) {
-	    		// If it's a single node, wrap it in an array so it works.
-	    		node = [node];
-	    	} else if (typeof node === 'object' && node.length && node[0].nodeName) {
-	    		// If it's an array of DOM nodes (e.g. a jQuery selector), it's fine as-is.
-	    		node = node;
-	    	} else {
-	    		// Otherwise, if it's invalid or an incorrect type, return false to let people know.
-	    		return false;
-	    	}
-	    */
 
 	    var polyfill = function polyfill() {
 	      _this.polyfill(node);
@@ -4814,7 +1917,7 @@
 
 	    if (nodeName === 'img') {
 	      if (edgePartialSupport) {
-	        return; // Edge supports object-fit for images (but nothing else), so no need to polyfill
+	        return;
 	      }
 
 	      if (node.complete) {
@@ -4834,22 +1937,17 @@
 	  };
 
 	  _proto.objectFit = function objectFit(node) {
-	    console.log('ObjectFitDirective.objectFit', node); // IE 10- data polyfill
-
+	    console.log('ObjectFitDirective.objectFit', node);
 	    var fit = node.dataset ? node.dataset.objectFit : node.getAttribute('data-object-fit');
-	    var position = node.dataset ? node.dataset.objectPosition : node.getAttribute('data-object-position'); // Default fallbacks
-
+	    var position = node.dataset ? node.dataset.objectPosition : node.getAttribute('data-object-position');
 	    fit = fit || 'cover';
-	    position = position || '50% 50%'; // If necessary, make the parent container work with absolutely positioned elements
-
+	    position = position || '50% 50%';
 	    var parentNode = node.parentNode;
-	    this.checkParentContainer(parentNode); // Check for any pre-set CSS which could mess up image calculations
-
-	    this.checkMediaProperties(node); // Reset any pre-set width/height CSS and handle fit positioning
-
+	    this.checkParentContainer(parentNode);
+	    this.checkMediaProperties(node);
 	    node.style.position = 'absolute';
 	    node.style.width = 'auto';
-	    node.style.height = 'auto'; // `scale-down` chooses either `none` or `contain`, whichever is smaller
+	    node.style.height = 'auto';
 
 	    if (fit === 'scale-down') {
 	      if (node.clientWidth < parentNode.clientWidth && node.clientHeight < parentNode.clientHeight) {
@@ -4857,8 +1955,7 @@
 	      } else {
 	        fit = 'contain';
 	      }
-	    } // `none` (width/height auto) and `fill` (100%) and are straightforward
-
+	    }
 
 	    if (fit === 'none') {
 	      this.setPosition('x', node, position);
@@ -4872,8 +1969,7 @@
 	      this.setPosition('x', node, position);
 	      this.setPosition('y', node, position);
 	      return;
-	    } // `cover` and `contain` must figure out which side needs covering, and add CSS positioning & centering
-
+	    }
 
 	    node.style.height = '100%';
 
@@ -4902,9 +1998,7 @@
 
 	    if (overflow !== 'hidden') {
 	      parentNode.style.overflow = 'hidden';
-	    } // Guesstimating that people want the parent to act like full width/height wrapper here.
-	    // Mostly attempts to target <picture> elements, which default to inline.
-
+	    }
 
 	    if (!display || display === 'inline') {
 	      parentNode.style.display = 'block';
@@ -4912,8 +2006,7 @@
 
 	    if (parentNode.clientHeight === 0) {
 	      parentNode.style.height = '100%';
-	    } // Add a CSS class hook, in case people need to override styles for any reason.
-
+	    }
 
 	    if (parentNode.className.indexOf('object-fit-polyfill') === -1) {
 	      parentNode.className = parentNode.className + ' object-fit-polyfill';
@@ -4967,7 +2060,7 @@
 	      end = 'bottom';
 	      side = node.clientHeight;
 	    } else {
-	      return; // Neither x or y axis specified
+	      return;
 	    }
 
 	    if (position === start || other === start) {
@@ -4984,8 +2077,7 @@
 	      node.style[start] = '50%';
 	      node.style['margin-' + start] = side / -2 + 'px';
 	      return;
-	    } // Percentage values (e.g., 30% 10%)
-
+	    }
 
 	    if (position.indexOf('%') !== -1) {
 	      position = parseInt(position);
@@ -5001,7 +2093,6 @@
 
 	      return;
 	    } else {
-	      // Length-based values (e.g. 10px / 10em)
 	      node.style[start] = position;
 	    }
 
@@ -5016,9 +2107,7 @@
 	}();
 	ObjectFitDirective.factory.$inject = ['DomService'];
 
-	var OverOnDirective =
-	/*#__PURE__*/
-	function () {
+	var OverOnDirective = function () {
 	  function OverOnDirective() {
 	    this.restrict = 'A';
 	  }
@@ -5058,9 +2147,7 @@
 
 	var isEdge = window.navigator.userAgent.indexOf('Edge') !== -1;
 
-	var ParallaxDirective =
-	/*#__PURE__*/
-	function () {
+	var ParallaxDirective = function () {
 	  function ParallaxDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -5069,7 +2156,7 @@
 	  var _proto = ParallaxDirective.prototype;
 
 	  _proto.link = function link(scope, element, attributes, controller) {
-	    return false; // !!! rimosso effetto parallasse
+	    return false;
 	  };
 
 	  _proto.units = function units(value, decimals) {
@@ -5084,27 +2171,22 @@
 	  _proto.parallax$ = function parallax$(node, parallax) {
 	    var _this = this;
 
-	    return this.domService.rafAndRect$().pipe(map(function (datas) {
+	    return this.domService.rafAndRect$().pipe(operators.map(function (datas) {
 	      var windowRect = datas[1];
 	      var rect = Rect.fromNode(node);
 	      var intersection = rect.intersection(windowRect);
 
 	      if (intersection.y > 0) {
-	        return Math.min(1, Math.max(-1, intersection.center.y)); // intersection.center.y;
+	        return Math.min(1, Math.max(-1, intersection.center.y));
 	      } else {
 	        return null;
 	      }
-	    }), filter(function (y) {
+	    }), operators.filter(function (y) {
 	      return y !== null;
-	    }), distinctUntilChanged(), map(function (y) {
-	      var direction = 1; // i % 2 === 0 ? 1 : -1;
-
+	    }), operators.distinctUntilChanged(), operators.map(function (y) {
+	      var direction = 1;
 	      var s = (100 + parallax * 2) / 100;
-	      var p = -50 + y * parallax * direction; // .toFixed(3);
-	      // const y = Math.min(1, Math.max(-1, intersection.center.y));
-	      // const s = (100 + parallax * 2) / 100;
-	      // const p = (-50 + (y * parallax * direction)); // .toFixed(3);
-
+	      var p = -50 + y * parallax * direction;
 	      return {
 	        s: _this.units(s),
 	        p: _this.units(p)
@@ -5120,9 +2202,7 @@
 	}();
 	ParallaxDirective.factory.$inject = ['DomService'];
 
-	var ScrollToDirective =
-	/*#__PURE__*/
-	function () {
+	var ScrollToDirective = function () {
 	  function ScrollToDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -5173,14 +2253,10 @@
 	}();
 	ScrollToDirective.factory.$inject = ['DomService'];
 
-	var ScrollDirective =
-	/*#__PURE__*/
-	function () {
-	  // @Output() public scroll = new EventEmitter();
+	var ScrollDirective = function () {
 	  function ScrollDirective($timeout, DomService) {
 	    this.$timeout = $timeout;
-	    this.domService = DomService; // this.require = 'ngModel';
-
+	    this.domService = DomService;
 	    this.restrict = 'A';
 	  }
 
@@ -5194,18 +2270,17 @@
 	      this.$timeout(function () {
 	        var previous;
 
-	        var subscription = _this.domService.scrollIntersection$(node).pipe(distinctUntilChanged(function (a, b) {
-	          // console.log('ScrollDirective', b.scroll.scrollTop, previous);
+	        var subscription = _this.domService.scrollIntersection$(node).pipe(operators.distinctUntilChanged(function (a, b) {
 	          var differs = b.scroll.scrollTop !== previous;
 	          previous = b.scroll.scrollTop;
 	          return !differs;
 	        })).subscribe(function (event) {
 	          var callback = scope.$eval(attributes.scroll, {
 	            $event: event
-	          }); // console.log('ScrollDirective.event', callback);
+	          });
 
 	          if (typeof callback === 'function') {
-	            callback(event); // scope.$eval(attributes.scroll, { $event: event });
+	            callback(event);
 	          }
 	        });
 
@@ -5214,16 +2289,6 @@
 	        });
 	      });
 	    }
-	    /*
-	    const callback = scope.$eval(attributes.scroll);
-	    if (typeof callback === 'function') {
-	    	const subscription = this.domService.scroll$().subscribe(event => callback(event));
-	    	scope.$on('$destroy', () => {
-	    		subscription.unsubscribe();
-	    	});
-	    }
-	    */
-
 	  };
 
 	  ScrollDirective.factory = function factory($timeout, DomService) {
@@ -5234,9 +2299,7 @@
 	}();
 	ScrollDirective.factory.$inject = ['$timeout', 'DomService'];
 
-	var StickyDirective =
-	/*#__PURE__*/
-	function () {
+	var StickyDirective = function () {
 	  function StickyDirective($timeout, DomService) {
 	    this.$timeout = $timeout;
 	    this.domService = DomService;
@@ -5257,7 +2320,6 @@
 	      });
 
 	      if (isChild && window.innerWidth > 860) {
-	        // console.log('StickyDirective.onClick');
 	        var top = _this.domService.scrollTop + node.getBoundingClientRect().top;
 	        window.scroll({
 	          top: top,
@@ -5282,13 +2344,9 @@
 	    var node = element[0];
 	    var content = node.querySelector('[sticky-content]');
 	    var stickyTop = parseInt(attributes.sticky) || 0;
-	    return this.domService.scroll$().pipe(tap(function (scroll) {
-	      var rect = Rect.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
-	      // top = Math.max(0, Math.min(maxtop, top - rect.top));
-
-	      var maxTop = Math.max(0, stickyTop - rect.top); // content.setAttribute('style', `transform: translateY(${maxTop}px);`);
-	      // console.log(maxTop, stickyTop, rect.top);
-
+	    return this.domService.scroll$().pipe(operators.tap(function (scroll) {
+	      var rect = Rect.fromNode(node);
+	      var maxTop = Math.max(0, stickyTop - rect.top);
 	      var sticky = maxTop > 0;
 
 	      if (sticky !== element.sticky) {
@@ -5307,10 +2365,8 @@
 	    var node = element[0];
 	    var content = node.querySelector('[sticky-content]');
 	    var stickyTop = parseInt(attributes.sticky) || 0;
-	    return this.domService.raf$().pipe(tap(function (datas) {
-	      var rect = Rect.fromNode(node); // const maxtop = node.offsetHeight - content.offsetHeight;
-	      // top = Math.max(0, Math.min(maxtop, top - rect.top));
-
+	    return this.domService.raf$().pipe(operators.tap(function (datas) {
+	      var rect = Rect.fromNode(node);
 	      var maxTop = Math.max(0, stickyTop - rect.top);
 	      content.setAttribute('style', "transform: translateY(" + maxTop + "px);");
 	      var sticky = maxTop > 0;
@@ -5383,9 +2439,7 @@
 	    onlyInViewport: true
 	  }
 	};
-	var SwiperDirective =
-	/*#__PURE__*/
-	function () {
+	var SwiperDirective = function () {
 	  function SwiperDirective() {
 	    this.restrict = 'A';
 	    this.options = DEFAULT_SWIPER_OPTIONS;
@@ -5431,8 +2485,7 @@
 	    this.linked(scope, element, attributes, controller);
 	  };
 
-	  _proto.linked = function linked(scope, element, attributes, controller) {// console.log('linked not overrided');
-	  };
+	  _proto.linked = function linked(scope, element, attributes, controller) {};
 
 	  _proto.onResize = function onResize(scope, element, attributes) {
 	    if (element.swiper) {
@@ -5444,12 +2497,11 @@
 	  };
 
 	  _proto.onSwiper = function onSwiper(scope, element, attributes) {
-	    var node = element[0]; //const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+	    var node = element[0];
 
 	    if (element.swiper) {
 	      element.swiper.update();
 	    } else {
-	      //this.options.initialSlide = initialSlide;
 	      var swiper_;
 	      var on = this.options.on || (this.options.on = {});
 	      var callback = on.init;
@@ -5474,8 +2526,7 @@
 
 	      if (attributes.noLoop !== undefined) {
 	        this.options.loop = false;
-	      } // console.log('attributes.noLoop', attributes.noLoop);
-
+	      }
 
 	      TweenMax.set(node, {
 	        opacity: 1
@@ -5494,9 +2545,7 @@
 	  return SwiperDirective;
 	}();
 	SwiperDirective.factory.$inject = [];
-	var SwiperGalleryHeroDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective) {
+	var SwiperGalleryHeroDirective = function (_SwiperDirective) {
 	  _inheritsLoose(SwiperGalleryHeroDirective, _SwiperDirective);
 
 	  function SwiperGalleryHeroDirective() {
@@ -5555,8 +2604,7 @@
 	          element.swiper.slideTo(initialSlide, 0);
 	        }
 	      }
-	    } // console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
-
+	    }
 	  };
 
 	  SwiperGalleryHeroDirective.factory = function factory() {
@@ -5566,9 +2614,7 @@
 	  return SwiperGalleryHeroDirective;
 	}(SwiperDirective);
 	SwiperGalleryHeroDirective.factory.$inject = [];
-	var SwiperGalleryDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective2) {
+	var SwiperGalleryDirective = function (_SwiperDirective2) {
 	  _inheritsLoose(SwiperGalleryDirective, _SwiperDirective2);
 
 	  function SwiperGalleryDirective() {
@@ -5580,10 +2626,7 @@
 	      loopAdditionalSlides: 100,
 	      loop: true,
 	      centeredSlides: false,
-	      // watchOverflow: true,
 	      spaceBetween: 1,
-	      // speed: 600,
-	      // autoplay: 5,
 	      keyboardControl: true,
 	      mousewheelControl: false,
 	      on: {
@@ -5631,8 +2674,7 @@
 	          element.swiper.slideTo(initialSlide, 0);
 	        }
 	      }
-	    } // console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
-
+	    }
 	  };
 
 	  SwiperGalleryDirective.factory = function factory() {
@@ -5642,9 +2684,7 @@
 	  return SwiperGalleryDirective;
 	}(SwiperDirective);
 	SwiperGalleryDirective.factory.$inject = [];
-	var SwiperHeroDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective3) {
+	var SwiperHeroDirective = function (_SwiperDirective3) {
 	  _inheritsLoose(SwiperHeroDirective, _SwiperDirective3);
 
 	  function SwiperHeroDirective() {
@@ -5655,12 +2695,6 @@
 	    _this5.options = {
 	      speed: 600,
 	      parallax: true,
-
-	      /*
-	      autoplay: {
-	      	delay: 10000,
-	      },
-	      */
 	      spaceBetween: 0,
 	      keyboardControl: true,
 	      mousewheelControl: false,
@@ -5669,7 +2703,6 @@
 	      },
 	      on: {
 	        init: function init(swiper, element, scope) {
-	          // console.log('SwiperHeroDirective.init');
 	          if (!swiper_) {
 	            swiper_ = swiper;
 	            element_ = element;
@@ -5677,29 +2710,19 @@
 	          }
 
 	          scope_.$on('onThronCanPlay', function ($scope, id) {
-	            // console.log('SwiperHeroDirective.onThronCanPlay', id);
 	            _this5.toggleVideo(element, scope, id);
 	          });
 	          scope_.$on('onThronComplete', function ($scope, id) {
-	            // console.log('SwiperHeroDirective.onThronComplete', id);
 	            _this5.next(swiper_);
 	          });
-	          /*
-	          if (swiper_.autoplay) {
-	          	swiper_.autoplay.start();
-	          }
-	          */
 	        },
 	        slideChangeTransitionStart: function slideChangeTransitionStart() {
-	          // console.log('SwiperHeroDirective.slideChangeTransitionStart');
 	          if (element_) {
 	            _this5.toggleVideo(element_, scope_);
 	          }
 	        },
 	        slideChangeTransitionEnd: function slideChangeTransitionEnd() {
-	          // console.log('SwiperHeroDirective.slideChangeTransitionEnd');
 	          if (element_) {
-	            // this.toggleVideo(element_, scope_);
 	            _this5.checkAutoplay(element_, scope_, swiper_);
 	          }
 	        }
@@ -5729,9 +2752,7 @@
 
 	      if (node) {
 	        if (slide.classList.contains('swiper-slide-active')) {
-	          // console.log('playing node', node);
 	          if (node.hasAttribute('data-thron')) {
-	            // console.log(id, node.id, id === node.id);
 	            if (id && id === node.id) {
 	              scope.$broadcast('playThron', node.id);
 	            } else if (!id) {
@@ -5758,8 +2779,7 @@
 
 	    if (!video) {
 	      setTimeout(function () {
-	        _this6.next(swiper); // swiper.slideNext();
-
+	        _this6.next(swiper);
 	      }, 5000);
 	    }
 	  };
@@ -5779,9 +2799,7 @@
 	  return SwiperHeroDirective;
 	}(SwiperDirective);
 	SwiperHeroDirective.factory.$inject = [];
-	var SwiperFocusDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective4) {
+	var SwiperFocusDirective = function (_SwiperDirective4) {
 	  _inheritsLoose(SwiperFocusDirective, _SwiperDirective4);
 
 	  function SwiperFocusDirective() {
@@ -5834,8 +2852,7 @@
 
 	    var onOver = function onOver(event) {
 	      var index = tabs.indexOf(event.currentTarget);
-	      element.swiper.slideTo(index, 1000, function () {// console.log('swiper.complete');
-	      });
+	      element.swiper.slideTo(index, 1000, function () {});
 	    };
 
 	    tabs.forEach(function (tab) {
@@ -5855,9 +2872,7 @@
 	  return SwiperFocusDirective;
 	}(SwiperDirective);
 	SwiperFocusDirective.factory.$inject = [];
-	var SwiperProjectsDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective5) {
+	var SwiperProjectsDirective = function (_SwiperDirective5) {
 	  _inheritsLoose(SwiperProjectsDirective, _SwiperDirective5);
 
 	  function SwiperProjectsDirective() {
@@ -5866,9 +2881,6 @@
 	    _this8 = _SwiperDirective5.call(this) || this;
 	    _this8.options = {
 	      speed: 600,
-	      // parallax: true,
-	      // autoplay: 5000,
-	      // loop: true,
 	      spaceBetween: 0,
 	      keyboardControl: true,
 	      mousewheelControl: false,
@@ -5898,9 +2910,7 @@
 	  return SwiperProjectsDirective;
 	}(SwiperDirective);
 	SwiperProjectsDirective.factory.$inject = [];
-	var SwiperReferencesDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective6) {
+	var SwiperReferencesDirective = function (_SwiperDirective6) {
 	  _inheritsLoose(SwiperReferencesDirective, _SwiperDirective6);
 
 	  function SwiperReferencesDirective() {
@@ -5934,9 +2944,7 @@
 	  return SwiperReferencesDirective;
 	}(SwiperDirective);
 	SwiperReferencesDirective.factory.$inject = [];
-	var SwiperTileDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective7) {
+	var SwiperTileDirective = function (_SwiperDirective7) {
 	  _inheritsLoose(SwiperTileDirective, _SwiperDirective7);
 
 	  function SwiperTileDirective() {
@@ -5947,7 +2955,6 @@
 	      speed: 600,
 	      parallax: true,
 	      autoplay: 5000,
-	      // loop: true,
 	      spaceBetween: 60,
 	      keyboardControl: true,
 	      mousewheelControl: false,
@@ -5978,9 +2985,7 @@
 	  return SwiperTileDirective;
 	}(SwiperDirective);
 	SwiperTileDirective.factory.$inject = [];
-	var SwiperTimelineDirective =
-	/*#__PURE__*/
-	function (_SwiperDirective8) {
+	var SwiperTimelineDirective = function (_SwiperDirective8) {
 	  _inheritsLoose(SwiperTimelineDirective, _SwiperDirective8);
 
 	  function SwiperTimelineDirective() {
@@ -6040,9 +3045,7 @@
 
 	var ID = 0;
 
-	var ThronDirective =
-	/*#__PURE__*/
-	function () {
+	var ThronDirective = function () {
 	  function ThronDirective() {
 	    this.restrict = 'A';
 	  }
@@ -6064,41 +3067,37 @@
 	      autoplay: node.hasAttribute('autoplay'),
 	      muted: true,
 	      displayLinked: 'close',
-	      noSkin: true // lockBitrate: 'max',
-
+	      noSkin: true
 	    });
 
 	    var onReady = function onReady() {
-	      // console.log('ThronDirective.onReady', node.id);
 	      var mediaContainer = player.mediaContainer();
 	      var video = mediaContainer.querySelector('video');
 	      video.setAttribute('playsinline', 'true');
-	      scope.$emit('onThronReady', node.id); // video.setAttribute('autoplay', 'true');
+	      scope.$emit('onThronReady', node.id);
 	    };
 
 	    var onCanPlay = function onCanPlay() {
-	      // console.log('ThronDirective.onCanPlay', node.id);
 	      scope.$emit('onThronCanPlay', node.id);
 	    };
 
 	    var onPlaying = function onPlaying() {
 	      player.off('playing', onPlaying);
-	      var qualities = player.qualityLevels(); // console.log('ThronDirective.onPlaying', node.id, qualities);
+	      var qualities = player.qualityLevels();
 
 	      if (qualities.length) {
 	        var highestQuality = qualities[qualities.length - 1].index;
 	        var lowestQuality = qualities[0].index;
-	        player.currentQuality(highestQuality); // console.log('ThronDirective.onPlaying', node.id, 'currentQuality', player.currentQuality());
+	        player.currentQuality(highestQuality);
 	      }
 	    };
 
 	    var onComplete = function onComplete() {
-	      // console.log('ThronDirective.onComplete', node.id);
 	      scope.$emit('onThronComplete', node.id);
 	    };
 
 	    var playVideo = function playVideo() {
-	      var status = player.status(); // console.log('ThronDirective.playVideo', node.id, status);
+	      var status = player.status();
 
 	      if (status && !status.playing) {
 	        player.play();
@@ -6106,7 +3105,7 @@
 	    };
 
 	    var pauseVideo = function pauseVideo() {
-	      var status = player.status(); // console.log('ThronDirective.pauseVideo', node.id, status);
+	      var status = player.status();
 
 	      if (status && status.playing) {
 	        player.pause();
@@ -6118,13 +3117,11 @@
 	    player.on('playing', onPlaying);
 	    player.on('complete', onComplete);
 	    scope.$on('playThron', function ($scope, id) {
-	      // console.log('ThronDirective.playThron', id, node.id, id === node.id);
 	      if (id === node.id) {
 	        playVideo();
 	      }
 	    });
 	    scope.$on('pauseThron', function ($scope, id) {
-	      // console.log('ThronDirective.pauseThron', id, node.id, id === node.id);
 	      if (id === node.id) {
 	        pauseVideo();
 	      }
@@ -6145,9 +3142,7 @@
 	}();
 	ThronDirective.factory.$inject = [];
 
-	var VideoDirective =
-	/*#__PURE__*/
-	function () {
+	var VideoDirective = function () {
 	  function VideoDirective($timeout, WishlistService) {
 	    this.$timeout = $timeout;
 	    this.wishlistService = WishlistService;
@@ -6181,8 +3176,7 @@
 	          event: 'Pinterest',
 	          wish_name: scope.item.name || scope.item.coId,
 	          wish_type: scope.item.typeName || scope.item.type
-	        }); // console.log('VideoDirective.onPin', pin);
-
+	        });
 	        PinUtils.pinOne(pin);
 	      };
 	    }
@@ -6200,11 +3194,6 @@
 	          video.pause();
 	        }
 	      }
-	      /*
-	      event.preventDefault();
-	      event.stopImmediatePropagation();
-	      */
-
 	    };
 
 	    var onPlay = function onPlay() {
@@ -6238,14 +3227,12 @@
 	    };
 
 	    var onTimeUpdate = function onTimeUpdate() {
-	      // console.log(video.currentTime, video.duration);
 	      progress.style.strokeDashoffset = video.currentTime / video.duration;
 	    };
 
 	    scope.$watch(function () {
 	      return _this.wishlistService.has(scope.item);
 	    }, function (current, previous) {
-	      // console.log(current, previous, node);
 	      if (scope.wishlistActive !== current) {
 	        scope.wishlistActive = current;
 
@@ -6270,9 +3257,7 @@
 	        console.log('VideoDirective.onClickWishlist', has);
 	      }, function (error) {
 	        console.log(error);
-	      }); // event.preventDefault();
-	      // event.stopPropagation();
-
+	      });
 	    };
 
 	    scope.onClickZoom = function (event) {
@@ -6298,7 +3283,7 @@
 	              var wishlist = itemNode.getAttribute('media');
 
 	              if (wishlist) {
-	                item.wishlist = _this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+	                item.wishlist = _this.eval(wishlist);
 	              }
 	            } else {
 	              var _video = itemNode.querySelector('video');
@@ -6312,7 +3297,7 @@
 	              var _wishlist = itemNode.getAttribute('video');
 
 	              if (_wishlist) {
-	                item.wishlist = _this.eval(_wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+	                item.wishlist = _this.eval(_wishlist);
 	              }
 	            }
 
@@ -6323,9 +3308,7 @@
 	            items: items
 	          };
 	        });
-	      } // event.preventDefault();
-	      // event.stopPropagation();
-
+	      }
 	    };
 
 	    if (video) {
@@ -6338,7 +3321,6 @@
 
 	    scope.$on('$destroy', function () {
 	      if (video) {
-	        // console.log('VideoDirective.$destroy');
 	        video.removeEventListener('play', onPlay);
 	        video.removeEventListener('play', onPlayGtm);
 	        video.removeEventListener('pause', onPause);
@@ -6360,9 +3342,7 @@
 	}();
 	VideoDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-	var VisibilityDirective =
-	/*#__PURE__*/
-	function () {
+	var VisibilityDirective = function () {
 	  function VisibilityDirective(DomService) {
 	    this.domService = DomService;
 	    this.restrict = 'A';
@@ -6373,13 +3353,11 @@
 	  _proto.link = function link(scope, element, attributes, controller) {
 	    var node = element[0];
 	    var subscription = this.domService.firstVisibility$(node).subscribe(function (visible) {
-	      // console.log('visibility', attributes.visibility, node.classList);
 	      var gtmEvent = {
 	        event: 'ElementVisibilityCustomEvent',
 	        element: attributes.visibility,
 	        classes: node.getAttribute('class')
-	      }; // console.log(gtmEvent);
-
+	      };
 	      GtmService.push(gtmEvent);
 	    });
 	    scope.$on('$destroy', function () {
@@ -6395,9 +3373,7 @@
 	}();
 	VisibilityDirective.factory.$inject = ['DomService'];
 
-	var WishlistDirective =
-	/*#__PURE__*/
-	function () {
+	var WishlistDirective = function () {
 	  function WishlistDirective($timeout, WishlistService) {
 	    this.$timeout = $timeout;
 	    this.wishlistService = WishlistService;
@@ -6419,7 +3395,6 @@
 	    scope.$watch(function () {
 	      return _this.wishlistService.has(scope.item);
 	    }, function (current, previous) {
-	      // console.log(current, previous, node);
 	      if (scope.wishlistActive !== current) {
 	        scope.wishlistActive = current;
 
@@ -6461,11 +3436,7 @@
 	}();
 	WishlistDirective.factory.$inject = ['$timeout', 'WishlistService'];
 
-	// let INDEX = 0;
-	var WorldDirective =
-	/*#__PURE__*/
-	function () {
-	  // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
+	var WorldDirective = function () {
 	  function WorldDirective($timeout, DomService) {
 	    this.$timeout = $timeout;
 	    this.domService = DomService;
@@ -6481,9 +3452,7 @@
 	    var img = node.querySelector('img');
 	    var nodePoints = node.querySelector('.points');
 
-	    var
-	    /*onEnter*/
-	    onClick = function onClick(event) {
+	    var onClick = function onClick(event) {
 	      event.stopImmediatePropagation();
 	      Array.from(node.querySelectorAll('.world__point')).forEach(function (x) {
 	        if (x === event.currentTarget) {
@@ -6513,9 +3482,7 @@
 	        });
 	        nodePoints.appendChild(pointNode);
 	        node.addEventListener('click', onClick);
-	        pointNode.addEventListener('click', onClick); //pointNode.addEventListener('mouseenter', onEnter);
-	        //const pointInfoNode = pointNode.querySelector('.world__info');
-	        //pointInfoNode.addEventListener('mouseleave', onLeave);
+	        pointNode.addEventListener('click', onClick);
 	      });
 	    };
 
@@ -6523,12 +3490,7 @@
 	      node.removeEventListener('click', onClick);
 	      Array.from(node.querySelectorAll('.world__point')).forEach(function (node) {
 	        node.removeEventListener('click', onClick);
-	      }); //Array.from(node.querySelectorAll('.world__point')).forEach(node => {
-	      //	node.removeEventListener('mouseenter', onEnter);
-	      //});
-	      //Array.from(node.querySelectorAll('.world__point .world__info')).forEach(node => {
-	      //	node.removeEventListener('mouseleave', onLeave);
-	      //});
+	      });
 	    });
 	  };
 
@@ -6553,10 +3515,7 @@
 	}();
 	WorldDirective.factory.$inject = ['$timeout', 'DomService'];
 
-	var ZoomableDirective =
-	/*#__PURE__*/
-	function () {
-	  // src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy lazy-src="
+	var ZoomableDirective = function () {
 	  function ZoomableDirective($timeout, DomService) {
 	    this.$timeout = $timeout;
 	    this.domService = DomService;
@@ -6593,7 +3552,6 @@
 	    };
 
 	    var onClick = function onClick() {
-	      // const slides = Array.from(node.querySelectorAll('.swiper-slide'));
 	      if (node.classList.contains('zoomed')) {
 	        _this.zoomOut(scope, node, content, rect);
 
@@ -6616,8 +3574,7 @@
 	        close.addEventListener('click', onClose);
 	      }
 
-	      triggers = Array.from(node.querySelectorAll('.zoomable__trigger')); // console.log('ZoomableDirective', node, content, triggers);
-
+	      triggers = Array.from(node.querySelectorAll('.zoomable__trigger'));
 	      triggers.forEach(function (x) {
 	        return x.addEventListener('click', onClick);
 	      });
@@ -6638,7 +3595,6 @@
 	    };
 
 	    scope.$on('lastItem', function ($scope, item) {
-	      // console.log('lastItem');
 	      removeListeners();
 	      addListeners();
 	    });
@@ -6662,29 +3618,6 @@
 	      _this.$timeout(function () {
 	        scope.zoomed = !scope.zoomed;
 	      });
-	      /*
-	      TweenMax.to(u, 0.50, {
-	      	scaleX: 1,
-	      	transformOrigin: '0 50%',
-	      	delay: 0,
-	      	ease: Power3.easeInOut,
-	      	overwrite: 'all',
-	      	onComplete: () => {
-	      		TweenMax.set(u, { transformOrigin: '100% 50%', scaleX: 1 });
-	      		TweenMax.to(u, 0.50, {
-	      			scaleX: 0,
-	      			transformOrigin: '100% 50%',
-	      			delay: 1.0,
-	      			ease: Power3.easeInOut,
-	      			overwrite: 'all',
-	      			onComplete: () => {
-	      				animate();
-	      			}
-	      		});
-	      	}
-	      });
-	      */
-
 	    };
 
 	    if (attributes.zoomed !== undefined) {
@@ -6693,24 +3626,19 @@
 	  };
 
 	  _proto.zoomIn = function zoomIn(scope, node, content, rect) {
-	    // TweenMax.set(node, { height: rect.height });
-	    // TweenMax.set(content, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
 	    node.classList.add('zoomed');
-	    scope.zoomed = true; // TweenMax.set(content, { left: 0, top: 0, width: '100%', height: '100%' });
-
+	    scope.zoomed = true;
 	    setTimeout(function () {
 	      scope.$broadcast('onResize', scope.zoomed);
-	    }, 1); // scope.$emit('onDroppinIn', true);
+	    }, 1);
 	  };
 
 	  _proto.zoomOut = function zoomOut(scope, node, content, rect) {
-	    // TweenMax.set(node, { height: 'auto' });
-	    // TweenMax.set(content, { clearProps: 'all' });
 	    node.classList.remove('zoomed');
 	    scope.zoomed = false;
 	    setTimeout(function () {
 	      scope.$broadcast('onResize', scope.zoomed);
-	    }, 1); // scope.$emit('onDroppinIn', false);
+	    }, 1);
 	  };
 
 	  _proto.zoomInAnimated = function zoomInAnimated(scope, node, content, rect) {
@@ -6731,14 +3659,10 @@
 	      width: '100%',
 	      height: '100%',
 	      ease: Expo.easeInOut,
-	      // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
 	      onUpdate: function onUpdate() {
-	        // window.dispatchEvent(new Event('resize'));
-	        // slides.forEach(x => x.style.width = content.style.width);
 	        scope.$broadcast('onResize');
 	      },
-	      onComplete: function onComplete() {// scope.$broadcast('onResize');
-	      }
+	      onComplete: function onComplete() {}
 	    });
 	  };
 
@@ -6749,7 +3673,6 @@
 	      width: rect.width,
 	      height: rect.height,
 	      ease: Expo.easeInOut,
-	      // ease: CustomEase.create('custom', 'M0,0,C0.596,0,0.346,1,1,1'),
 	      onUpdate: function onUpdate() {
 	        scope.$broadcast('onResize');
 	      },
@@ -6779,9 +3702,7 @@
 
 	var GTM_EVENT = 'ricerca-homepage';
 
-	var EffectsCtrl =
-	/*#__PURE__*/
-	function () {
+	var EffectsCtrl = function () {
 	  function EffectsCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -6849,162 +3770,9 @@
 
 	EffectsCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-	/** PURE_IMPORTS_START tslib,_AsyncAction PURE_IMPORTS_END */
-	var AnimationFrameAction = /*@__PURE__*/ (function (_super) {
-	    __extends(AnimationFrameAction, _super);
-	    function AnimationFrameAction(scheduler, work) {
-	        var _this = _super.call(this, scheduler, work) || this;
-	        _this.scheduler = scheduler;
-	        _this.work = work;
-	        return _this;
-	    }
-	    AnimationFrameAction.prototype.requestAsyncId = function (scheduler, id, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if (delay !== null && delay > 0) {
-	            return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
-	        }
-	        scheduler.actions.push(this);
-	        return scheduler.scheduled || (scheduler.scheduled = requestAnimationFrame(function () { return scheduler.flush(null); }));
-	    };
-	    AnimationFrameAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
-	        if (delay === void 0) {
-	            delay = 0;
-	        }
-	        if ((delay !== null && delay > 0) || (delay === null && this.delay > 0)) {
-	            return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay);
-	        }
-	        if (scheduler.actions.length === 0) {
-	            cancelAnimationFrame(id);
-	            scheduler.scheduled = undefined;
-	        }
-	        return undefined;
-	    };
-	    return AnimationFrameAction;
-	}(AsyncAction));
-
-	/** PURE_IMPORTS_START tslib,_AsyncScheduler PURE_IMPORTS_END */
-	var AnimationFrameScheduler = /*@__PURE__*/ (function (_super) {
-	    __extends(AnimationFrameScheduler, _super);
-	    function AnimationFrameScheduler() {
-	        return _super !== null && _super.apply(this, arguments) || this;
-	    }
-	    AnimationFrameScheduler.prototype.flush = function (action) {
-	        this.active = true;
-	        this.scheduled = undefined;
-	        var actions = this.actions;
-	        var error;
-	        var index = -1;
-	        var count = actions.length;
-	        action = action || actions.shift();
-	        do {
-	            if (error = action.execute(action.state, action.delay)) {
-	                break;
-	            }
-	        } while (++index < count && (action = actions.shift()));
-	        this.active = false;
-	        if (error) {
-	            while (++index < count && (action = actions.shift())) {
-	                action.unsubscribe();
-	            }
-	            throw error;
-	        }
-	    };
-	    return AnimationFrameScheduler;
-	}(AsyncScheduler));
-
-	/** PURE_IMPORTS_START _AnimationFrameAction,_AnimationFrameScheduler PURE_IMPORTS_END */
-	var animationFrame = /*@__PURE__*/ new AnimationFrameScheduler(AnimationFrameAction);
-
-	/** PURE_IMPORTS_START _Observable,_util_isArray,_util_isFunction,_operators_map PURE_IMPORTS_END */
-	function fromEvent(target, eventName, options, resultSelector) {
-	    if (isFunction(options)) {
-	        resultSelector = options;
-	        options = undefined;
-	    }
-	    if (resultSelector) {
-	        return fromEvent(target, eventName, options).pipe(map(function (args) { return isArray(args) ? resultSelector.apply(void 0, args) : resultSelector(args); }));
-	    }
-	    return new Observable(function (subscriber) {
-	        function handler(e) {
-	            if (arguments.length > 1) {
-	                subscriber.next(Array.prototype.slice.call(arguments));
-	            }
-	            else {
-	                subscriber.next(e);
-	            }
-	        }
-	        setupSubscription(target, eventName, handler, subscriber, options);
-	    });
-	}
-	function setupSubscription(sourceObj, eventName, handler, subscriber, options) {
-	    var unsubscribe;
-	    if (isEventTarget(sourceObj)) {
-	        var source_1 = sourceObj;
-	        sourceObj.addEventListener(eventName, handler, options);
-	        unsubscribe = function () { return source_1.removeEventListener(eventName, handler, options); };
-	    }
-	    else if (isJQueryStyleEventEmitter(sourceObj)) {
-	        var source_2 = sourceObj;
-	        sourceObj.on(eventName, handler);
-	        unsubscribe = function () { return source_2.off(eventName, handler); };
-	    }
-	    else if (isNodeStyleEventEmitter(sourceObj)) {
-	        var source_3 = sourceObj;
-	        sourceObj.addListener(eventName, handler);
-	        unsubscribe = function () { return source_3.removeListener(eventName, handler); };
-	    }
-	    else if (sourceObj && sourceObj.length) {
-	        for (var i = 0, len = sourceObj.length; i < len; i++) {
-	            setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
-	        }
-	    }
-	    else {
-	        throw new TypeError('Invalid event target');
-	    }
-	    subscriber.add(unsubscribe);
-	}
-	function isNodeStyleEventEmitter(sourceObj) {
-	    return sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
-	}
-	function isJQueryStyleEventEmitter(sourceObj) {
-	    return sourceObj && typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function';
-	}
-	function isEventTarget(sourceObj) {
-	    return sourceObj && typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function';
-	}
-
-	/** PURE_IMPORTS_START _Observable,_scheduler_async,_util_isNumeric PURE_IMPORTS_END */
-	function interval(period, scheduler) {
-	    if (period === void 0) {
-	        period = 0;
-	    }
-	    if (scheduler === void 0) {
-	        scheduler = async;
-	    }
-	    if (!isNumeric(period) || period < 0) {
-	        period = 0;
-	    }
-	    if (!scheduler || typeof scheduler.schedule !== 'function') {
-	        scheduler = async;
-	    }
-	    return new Observable(function (subscriber) {
-	        subscriber.add(scheduler.schedule(dispatch$2, period, { subscriber: subscriber, counter: 0, period: period }));
-	        return subscriber;
-	    });
-	}
-	function dispatch$2(state) {
-	    var subscriber = state.subscriber, counter = state.counter, period = state.period;
-	    subscriber.next(counter);
-	    this.schedule({ subscriber: subscriber, counter: counter + 1, period: period }, period);
-	}
-
 	var GTM_CAT$3 = 'faq';
 
-	var FaqCtrl =
-	/*#__PURE__*/
-	function () {
+	var FaqCtrl = function () {
 	  function FaqCtrl($scope, $timeout, DomService, ApiService) {
 	    var _this = this;
 
@@ -7015,15 +3783,12 @@
 	    this.faqCategories = window.faqCategories || [];
 	    this.faqCategories.forEach(function (x) {
 	      if (!x.items) x.items = [];
-	    }); // eliminare!
-	    //this.faqCategories.forEach(x => x.items.forEach(i => Math.random() > 0.5 ? delete i.url : null));
-	    //
-
+	    });
 	    this.filteredFaqCategories = this.faqCategories.slice();
 	    this.flags = {};
-	    this.unsubscribe = new Subject();
+	    this.unsubscribe = new rxjs.Subject();
 	    $scope.$watch('$viewContentLoaded', function () {
-	      _this.search$().pipe(takeUntil(_this.unsubscribe)).subscribe(function (filteredFaqCategories) {
+	      _this.search$().pipe(operators.takeUntil(_this.unsubscribe)).subscribe(function (filteredFaqCategories) {
 	        _this.$timeout(function () {
 	          _this.filteredFaqCategories = [];
 
@@ -7034,7 +3799,6 @@
 	      });
 	    });
 	    $scope.$on('destroy', function () {
-	      // console.log('destroy');
 	      _this.unsubscribe.next();
 
 	      _this.unsubscribe.complete();
@@ -7104,9 +3868,9 @@
 	    var _this2 = this;
 
 	    var node = document.querySelector('#faq-search');
-	    return fromEvent(node, 'input').pipe(debounceTime(1000), map(function (event) {
+	    return rxjs.fromEvent(node, 'input').pipe(operators.debounceTime(1000), operators.map(function (event) {
 	      return event.target.value.toLowerCase();
-	    }), map(function (query) {
+	    }), operators.map(function (query) {
 	      _this2.query = query;
 
 	      _this2.faqCategories.forEach(function (x) {
@@ -7145,21 +3909,14 @@
 	          }
 
 	          return items.length;
-	        }); // console.log('FaqCtrl.search$', query, filteredFaqCategories);
-
-	        /*
-	        const node = document.querySelector('.section--faq');
-	        const top = node.getBoundingClientRect().top;
-	        window.scrollTo(0, top);
-	        */
-
+	        });
 
 	        return filteredFaqCategories;
 	      } else {
 	        _this2.flags = {};
 	        return _this2.faqCategories.slice();
 	      }
-	    }), shareReplay());
+	    }), operators.shareReplay());
 	  };
 
 	  return FaqCtrl;
@@ -7217,9 +3974,7 @@
 	  };
 	}
 
-	var ControlMessagesDirective =
-	/*#__PURE__*/
-	function () {
+	var ControlMessagesDirective = function () {
 	  function ControlMessagesDirective() {
 	    this.restrict = 'E';
 	    this.templateUrl = 'templates/forms/messages.html';
@@ -7279,9 +4034,7 @@
 	var errorElements = [],
 	    to;
 
-	var ControlDirective =
-	/*#__PURE__*/
-	function () {
+	var ControlDirective = function () {
 	  function ControlDirective($parse, DomService) {
 	    var _this = this;
 
@@ -7366,7 +4119,6 @@
 	    scope.visible = false;
 
 	    scope.onChange = function (model) {
-	      // console.log('ControlDirective.onChange');
 	      _this2.$parse(attributes.onChange)(scope.$parent);
 	    };
 
@@ -7390,11 +4142,11 @@
 	    };
 
 	    scope.onFocus = function () {
-	      scope.focus = true; // console.log('ControlDirective.onFocus', scope.focus);
+	      scope.focus = true;
 	    };
 
 	    scope.onBlur = function () {
-	      scope.focus = false; // console.log('ControlDirective.onBlur', scope.focus);
+	      scope.focus = false;
 
 	      _this2.scrollToError();
 	    };
@@ -7488,9 +4240,7 @@
 	}();
 	ControlDirective.factory.$inject = ['$parse', 'DomService'];
 
-	var ValidateDirective =
-	/*#__PURE__*/
-	function () {
+	var ValidateDirective = function () {
 	  function ValidateDirective($filter) {
 	    this.$filter = $filter;
 	    this.require = 'ngModel';
@@ -7521,8 +4271,7 @@
 	          var valid = false;
 
 	          if (value !== undefined && value !== "") {
-	            valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
-
+	            valid = String(value).indexOf(Number(value).toString()) !== -1;
 	            value = Number(value);
 	            model.$setValidity('number', valid);
 
@@ -7568,8 +4317,7 @@
 	          var valid = false;
 
 	          if (value !== undefined && value !== "") {
-	            valid = String(value).indexOf(Number(value).toString()) !== -1; // isFinite(value); //
-
+	            valid = String(value).indexOf(Number(value).toString()) !== -1;
 	            value = Number(value);
 	            model.$setValidity('number', valid);
 
@@ -7666,9 +4414,7 @@
 	var ITEMS_PER_PAGE$1 = 9;
 	var GTM_CAT$4 = 'gallerie';
 
-	var GalleriesCtrl =
-	/*#__PURE__*/
-	function () {
+	var GalleriesCtrl = function () {
 	  function GalleriesCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -7676,14 +4422,7 @@
 	    this.filters = window.filters || {};
 	    this.galleries = window.galleries || [];
 	    this.initialFilters = window.initialFilters || null;
-	    this.filteredItems = []; // !!! FAKE
-	    //if (this.galleries.length > 0) {
-	    //	while (this.galleries.length < 100) {
-	    //		this.galleries = this.galleries.concat(this.galleries);
-	    //	}
-	    //}
-	    // !!! FAKE
-
+	    this.filteredItems = [];
 	    this.deserializeFilters(this.initialFilters);
 	    this.applyFilters(false);
 	  }
@@ -7699,7 +4438,6 @@
 
 	      switch (x) {
 	        case 'collections':
-	          // probabilmente verrà aggiunto
 	          filter.doFilter = function (item, value) {
 	            return item.id === value;
 	          };
@@ -7742,8 +4480,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('ReferenceCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -7764,8 +4501,7 @@
 	      _this3.filteredItems = filteredItems;
 	      _this3.visibleItems = filteredItems.slice(0, _this3.maxItems);
 
-	      _this3.updateFilterStates(_this3.galleries); // delayer for image update
-
+	      _this3.updateFilterStates(_this3.galleries);
 	    }, 50);
 	    GtmService.pageViewFilters(GTM_CAT$4, this.filters);
 	  };
@@ -7842,7 +4578,6 @@
 	    var _this6 = this;
 
 	    if (event.rect.bottom < event.windowRect.bottom) {
-	      // console.log('more!');
 	      if (!this.busy && this.maxItems < this.filteredItems.length) {
 	        this.$timeout(function () {
 	          _this6.busy = true;
@@ -7850,7 +4585,7 @@
 	          _this6.$timeout(function () {
 	            _this6.maxItems += ITEMS_PER_PAGE$1;
 	            _this6.visibleItems = _this6.filteredItems.slice(0, _this6.maxItems);
-	            _this6.busy = false; // console.log(this.visibleItems.length);
+	            _this6.busy = false;
 	          }, 1000);
 	        }, 0);
 	      }
@@ -7862,9 +4597,7 @@
 
 	GalleriesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-	var GtmCollectionDirective =
-	/*#__PURE__*/
-	function () {
+	var GtmCollectionDirective = function () {
 	  function GtmCollectionDirective() {
 	    this.restrict = 'A';
 	    this.scope = {
@@ -7908,9 +4641,7 @@
 	}();
 	GtmCollectionDirective.factory.$inject = [];
 
-	var gtmDealerLocatorDirective =
-	/*#__PURE__*/
-	function () {
+	var gtmDealerLocatorDirective = function () {
 	  function gtmDealerLocatorDirective() {
 	    this.restrict = 'A';
 	    this.scope = {
@@ -7945,9 +4676,7 @@
 	}();
 	gtmDealerLocatorDirective.factory.$inject = [];
 
-	var GtmFormDirective =
-	/*#__PURE__*/
-	function () {
+	var GtmFormDirective = function () {
 	  function GtmFormDirective() {
 	    this.restrict = 'A';
 	  }
@@ -7962,7 +4691,7 @@
 	        var obj = {
 	          event: 'formsubmit',
 	          form_name: form_name
-	        }; // Task ID 34904 problema tracciamento form
+	        };
 
 	        if (scope.c && scope.c.data && scope.c.model) {
 	          var elem;
@@ -14186,9 +10915,7 @@
 
 	var Highway = unwrapExports(highway);
 
-	var DomService =
-	/*#__PURE__*/
-	function () {
+	var DomService = function () {
 	  function DomService() {
 	    this.secondaryScroll$_ = DomService.secondaryScroll$_;
 	  }
@@ -14258,14 +10985,12 @@
 	    var msie = ua.indexOf('MSIE ');
 
 	    if (msie > 0) {
-	      // IE 10 or older => return version number
 	      return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
 	    }
 
 	    var trident = ua.indexOf('Trident/');
 
 	    if (trident > 0) {
-	      // IE 11 => return version number
 	      var rv = ua.indexOf('rv:');
 	      return 'msie' + parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
 	    }
@@ -14273,10 +10998,8 @@
 	    var edge = ua.indexOf('Edge/');
 
 	    if (edge > 0) {
-	      // Edge (IE 12+) => return version number
 	      return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
-	    } // other browser
-
+	    }
 
 	    return false;
 	  };
@@ -14337,43 +11060,11 @@
 	    }
 
 	    var body = document.querySelector('body');
-	    var node = document.querySelector(selector); // const outerHeight = this.getOuterHeight(node);
-	    /*
-	    const onWheel = (event) => {
-	    	down = true;
-	    }
-	    const onDown = () => {
-	    	down = true;
-	    }
-	    const onUp = () => {
-	    	down = false;
-	    }
-	    document.addEventListener('wheel', onWheel);
-	    document.addEventListener('touchstart', onDown);
-	    document.addEventListener('touchend', onUp);
-	    */
-
-	    /*
-	    document.addEventListener('touchstart', () => {
-	    	console.log('touchstart');
-	    	body.classList.add('down');
-	    	down = true;
-	    }, {passive:true});
-	    document.addEventListener('touchend', () => {
-	    	body.classList.remove('down');
-	    	down = false;
-	    });
-	    console.log(window);
-	    */
-
-	    return this.raf$().pipe(map(function () {
-	      var outerHeight = _this.getOuterHeight(node); // console.log(window.DocumentTouch);
-	      // console.log(document instanceof DocumentTouch);
-	      // console.log(navigator.msMaxTouchPoints);
-
+	    var node = document.querySelector(selector);
+	    return this.raf$().pipe(operators.map(function () {
+	      var outerHeight = _this.getOuterHeight(node);
 
 	      if (body.offsetHeight !== outerHeight) {
-	        // margin ?
 	        body.style = "height: " + outerHeight + "px";
 	      }
 
@@ -14387,27 +11078,13 @@
 	      } else {
 	        return null;
 	      }
-	    }), filter(function (x) {
+	    }), operators.filter(function (x) {
 	      return x !== null;
-	    }), shareReplay());
-	  }
-	  /*
-	  // trackpad
-	  window.onwheel = function(e) {
-	    e.preventDefault();
-	    if (e.ctrlKey) {
-	      zoom += e.deltaY;
-	    } else {
-	      offsetX += e.deltaX * 2;
-	      offsetY -= e.deltaY * 2;
-	    }
+	    }), operators.shareReplay());
 	  };
-	  */
-	  ;
 
 	  _proto.rafIntersection$ = function rafIntersection$(node) {
-	    return this.rafAndRect$().pipe(map(function (datas) {
-	      // const scrollTop = datas[0];
+	    return this.rafAndRect$().pipe(operators.map(function (datas) {
 	      var windowRect = datas[1];
 	      var rect = Rect.fromNode(node);
 
@@ -14420,14 +11097,13 @@
 	        response.intersection = intersection;
 	        return response;
 	      }
-	    }), filter(function (response) {
+	    }), operators.filter(function (response) {
 	      return response !== undefined;
 	    }));
 	  };
 
 	  _proto.scrollIntersection$ = function scrollIntersection$(node) {
-	    var o = this.scrollAndRect$().pipe(map(function (datas) {
-	      // const scrollTop = datas[0];
+	    var o = this.scrollAndRect$().pipe(operators.map(function (datas) {
 	      var windowRect = datas[1];
 	      var rect = Rect.fromNode(node);
 
@@ -14440,7 +11116,7 @@
 	        response.intersection = intersection;
 	        return response;
 	      }
-	    }), filter(function (response) {
+	    }), operators.filter(function (response) {
 	      return response !== undefined;
 	    }));
 	    DomService.secondaryScroll$_.next({
@@ -14454,10 +11130,9 @@
 	      value = 0.0;
 	    }
 
-	    // -0.5
-	    return this.scrollIntersection$(node).pipe(filter(function (x) {
+	    return this.scrollIntersection$(node).pipe(operators.filter(function (x) {
 	      return x.intersection.y > value;
-	    }), first());
+	    }), operators.first());
 	  };
 
 	  _proto.visibility$ = function visibility$(node, value) {
@@ -14465,9 +11140,9 @@
 	      value = 0.5;
 	    }
 
-	    return this.scrollIntersection$(node).pipe(map(function (x) {
+	    return this.scrollIntersection$(node).pipe(operators.map(function (x) {
 	      return x.intersection.y > value;
-	    }), distinctUntilChanged());
+	    }), operators.distinctUntilChanged());
 	  };
 
 	  _proto.firstVisibility$ = function firstVisibility$(node, value) {
@@ -14475,9 +11150,9 @@
 	      value = 0.5;
 	    }
 
-	    return this.visibility$(node, value).pipe(filter(function (visible) {
+	    return this.visibility$(node, value).pipe(operators.filter(function (visible) {
 	      return visible;
-	    }), first());
+	    }), operators.first());
 	  };
 
 	  _proto.addCustomRules = function addCustomRules() {
@@ -14520,7 +11195,7 @@
 	  };
 
 	  DomService.secondaryScroll$ = function secondaryScroll$(target) {
-	    return fromEvent(target, 'scroll').pipe(tap(function (event) {
+	    return rxjs.fromEvent(target, 'scroll').pipe(operators.tap(function (event) {
 	      return DomService.secondaryScroll$_.next(event);
 	    }));
 	  };
@@ -14542,28 +11217,28 @@
 	DomService.factory.$inject = [];
 	DomService.rafIntersection_ = {};
 	DomService.scrollIntersection_ = {};
-	DomService.raf$ = interval(0, animationFrame);
+	DomService.raf$ = rxjs.interval(0, rxjs.animationFrameScheduler);
 
 	DomService.windowRect$ = function () {
 	  var windowRect = new Rect({
 	    width: window.innerWidth,
 	    height: window.innerHeight
 	  });
-	  return fromEvent(window, 'resize').pipe(map(function (originalEvent) {
+	  return rxjs.fromEvent(window, 'resize').pipe(operators.map(function (originalEvent) {
 	    windowRect.width = window.innerWidth;
 	    windowRect.height = window.innerHeight;
 	    return windowRect;
-	  }), startWith(windowRect), shareReplay());
+	  }), operators.startWith(windowRect), operators.shareReplay());
 	}();
 
-	DomService.rafAndRect$ = combineLatest(DomService.raf$, DomService.windowRect$).pipe(shareReplay());
+	DomService.rafAndRect$ = rxjs.combineLatest(DomService.raf$, DomService.windowRect$).pipe(operators.shareReplay());
 
 	DomService.mainScroll$ = function () {
 	  var target = window;
-	  return fromEvent(target, 'scroll').pipe(shareReplay());
+	  return rxjs.fromEvent(target, 'scroll').pipe(operators.shareReplay());
 	}();
 
-	DomService.secondaryScroll$_ = new Subject();
+	DomService.secondaryScroll$_ = new rxjs.Subject();
 
 	DomService.scroll$ = function () {
 	  var target = window;
@@ -14574,7 +11249,7 @@
 	    direction: 0,
 	    originalEvent: null
 	  };
-	  return merge(DomService.mainScroll$, DomService.secondaryScroll$_).pipe(auditTime(1000 / 60), map(function (originalEvent) {
+	  return rxjs.merge(DomService.mainScroll$, DomService.secondaryScroll$_).pipe(operators.auditTime(1000 / 60), operators.map(function (originalEvent) {
 	    event.scrollTop = DomService.getScrollTop(originalEvent.target);
 	    event.scrollLeft = DomService.getScrollLeft(originalEvent.target);
 	    var diff = event.scrollTop - previousTop;
@@ -14582,16 +11257,14 @@
 	    previousTop = event.scrollTop;
 	    event.originalEvent = originalEvent;
 	    return event;
-	  }), startWith(event), shareReplay());
+	  }), operators.startWith(event), operators.shareReplay());
 	}();
 
-	DomService.scrollAndRect$ = combineLatest(DomService.scroll$, DomService.windowRect$).pipe(shareReplay());
+	DomService.scrollAndRect$ = rxjs.combineLatest(DomService.scroll$, DomService.windowRect$).pipe(operators.shareReplay());
 
-	var first$1 = true;
+	var first = true;
 
-	var CustomRenderer =
-	/*#__PURE__*/
-	function (_Highway$Renderer) {
+	var CustomRenderer = function (_Highway$Renderer) {
 	  _inheritsLoose(CustomRenderer, _Highway$Renderer);
 
 	  function CustomRenderer() {
@@ -14618,11 +11291,10 @@
 	    var page = this.properties.page;
 	    var body = page.querySelector('body');
 	    var brand = /(["'])(\\?.)*?\1/.exec(body.getAttribute('ng-init') || '');
-	    brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde'; // console.log(brand);
-
+	    brand = brand ? brand[0].replace(/\'/g, '') : 'atlas-concorde';
 	    CustomRenderer.$timeout(function () {
 	      var scope = CustomRenderer.scope;
-	      scope.root.brand = brand; // console.log('CustomRenderer.update', scope);
+	      scope.root.brand = brand;
 	    });
 	  };
 
@@ -14648,18 +11320,6 @@
 	        CustomRenderer.scope.root.marketUrls = marketUrls;
 	      } catch (e) {}
 	    }
-	    /*
-	    const marketsAndLanguages = Array.from(page.querySelectorAll('.nav--markets__secondary > li > a'));
-	    const anchors = Array.from(document.querySelectorAll('.nav--markets__secondary > li > a'));
-	    anchors.forEach(a => {
-	    	const marketAndLanguage = marketsAndLanguages.find(x => x.id === a.id);
-	    	if (marketAndLanguage) {
-	    		a.href = marketAndLanguage.href;
-	    		console.log('updateMarketsAndLanguages', marketAndLanguage.id, marketAndLanguage.href);
-	    	}
-	    });
-	    */
-
 	  };
 
 	  _proto.pageView = function pageView() {
@@ -14679,16 +11339,14 @@
 	        new Function(script.text)();
 	      } catch (error) {}
 	    }
-	  } // This method in the renderer is run when the data-router-view is added to the DOM Tree.
-	  ;
+	  };
 
 	  _proto.onEnter = function onEnter() {
-	    // console.log('onEnter');
-	    if (!first$1) {
+	    if (!first) {
+	      window.scroll(0, 0);
 	      CustomRenderer.$timeout(function () {
 	        var $compile = CustomRenderer.$compile;
-	        var view = Array.from(document.querySelectorAll('.view')).pop(); // console.log(view.childNodes);
-
+	        var view = Array.from(document.querySelectorAll('.view')).pop();
 	        var element = angular.element(view.childNodes);
 	        var $scope = CustomRenderer.scope;
 	        $scope.root.menuOpened = false;
@@ -14697,47 +11355,23 @@
 	        var content = $compile(element)($newScope);
 	        CustomRenderer.$newScope = $newScope;
 	        CustomRenderer.content = content;
-	        /*
-	        scope.$on('$destroy', (event) => {
-	        	console.log('.view -> $destroy', event);
-	        });
-	        */
-	        // element.append(content);
 	      });
 	    }
-	  } // This method in the renderer is run when transition to hide the data-router-view is called.
-	  ;
-
-	  _proto.onLeave = function onLeave() {
-	    // console.log('onLeave', first);
-	    if (first$1) {
-	      first$1 = false;
-	      var view = Array.from(document.querySelectorAll('.view')).shift();
-	      var element = angular.element(view.childNodes);
-	      /*
-	      scope.$on('$destroy', (event) => {
-	      	console.log('.view -> $destroy', event);
-	      });
-	      */
-	    }
-	  } // This method in the renderer is run when the transition to display the data-router-view is done.
-	  ;
-
-	  _proto.onEnterCompleted = function onEnterCompleted() {} // console.log('onEnterCompleted');
-
-	  /*
-	  if (first) {
-	  	first = false;
-	  }
-	  */
-	  // This method in the renderer is run when the data-router-view is removed from the DOM Tree.
-	  ;
-
-	  _proto.onLeaveCompleted = function onLeaveCompleted() {// console.log('onLeaveCompleted');
 	  };
 
+	  _proto.onLeave = function onLeave() {
+	    if (first) {
+	      first = false;
+	      var view = Array.from(document.querySelectorAll('.view')).shift();
+	      var element = angular.element(view.childNodes);
+	    }
+	  };
+
+	  _proto.onEnterCompleted = function onEnterCompleted() {};
+
+	  _proto.onLeaveCompleted = function onLeaveCompleted() {};
+
 	  CustomRenderer.$destroy = function $destroy(from) {
-	    // console.log('CustomRenderer.destroy', this.content, this.$newScope);
 	    if (CustomRenderer.scope && CustomRenderer.scope.$root && CustomRenderer.scope.$root.first) {
 	      CustomRenderer.$timeout(function () {
 	        CustomRenderer.scope.$root.first = null;
@@ -14767,8 +11401,7 @@
 	        scopes.push(child);
 	        scopes = this.collectScopes(child, scopes);
 	        child = child.$$nextSibling;
-	      } // console.log(scopes);
-
+	      }
 	    }
 
 	    return scopes;
@@ -14777,9 +11410,7 @@
 	  return CustomRenderer;
 	}(Highway.Renderer);
 
-	var PageTransition =
-	/*#__PURE__*/
-	function (_Highway$Transition) {
+	var PageTransition = function (_Highway$Transition) {
 	  _inheritsLoose(PageTransition, _Highway$Transition);
 
 	  function PageTransition() {
@@ -14792,7 +11423,6 @@
 	    var from = _ref.from,
 	        to = _ref.to,
 	        done = _ref.done;
-	    // console.log('PageTransition.in');
 	    var loader = document.querySelector('.loader--cube');
 	    TweenMax.to(loader, 0.45, {
 	      opacity: 0,
@@ -14816,15 +11446,12 @@
 	        scale: 1.1,
 	        transformOrigin: left + "% " + top + "px"
 	      });
-	    } // console.log(PageTransition.origin);
-
+	    }
 
 	    TweenMax.to(to, 0.6, {
 	      scale: 1,
 	      opacity: 1,
 	      delay: 0.1,
-	      // 0.250,
-	      // overwrite: 'all',
 	      ease: Power2.easeInOut,
 	      onComplete: function onComplete() {
 	        setTimeout(function () {
@@ -14835,7 +11462,7 @@
 	            minHeight: 0,
 	            opacity: 1
 	          });
-	        }, 50); // ci sono estensioni che bloccano questo genere di script
+	        }, 50);
 
 	        if (addthis.layers && addthis.layers.refresh) {
 	          addthis.layers.refresh();
@@ -14850,7 +11477,6 @@
 	    var from = _ref2.from,
 	        trigger = _ref2.trigger,
 	        done = _ref2.done;
-	    // console.log('PageTransition.out');
 	    var loader = document.querySelector('.loader--cube');
 	    TweenMax.set(loader, {
 	      opacity: 0,
@@ -14864,16 +11490,6 @@
 
 	    if (headerMenu) {
 	      headerMenu.classList.remove('opened');
-	      /*
-	      TweenMax.to(headerMenu, 0.3, {
-	      	maxHeight: 0,
-	      	delay: 0,
-	      	onComplete: () => {
-	      		TweenMax.set(headerMenu, { clearProps: 'all' });
-	      		// headerMenu.classList.remove('opened');
-	      	}
-	      });
-	      */
 	    }
 
 	    var left = 50;
@@ -14893,8 +11509,6 @@
 	      scale: 1.1,
 	      opacity: 0,
 	      delay: 0,
-	      // 0.150,
-	      // overwrite: 'all',
 	      ease: Power2.easeInOut,
 	      onComplete: function onComplete() {
 	        setTimeout(done, 500);
@@ -14905,24 +11519,18 @@
 	  return PageTransition;
 	}(Highway.Transition);
 
-	// Import Quicklink
-	// See: https://github.com/GoogleChromeLabs/quicklink
-	// import Quicklink from 'quicklink/dist/quicklink.mjs';
-
-	var HighwayDirective =
-	/*#__PURE__*/
-	function () {
+	var HighwayDirective = function () {
 	  function HighwayDirective($compile, $timeout) {
 	    this.$compile = $compile;
 	    this.$timeout = $timeout;
 	    this.restrict = 'A';
-	    this.link$ = new Subject();
+	    this.link$ = new rxjs.Subject();
 	  }
 
 	  var _proto = HighwayDirective.prototype;
 
 	  _proto.onLink$ = function onLink$() {
-	    return this.link$.pipe(debounceTime(50));
+	    return this.link$.pipe(operators.debounceTime(50));
 	  };
 
 	  _proto.link = function link(scope, element, attributes, controller) {
@@ -14952,28 +11560,20 @@
 	            var anchors = Array.from(sectionProduct.querySelectorAll('a'));
 	            var selectedAnchor = anchors.find(function (x) {
 	              return window.location.href.lastIndexOf(x.href) === window.location.href.length - x.href.length;
-	            }); // console.log(anchors, selectedAnchor);
+	            });
 
 	            if (selectedAnchor && anchors.indexOf(selectedAnchor) !== 0) {
 	              var sectionProductTop = sectionProduct.getBoundingClientRect().top;
 	              top = sectionProductTop + DomService.getScrollTop(window);
 	            }
-	          } // console.log('HighwayDirective.onProductMenu', top);
+	          }
 
-
-	          window.scrollTo(0, top); // console.log('wasProduct', wasProduct);
-	          // console.log(wasProduct, sectionProduct);
-	          // console.log('isProduct', wasProduct);
+	          window.scrollTo(0, top);
 	        }
 
 	        wasProduct = Boolean(sectionProduct);
 	      }, 100);
 	    };
-	    /*
-	    Highway.Core.prototype.pushState_ = Highway.Core.prototype.pushState;
-	    Highway.Core.prototype.pushState = () => {};
-	    */
-
 
 	    var H = new Highway.Core({
 	      renderers: {
@@ -14989,19 +11589,10 @@
 	      _this2.link$.next();
 	    });
 	    var subscription = this.onLink$().subscribe(function (x) {
-	      // console.log('onLinks$');
 	      H.detach(H.links);
 	      var links = document.querySelectorAll('a:not([target]):not([data-router-disabled])');
 	      H.links = links;
 	      H.attach(links);
-	      /*
-	      links.forEach(x => {
-	      	x.classList.remove('active');
-	      	if (x.href === location.href) {
-	      		x.classList.add('active');
-	      	}
-	      });
-	      */
 	    });
 	    var properties = H.cache.get(H.location.href);
 	    properties.view = scope.$root.firstView;
@@ -15016,29 +11607,12 @@
 	      var to = _ref2.to,
 	          trigger = _ref2.trigger,
 	          location = _ref2.location;
-	      // console.log('NAVIGATE_IN');
 	      H.detach(H.links);
 	      onProductMenu();
 	    });
-	    /*
-	    H.on('NAVIGATE_END', ({ to, trigger, location }) => {
-	    	console.log('NAVIGATE_END', document.title);
-	    	// H.pushState_();
-	    });
-	    */
-
 	    scope.$on('$destroy', function () {
-	      // H.destroy();
 	      subscription.unsubscribe();
 	    });
-	    /*
-	    const pushState = history.pushState;
-	    history.pushState = (...args) => {
-	    	console.log('pushState', args, document.title);
-	    	return pushState.apply(history, args);
-	    };
-	    */
-
 	    setTimeout(onProductMenu, 1000);
 
 	    if (!H.properties.page.getElementById(GtmService.FILTERS_SCRIPT_ID)) {
@@ -15056,19 +11630,12 @@
 
 	var ITEMS_PER_PAGE$2 = 9;
 
-	var MagazineCtrl =
-	/*#__PURE__*/
-	function () {
+	var MagazineCtrl = function () {
 	  function MagazineCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
 	    this.locationService = LocationService;
-	    this.magazine = window.magazine || []; // !!! FAKE
-	    //while (this.magazine.length < 100) {
-	    //	this.magazine = this.magazine.concat(this.magazine);
-	    //}
-	    // !!! FAKE
-
+	    this.magazine = window.magazine || [];
 	    this.maxItems = 0;
 	    this.visibleItems = [];
 	  }
@@ -15079,7 +11646,6 @@
 	    var _this = this;
 
 	    if (event.rect.bottom < event.windowRect.bottom) {
-	      // console.log('more!');
 	      if (!this.busy && this.maxItems < this.magazine.length) {
 	        this.$timeout(function () {
 	          _this.busy = true;
@@ -15087,7 +11653,7 @@
 	          _this.$timeout(function () {
 	            _this.maxItems += ITEMS_PER_PAGE$2;
 	            _this.visibleItems = _this.magazine.slice(0, _this.maxItems);
-	            _this.busy = false; // console.log(this.visibleItems.length);
+	            _this.busy = false;
 	          }, 1000);
 	        }, 0);
 	      }
@@ -15099,14 +11665,11 @@
 
 	MagazineCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-	var MoodboardDropdownDirective =
-	/*#__PURE__*/
-	function () {
+	var MoodboardDropdownDirective = function () {
 	  function MoodboardDropdownDirective($compile) {
 	    this.$compile = $compile;
 	    this.restrict = 'A';
-	    this.template = "\n<span has-dropdown=\".moodboard__value\">\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\" ng-class=\"{ active: filter.value }\">\n\t\t<span class=\"moodboard__underline\"></span>\n\t\t<span class=\"moodboard__text\">{{filter.placeholder}}</span>\n\t</span>\n</span>\n"; // this.require = 'ngModel';
-
+	    this.template = "\n<span has-dropdown=\".moodboard__value\">\n\t<span class=\"dropdown\">\n\t\t<ul class=\"nav nav--select\">\n\t\t\t<li ng-repeat=\"item in filter.options track by $index\" ng-class=\"{ active: filter.value == item.value, disabled: item.disabled }\">\n\t\t\t\t<span class=\"option\" ng-class=\"{ 'option--picture': item.image }\" ng-click=\"setFilter(item, filter)\">\n\t\t\t\t\t<img ng-src=\"{{item.image}}\" ng-if=\"item.image\" />\n\t\t\t\t\t<span ng-bind=\"item.label\"></span>\n\t\t\t\t</span>\n\t\t\t</li>\n\t\t</ul>\n\t</span>\n\t<span class=\"moodboard__value\" ng-class=\"{ active: filter.value }\">\n\t\t<span class=\"moodboard__underline\"></span>\n\t\t<span class=\"moodboard__text\">{{filter.placeholder}}</span>\n\t</span>\n</span>\n";
 	    this.scope = {
 	      filter: '=?moodboardDropdown'
 	    };
@@ -15117,7 +11680,6 @@
 	  _proto.link = function link(scope, element, attributes, controller) {
 	    var _this = this;
 
-	    // console.log('MoodboardDropdownDirective', this.filter);
 	    var filter = scope.filter;
 
 	    if (filter.value) {
@@ -15153,9 +11715,7 @@
 	}();
 	MoodboardDropdownDirective.factory.$inject = ['$compile'];
 
-	var MoodboardSearchDirective =
-	/*#__PURE__*/
-	function () {
+	var MoodboardSearchDirective = function () {
 	  function MoodboardSearchDirective($compile) {
 	    this.$compile = $compile;
 	    this.restrict = 'A';
@@ -15175,10 +11735,8 @@
 	    var html = node.innerText;
 	    var keys = Object.keys(scope.filters);
 	    keys.forEach(function (x) {
-	      // console.log(x);
 	      html = html.replace("$" + x + "$", "<span class=\"moodboard__dropdown " + x + "\" moodboard-dropdown=\"filters." + x + "\" ng-click=\"animateOff()\"></span>");
-	    }); // console.log('MoodboardSearchDirective', html);
-
+	    });
 	    node.innerHTML = html;
 	    this.$compile(element.contents())(scope);
 	    var hasFilter = Object.keys(scope.filters).map(function (x) {
@@ -15247,9 +11805,7 @@
 
 	  _proto.animateOff = function animateOff(node) {
 	    if (this.animated) {
-	      this.animated = false; // console.log('animateOff');
-	      // TweenMax.killAll();
-
+	      this.animated = false;
 	      var values = Array.from(node.querySelectorAll('.moodboard__underline'));
 	      TweenMax.set(values, {
 	        transformOrigin: '0 50%',
@@ -15289,7 +11845,7 @@
 
 	      var q = _this.locationService.getSerialization('filters', value);
 
-	      option.query = "?q=" + q; // console.log(option.query, option.value);
+	      option.query = "?q=" + q;
 	    });
 	  });
 	};
@@ -15306,9 +11862,7 @@
 	});
 	var ITEMS_PER_PAGE$3 = 20;
 
-	var MoodboardCtrl =
-	/*#__PURE__*/
-	function () {
+	var MoodboardCtrl = function () {
 	  function MoodboardCtrl($scope, $timeout, LocationService, ApiService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -15327,15 +11881,13 @@
 	  _proto.deserializeFilters = function deserializeFilters() {
 	    var _this = this;
 
-	    var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {}; // console.log('MoodboardCtrl.deserializeFilters', filters);
-
+	    var locationFilters = this.locationService.deserialize('filters') || this.initialFilters || {};
 	    Object.keys(this.filters).forEach(function (x) {
 	      var filter = _this.filters[x];
 
 	      switch (x) {
 	        default:
 	          filter.doFilter = function (item, value) {
-	            // console.log(item, value);
 	            _this.applyFilters(item, value);
 	          };
 
@@ -15349,7 +11901,7 @@
 	        return Boolean(o.value === (locationFilters[x] || null));
 	      });
 	      filter.value = selectedOption.value;
-	      filter.placeholder = selectedOption.label; // console.log(x, filters[x], filter.value);
+	      filter.placeholder = selectedOption.label;
 	    });
 	    return filters;
 	  };
@@ -15370,8 +11922,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('MoodboardCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -15380,7 +11931,6 @@
 	  _proto.applyFilters = function applyFilters(serialize) {
 	    var _this3 = this;
 
-	    // console.log('MoodboardCtrl.applyFilters', this.filters);
 	    if (serialize !== false) this.serializeFilters();
 	    var me = this;
 	    var filters = {};
@@ -15395,7 +11945,7 @@
 	    });
 
 	    if (anyFilter) {
-	      this.apiService.moodboard.filter(filters).pipe(first()).subscribe(function (success) {
+	      this.apiService.moodboard.filter(filters).pipe(operators.first()).subscribe(function (success) {
 	        var items = success.data;
 	        _this3.filteredItems = [];
 	        _this3.visibleItems = [];
@@ -15417,7 +11967,6 @@
 	    var _this4 = this;
 
 	    if (event.rect.bottom < event.windowRect.bottom) {
-	      // console.log('more!');
 	      if (!this.busy && this.maxItems < this.filteredItems.length) {
 	        this.$timeout(function () {
 	          _this4.busy = true;
@@ -15425,7 +11974,7 @@
 	          _this4.$timeout(function () {
 	            _this4.maxItems += ITEMS_PER_PAGE$3;
 	            _this4.visibleItems = _this4.filteredItems.slice(0, _this4.maxItems);
-	            _this4.busy = false; // console.log(this.visibleItems.length);
+	            _this4.busy = false;
 	          }, 1000);
 	        }, 0);
 	      }
@@ -15440,9 +11989,7 @@
 	var ITEMS_PER_PAGE$4 = 9;
 	var GTM_CAT$6 = 'news';
 
-	var NewsCtrl =
-	/*#__PURE__*/
-	function () {
+	var NewsCtrl = function () {
 	  function NewsCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -15450,12 +11997,7 @@
 	    this.filters = window.filters || {};
 	    this.news = window.news || [];
 	    this.initialFilters = window.initialFilters || null;
-	    this.filteredItems = []; //// !!! FAKE
-	    //while (this.news.length < 100) {
-	    //	this.news = this.news.concat(this.news);
-	    //}
-	    //// !!! FAKE
-
+	    this.filteredItems = [];
 	    this.deserializeFilters(this.initialFilters);
 	    this.applyFilters(false);
 	  }
@@ -15514,8 +12056,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('ReferenceCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -15527,8 +12068,7 @@
 	    if (serialize !== false) this.serializeFilters();
 
 	    var _this$getFilteredItem = this.getFilteredItems(this.news),
-	        filteredItems = _this$getFilteredItem.filteredItems; // console.log(filteredItems, filters);
-
+	        filteredItems = _this$getFilteredItem.filteredItems;
 
 	    this.filteredItems = [];
 	    this.visibleItems = [];
@@ -15537,8 +12077,7 @@
 	      _this3.filteredItems = filteredItems;
 	      _this3.visibleItems = filteredItems.slice(0, _this3.maxItems);
 
-	      _this3.updateFilterStates(_this3.news); // delayer for image update
-
+	      _this3.updateFilterStates(_this3.news);
 	    }, 50);
 	    GtmService.pageViewFilters(GTM_CAT$6, this.filters);
 	  };
@@ -15615,7 +12154,6 @@
 	    var _this6 = this;
 
 	    if (event.rect.bottom < event.windowRect.bottom) {
-	      // console.log('more!');
 	      if (!this.busy && this.maxItems < this.filteredItems.length) {
 	        this.$timeout(function () {
 	          _this6.busy = true;
@@ -15623,7 +12161,7 @@
 	          _this6.$timeout(function () {
 	            _this6.maxItems += ITEMS_PER_PAGE$4;
 	            _this6.visibleItems = _this6.filteredItems.slice(0, _this6.maxItems);
-	            _this6.busy = false; // console.log(this.visibleItems.length);
+	            _this6.busy = false;
 	          }, 1000);
 	        }, 0);
 	      }
@@ -15637,9 +12175,7 @@
 
 	var GTM_CAT$7 = 'references';
 
-	var ReferencesCtrl =
-	/*#__PURE__*/
-	function () {
+	var ReferencesCtrl = function () {
 	  function ReferencesCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -15711,8 +12247,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('ReferenceCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -15730,8 +12265,7 @@
 	    this.$timeout(function () {
 	      _this3.filteredReferences = filteredItems;
 
-	      _this3.updateFilterStates(_this3.references, filteredItems); // delayer for image update
-
+	      _this3.updateFilterStates(_this3.references, filteredItems);
 	    }, 50);
 	    GtmService.pageViewFilters(GTM_CAT$7, this.filters);
 	  };
@@ -15809,19 +12343,18 @@
 
 	ReferencesCtrl.$inject = ['$scope', '$timeout', 'LocationService'];
 
-	var RootCtrl =
-	/*#__PURE__*/
-	function () {
-	  function RootCtrl($scope, $timeout, DomService, ApiService, WishlistService) {
+	var RootCtrl = function () {
+	  function RootCtrl($scope, $timeout, DomService, LocationService, ApiService, WishlistService) {
 	    var _this = this;
 
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
 	    this.domService = DomService;
+	    this.locationService = LocationService;
 	    this.apiService = ApiService;
 	    this.wishlistService = WishlistService;
-	    this.unsubscribe = new Subject();
-	    this.wishlistService.count$.pipe(takeUntil(this.unsubscribe)).subscribe(function (count) {
+	    this.unsubscribe = new rxjs.Subject();
+	    this.wishlistService.count$.pipe(operators.takeUntil(this.unsubscribe)).subscribe(function (count) {
 	      _this.wishlistCount = count;
 	    });
 	    $scope.$on('onMuuri', function () {
@@ -15830,7 +12363,6 @@
 	      });
 	    });
 	    $scope.$on('destroy', function () {
-	      // console.log('destroy');
 	      _this.unsubscribe.next();
 
 	      _this.unsubscribe.complete();
@@ -15840,7 +12372,7 @@
 	  var _proto = RootCtrl.prototype;
 
 	  _proto.onSearch = function onSearch(query) {
-	    // console.log('onSearch', query);
+	    query = this.locationService.serialize_('query', query, {});
 	    this.searchOpened = false;
 	    var url = document.querySelector('[data-search]').getAttribute('data-search');
 	    window.location.href = url.replace('##query##', query);
@@ -15854,8 +12386,7 @@
 
 	    if (this.droppedIn) {
 	      this.$scope.$broadcast('onCloseDropdown');
-	    } // console.log('RootController', 'scrolled', scrolled, 'direction', direction);
-
+	    }
 
 	    if (this.direction !== direction || direction && this.scrolled !== scrolled) {
 	      this.$timeout(function () {
@@ -15869,15 +12400,8 @@
 	    var _this3 = this;
 
 	    this.brand = brand;
-	    this.webglEnabled = false; // this.domService.hasWebglSupport();
-
+	    this.webglEnabled = false;
 	    this.domService.addCustomRules();
-	    /*
-	    this.domService.smoothScroll$('.page').subscribe((top) => {
-	    	// console.log(top);
-	    });
-	    */
-
 	    this.$timeout(function () {
 	      _this3.init = true;
 	      var view = document.querySelector('.view');
@@ -15888,7 +12412,6 @@
 	      });
 	    }, 1000);
 	    this.$scope.$on('onDroppinIn', function (scope, droppinIn) {
-	      // console.log('onDroppinIn', droppinIn);
 	      _this3.$timeout(function () {
 	        _this3.droppinIn = droppinIn;
 	      });
@@ -15944,7 +12467,6 @@
 	  };
 
 	  _proto.onDroppedOut = function onDroppedOut(node) {
-	    // console.log('onDroppedOut', node);
 	    if (node) {
 	      this.droppedIn = false;
 
@@ -15970,37 +12492,11 @@
 	    } else {
 	      return Promise.resolve();
 	    }
-	    /*
-	    return new Promise((resolve, reject) => {
-	    	if (node) {
-	    		const items = [].slice.call(node.querySelectorAll('.submenu__item'));
-	    		TweenMax.staggerTo(items.reverse(), 0.25, {
-	    			opacity: 0,
-	    			stagger: 0.05,
-	    			delay: 0.0,
-	    			onComplete: () => {
-	    				TweenMax.to(node, 0.2, {
-	    					maxHeight: 0,
-	    					ease: Expo.easeOut,
-	    					delay: 0.0,
-	    					onComplete: () => {
-	    						resolve();
-	    					}
-	    				});
-	    			}
-	    		});
-	    	} else {
-	    		resolve();
-	    	}
-	    });
-	    */
-
 	  };
 
 	  _proto.onDroppedIn = function onDroppedIn(node) {
 	    var _this5 = this;
 
-	    // console.log('onDroppedIn', node);
 	    return new Promise(function (resolve, reject) {
 	      _this5.droppedIn = true;
 	      _this5.droppinIn = true;
@@ -16025,7 +12521,7 @@
 	          delete node.style.overflow;
 	          TweenMax.set(node, {
 	            height: 'auto'
-	          }); // TweenMax.set(node, { clearProps: 'all' });
+	          });
 
 	          if (items.length === 0) {
 	            _this5.droppinIn = false;
@@ -16061,7 +12557,7 @@
 	      var results = document.querySelector('.section--filters');
 	      var bottom = this.domService.scrollTop + results.getBoundingClientRect().bottom;
 	      setTimeout(function () {
-	        window.scroll(0, bottom - 80); // console.log('toggleMenuProduct', results, bottom, this.domService.scrollTop);
+	        window.scroll(0, bottom - 80);
 	      }, 500);
 	    }
 	  };
@@ -16077,14 +12573,195 @@
 	  return RootCtrl;
 	}();
 
-	RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService', 'WishlistService'];
+	RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'LocationService', 'ApiService', 'WishlistService'];
 
-	var API_DEV = window.location.port === '6001' || window.location.host === 'actarian.github.io';
+	var GTM_CAT$8 = 'search';
+
+	var SearchCtrl = function () {
+	  function SearchCtrl($scope, $timeout, LocationService, ApiService) {
+	    this.$scope = $scope;
+	    this.$timeout = $timeout;
+	    this.locationService = LocationService;
+	    this.apiService = ApiService;
+	    this.model = {};
+	    this.busy = false;
+	    this.error = null;
+	    this.items = [];
+	    this.filters = window.filters || {};
+	    this.initialFilters = window.initialFilters || null;
+	    this.deserializeFilters(this.initialFilters);
+	    this.model.query = this.locationService.deserialize('query');
+	    this.onSubmit();
+	  }
+
+	  var _proto = SearchCtrl.prototype;
+
+	  _proto.deserializeFilters = function deserializeFilters(initialFilter) {
+	    var _this = this;
+
+	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+	    Object.keys(this.filters).forEach(function (x) {
+	      var filter = _this.filters[x];
+
+	      switch (x) {
+	        case 'types':
+	          filter.doFilter = function (item, value) {
+	            return item.type === value;
+	          };
+
+	          break;
+	      }
+
+	      var selectedOption = filter.options.find(function (o) {
+	        return Boolean(o.value === (locationFilters[x] || null));
+	      });
+	      filter.value = selectedOption ? selectedOption.value : null;
+	      filter.placeholder = selectedOption ? selectedOption.label : null;
+	    });
+	    return filters;
+	  };
+
+	  _proto.serializeFilters = function serializeFilters() {
+	    var _this2 = this;
+
+	    var filters = {};
+	    var any = false;
+	    Object.keys(this.filters).forEach(function (x) {
+	      var filter = _this2.filters[x];
+
+	      if (filter.value !== null) {
+	        filters[x] = filter.value;
+	        any = true;
+	      }
+	    });
+
+	    if (!any) {
+	      filters = this.initialFilters ? {} : null;
+	    }
+
+	    this.locationService.serialize('filters', filters);
+	    return filters;
+	  };
+
+	  _proto.applyFilters = function applyFilters(serialize) {
+	    var _this3 = this;
+
+	    if (serialize !== false) this.serializeFilters();
+
+	    var _this$getFilteredItem = this.getFilteredItems(this.items),
+	        filteredItems = _this$getFilteredItem.filteredItems;
+
+	    this.filteredSearch = [];
+	    this.$timeout(function () {
+	      _this3.filteredSearch = filteredItems;
+
+	      _this3.updateFilterStates(_this3.items, filteredItems);
+	    }, 50);
+	    GtmService.pageViewFilters(GTM_CAT$8, this.filters);
+	  };
+
+	  _proto.getFilteredItems = function getFilteredItems(items, skipFilter) {
+	    var _this4 = this;
+
+	    var filters = Object.keys(this.filters).map(function (x) {
+	      return _this4.filters[x];
+	    }).filter(function (x) {
+	      return x.value !== null;
+	    });
+	    var filteredItems = items.slice();
+
+	    if (filters.length) {
+	      filteredItems = filteredItems.filter(function (item) {
+	        var has = true;
+	        filters.forEach(function (filter) {
+	          if (filter !== skipFilter) {
+	            has = has && filter.doFilter(item, filter.value);
+	          }
+	        });
+	        return has;
+	      });
+	    }
+
+	    return {
+	      filteredItems: filteredItems
+	    };
+	  };
+
+	  _proto.updateFilterStates = function updateFilterStates(items) {
+	    var _this5 = this;
+
+	    Object.keys(this.filters).forEach(function (x) {
+	      var filter = _this5.filters[x];
+
+	      var _this5$getFilteredIte = _this5.getFilteredItems(items, filter),
+	          filteredItems = _this5$getFilteredIte.filteredItems;
+
+	      filter.options.forEach(function (option) {
+	        var has = false;
+
+	        if (option.value) {
+	          var i = 0;
+
+	          while (i < filteredItems.length && !has) {
+	            var item = filteredItems[i];
+	            has = filter.doFilter(item, option.value);
+	            i++;
+	          }
+	        } else {
+	          has = true;
+	        }
+
+	        option.disabled = !has;
+	      });
+	    });
+	  };
+
+	  _proto.setFilter = function setFilter(item, filter) {
+	    item = item || filter.options[0];
+	    filter.value = item.value;
+	    filter.placeholder = item.label;
+	    this.applyFilters();
+	    this.$scope.$broadcast('onCloseDropdown');
+	  };
+
+	  _proto.removeFilter = function removeFilter(filter) {
+	    this.setFilter(null, filter);
+	  };
+
+	  _proto.onSubmit = function onSubmit() {
+	    var _this6 = this;
+
+	    var query = this.model.query;
+
+	    if (query && query.trim().length > 0) {
+	      this.error = null;
+	      this.busy = true;
+	      this.locationService.serialize('query', query);
+	      GtmService.pageViewFilters(GTM_CAT$8, query);
+	      this.apiService.search(query).pipe(operators.first(), operators.map(function (success) {
+	        var items = success.data;
+	        return items;
+	      }), operators.finalize(function () {
+	        return _this6.busy = false;
+	      })).subscribe(function (items) {
+	        _this6.items = items;
+
+	        _this6.applyFilters(false);
+	      }, function (error) {
+	        return console.log('SearchCtrl.apiService.search.error', error);
+	      });
+	    }
+	  };
+
+	  return SearchCtrl;
+	}();
+
+	SearchCtrl.$inject = ['$scope', '$timeout', 'LocationService', 'ApiService'];
+
+	var API_DEV = window.location.port === '40321' || window.location.host === 'actarian.github.io';
 	var API_HREF = API_DEV ? 'https://atlasconcorde.wslabs.it' : '';
 
-	var ApiService =
-	/*#__PURE__*/
-	function () {
+	var ApiService = function () {
 	  function ApiService($http) {
 	    var _this = this;
 
@@ -16092,15 +12769,15 @@
 	    var api = {
 	      advancedSearch: {
 	        get: function get() {
-	          return from($http.get('data/advanced-search.json')); // return from($http.get(API_HREF + '/api/advanced-search/json'));
+	          return rxjs.from($http.get('data/advanced-search.json'));
 	        }
 	      },
 	      wishlist: {
 	        get: function get() {
 	          if (!API_DEV) {
-	            return from(_this.$http.post('', _this.wishlist));
+	            return rxjs.from(_this.$http.post('', _this.wishlist));
 	          } else {
-	            return from(_this.$http.get('data/moodboard.json').then(function (success) {
+	            return rxjs.from(_this.$http.get('data/moodboard.json').then(function (success) {
 	              if (success.data) {
 	                return success.data;
 	              }
@@ -16118,10 +12795,17 @@
 	      moodboard: {
 	        filter: function filter(filters) {
 	          if (!API_DEV) {
-	            return from($http.post('', filters));
+	            return rxjs.from($http.post('', filters));
 	          } else {
-	            return from($http.get('data/moodboard.json'));
+	            return rxjs.from($http.get('data/moodboard.json'));
 	          }
+	        }
+	      },
+	      search: function search(filters) {
+	        if (!API_DEV) {
+	          return rxjs.from($http.post('', filters));
+	        } else {
+	          return rxjs.from($http.get('data/search.json'));
 	        }
 	      },
 	      storeLocator: {
@@ -16146,16 +12830,14 @@
 	ApiService.factory.$inject = ['$http'];
 	ApiService.API_DEV = API_DEV;
 
-	var WishlistService =
-	/*#__PURE__*/
-	function () {
+	var WishlistService = function () {
 	  function WishlistService($http, PromiseService, StorageService, ApiService) {
 	    this.$http = $http;
 	    this.promise = PromiseService;
 	    this.storage = StorageService;
 	    this.api = ApiService;
 	    this.count$ = WishlistService.count$;
-	    var count = this.wishlist.length; // console.log('WishlistService', this.storage);
+	    var count = this.wishlist.length;
 	  }
 
 	  var _proto = WishlistService.prototype;
@@ -16230,7 +12912,7 @@
 	  _proto.clearAll = function clearAll() {
 	    var _this3 = this;
 
-	    return from(this.promise.make(function (promise) {
+	    return rxjs.from(this.promise.make(function (promise) {
 	      var wishlist = [];
 	      _this3.wishlist = wishlist;
 	      promise.resolve(wishlist);
@@ -16241,11 +12923,11 @@
 	    var _this4 = this;
 
 	    if (!API_DEV) {
-	      return from(this.$http.post('', this.wishlist).then(function (success) {
+	      return rxjs.from(this.$http.post('', this.wishlist).then(function (success) {
 	        return success;
 	      }));
 	    } else {
-	      return from(this.$http.get('data/moodboard.json').then(function (success) {
+	      return rxjs.from(this.$http.get('data/moodboard.json').then(function (success) {
 	        if (success.data) {
 	          _this4.wishlist = success.data;
 	        }
@@ -16279,12 +12961,10 @@
 
 	  return WishlistService;
 	}();
-	WishlistService.count$ = new BehaviorSubject(0);
+	WishlistService.count$ = new rxjs.BehaviorSubject(0);
 	WishlistService.factory.$inject = ['$http', 'PromiseService', 'LocalStorageService', 'ApiService'];
 
-	var LocationService =
-	/*#__PURE__*/
-	function () {
+	var LocationService = function () {
 	  function LocationService($location) {
 	    this.$location = $location;
 	  }
@@ -16304,13 +12984,12 @@
 	  };
 
 	  _proto.deserialize_ = function deserialize_(key, serialized) {
-	    var value = null; // console.log(serialized);
+	    var value = null;
 
 	    if (serialized) {
 	      var json = window.atob(serialized);
 	      value = JSON.parse(json);
-	    } // console.log(value);
-
+	    }
 
 	    if (key && value) {
 	      value = value[key];
@@ -16368,9 +13047,7 @@
 	}();
 	LocationService.factory.$inject = ['$location'];
 
-	var PromiseService =
-	/*#__PURE__*/
-	function () {
+	var PromiseService = function () {
 	  function PromiseService($q) {
 	    this.$q = $q;
 	  }
@@ -16400,9 +13077,7 @@
 	PromiseService.factory.$inject = ['$q'];
 
 	var DELAY = 3000;
-	var State =
-	/*#__PURE__*/
-	function () {
+	var State = function () {
 	  function State($timeout, $rootScope) {
 	    this.$timeout = $timeout;
 	    this.$rootScope = $rootScope;
@@ -16538,9 +13213,7 @@
 	  return State;
 	}();
 
-	var StateService =
-	/*#__PURE__*/
-	function () {
+	var StateService = function () {
 	  function StateService($timeout, $rootScope) {
 	    this.$timeout = $timeout;
 	    this.$rootScope = $rootScope;
@@ -16560,11 +13233,8 @@
 	}();
 	StateService.factory.$inject = ['$timeout', '$rootScope'];
 
-	var TIMEOUT = 5 * 60 * 1000; // five minutes
-
-	var CookieService =
-	/*#__PURE__*/
-	function () {
+	var TIMEOUT = 5 * 60 * 1000;
+	var CookieService = function () {
 	  function CookieService(PromiseService) {
 	    this.promise = PromiseService;
 	  }
@@ -16645,7 +13315,6 @@
 
 	        if (typeof value === 'object' && value !== null) {
 	          if (cache.indexOf(value) !== -1) {
-	            // Circular reference found, discard key
 	            return;
 	          }
 
@@ -16681,9 +13350,7 @@
 	  return CookieService;
 	}();
 	CookieService.factory.$inject = ['PromiseService'];
-	var LocalStorageService =
-	/*#__PURE__*/
-	function () {
+	var LocalStorageService = function () {
 	  function LocalStorageService(PromiseService) {
 	    this.promise = PromiseService;
 	  }
@@ -16722,7 +13389,6 @@
 
 	        if (typeof value === 'object' && value !== null) {
 	          if (cache.indexOf(value) !== -1) {
-	            // Circular reference found, discard key
 	            return;
 	          }
 
@@ -16749,8 +13415,7 @@
 
 	        if (e.originalEvent.key == name) {
 	          try {
-	            var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
-
+	            var value = JSON.parse(e.originalEvent.newValue);
 	            promise.resolve(value);
 	          } catch (error) {
 	            console.log('LocalStorageService.on.error parsing', name, error);
@@ -16796,9 +13461,7 @@
 	  return LocalStorageService;
 	}();
 	LocalStorageService.factory.$inject = ['PromiseService'];
-	var SessionStorageService =
-	/*#__PURE__*/
-	function () {
+	var SessionStorageService = function () {
 	  function SessionStorageService(PromiseService) {
 	    this.promise = PromiseService;
 	  }
@@ -16837,7 +13500,6 @@
 
 	        if (typeof value === 'object' && value !== null) {
 	          if (cache.indexOf(value) !== -1) {
-	            // Circular reference found, discard key
 	            return;
 	          }
 
@@ -16864,8 +13526,7 @@
 
 	        if (e.originalEvent.key == name) {
 	          try {
-	            var value = JSON.parse(e.originalEvent.newValue); // , e.originalEvent.oldValue
-
+	            var value = JSON.parse(e.originalEvent.newValue);
 	            promise.resolve(value);
 	          } catch (error) {
 	            console.log('SessionStorageService.on.error parsing', name, error);
@@ -16912,14 +13573,12 @@
 	}();
 	SessionStorageService.factory.$inject = ['PromiseService'];
 
-	var GTM_CAT$8 = 'store-locator';
+	var GTM_CAT$9 = 'store-locator';
 	var ZOOM_LEVEL = 13;
 	var MAX_DISTANCE = 100;
 	var GOOGLE_MAPS = null;
 
-	var StoreLocatorCtrl =
-	/*#__PURE__*/
-	function () {
+	var StoreLocatorCtrl = function () {
 	  function StoreLocatorCtrl($scope, $timeout, DomService, ApiService) {
 	    var _this = this;
 
@@ -16932,8 +13591,7 @@
 	    this.busyFind = false;
 	    this.busyLocation = false;
 	    this.visibleStores = [];
-	    this.mapBoundsChanged$ = new Subject(); //
-	    // When the window has finished loading create our google map below
+	    this.mapBoundsChanged$ = new rxjs.Subject();
 
 	    if (GOOGLE_MAPS !== null) {
 	      this.initMap();
@@ -16948,22 +13606,14 @@
 	      script.setAttribute('type', 'text/javascript');
 	      script.setAttribute('src', "https://maps.googleapis.com/maps/api/js?key=" + this.apiKey + "&libraries=geometry&callback=onGoogleMapsLoaded");
 	      (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(script);
-	      /*
-	      google.maps.event.addDomListener(window, 'load', () => {
-	      	GOOGLE_MAPS = google.maps;
-	      	this.initMap();
-	      });
-	      */
-	    } //
+	    }
 
-
-	    this.unsubscribe = new Subject();
-	    this.mapBoundsChanged$.pipe(debounceTime(1000), takeUntil(this.unsubscribe)).subscribe(function (bounds) {
+	    this.unsubscribe = new rxjs.Subject();
+	    this.mapBoundsChanged$.pipe(operators.debounceTime(1000), operators.takeUntil(this.unsubscribe)).subscribe(function (bounds) {
 	      _this.findNearStores(_this.stores, bounds.getCenter(), bounds);
 	    });
-	    this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe(takeUntil(this.unsubscribe)).subscribe(function (event) {});
+	    this.domService.secondaryScroll$(document.querySelector('.section--stores')).pipe(operators.takeUntil(this.unsubscribe)).subscribe(function (event) {});
 	    $scope.$on('destroy', function () {
-	      // console.log('destroy');
 	      _this.unsubscribe.next();
 
 	      _this.unsubscribe.complete();
@@ -16975,16 +13625,9 @@
 	  _proto.initMap = function initMap() {
 	    var _this2 = this;
 
-	    // Basic options for a simple Google Map
-	    // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
 	    var mapOptions = {
-	      // How zoomed in you want the map to start at (always required)
 	      zoom: 7,
-	      // The latitude and longitude to center the map (always required)
 	      center: new google.maps.LatLng(41.4632232, 14.3898072),
-	      // New York
-	      // How you would like to style the map.
-	      // This is where you would paste any style found on Snazzy Maps.
 	      styles: [{
 	        "featureType": "administrative",
 	        "elementType": "geometry.fill",
@@ -17044,15 +13687,12 @@
 	          "visibility": "on"
 	        }]
 	      }]
-	    }; // Get the HTML DOM element that will contain your map
-	    // We are using a div with id="map" seen below in the <body>
-
+	    };
 	    var mapElement = document.getElementById('map');
 
 	    if (!mapElement) {
 	      return;
-	    } // Create the Google Map using our element and options defined above
-
+	    }
 
 	    var map = new google.maps.Map(mapElement, mapOptions);
 	    map.addListener('bounds_changed', function () {
@@ -17060,7 +13700,7 @@
 	    });
 	    this.$timeout(function () {
 	      _this2.map = map;
-	    }); // console.log('timeout');
+	    });
 	  };
 
 	  _proto.calculateDistance = function calculateDistance(lat1, lon1, lat2, lon2, unit) {
@@ -17105,7 +13745,6 @@
 	      if (store.pageurl) content = content.replace('<!--store.pageurl-->', "<a id=\"locator-marker\" href=\"" + store.pageurl + "\" target=\"_blank\" class=\"btn btn--link\"><span>" + window.BOMLabels.More_info + "</span></a>");
 	      var marker = new google.maps.Marker({
 	        position: position,
-	        // map: this.map,
 	        icon: store.importante ? '/img/store-locator/store-primary.png' : '/img/store-locator/store-secondary.png',
 	        title: store.name,
 	        store: store,
@@ -17123,25 +13762,7 @@
 	        });
 	      });
 	      store.marker = marker;
-	      /*
-	      marker.addListener('mouseout', () => {
-	      	this.setMarkerWindow(null);
-	      });
-	      */
-
 	      return marker;
-	      /*
-	      function panTo(e) {
-	      	if (current !== marker) {
-	      		current = marker;
-	      		var ll = new google.maps.LatLng(latlng[0], latlng[1]);
-	      		map.panTo(ll);
-	      		onMarkerDidSelect();
-	      	}
-	      }
-	      node.addEventListener('click', panTo);
-	      node.addEventListener('mouseover', panTo);
-	      */
 	    });
 	    var markerCluster = new MarkerClusterer(this.map, markers, {
 	      imagePath: '/img/store-locator/cluster-'
@@ -17150,8 +13771,7 @@
 	    styles.forEach(function (style) {
 	      return style.textColor = '#ffffff';
 	    });
-	    markerCluster.setStyles(styles); // console.log('StoreLocatorCtrl.searchPosition', position, stores);
-
+	    markerCluster.setStyles(styles);
 	    this.markers = markers;
 	    this.markerCluster = markerCluster;
 	  };
@@ -17161,11 +13781,10 @@
 
 	    this.error = null;
 	    this.busyLocation = true;
-	    var position = this.map.getCenter(); // Try HTML5 geolocation.
+	    var position = this.map.getCenter();
 
 	    if (navigator.geolocation) {
 	      navigator.geolocation.getCurrentPosition(function (location) {
-	        // console.log(location.coords);
 	        position = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
 
 	        _this4.setInfoWindow(position, 1);
@@ -17185,7 +13804,6 @@
 	        });
 	      });
 	    } else {
-	      // Browser doesn't support Geolocation
 	      this.setInfoWindow(position, 3);
 	      this.searchPosition(position).finally(function () {
 	        return _this4.busyLocation = false;
@@ -17198,7 +13816,7 @@
 
 	    return this.apiService.storeLocator.position(position).then(function (success) {
 	      var stores = success.data;
-	      _this5.stores = stores; // console.log('StoreLocatorCtrl.loadStoresByPosition', position, stores);
+	      _this5.stores = stores;
 
 	      _this5.addMarkers(stores);
 	    });
@@ -17231,7 +13849,7 @@
 	        var position = new google.maps.LatLng(store.latitude, store.longitude);
 	        bounds.extend(position);
 	      });
-	      this.map.fitBounds(bounds); // console.log('fitBounds');
+	      this.map.fitBounds(bounds);
 	    }
 	  };
 
@@ -17239,7 +13857,6 @@
 	    var _this7 = this;
 
 	    var distance = MAX_DISTANCE;
-	    /* Km */
 
 	    if (bounds) {
 	      var northEast = bounds.getNorthEast();
@@ -17250,8 +13867,7 @@
 
 	    if (stores) {
 	      stores.forEach(function (store) {
-	        store.distance = _this7.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K'); // store.visible = (store.cod_stato == window.userCountry || !window.userCountry) && store.distance <= distance;
-
+	        store.distance = _this7.calculateDistance(store.latitude, store.longitude, position.lat(), position.lng(), 'K');
 	        store.visible = store.distance <= distance;
 
 	        if (store.visible) {
@@ -17272,8 +13888,7 @@
 	      }).slice(0, 50);
 	      this.$timeout(function () {
 	        _this7.visibleStores = visibleStores;
-	      }, 1); // console.log('findNearStores', visibleStores);
-
+	      }, 1);
 	      return visibleStores;
 	    }
 	  };
@@ -17283,7 +13898,6 @@
 	    this.position = position;
 
 	    if (bounds) {
-	      // this.map.setCenter(bounds.getCenter(), this.map.getBoundsZoomLevel(bounds)); // getBoundsZoomLevel old api
 	      this.map.fitBounds(bounds);
 	    } else {
 	      this.map.setCenter(position);
@@ -17293,12 +13907,6 @@
 	    this.setInfoWindow(position, 1);
 	    return this.loadAllStores().then(function (stores) {
 	      var visibleStores = _this8.findNearStores(stores, position, bounds);
-	      /*
-	      if (visibleStores) {
-	      	this.fitBounds(visibleStores);
-	      }
-	      */
-
 	    });
 	  };
 
@@ -17326,7 +13934,7 @@
 	        }]
 	      }
 	    };
-	    GtmService.pageViewFilters(GTM_CAT$8, fakeFilter);
+	    GtmService.pageViewFilters(GTM_CAT$9, fakeFilter);
 	    var geocoder = this.geocoder || new google.maps.Geocoder();
 	    this.geocoder = geocoder;
 	    geocoder.geocode({
@@ -17335,15 +13943,14 @@
 	      _this9.model = {};
 
 	      if (status == 'OK') {
-	        var viewport = results[0].geometry.viewport; // const position = results[0].geometry.location;
+	        var viewport = results[0].geometry.viewport;
 
 	        _this9.searchPosition(viewport.getCenter(), viewport).finally(function () {
 	          return _this9.busyFind = false;
 	        });
 	      } else {
 	        _this9.$timeout(function () {
-	          var message = 'Geocode was not successful for the following reason: ' + status; // console.log('StoreLocatorCtrl.onSubmit.error', message);
-
+	          var message = 'Geocode was not successful for the following reason: ' + status;
 	          _this9.error = {
 	            message: message
 	          };
@@ -17374,8 +13981,7 @@
 
 	  _proto.scrollToStore = function scrollToStore(store) {
 	    var storesNode = document.querySelector('.section--stores');
-	    var storeNode = document.querySelector("#store-" + store.id_SF); // console.log(storesNode, storeNode);
-
+	    var storeNode = document.querySelector("#store-" + store.id_SF);
 	    storesNode.scrollTo(0, storeNode.offsetTop);
 	  };
 
@@ -17384,11 +13990,9 @@
 
 	StoreLocatorCtrl.$inject = ['$scope', '$timeout', 'DomService', 'ApiService'];
 
-	var GTM_CAT$9 = 'stores';
+	var GTM_CAT$a = 'stores';
 
-	var StoresCtrl =
-	/*#__PURE__*/
-	function () {
+	var StoresCtrl = function () {
 	  function StoresCtrl($scope, $timeout, LocationService) {
 	    this.$scope = $scope;
 	    this.$timeout = $timeout;
@@ -17460,8 +14064,7 @@
 
 	    if (!any) {
 	      filters = this.initialFilters ? {} : null;
-	    } // console.log('StoresCtrl.serializeFilters', filters);
-
+	    }
 
 	    this.locationService.serialize('filters', filters);
 	    return filters;
@@ -17476,7 +14079,7 @@
 	    }).filter(function (x) {
 	      return x.value !== null;
 	    });
-	    var filteredStores = this.stores.slice(); // console.log(filteredStores);
+	    var filteredStores = this.stores.slice();
 
 	    if (filters.length) {
 	      filteredStores = filteredStores.filter(function (store) {
@@ -17486,23 +14089,20 @@
 	        });
 	        return has;
 	      });
-	    } // console.log(filteredStores, filters);
-
+	    }
 
 	    this.filteredStores = [];
 	    this.$timeout(function () {
 	      _this3.filteredStores = filteredStores;
 
-	      _this3.updateFilterStates(filteredStores); // delayer for image update
-
+	      _this3.updateFilterStates(filteredStores);
 	    }, 50);
-	    GtmService.pageViewFilters(GTM_CAT$9, this.filters);
+	    GtmService.pageViewFilters(GTM_CAT$a, this.filters);
 	  };
 
 	  _proto.updateFilterStates = function updateFilterStates(stores) {
 	    var _this4 = this;
 
-	    // console.log('updateFilterStores', stores);
 	    Object.keys(this.filters).forEach(function (x) {
 	      var filter = _this4.filters[x];
 	      filter.options.forEach(function (option) {
@@ -17521,7 +14121,7 @@
 	        }
 
 	        option.disabled = !has;
-	      }); // console.log(filter.options);
+	      });
 	    });
 	  };
 
@@ -17551,9 +14151,7 @@
 	});
 	var ITEMS_PER_PAGE$5 = 20;
 
-	var WishlistCtrl =
-	/*#__PURE__*/
-	function () {
+	var WishlistCtrl = function () {
 	  function WishlistCtrl($scope, $timeout, WishlistService) {
 	    var _this = this;
 
@@ -17562,12 +14160,11 @@
 	    this.wishlistService = WishlistService;
 	    this.items = [];
 	    this.moodTypes = MOOD_TYPES$1;
-	    this.unsubscribe = new Subject();
-	    this.wishlistService.count$.pipe(takeUntil(this.unsubscribe)).subscribe(function (count) {
+	    this.unsubscribe = new rxjs.Subject();
+	    this.wishlistService.count$.pipe(operators.takeUntil(this.unsubscribe)).subscribe(function (count) {
 	      return _this.count = count;
 	    });
 	    $scope.$on('destroy', function () {
-	      // console.log('destroy');
 	      _this.unsubscribe.next();
 
 	      _this.unsubscribe.complete();
@@ -17580,8 +14177,7 @@
 	  _proto.load = function load() {
 	    var _this2 = this;
 
-	    this.wishlistService.get().pipe(takeUntil(this.unsubscribe)).subscribe(function (success) {
-	      // console.log('WishlistCtrl.load', success);
+	    this.wishlistService.get().pipe(operators.takeUntil(this.unsubscribe)).subscribe(function (success) {
 	      if (success) {
 	        var items = success.data.slice();
 	        var wishlist = _this2.wishlistService.wishlist;
@@ -17593,17 +14189,6 @@
 	            item.typeName = wishlist[index].typeName;
 	          }
 	        });
-	        /* FAKE */
-
-	        /*
-	        while (items.length < 200) {
-	        	items = items.concat(items);
-	        }
-	        items.sort((a, b) => Math.random() > 0.5 ? 1 : -1);
-	        */
-
-	        /* FAKE */
-
 	        _this2.items = [];
 	        _this2.visibleItems = [];
 	        _this2.maxItems = ITEMS_PER_PAGE$5;
@@ -17621,7 +14206,7 @@
 	  _proto.clearAll = function clearAll() {
 	    var _this3 = this;
 
-	    this.wishlistService.clearAll().pipe(takeUntil(this.unsubscribe)).subscribe(function (success) {
+	    this.wishlistService.clearAll().pipe(operators.takeUntil(this.unsubscribe)).subscribe(function (success) {
 	      _this3.items = [];
 	      _this3.visibleItems = [];
 	      _this3.maxItems = ITEMS_PER_PAGE$5;
@@ -17634,7 +14219,6 @@
 	    var _this4 = this;
 
 	    if (event.rect.bottom < event.windowRect.bottom) {
-	      // console.log('more!');
 	      if (!this.busy && this.maxItems < this.items.length) {
 	        this.$timeout(function () {
 	          _this4.busy = true;
@@ -17642,7 +14226,7 @@
 	          _this4.$timeout(function () {
 	            _this4.maxItems += ITEMS_PER_PAGE$5;
 	            _this4.visibleItems = _this4.items.slice(0, _this4.maxItems);
-	            _this4.busy = false; // console.log(this.visibleItems.length);
+	            _this4.busy = false;
 	          }, 1000);
 	        }, 0);
 	      }
@@ -17651,17 +14235,6 @@
 
 	  _proto.print = function print() {
 	    return window.print();
-	    /*
-	    const iframe = document.createElement('iframe');
-	    iframe.onload = function() {
-	    	console.log('onload');
-	    	this.contentWindow.print();
-	    	iframe.parentNode.removeChild(iframe);
-	    };
-	    iframe.style.width = '768px';
-	    iframe.src = window.location.href + '?printable';
-	    document.body.appendChild(iframe);
-	    */
 	  };
 
 	  return WishlistCtrl;
@@ -17677,17 +14250,15 @@
 	  $compileProvider.debugInfoEnabled(false);
 	}]);
 	app.factory('ApiService', ApiService.factory).factory('DomService', DomService.factory).factory('LocationService', LocationService.factory).factory('PromiseService', PromiseService.factory).factory('StateService', StateService.factory).factory('CookieService', CookieService.factory).factory('LocalStorageService', LocalStorageService.factory).factory('SessionStorageService', SessionStorageService.factory).factory('WishlistService', WishlistService.factory);
-	app.directive('appear', AppearDirective.factory).directive('control', ControlDirective.factory).directive('controlMessages', ControlMessagesDirective.factory).directive('cookies', CookiesDirective.factory).directive('glslCanvas', GlslCanvasDirective.factory).directive('gtmCollection', GtmCollectionDirective.factory).directive('gtmDealerLocator', gtmDealerLocatorDirective.factory).directive('gtmForm', GtmFormDirective.factory).directive('hasDropdown', HasDropdownDirective.factory).directive('highway', HighwayDirective.factory).directive('hilight', HilightDirective.factory).directive('href', HrefDirective.factory).directive('lastItem', LastItemDirective.factory).directive('lazy', LazyDirective.factory).directive('lazyScript', LazyScriptDirective.factory).directive('thron', ThronDirective.factory).directive('media', MediaDirective.factory).directive('moodboardDropdown', MoodboardDropdownDirective.factory).directive('moodboardSearch', MoodboardSearchDirective.factory).directive('muuri', MuuriDirective.factory).directive('parallax', ParallaxDirective.factory).directive('objectFit', ObjectFitDirective.factory).directive('overOn', OverOnDirective.factory).directive('scroll', ScrollDirective.factory).directive('scrollTo', ScrollToDirective.factory).directive('selectWithAutocomplete', AutocompleteDirective.factory).directive('sticky', StickyDirective.factory).directive('swiperGallery', SwiperGalleryDirective.factory).directive('swiperGalleryHero', SwiperGalleryHeroDirective.factory).directive('swiperHero', SwiperHeroDirective.factory).directive('swiperFocus', SwiperFocusDirective.factory).directive('swiperProjects', SwiperProjectsDirective.factory).directive('swiperReferences', SwiperReferencesDirective.factory).directive('swiperTile', SwiperTileDirective.factory).directive('swiperTimeline', SwiperTimelineDirective.factory) // .directive('transition', TransitionDirective.factory)
-	.directive('validate', ValidateDirective.factory).directive('video', VideoDirective.factory).directive('visibility', VisibilityDirective.factory).directive('wishlist', WishlistDirective.factory).directive('world', WorldDirective.factory).directive('zoomable', ZoomableDirective.factory);
-	app.controller('RootCtrl', RootCtrl).controller('AdvancedSearchCtrl', AdvancedSearchCtrl).controller('CollectionsCtrl', CollectionsCtrl).controller('Collections01Ctrl', Collections01Ctrl).controller('EffectsCtrl', EffectsCtrl).controller('ContactsCtrl', ContactsCtrl).controller('FaqCtrl', FaqCtrl).controller('GalleriesCtrl', GalleriesCtrl).controller('MagazineCtrl', MagazineCtrl).controller('MoodboardCtrl', MoodboardCtrl).controller('MoodboardSectionCtrl', MoodboardSectionCtrl).controller('NewsCtrl', NewsCtrl).controller('ReferencesCtrl', ReferencesCtrl).controller('StoreLocatorCtrl', StoreLocatorCtrl).controller('StoresCtrl', StoresCtrl).controller('WishlistCtrl', WishlistCtrl);
-	app.filter('imageWithFeatures', [ImageWithFeatures]).filter('notIn', ['$filter', NotInFilter]).filter('trusted', ['$sce', TrustedFilter]); // app.run(['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {}]);
-
+	app.directive('appear', AppearDirective.factory).directive('control', ControlDirective.factory).directive('controlMessages', ControlMessagesDirective.factory).directive('cookies', CookiesDirective.factory).directive('glslCanvas', GlslCanvasDirective.factory).directive('gtmCollection', GtmCollectionDirective.factory).directive('gtmDealerLocator', gtmDealerLocatorDirective.factory).directive('gtmForm', GtmFormDirective.factory).directive('hasDropdown', HasDropdownDirective.factory).directive('highway', HighwayDirective.factory).directive('hilight', HilightDirective.factory).directive('href', HrefDirective.factory).directive('lastItem', LastItemDirective.factory).directive('lazy', LazyDirective.factory).directive('lazyScript', LazyScriptDirective.factory).directive('thron', ThronDirective.factory).directive('media', MediaDirective.factory).directive('moodboardDropdown', MoodboardDropdownDirective.factory).directive('moodboardSearch', MoodboardSearchDirective.factory).directive('muuri', MuuriDirective.factory).directive('parallax', ParallaxDirective.factory).directive('objectFit', ObjectFitDirective.factory).directive('overOn', OverOnDirective.factory).directive('scroll', ScrollDirective.factory).directive('scrollTo', ScrollToDirective.factory).directive('selectWithAutocomplete', AutocompleteDirective.factory).directive('sticky', StickyDirective.factory).directive('swiperGallery', SwiperGalleryDirective.factory).directive('swiperGalleryHero', SwiperGalleryHeroDirective.factory).directive('swiperHero', SwiperHeroDirective.factory).directive('swiperFocus', SwiperFocusDirective.factory).directive('swiperProjects', SwiperProjectsDirective.factory).directive('swiperReferences', SwiperReferencesDirective.factory).directive('swiperTile', SwiperTileDirective.factory).directive('swiperTimeline', SwiperTimelineDirective.factory).directive('validate', ValidateDirective.factory).directive('video', VideoDirective.factory).directive('visibility', VisibilityDirective.factory).directive('wishlist', WishlistDirective.factory).directive('world', WorldDirective.factory).directive('zoomable', ZoomableDirective.factory);
+	app.controller('RootCtrl', RootCtrl).controller('AdvancedSearchCtrl', AdvancedSearchCtrl).controller('CollectionsCtrl', CollectionsCtrl).controller('Collections01Ctrl', Collections01Ctrl).controller('EffectsCtrl', EffectsCtrl).controller('ContactsCtrl', ContactsCtrl).controller('FaqCtrl', FaqCtrl).controller('GalleriesCtrl', GalleriesCtrl).controller('MagazineCtrl', MagazineCtrl).controller('MoodboardCtrl', MoodboardCtrl).controller('MoodboardSectionCtrl', MoodboardSectionCtrl).controller('NewsCtrl', NewsCtrl).controller('ReferencesCtrl', ReferencesCtrl).controller('SearchCtrl', SearchCtrl).controller('StoreLocatorCtrl', StoreLocatorCtrl).controller('StoresCtrl', StoresCtrl).controller('WishlistCtrl', WishlistCtrl);
+	app.filter('imageWithFeatures', [ImageWithFeatures]).filter('notIn', ['$filter', NotInFilter]).filter('trusted', ['$sce', TrustedFilter]);
 	app.run(['$compile', '$timeout', '$rootScope', function ($compile, $timeout, $rootScope) {
 	  $rootScope.first = true;
-	  $rootScope.firstView = document.querySelector('.view').cloneNode(true); // console.log('$rootScope.firstView', $rootScope.firstView);
+	  $rootScope.firstView = document.querySelector('.view').cloneNode(true);
 	}]);
 
 	angular.bootstrap(document, [MODULE_NAME]);
 
-})));
+}(rxjs.operators, rxjs));
 //# sourceMappingURL=app.js.map
