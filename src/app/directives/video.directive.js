@@ -202,9 +202,7 @@ export default class VideoDirective {
 	}
 
 	eval(string) {
-		return new Function(`() => {
-			return ${string};
-		}`)();
+		return new Function("return " + string + ";")();
 	}
 
 	static factory($timeout, WishlistService) {

@@ -299,11 +299,8 @@
 </script>
 
 <section class="section section--hero-secondary section--negative">
-	<div class="background" ng-if="!root.webglEnabled" parallax>
-		<img lazy data-src="/atlas/img/advanced-search/hero.jpg?width=1920&height=670&mode=crop" alt="title" />
-	</div>
-	<div class="background" ng-if="root.webglEnabled">
-		<canvas glsl-canvas="img/advanced-search/hero.jpg" class="glsl-canvas"></canvas>
+	<div class="background" parallax>
+		<img lazy data-src="/atlas/img/advanced-search/hero.jpg?width=1920&height=670&mode=crop" alt="title" object-fit="cover" />
 	</div>
 	<div class="aspect">
 		<div class="container">

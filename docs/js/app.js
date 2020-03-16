@@ -1774,7 +1774,7 @@
 	  };
 
 	  _proto.eval = function _eval(string) {
-	    return new Function("() => {\n\t\t\treturn " + string + ";\n\t\t}")();
+	    return new Function("return " + string + ";")();
 	  };
 
 	  MediaDirective.factory = function factory($timeout, WishlistService) {
@@ -3331,7 +3331,7 @@
 	  };
 
 	  _proto.eval = function _eval(string) {
-	    return new Function("() => {\n\t\t\treturn " + string + ";\n\t\t}")();
+	    return new Function("return " + string + ";")();
 	  };
 
 	  VideoDirective.factory = function factory($timeout, WishlistService) {
@@ -3553,13 +3553,7 @@
 
 	    var onClick = function onClick() {
 	      if (node.classList.contains('zoomed')) {
-	        _this.zoomOut(scope, node, content, rect);
-
-	        if (attributes.zoomed !== undefined) {
-	          _this.$timeout(function () {
-	            scope.$root.gallery = null;
-	          });
-	        }
+	        return;
 	      } else {
 	        rect = Rect.fromNode(node);
 

@@ -166,12 +166,12 @@
 		<div class="zoomable__content">
 			<div class="swiper-container" swiper-gallery initial-slide="{{gallery.index}}" no-loop>
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" ng-repeat="item in gallery.items">
+					<div class="swiper-slide" ng-class="{ 'swiper-slide--video': item.type == 'video' }" ng-repeat="item in gallery.items">
 						<div class="picture zoomable__trigger" media="item.wishlist" ng-if="item.type == 'media'">
-							<img ng-src="{{item.src}}" alt="{{item.title}}" />
+							<img ng-src="{{item.src}}" alt="{{item.title}}" data-object-fit="contain" />
 						</div>
 						<div class="picture" video="item.wishlist" ng-if="item.type == 'video'">
-							<video muted playsinline ng-attr-poster="{{item.poster}}" data-object-fit="cover">
+							<video ng-attr-poster="{{item.poster}}" data-object-fit="contain">
 								<source ng-src="{{item.src}}" type="video/mp4">
 							</video>
 						</div>

@@ -310,6 +310,62 @@
 
 }
 
+%section--hero-secondary-aspect {
+	@media screen {
+		@media (max-width: 767.98px) and (orientation: portrait) {
+			.aspect {
+				@include aspect-clip(375, 600); // 667
+
+				&>.container {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					left: 50%;
+					top: 50%;
+				}
+			}
+		}
+
+		@media (max-width: 767.98px) and (orientation: landscape) {
+			.aspect {
+				@include aspect-clip(600, 375); // 667
+
+				&>.container {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					left: 50%;
+					top: 50%;
+				}
+			}
+		}
+
+		@include media-breakpoint-up(sm) {
+			.aspect {
+				@include aspect-clip(4, 3);
+
+				&>.container {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					left: 50%;
+					top: 50%;
+				}
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			.aspect {
+				@include aspect-clip(1920, 670);
+
+				&>.container {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					left: 50%;
+					top: 50%;
+				}
+			}
+		}
+	}
+}
+
 %section--hero-secondary-title {
 
 	.category {
@@ -339,64 +395,6 @@
 	}
 
 	@media screen {
-		/*
-		@include media-breakpoint-down(xs) {
-			.aspect {
-				@include aspect-grid(375, 667);
-			}
-		}
-		*/
-		@media (max-width: 767.98px) and (orientation: portrait) {
-			.aspect {
-				@include aspect-clip(375, 600); // 667
-				& > .container {
-					position: absolute;
-					transform: translate(-50%, -50%);
-					left: 50%;
-					top: 50%;
-				}
-			}
-		}
-
-		@media (max-width: 767.98px) and (orientation: landscape) {
-			.aspect {
-				@include aspect-clip(600, 375); // 667
-				& > .container {
-					position: absolute;
-					transform: translate(-50%, -50%);
-					left: 50%;
-					top: 50%;
-				}
-			}
-		}
-
-		@include media-breakpoint-up(sm) {
-			.aspect {
-				@include aspect-clip(4, 3);
-
-				& > .container {
-					position: absolute;
-					transform: translate(-50%, -50%);
-					left: 50%;
-					top: 50%;
-				}
-			}
-		}
-
-		@include media-breakpoint-up(md) {
-			.aspect {
-				@include aspect-clip(1920, 670);
-
-				& > .container {
-					position: absolute;
-					transform: translate(-50%, -50%);
-					left: 50%;
-					top: 50%;
-				}
-				// @include aspect-clip(1920, 960);
-			}
-		}
-
 		@include media-breakpoint-up(xl) {
 			.title {
 				font-size: 100px;
@@ -448,12 +446,6 @@
 		z-index: 0;
 	}
 
-	/*
-	.aspect {
-		pointer-events: none;
-	}
-	*/
-
 	.container {
 		position: relative;
 		display: flex;
@@ -467,7 +459,7 @@
 	}
 
 	@extend %section--hero-secondary-title;
-
+	@extend %section--hero-secondary-aspect;
 }
 
 .section--negative {

@@ -41,6 +41,6 @@
 		"whatwg-fetch": "~3.0.0"
 	},
 	"devDependencies": {
-		"gulpfile-config": "~1.0.0-alpha.5"
+		"gulpfile-config": "~1.0.0-alpha.9"
 	}
 }

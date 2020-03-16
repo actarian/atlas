@@ -38,6 +38,7 @@ export default class ZoomableDirective {
 		const onClick = () => {
 			// const slides = Array.from(node.querySelectorAll('.swiper-slide'));
 			if (node.classList.contains('zoomed')) {
+				return;
 				this.zoomOut(scope, node, content, rect);
 				if (attributes.zoomed !== undefined) {
 					this.$timeout(() => {
