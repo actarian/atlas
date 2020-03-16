@@ -3667,7 +3667,10 @@ img {
       padding: 0 0 30px 0; }
     .zoomed [swiper-gallery] .title, .zoomed
     [swiper-gallery-hero] .title {
-      padding: 0 15px 30px 15px; } }
+      padding: 0 15px 30px 15px; }
+    .zoomed [swiper-gallery] [video]:hover .btn--play.playing, .zoomed
+    [swiper-gallery-hero] [video]:hover .btn--play.playing {
+      opacity: 0; } }
   @media (max-width: 767.98px) {
     .zoomed [swiper-gallery], .zoomed
     [swiper-gallery-hero] {

@@ -478,6 +478,13 @@
 			.title {
 				padding: 0 15px 30px 15px;
 			}
+
+			[video]:hover {
+				.btn--play.playing {
+					opacity: 0;
+				}
+			}
+
 		}
 
 		@include media-breakpoint-down(xs) {
