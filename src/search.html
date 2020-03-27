@@ -60,8 +60,8 @@
 				</ul>
 			</div>
 		</div>
-		<div class="container" ng-if="searchCtrl.filteredSearch">
-			<div ng-repeat="item in searchCtrl.filteredSearch track by $index">
+		<div class="container" ng-if="searchCtrl.visibleItems && searchCtrl.visibleItems.length" scroll="searchCtrl.onScroll($event)">
+			<div ng-repeat="item in searchCtrl.visibleItems track by $index">
 				<div class="row section--search__result" appear>
 					<div class="col-sm-6 col-md-8 col-lg-5">
 						<div class="picture picture--with-category">
@@ -94,6 +94,16 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="loader" ng-if="searchCtrl.visibilityBusy">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-ring">
+					<circle cx="50" cy="50" fill="none" r="15" stroke-width="2"></circle>
+					<circle cx="50" cy="50" fill="none" r="15" stroke-width="2" stroke-linecap="square" transform="rotate(502.497 50 50)">
+						<animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;180 50 50;720 50 50" keyTimes="0;0.5;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform>
+						<animate attributeName="stroke-dasharray" calcMode="linear" values="9.42477796076938 84.82300164692441;47.1238898038469 47.123889803846886;9.42477796076938 84.82300164692441" keyTimes="0;0.5;1" dur="2" begin="0s" repeatCount="indefinite"></animate>
+					</circle>
+				</svg>
+				<div>@Localize.GetLabelHtml("lbl_load_more")</div>
 			</div>
 		</div>
 	</section>

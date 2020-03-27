@@ -59,7 +59,7 @@ class RootCtrl {
 	onInit(brand) {
 		this.brand = brand;
 		this.webglEnabled = false; // this.domService.hasWebglSupport();
-		this.domService.addCustomRules();
+		// this.domService.addCustomRules();
 		/*
 		this.domService.smoothScroll$('.page').subscribe((top) => {
 			// console.log(top);
@@ -147,7 +147,7 @@ class RootCtrl {
 		/*
 		return new Promise((resolve, reject) => {
 			if (node) {
-				const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+				const items = Array.from(node.querySelectorAll('.submenu__item'));
 				TweenMax.staggerTo(items.reverse(), 0.25, {
 					opacity: 0,
 					stagger: 0.05,
@@ -175,7 +175,7 @@ class RootCtrl {
 		return new Promise((resolve, reject) => {
 			this.droppedIn = true;
 			this.droppinIn = true;
-			const items = [].slice.call(node.querySelectorAll('.submenu__item'));
+			const items = Array.from(node.querySelectorAll('.submenu__item'));
 			TweenMax.set(items, { opacity: 0 });
 			TweenMax.set(node, { height: 'auto' });
 			const mh = node.offsetHeight;

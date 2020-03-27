@@ -1,0 +1,8 @@
+.icone-segmento { padding: 50px 0; }
+.icone-segmento h1 { font-size: 42px; font-weight: 600; color: #000; }
+.icone-segmento .row .col-sm-4 { margin: 50px 0; }
+.icone-segmento p { color: #4e5256; font-size: 15px; font-weight: 600; }
+@media (max-width: 859px) {
+	.icone-segmento .row .col-sm-4 { margin: 20px 0; }
+	.icone-segmento h1 { font-size: 32px; line-height: 42px; }
+}

@@ -36,20 +36,17 @@ export default class MediaDirective {
 			scope.onPin = (event) => {
 				event.preventDefault();
 				event.stopPropagation();
-
 				const pin = {
 					url: window.location.href,
 					media: img.src,
 					description: img.title || pageTitle,
 				};
 				// console.log('MediaDirective.onPin', pin);
-
 				GtmService.push({
 					event: 'Pinterest',
 					wish_name: scope.item.name || scope.item.coId,
 					wish_type: scope.item.typeName || scope.item.type
 				});
-
 				PinUtils.pinOne(pin);
 			};
 		}
@@ -75,7 +72,6 @@ export default class MediaDirective {
 		scope.onClickWishlist = (event) => {
 			event.preventDefault();
 			event.stopPropagation();
-
 			this.wishlistService.toggle(scope.item).then(
 				(has) => {
 					console.log('MediaDirective.onClickWishlist', has);
@@ -92,39 +88,53 @@ export default class MediaDirective {
 				btnGallery.click();
 				return;
 			}
-			if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
+			let nodes = [];
+			if (node.parentNode.classList.contains('swiper-slide')) {
+				nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
+			} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
+				nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+			}
+			if (nodes.length) {
 				this.$timeout(() => {
 					let index = 0;
-					const items = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map((itemNode, i) => {
-						if (itemNode == node) {
-							index = i;
-						}
+					let items = [];
+					nodes.forEach((itemNode, i) => {
 						const item = {};
 						item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+						const title = itemNode.parentNode.querySelector('.title');
 						if (item.type === 'media') {
 							const img = itemNode.querySelector('img');
-							if (img) {
-								item.src = img.getAttribute('data-src-zoom') || img.getAttribute('src') || img.getAttribute('data-src');
-								item.title = img.getAttribute('alt');
-								const wishlist = itemNode.getAttribute('media');
-								if (wishlist) {
-									item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
-								}
-							} else {
-								console.log(itemNode, img);
+							item.src = img.getAttribute('src') || img.getAttribute('data-src');
+							item.title = title ? title.innerText : img.getAttribute('alt');
+							const wishlist = itemNode.getAttribute('media');
+							if (wishlist) {
+								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
 							}
 						} else {
 							const video = itemNode.querySelector('video');
 							const sources = video.querySelectorAll('source');
 							item.poster = video.getAttribute('poster');
 							item.src = sources[sources.length - 1].getAttribute('src');
-							item.title = video.getAttribute('alt');
+							item.title = title ? title.innerText : video.getAttribute('alt');
 							const wishlist = itemNode.getAttribute('video');
 							if (wishlist) {
 								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
 							}
 						}
-						return item;
+						console.log(item.title);
+						const itemIndex = items.reduce((p, c, i) => {
+							return c.src === item.src ? i : p
+						}, -1);
+						if (itemIndex !== -1) {
+							if (itemNode == node) {
+								index = itemIndex;
+							}
+						} else {
+							if (itemNode == node) {
+								index = items.length;
+							}
+							items.push(item);
+						}
 					});
 					scope.$root.gallery = {
 						index,

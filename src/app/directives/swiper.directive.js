@@ -66,6 +66,22 @@ export class SwiperDirective {
 		// console.log('linked not overrided');
 	}
 
+	init(swiper, scope, element, attributes) {
+		// console.log('init not overrided');
+	}
+
+	slideChangeTransitionStart(swiper, scope, element, attributes) {
+		// console.log('slideChangeTransitionStart not overrided');
+	}
+
+	slideChangeTransitionEnd(swiper, scope, element, attributes) {
+		// console.log('slideChangeTransitionEnd not overrided');
+	}
+
+	slideChange(swiper, scope, element, attributes) {
+		// console.log('slideChange not overrided');
+	}
+
 	onResize(scope, element, attributes) {
 		if (element.swiper) {
 			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
@@ -81,22 +97,33 @@ export class SwiperDirective {
 		} else {
 			//this.options.initialSlide = initialSlide;
 			let swiper_;
+			this.options.onSlideClick = (swiper) => {
+				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+			};
 			const on = this.options.on || (this.options.on = {});
-			const callback = on.init;
-			if (!on.init || !on.init.swiperDirectiveInit) {
-				on.init = function() {
-					TweenMax.to(node, 0.4, {
-						opacity: 1,
-						ease: Power2.easeOut,
-					});
-					setTimeout(() => {
-						if (typeof callback === 'function') {
-							callback.apply(this, [swiper_, element, scope]);
-						}
-					}, 1);
-				};
-				on.init.swiperDirectiveInit = true;
-			}
+			const self = this;
+			on.init = function() {
+				const swiper = this;
+				TweenMax.to(node, 0.4, {
+					opacity: 1,
+					ease: Power2.easeOut,
+				});
+				setTimeout(() => {
+					self.init(swiper, scope, element, attributes);
+				}, 1);
+			};
+			on.slideChangeTransitionStart = function() {
+				const swiper = this;
+				self.slideChangeTransitionStart(swiper, scope, element, attributes);
+			};
+			on.slideChangeTransitionEnd = function() {
+				const swiper = this;
+				self.slideChangeTransitionEnd(swiper, scope, element, attributes);
+			};
+			on.slideChange = function() {
+				const swiper = this;
+				self.slideChange(swiper, scope, element, attributes);
+			};
 			if (attributes.noLoop !== undefined) {
 				this.options.loop = false;
 			}
@@ -128,17 +155,6 @@ export class SwiperGalleryHeroDirective extends SwiperDirective {
 			loop: true,
 			keyboardControl: true,
 			mousewheelControl: false,
-			on: {
-				init: function() {
-					const swiper = this;
-					setTimeout(() => {
-						swiper.update();
-					})
-				},
-			},
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
@@ -152,6 +168,12 @@ export class SwiperGalleryHeroDirective extends SwiperDirective {
 				onlyInViewport: true,
 			},
 		};
+	}
+
+	init(swiper, scope, element, attributes) {
+		setTimeout(() => {
+			swiper.update();
+		});
 	}
 
 	onResize(scope, element, attributes) {
@@ -182,6 +204,7 @@ export class SwiperGalleryDirective extends SwiperDirective {
 
 	constructor() {
 		super();
+		let swiper_, element_, scope_;
 		this.options = {
 			slidesPerView: 'auto',
 			loopAdditionalSlides: 100,
@@ -193,17 +216,6 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			// autoplay: 5,
 			keyboardControl: true,
 			mousewheelControl: false,
-			on: {
-				init: function() {
-					const swiper = this;
-					setTimeout(() => {
-						swiper.update();
-					})
-				},
-			},
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
@@ -217,6 +229,65 @@ export class SwiperGalleryDirective extends SwiperDirective {
 				onlyInViewport: true,
 			},
 		};
+	}
+
+	init(swiper, scope, element, attributes) {
+		scope.$on('onThronComplete', ($scope, id) => {
+			this.next(swiper);
+		});
+		swiper.on('slideChange', () => {
+			const slide = swiper.slides[swiper.realIndex];
+			if (swiper.el.parentElement.classList.contains('zoomable__content') && slide.classList.contains('swiper-slide--video')) {
+				swiper.el.classList.add('swiper-container--video');
+				swiper.params.touchRatio = 0;
+			} else {
+				swiper.el.classList.remove('swiper-container--video');
+				swiper.params.touchRatio = 1;
+			}
+		});
+		setTimeout(() => {
+			swiper.update();
+		});
+	}
+
+	slideChangeTransitionStart(swiper, scope, element, attributes) {
+		if (element) {
+			this.pauseVideo(swiper, element, scope);
+		}
+	}
+
+	pauseVideo(swiper, element, scope, id) {
+		Array.from(swiper.slides).forEach(slide => {
+			const node = slide.querySelector('video, [data-thron]');
+			if (node) {
+				if (node.hasAttribute('data-thron')) {
+					scope.$broadcast('pauseThron', node.id);
+				} else {
+					node.pause();
+				}
+				/*
+				if (slide.classList.contains('swiper-slide-active')) {
+					// console.log('playing node', node);
+					if (node.hasAttribute('data-thron')) {
+						// console.log(id, node.id, id === node.id);
+						if (id && id === node.id) {
+							scope.$broadcast('playThron', node.id);
+						} else if (!id) {
+							scope.$broadcast('playThron', node.id);
+						}
+					} else {
+						node.play();
+					}
+				} else {
+					if (node.hasAttribute('data-thron')) {
+						scope.$broadcast('pauseThron', node.id);
+					} else {
+						node.pause();
+					}
+				}
+				*/
+			}
+		});
 	}
 
 	onResize(scope, element, attributes) {
@@ -233,6 +304,14 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			}
 		}
 		// console.log('SwiperGalleryDirective.onResize', scope.$id, scope.zoomed, attributes.index);
+	}
+
+	next(swiper) {
+		if (swiper.realIndex == swiper.slides.length - 1) {
+			swiper.slideTo(0);
+		} else {
+			swiper.slideNext();
+		}
 	}
 
 	static factory() {
@@ -259,45 +338,6 @@ export class SwiperHeroDirective extends SwiperDirective {
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
-			on: {
-				init: (swiper, element, scope) => {
-					// console.log('SwiperHeroDirective.init');
-					if (!swiper_) {
-						swiper_ = swiper;
-						element_ = element;
-						scope_ = scope;
-					}
-					scope_.$on('onThronCanPlay', ($scope, id) => {
-						// console.log('SwiperHeroDirective.onThronCanPlay', id);
-						this.toggleVideo(element, scope, id);
-					});
-					scope_.$on('onThronComplete', ($scope, id) => {
-						// console.log('SwiperHeroDirective.onThronComplete', id);
-						this.next(swiper_);
-					});
-					/*
-					if (swiper_.autoplay) {
-						swiper_.autoplay.start();
-					}
-					*/
-				},
-				slideChangeTransitionStart: () => {
-					// console.log('SwiperHeroDirective.slideChangeTransitionStart');
-					if (element_) {
-						this.toggleVideo(element_, scope_);
-					}
-				},
-				slideChangeTransitionEnd: () => {
-					// console.log('SwiperHeroDirective.slideChangeTransitionEnd');
-					if (element_) {
-						// this.toggleVideo(element_, scope_);
-						this.checkAutoplay(element_, scope_, swiper_);
-					}
-				}
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
@@ -311,6 +351,34 @@ export class SwiperHeroDirective extends SwiperDirective {
 				onlyInViewport: true,
 			},
 		};
+	}
+
+	init(swiper, scope, element, attributes) {
+		scope.$on('onThronCanPlay', ($scope, id) => {
+			// console.log('SwiperHeroDirective.onThronCanPlay', id);
+			this.toggleVideo(element, scope, id);
+		});
+		scope.$on('onThronComplete', ($scope, id) => {
+			// console.log('SwiperHeroDirective.onThronComplete', id);
+			this.next(swiper);
+		});
+		/*
+		if (swiper.autoplay) {
+			swiper.autoplay.start();
+		}
+		*/
+	}
+
+	slideChangeTransitionStart(swiper, scope, element, attributes) {
+		if (element) {
+			this.toggleVideo(element, scope);
+		}
+	}
+
+	slideChangeTransitionEnd(swiper, scope, element, attributes) {
+		if (element) {
+			this.checkAutoplay(element, scope, swiper);
+		}
 	}
 
 	toggleVideo(element, scope, id) {
@@ -376,23 +444,6 @@ export class SwiperFocusDirective extends SwiperDirective {
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
-			on: {
-				init: function() {
-					const swiper = this;
-					const container = swiper.$el[0];
-					const tabs = Array.from(container.querySelectorAll('.btn--tab'));
-					tabs.forEach((tab, i) => i === 0 ? tab.classList.add('active') : tab.classList.remove('active'));
-				},
-				slideChange: function() {
-					const swiper = this;
-					const container = swiper.$el[0];
-					const tabs = Array.from(container.querySelectorAll('.btn--tab'));
-					tabs.forEach((tab, i) => i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active'));
-				},
-			},
 			navigation: {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
@@ -402,6 +453,18 @@ export class SwiperFocusDirective extends SwiperDirective {
 				onlyInViewport: true,
 			},
 		};
+	}
+
+	init(swiper, scope, element, attributes) {
+		const container = swiper.$el[0];
+		const tabs = Array.from(container.querySelectorAll('.btn--tab'));
+		tabs.forEach((tab, i) => i === 0 ? tab.classList.add('active') : tab.classList.remove('active'));
+	}
+
+	slideChange(swiper, scope, element, attributes) {
+		const container = swiper.$el[0];
+		const tabs = Array.from(container.querySelectorAll('.btn--tab'));
+		tabs.forEach((tab, i) => i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active'));
 	}
 
 	linked(scope, element, attributes, controller) {
@@ -443,9 +506,6 @@ export class SwiperProjectsDirective extends SwiperDirective {
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
@@ -478,9 +538,6 @@ export class SwiperReferencesDirective extends SwiperDirective {
 			spaceBetween: 0,
 			keyboardControl: true,
 			mousewheelControl: false,
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
 			navigation: {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
@@ -512,9 +569,6 @@ export class SwiperTileDirective extends SwiperDirective {
 			spaceBetween: 60,
 			keyboardControl: true,
 			mousewheelControl: false,
-			onSlideClick: function(swiper) {
-				angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				clickable: true,
@@ -550,31 +604,6 @@ export class SwiperTimelineDirective extends SwiperDirective {
 			autoplay: 5000,
 			keyboardControl: true,
 			mousewheelControl: false,
-			on: {
-				init: function() {
-					const swiper = this;
-					const container = swiper.$el[0];
-					const lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
-					lis.forEach((x, i) => {
-						x.addEventListener('click', () => {
-							swiper.slideTo(i, 600);
-						});
-					});
-
-				},
-				slideChange: function() {
-					const swiper = this;
-					const container = swiper.$el[0];
-					const lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
-					lis.forEach((x, i) => {
-						if (i === swiper.activeIndex) {
-							x.classList.add('active');
-						} else {
-							x.classList.remove('active');
-						}
-					});
-				},
-			},
 			pagination: {
 				el: '.swiper-pagination',
 				dynamicBullets: true,
@@ -584,6 +613,28 @@ export class SwiperTimelineDirective extends SwiperDirective {
 				onlyInViewport: true,
 			},
 		};
+	}
+
+	init(swiper, scope, element, attributes) {
+		const container = swiper.$el[0];
+		const lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
+		lis.forEach((x, i) => {
+			x.addEventListener('click', () => {
+				swiper.slideTo(i, 600);
+			});
+		});
+	}
+
+	slideChange(swiper, scope, element, attributes) {
+		const container = swiper.$el[0];
+		const lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
+		lis.forEach((x, i) => {
+			if (i === swiper.activeIndex) {
+				x.classList.add('active');
+			} else {
+				x.classList.remove('active');
+			}
+		});
 	}
 
 	static factory() {

@@ -1,5 +1,3 @@
-
-
 import GtmService from '../gtm/gtm.service';
 const GTM_CAT = 'references';
 
@@ -22,6 +20,16 @@ class ReferencesCtrl {
 
 	deserializeFilters(initialFilter) {
 		const locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+
+		if (Object.keys(locationFilters).length > 0) {
+			setTimeout(() => {
+				const filtersNode = document.querySelector('.section--filters');
+				if (filtersNode) {
+					this.scrollIntoView(filtersNode);
+				}
+			}, 150);
+		}
+
 		Object.keys(this.filters).forEach(x => {
 			const filter = this.filters[x];
 			switch (x) {
@@ -129,6 +137,12 @@ class ReferencesCtrl {
 
 	removeFilter(filter) {
 		this.setFilter(null, filter);
+	}
+
+	scrollIntoView(node) {
+		const curtop = (document.body.scrollTop || document.documentElement.scrollTop);
+		const top = curtop + node.getBoundingClientRect().top;
+		window.scroll(0, top);
 	}
 
 }

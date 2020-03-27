@@ -47,7 +47,8 @@
 	}
 
 	@include media-breakpoint-up(sm) {
-		margin-bottom: -90px;
+		margin-bottom: -85px;
+		margin-top: 20px;
 		z-index: 1;
 
 		.container-fluid {

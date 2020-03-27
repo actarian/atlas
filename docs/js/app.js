@@ -537,15 +537,14 @@
 	    console.log('CollectionsCtrl.deserializeFilters', locationFilters);
 
 	    if (Object.keys(locationFilters).length > 0) {
-	      window.onload = function () {
-	        setTimeout(function () {
-	          var filtersNode = document.querySelector('.section--filters');
+	      setTimeout(function () {
+	        var filtersNode = document.querySelector('.section--filters');
+	        console.log(filtersNode);
 
-	          if (filtersNode) {
-	            _this.scrollIntoView(filtersNode);
-	          }
-	        }, 150);
-	      };
+	        if (filtersNode) {
+	          _this.scrollIntoView(filtersNode);
+	        }
+	      }, 150);
 	    }
 
 	    Object.keys(this.filters).forEach(function (x) {
@@ -811,7 +810,7 @@
 	    }
 
 	    var section = this.getSection(node);
-	    element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+	    element.index = Array.from(section.querySelectorAll('[appear]')).indexOf(node);
 	    var subscription = this.domService.appear$(node).subscribe(function (event) {
 	      var rect = event.rect;
 	      var x = rect.left;
@@ -945,11 +944,19 @@
 	    scope.$on('onNavigationTransitionIn', closeDropdown);
 
 	    var addListeners = function addListeners() {
-	      trigger.addEventListener('click', onClick);
+	      if (element[0].hasAttribute('hover')) {
+	        trigger.addEventListener('mouseover', onClick);
+	      } else {
+	        trigger.addEventListener('click', onClick);
+	      }
 	    };
 
 	    var addDocumentListeners = function addDocumentListeners() {
-	      document.addEventListener('click', onDocumentClick);
+	      if (element[0].hasAttribute('hover')) {
+	        node.addEventListener('mouseleave', closeDropdown);
+	      } else {
+	        document.addEventListener('click', onDocumentClick);
+	      }
 	    };
 
 	    var removeListeners = function removeListeners() {
@@ -1422,6 +1429,8 @@
 	    rect.left = boundingRect.left;
 	    rect.width = boundingRect.width;
 	    rect.height = boundingRect.height;
+	    rect.bottom = boundingRect.top + boundingRect.height;
+	    rect.right = boundingRect.left + boundingRect.width;
 	    rect.setCenter();
 	    return rect;
 	  };
@@ -1721,37 +1730,39 @@
 	        return;
 	      }
 
-	      if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
+	      var nodes = [];
+
+	      if (node.parentNode.classList.contains('swiper-slide')) {
+	        nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
+	      } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
+	        nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+	      }
+
+	      if (nodes.length) {
 	        _this.$timeout(function () {
 	          var index = 0;
-	          var items = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map(function (itemNode, i) {
-	            if (itemNode == node) {
-	              index = i;
-	            }
-
+	          var items = [];
+	          nodes.forEach(function (itemNode, i) {
 	            var item = {};
 	            item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+	            var title = itemNode.parentNode.querySelector('.title');
 
 	            if (item.type === 'media') {
 	              var _img = itemNode.querySelector('img');
 
-	              if (_img) {
-	                item.src = _img.getAttribute('data-src-zoom') || _img.getAttribute('src') || _img.getAttribute('data-src');
-	                item.title = _img.getAttribute('alt');
-	                var wishlist = itemNode.getAttribute('media');
+	              item.src = _img.getAttribute('src') || _img.getAttribute('data-src');
+	              item.title = title ? title.innerText : _img.getAttribute('alt');
+	              var wishlist = itemNode.getAttribute('media');
 
-	                if (wishlist) {
-	                  item.wishlist = _this.eval(wishlist);
-	                }
-	              } else {
-	                console.log(itemNode, _img);
+	              if (wishlist) {
+	                item.wishlist = _this.eval(wishlist);
 	              }
 	            } else {
 	              var video = itemNode.querySelector('video');
 	              var sources = video.querySelectorAll('source');
 	              item.poster = video.getAttribute('poster');
 	              item.src = sources[sources.length - 1].getAttribute('src');
-	              item.title = video.getAttribute('alt');
+	              item.title = title ? title.innerText : video.getAttribute('alt');
 
 	              var _wishlist = itemNode.getAttribute('video');
 
@@ -1760,7 +1771,22 @@
 	              }
 	            }
 
-	            return item;
+	            console.log(item.title);
+	            var itemIndex = items.reduce(function (p, c, i) {
+	              return c.src === item.src ? i : p;
+	            }, -1);
+
+	            if (itemIndex !== -1) {
+	              if (itemNode == node) {
+	                index = itemIndex;
+	              }
+	            } else {
+	              if (itemNode == node) {
+	                index = items.length;
+	              }
+
+	              items.push(item);
+	            }
 	          });
 	          scope.$root.gallery = {
 	            index: index,
@@ -2487,6 +2513,14 @@
 
 	  _proto.linked = function linked(scope, element, attributes, controller) {};
 
+	  _proto.init = function init(swiper, scope, element, attributes) {};
+
+	  _proto.slideChangeTransitionStart = function slideChangeTransitionStart(swiper, scope, element, attributes) {};
+
+	  _proto.slideChangeTransitionEnd = function slideChangeTransitionEnd(swiper, scope, element, attributes) {};
+
+	  _proto.slideChange = function slideChange(swiper, scope, element, attributes) {};
+
 	  _proto.onResize = function onResize(scope, element, attributes) {
 	    if (element.swiper) {
 	      Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(function (node) {
@@ -2503,26 +2537,39 @@
 	      element.swiper.update();
 	    } else {
 	      var swiper_;
+
+	      this.options.onSlideClick = function (swiper) {
+	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
+	      };
+
 	      var on = this.options.on || (this.options.on = {});
-	      var callback = on.init;
+	      var self = this;
 
-	      if (!on.init || !on.init.swiperDirectiveInit) {
-	        on.init = function () {
-	          var _this2 = this;
+	      on.init = function () {
+	        var swiper = this;
+	        TweenMax.to(node, 0.4, {
+	          opacity: 1,
+	          ease: Power2.easeOut
+	        });
+	        setTimeout(function () {
+	          self.init(swiper, scope, element, attributes);
+	        }, 1);
+	      };
 
-	          TweenMax.to(node, 0.4, {
-	            opacity: 1,
-	            ease: Power2.easeOut
-	          });
-	          setTimeout(function () {
-	            if (typeof callback === 'function') {
-	              callback.apply(_this2, [swiper_, element, scope]);
-	            }
-	          }, 1);
-	        };
+	      on.slideChangeTransitionStart = function () {
+	        var swiper = this;
+	        self.slideChangeTransitionStart(swiper, scope, element, attributes);
+	      };
 
-	        on.init.swiperDirectiveInit = true;
-	      }
+	      on.slideChangeTransitionEnd = function () {
+	        var swiper = this;
+	        self.slideChangeTransitionEnd(swiper, scope, element, attributes);
+	      };
+
+	      on.slideChange = function () {
+	        var swiper = this;
+	        self.slideChange(swiper, scope, element, attributes);
+	      };
 
 	      if (attributes.noLoop !== undefined) {
 	        this.options.loop = false;
@@ -2549,27 +2596,16 @@
 	  _inheritsLoose(SwiperGalleryHeroDirective, _SwiperDirective);
 
 	  function SwiperGalleryHeroDirective() {
-	    var _this3;
+	    var _this2;
 
-	    _this3 = _SwiperDirective.call(this) || this;
-	    _this3.options = {
+	    _this2 = _SwiperDirective.call(this) || this;
+	    _this2.options = {
 	      slidesPerView: 'auto',
 	      centeredSlides: true,
 	      spaceBetween: 30,
 	      loop: true,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      on: {
-	        init: function init() {
-	          var swiper = this;
-	          setTimeout(function () {
-	            swiper.update();
-	          });
-	        }
-	      },
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
 	      pagination: {
 	        el: '.swiper-pagination',
 	        clickable: true
@@ -2583,10 +2619,16 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this3;
+	    return _this2;
 	  }
 
 	  var _proto2 = SwiperGalleryHeroDirective.prototype;
+
+	  _proto2.init = function init(swiper, scope, element, attributes) {
+	    setTimeout(function () {
+	      swiper.update();
+	    });
+	  };
 
 	  _proto2.onResize = function onResize(scope, element, attributes) {
 	    if (element.swiper) {
@@ -2618,10 +2660,10 @@
 	  _inheritsLoose(SwiperGalleryDirective, _SwiperDirective2);
 
 	  function SwiperGalleryDirective() {
-	    var _this4;
+	    var _this3;
 
-	    _this4 = _SwiperDirective2.call(this) || this;
-	    _this4.options = {
+	    _this3 = _SwiperDirective2.call(this) || this;
+	    _this3.options = {
 	      slidesPerView: 'auto',
 	      loopAdditionalSlides: 100,
 	      loop: true,
@@ -2629,17 +2671,6 @@
 	      spaceBetween: 1,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      on: {
-	        init: function init() {
-	          var swiper = this;
-	          setTimeout(function () {
-	            swiper.update();
-	          });
-	        }
-	      },
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
 	      pagination: {
 	        el: '.swiper-pagination',
 	        clickable: true
@@ -2653,10 +2684,52 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this4;
+	    return _this3;
 	  }
 
 	  var _proto3 = SwiperGalleryDirective.prototype;
+
+	  _proto3.init = function init(swiper, scope, element, attributes) {
+	    var _this4 = this;
+
+	    scope.$on('onThronComplete', function ($scope, id) {
+	      _this4.next(swiper);
+	    });
+	    swiper.on('slideChange', function () {
+	      var slide = swiper.slides[swiper.realIndex];
+
+	      if (swiper.el.parentElement.classList.contains('zoomable__content') && slide.classList.contains('swiper-slide--video')) {
+	        swiper.el.classList.add('swiper-container--video');
+	        swiper.params.touchRatio = 0;
+	      } else {
+	        swiper.el.classList.remove('swiper-container--video');
+	        swiper.params.touchRatio = 1;
+	      }
+	    });
+	    setTimeout(function () {
+	      swiper.update();
+	    });
+	  };
+
+	  _proto3.slideChangeTransitionStart = function slideChangeTransitionStart(swiper, scope, element, attributes) {
+	    if (element) {
+	      this.pauseVideo(swiper, element, scope);
+	    }
+	  };
+
+	  _proto3.pauseVideo = function pauseVideo(swiper, element, scope, id) {
+	    Array.from(swiper.slides).forEach(function (slide) {
+	      var node = slide.querySelector('video, [data-thron]');
+
+	      if (node) {
+	        if (node.hasAttribute('data-thron')) {
+	          scope.$broadcast('pauseThron', node.id);
+	        } else {
+	          node.pause();
+	        }
+	      }
+	    });
+	  };
 
 	  _proto3.onResize = function onResize(scope, element, attributes) {
 	    if (element.swiper) {
@@ -2677,6 +2750,14 @@
 	    }
 	  };
 
+	  _proto3.next = function next(swiper) {
+	    if (swiper.realIndex == swiper.slides.length - 1) {
+	      swiper.slideTo(0);
+	    } else {
+	      swiper.slideNext();
+	    }
+	  };
+
 	  SwiperGalleryDirective.factory = function factory() {
 	    return new SwiperGalleryDirective();
 	  };
@@ -2691,42 +2772,12 @@
 	    var _this5;
 
 	    _this5 = _SwiperDirective3.call(this) || this;
-	    var swiper_, element_, scope_;
 	    _this5.options = {
 	      speed: 600,
 	      parallax: true,
 	      spaceBetween: 0,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
-	      on: {
-	        init: function init(swiper, element, scope) {
-	          if (!swiper_) {
-	            swiper_ = swiper;
-	            element_ = element;
-	            scope_ = scope;
-	          }
-
-	          scope_.$on('onThronCanPlay', function ($scope, id) {
-	            _this5.toggleVideo(element, scope, id);
-	          });
-	          scope_.$on('onThronComplete', function ($scope, id) {
-	            _this5.next(swiper_);
-	          });
-	        },
-	        slideChangeTransitionStart: function slideChangeTransitionStart() {
-	          if (element_) {
-	            _this5.toggleVideo(element_, scope_);
-	          }
-	        },
-	        slideChangeTransitionEnd: function slideChangeTransitionEnd() {
-	          if (element_) {
-	            _this5.checkAutoplay(element_, scope_, swiper_);
-	          }
-	        }
-	      },
 	      pagination: {
 	        el: '.swiper-pagination',
 	        clickable: true
@@ -2744,6 +2795,29 @@
 	  }
 
 	  var _proto4 = SwiperHeroDirective.prototype;
+
+	  _proto4.init = function init(swiper, scope, element, attributes) {
+	    var _this6 = this;
+
+	    scope.$on('onThronCanPlay', function ($scope, id) {
+	      _this6.toggleVideo(element, scope, id);
+	    });
+	    scope.$on('onThronComplete', function ($scope, id) {
+	      _this6.next(swiper);
+	    });
+	  };
+
+	  _proto4.slideChangeTransitionStart = function slideChangeTransitionStart(swiper, scope, element, attributes) {
+	    if (element) {
+	      this.toggleVideo(element, scope);
+	    }
+	  };
+
+	  _proto4.slideChangeTransitionEnd = function slideChangeTransitionEnd(swiper, scope, element, attributes) {
+	    if (element) {
+	      this.checkAutoplay(element, scope, swiper);
+	    }
+	  };
 
 	  _proto4.toggleVideo = function toggleVideo(element, scope, id) {
 	    var slides = Array.from(element[0].querySelectorAll('.swiper-slide'));
@@ -2773,13 +2847,13 @@
 	  };
 
 	  _proto4.checkAutoplay = function checkAutoplay(element, scope, swiper) {
-	    var _this6 = this;
+	    var _this7 = this;
 
 	    var video = element[0].querySelector('.swiper-slide-active video, .swiper-slide-active [data-thron]');
 
 	    if (!video) {
 	      setTimeout(function () {
-	        _this6.next(swiper);
+	        _this7.next(swiper);
 	      }, 5000);
 	    }
 	  };
@@ -2803,35 +2877,14 @@
 	  _inheritsLoose(SwiperFocusDirective, _SwiperDirective4);
 
 	  function SwiperFocusDirective() {
-	    var _this7;
+	    var _this8;
 
-	    _this7 = _SwiperDirective4.call(this) || this;
-	    _this7.options = {
+	    _this8 = _SwiperDirective4.call(this) || this;
+	    _this8.options = {
 	      speed: 600,
 	      spaceBetween: 0,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
-	      on: {
-	        init: function init() {
-	          var swiper = this;
-	          var container = swiper.$el[0];
-	          var tabs = Array.from(container.querySelectorAll('.btn--tab'));
-	          tabs.forEach(function (tab, i) {
-	            return i === 0 ? tab.classList.add('active') : tab.classList.remove('active');
-	          });
-	        },
-	        slideChange: function slideChange() {
-	          var swiper = this;
-	          var container = swiper.$el[0];
-	          var tabs = Array.from(container.querySelectorAll('.btn--tab'));
-	          tabs.forEach(function (tab, i) {
-	            return i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active');
-	          });
-	        }
-	      },
 	      navigation: {
 	        nextEl: '.swiper-button-next',
 	        prevEl: '.swiper-button-prev'
@@ -2841,10 +2894,26 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this7;
+	    return _this8;
 	  }
 
 	  var _proto5 = SwiperFocusDirective.prototype;
+
+	  _proto5.init = function init(swiper, scope, element, attributes) {
+	    var container = swiper.$el[0];
+	    var tabs = Array.from(container.querySelectorAll('.btn--tab'));
+	    tabs.forEach(function (tab, i) {
+	      return i === 0 ? tab.classList.add('active') : tab.classList.remove('active');
+	    });
+	  };
+
+	  _proto5.slideChange = function slideChange(swiper, scope, element, attributes) {
+	    var container = swiper.$el[0];
+	    var tabs = Array.from(container.querySelectorAll('.btn--tab'));
+	    tabs.forEach(function (tab, i) {
+	      return i === swiper.activeIndex ? tab.classList.add('active') : tab.classList.remove('active');
+	    });
+	  };
 
 	  _proto5.linked = function linked(scope, element, attributes, controller) {
 	    var node = element[0];
@@ -2876,17 +2945,14 @@
 	  _inheritsLoose(SwiperProjectsDirective, _SwiperDirective5);
 
 	  function SwiperProjectsDirective() {
-	    var _this8;
+	    var _this9;
 
-	    _this8 = _SwiperDirective5.call(this) || this;
-	    _this8.options = {
+	    _this9 = _SwiperDirective5.call(this) || this;
+	    _this9.options = {
 	      speed: 600,
 	      spaceBetween: 0,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
 	      pagination: {
 	        el: '.swiper-pagination',
 	        clickable: true
@@ -2900,7 +2966,7 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this8;
+	    return _this9;
 	  }
 
 	  SwiperProjectsDirective.factory = function factory() {
@@ -2914,17 +2980,14 @@
 	  _inheritsLoose(SwiperReferencesDirective, _SwiperDirective6);
 
 	  function SwiperReferencesDirective() {
-	    var _this9;
+	    var _this10;
 
-	    _this9 = _SwiperDirective6.call(this) || this;
-	    _this9.options = {
+	    _this10 = _SwiperDirective6.call(this) || this;
+	    _this10.options = {
 	      speed: 600,
 	      spaceBetween: 0,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
 	      navigation: {
 	        nextEl: '.swiper-button-next',
 	        prevEl: '.swiper-button-prev'
@@ -2934,7 +2997,7 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this9;
+	    return _this10;
 	  }
 
 	  SwiperReferencesDirective.factory = function factory() {
@@ -2948,19 +3011,16 @@
 	  _inheritsLoose(SwiperTileDirective, _SwiperDirective7);
 
 	  function SwiperTileDirective() {
-	    var _this10;
+	    var _this11;
 
-	    _this10 = _SwiperDirective7.call(this) || this;
-	    _this10.options = {
+	    _this11 = _SwiperDirective7.call(this) || this;
+	    _this11.options = {
 	      speed: 600,
 	      parallax: true,
 	      autoplay: 5000,
 	      spaceBetween: 60,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      onSlideClick: function onSlideClick(swiper) {
-	        angular.element(swiper.clickedSlide).scope().clicked(angular.element(swiper.clickedSlide).scope().$index);
-	      },
 	      pagination: {
 	        el: '.swiper-pagination',
 	        clickable: true,
@@ -2975,7 +3035,7 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this10;
+	    return _this11;
 	  }
 
 	  SwiperTileDirective.factory = function factory() {
@@ -2989,40 +3049,16 @@
 	  _inheritsLoose(SwiperTimelineDirective, _SwiperDirective8);
 
 	  function SwiperTimelineDirective() {
-	    var _this11;
+	    var _this12;
 
-	    _this11 = _SwiperDirective8.call(this) || this;
-	    _this11.options = {
+	    _this12 = _SwiperDirective8.call(this) || this;
+	    _this12.options = {
 	      slidesPerView: 1,
 	      spaceBetween: 60,
 	      speed: 600,
 	      autoplay: 5000,
 	      keyboardControl: true,
 	      mousewheelControl: false,
-	      on: {
-	        init: function init() {
-	          var swiper = this;
-	          var container = swiper.$el[0];
-	          var lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
-	          lis.forEach(function (x, i) {
-	            x.addEventListener('click', function () {
-	              swiper.slideTo(i, 600);
-	            });
-	          });
-	        },
-	        slideChange: function slideChange() {
-	          var swiper = this;
-	          var container = swiper.$el[0];
-	          var lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
-	          lis.forEach(function (x, i) {
-	            if (i === swiper.activeIndex) {
-	              x.classList.add('active');
-	            } else {
-	              x.classList.remove('active');
-	            }
-	          });
-	        }
-	      },
 	      pagination: {
 	        el: '.swiper-pagination',
 	        dynamicBullets: true
@@ -3032,8 +3068,32 @@
 	        onlyInViewport: true
 	      }
 	    };
-	    return _this11;
+	    return _this12;
 	  }
+
+	  var _proto6 = SwiperTimelineDirective.prototype;
+
+	  _proto6.init = function init(swiper, scope, element, attributes) {
+	    var container = swiper.$el[0];
+	    var lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
+	    lis.forEach(function (x, i) {
+	      x.addEventListener('click', function () {
+	        swiper.slideTo(i, 600);
+	      });
+	    });
+	  };
+
+	  _proto6.slideChange = function slideChange(swiper, scope, element, attributes) {
+	    var container = swiper.$el[0];
+	    var lis = Array.from(container.querySelectorAll('.nav--timeline>li'));
+	    lis.forEach(function (x, i) {
+	      if (i === swiper.activeIndex) {
+	        x.classList.add('active');
+	      } else {
+	        x.classList.remove('active');
+	      }
+	    });
+	  };
 
 	  SwiperTimelineDirective.factory = function factory() {
 	    return new SwiperTimelineDirective();
@@ -3061,19 +3121,35 @@
 
 	    var node = element[0];
 	    node.id = "thron-" + ++ID;
+	    var media = attributes.thron;
+
+	    if (media.indexOf('pkey=') === -1) {
+	      var splitted = media.split('/');
+	      var clientId = splitted[6];
+	      var xcontentId = splitted[7];
+	      var pkey = splitted[8];
+	      media = "https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getContentDetail?clientId=" + clientId + "&xcontentId=" + xcontentId + "&pkey=" + pkey;
+	    }
+
+	    var controls = node.hasAttribute('controls') ? true : false,
+	        loop = node.hasAttribute('loop') ? true : false,
+	        autoplay = node.hasAttribute('autoplay') ? true : false;
 	    var player = THRON(node.id, {
-	      media: node.getAttribute('data-thron'),
-	      loop: node.hasAttribute('loop'),
-	      autoplay: node.hasAttribute('autoplay'),
-	      muted: true,
+	      media: media,
+	      loop: loop,
+	      autoplay: autoplay,
+	      muted: !controls,
 	      displayLinked: 'close',
-	      noSkin: true
+	      noSkin: !controls
 	    });
 
 	    var onReady = function onReady() {
-	      var mediaContainer = player.mediaContainer();
-	      var video = mediaContainer.querySelector('video');
-	      video.setAttribute('playsinline', 'true');
+	      if (!controls) {
+	        var mediaContainer = player.mediaContainer();
+	        var video = mediaContainer.querySelector('video');
+	        video.setAttribute('playsinline', 'true');
+	      }
+
 	      scope.$emit('onThronReady', node.id);
 	    };
 
@@ -3083,12 +3159,15 @@
 
 	    var onPlaying = function onPlaying() {
 	      player.off('playing', onPlaying);
-	      var qualities = player.qualityLevels();
 
-	      if (qualities.length) {
-	        var highestQuality = qualities[qualities.length - 1].index;
-	        var lowestQuality = qualities[0].index;
-	        player.currentQuality(highestQuality);
+	      if (!controls) {
+	        var qualities = player.qualityLevels();
+
+	        if (qualities.length) {
+	          var highestQuality = qualities[qualities.length - 1].index;
+	          var lowestQuality = qualities[0].index;
+	          player.currentQuality(highestQuality);
+	        }
 	      }
 	    };
 
@@ -3265,49 +3344,71 @@
 	        _this.$timeout(function () {
 	          scope.$root.gallery = null;
 	        });
-	      } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
-	        _this.$timeout(function () {
-	          var index = 0;
-	          var items = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map(function (itemNode, i) {
-	            if (itemNode == node) {
-	              index = i;
-	            }
+	      } else {
+	        var nodes = [];
 
-	            var item = {};
-	            item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+	        if (node.parentNode.classList.contains('swiper-slide')) {
+	          nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
+	        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
+	          nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+	        }
 
-	            if (item.type === 'media') {
-	              var img = itemNode.querySelector('img');
-	              item.src = img.getAttribute('src') || img.getAttribute('data-src');
-	              item.title = img.getAttribute('alt');
-	              var wishlist = itemNode.getAttribute('media');
+	        if (nodes.length) {
+	          _this.$timeout(function () {
+	            var index = 0;
+	            var items = [];
+	            nodes.forEach(function (itemNode, i) {
+	              var item = {};
+	              item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+	              var title = itemNode.parentNode.querySelector('.title');
 
-	              if (wishlist) {
-	                item.wishlist = _this.eval(wishlist);
+	              if (item.type === 'media') {
+	                var img = itemNode.querySelector('img');
+	                item.src = img.getAttribute('src') || img.getAttribute('data-src');
+	                item.title = title ? title.innerHTML : img.getAttribute('alt');
+	                var wishlist = itemNode.getAttribute('media');
+
+	                if (wishlist) {
+	                  item.wishlist = _this.eval(wishlist);
+	                }
+	              } else {
+	                var _video = itemNode.querySelector('video');
+
+	                var sources = _video.querySelectorAll('source');
+
+	                item.poster = _video.getAttribute('poster');
+	                item.src = sources[sources.length - 1].getAttribute('src');
+	                item.title = title ? title.innerHTML : _video.getAttribute('alt');
+
+	                var _wishlist = itemNode.getAttribute('video');
+
+	                if (_wishlist) {
+	                  item.wishlist = _this.eval(_wishlist);
+	                }
 	              }
-	            } else {
-	              var _video = itemNode.querySelector('video');
 
-	              var sources = _video.querySelectorAll('source');
+	              var itemIndex = items.reduce(function (p, c, i) {
+	                return c.src === item.src ? i : p;
+	              }, -1);
 
-	              item.poster = _video.getAttribute('poster');
-	              item.src = sources[sources.length - 1].getAttribute('src');
-	              item.title = _video.getAttribute('alt');
+	              if (itemIndex !== -1) {
+	                if (itemNode == node) {
+	                  index = itemIndex;
+	                }
+	              } else {
+	                if (itemNode == node) {
+	                  index = items.length;
+	                }
 
-	              var _wishlist = itemNode.getAttribute('video');
-
-	              if (_wishlist) {
-	                item.wishlist = _this.eval(_wishlist);
+	                items.push(item);
 	              }
-	            }
-
-	            return item;
+	            });
+	            scope.$root.gallery = {
+	              index: index,
+	              items: items
+	            };
 	          });
-	          scope.$root.gallery = {
-	            index: index,
-	            items: items
-	          };
-	        });
+	        }
 	      }
 	    };
 
@@ -3600,11 +3701,9 @@
 	        return x.removeEventListener('click', onClick);
 	      });
 	    });
-	    console.log('ZoomableDirective', scope.$id);
 
 	    scope.onZoom = function (item) {
 	      var rect = Rect.fromNode(content);
-	      console.log('ZoomableDirective.onZoom', scope.zoomed);
 	      TweenMax.set(node, {
 	        height: rect.height
 	      });
@@ -4427,6 +4526,17 @@
 	    var _this = this;
 
 	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+
+	    if (Object.keys(locationFilters).length > 0) {
+	      setTimeout(function () {
+	        var filtersNode = document.querySelector('.section--filters');
+
+	        if (filtersNode) {
+	          _this.scrollIntoView(filtersNode);
+	        }
+	      }, 150);
+	    }
+
 	    Object.keys(this.filters).forEach(function (x) {
 	      var filter = _this.filters[x];
 
@@ -4584,6 +4694,12 @@
 	        }, 0);
 	      }
 	    }
+	  };
+
+	  _proto.scrollIntoView = function scrollIntoView(node) {
+	    var curtop = document.body.scrollTop || document.documentElement.scrollTop;
+	    var top = curtop + node.getBoundingClientRect().top;
+	    window.scroll(0, top);
 	  };
 
 	  return GalleriesCtrl;
@@ -12187,6 +12303,17 @@
 	    var _this = this;
 
 	    var locationFilters = this.locationService.deserialize('filters') || initialFilter || {};
+
+	    if (Object.keys(locationFilters).length > 0) {
+	      setTimeout(function () {
+	        var filtersNode = document.querySelector('.section--filters');
+
+	        if (filtersNode) {
+	          _this.scrollIntoView(filtersNode);
+	        }
+	      }, 150);
+	    }
+
 	    Object.keys(this.filters).forEach(function (x) {
 	      var filter = _this.filters[x];
 
@@ -12332,6 +12459,12 @@
 	    this.setFilter(null, filter);
 	  };
 
+	  _proto.scrollIntoView = function scrollIntoView(node) {
+	    var curtop = document.body.scrollTop || document.documentElement.scrollTop;
+	    var top = curtop + node.getBoundingClientRect().top;
+	    window.scroll(0, top);
+	  };
+
 	  return ReferencesCtrl;
 	}();
 
@@ -12395,7 +12528,6 @@
 
 	    this.brand = brand;
 	    this.webglEnabled = false;
-	    this.domService.addCustomRules();
 	    this.$timeout(function () {
 	      _this3.init = true;
 	      var view = document.querySelector('.view');
@@ -12494,7 +12626,7 @@
 	    return new Promise(function (resolve, reject) {
 	      _this5.droppedIn = true;
 	      _this5.droppinIn = true;
-	      var items = [].slice.call(node.querySelectorAll('.submenu__item'));
+	      var items = Array.from(node.querySelectorAll('.submenu__item'));
 	      TweenMax.set(items, {
 	        opacity: 0
 	      });
@@ -12569,6 +12701,7 @@
 
 	RootCtrl.$inject = ['$scope', '$timeout', 'DomService', 'LocationService', 'ApiService', 'WishlistService'];
 
+	var ITEMS_PER_PAGE$5 = 10;
 	var GTM_CAT$8 = 'search';
 
 	var SearchCtrl = function () {
@@ -12579,6 +12712,7 @@
 	    this.apiService = ApiService;
 	    this.model = {};
 	    this.busy = false;
+	    this.visibilityBusy = false;
 	    this.error = null;
 	    this.items = [];
 	    this.filters = window.filters || {};
@@ -12645,9 +12779,12 @@
 	    var _this$getFilteredItem = this.getFilteredItems(this.items),
 	        filteredItems = _this$getFilteredItem.filteredItems;
 
-	    this.filteredSearch = [];
+	    this.filteredItems = [];
+	    this.visibleItems = [];
+	    this.maxItems = ITEMS_PER_PAGE$5;
 	    this.$timeout(function () {
-	      _this3.filteredSearch = filteredItems;
+	      _this3.filteredItems = filteredItems;
+	      _this3.visibleItems = filteredItems.slice(0, _this3.maxItems);
 
 	      _this3.updateFilterStates(_this3.items, filteredItems);
 	    }, 50);
@@ -12744,6 +12881,24 @@
 	      }, function (error) {
 	        return console.log('SearchCtrl.apiService.search.error', error);
 	      });
+	    }
+	  };
+
+	  _proto.onScroll = function onScroll(event) {
+	    var _this7 = this;
+
+	    if (event.rect.bottom < event.windowRect.bottom) {
+	      if (!this.visibilityBusy && this.maxItems < this.filteredItems.length) {
+	        this.$timeout(function () {
+	          _this7.visibilityBusy = true;
+
+	          _this7.$timeout(function () {
+	            _this7.maxItems += ITEMS_PER_PAGE$5;
+	            _this7.visibleItems = _this7.filteredItems.slice(0, _this7.maxItems);
+	            _this7.visibilityBusy = false;
+	          }, 1000);
+	        }, 0);
+	      }
 	    }
 	  };
 
@@ -14143,7 +14298,7 @@
 	  Card: 4,
 	  Decor: 5
 	});
-	var ITEMS_PER_PAGE$5 = 20;
+	var ITEMS_PER_PAGE$6 = 20;
 
 	var WishlistCtrl = function () {
 	  function WishlistCtrl($scope, $timeout, WishlistService) {
@@ -14185,7 +14340,7 @@
 	        });
 	        _this2.items = [];
 	        _this2.visibleItems = [];
-	        _this2.maxItems = ITEMS_PER_PAGE$5;
+	        _this2.maxItems = ITEMS_PER_PAGE$6;
 
 	        _this2.$timeout(function () {
 	          _this2.items = items;
@@ -14203,7 +14358,7 @@
 	    this.wishlistService.clearAll().pipe(operators.takeUntil(this.unsubscribe)).subscribe(function (success) {
 	      _this3.items = [];
 	      _this3.visibleItems = [];
-	      _this3.maxItems = ITEMS_PER_PAGE$5;
+	      _this3.maxItems = ITEMS_PER_PAGE$6;
 	    }, function (error) {
 	      return console.log('WishlistCtrl.clearAll.error', error);
 	    });
@@ -14218,7 +14373,7 @@
 	          _this4.busy = true;
 
 	          _this4.$timeout(function () {
-	            _this4.maxItems += ITEMS_PER_PAGE$5;
+	            _this4.maxItems += ITEMS_PER_PAGE$6;
 	            _this4.visibleItems = _this4.items.slice(0, _this4.maxItems);
 	            _this4.busy = false;
 	          }, 1000);

@@ -1,5 +1,3 @@
-
-
 export default class Rect {
 
 	constructor(rect) {
@@ -40,6 +38,8 @@ export default class Rect {
 		rect.left = boundingRect.left;
 		rect.width = boundingRect.width;
 		rect.height = boundingRect.height;
+		rect.bottom = boundingRect.top + boundingRect.height;
+		rect.right = boundingRect.left + boundingRect.width;
 		rect.setCenter();
 		return rect;
 	}

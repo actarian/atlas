@@ -93,10 +93,18 @@ export default class HasDropdownDirective {
 		scope.$on('onNavigateOut', closeDropdown);
 		scope.$on('onNavigationTransitionIn', closeDropdown);
 		const addListeners = () => {
-			trigger.addEventListener('click', onClick);
+			if (element[0].hasAttribute('hover')) {
+				trigger.addEventListener('mouseover', onClick);
+			} else {
+				trigger.addEventListener('click', onClick);
+			}
 		};
 		const addDocumentListeners = () => {
-			document.addEventListener('click', onDocumentClick);
+			if (element[0].hasAttribute('hover')) {
+				node.addEventListener('mouseleave', closeDropdown);
+			} else {
+				document.addEventListener('click', onDocumentClick);
+			}
 		};
 		const removeListeners = () => {
 			trigger.removeEventListener('click', onClick);

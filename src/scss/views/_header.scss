@@ -469,3 +469,179 @@
 		}
 	}
 }
+
+.menu--restyle {
+	margin-left: -25px;
+
+	@include media-breakpoint-down(sm) {
+		margin-left: 0;
+	}
+
+	@include media-breakpoint-down(xs) {
+		margin-left: -15px;
+	}
+
+	.submenu__item {
+		margin: 0;
+
+		.title {
+			&:after {
+				bottom: 3px;
+			}
+		}
+	}
+
+	.atlas-collezioni {
+		@include media-breakpoint-down(sm) {
+			margin-top: 20px;
+		}
+
+		.tit {
+			font-size: 24px;
+			font-weight: 700;
+			margin-bottom: -6px;
+		}
+
+		.title {
+			font-size: 18px;
+			margin: 5px 0 0 0;
+		}
+	}
+
+	.ricerca-per-effetto {
+		margin-top: 16px;
+
+		.tit {
+			font-size: 18px;
+			font-weight: 700;
+		}
+
+		ul {
+			margin: 18px 0 0 0;
+			padding: 0;
+			list-style-type: none;
+			display: flex;
+			flex-wrap: wrap;
+
+			li {
+				flex: 0 0 30%;
+				max-width: 30%;
+
+				@include media-breakpoint-down(md) {
+					flex: 0 0 50%;
+					max-width: 50%;
+				}
+
+				@include media-breakpoint-down(sm) {
+					flex: 0 0 30%;
+					max-width: 30%;
+				}
+
+				@include media-breakpoint-down(xs) {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+
+				.title {
+					margin: 0 0 5px 0;
+					padding: 0;
+
+					&:after {
+						bottom: 0;
+					}
+				}
+			}
+		}
+	}
+
+	.lanci-hp {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-top: 27px;
+
+		.box {
+			flex: 0 0 calc(33.33% - 20px);
+			max-width: calc(33.33% - 20px);
+
+			.title {
+				font-size: 18px;
+			}
+		}
+
+		@include media-breakpoint-down(sm) {
+			margin-top: 40px;
+
+			.box {
+				flex: 0 0 33.33%;
+				max-width: 33.33%;
+				margin: 0;
+
+				.title {
+					margin-left: 0;
+				}
+			}
+		}
+
+		@include media-breakpoint-down(xs) {
+			.box {
+				flex: 0 0 100%;
+				max-width: 100%;
+			}
+		}
+	}
+
+	.bottom-menu {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: flex-end;
+		margin-top: 4px;
+
+		@include media-breakpoint-down(sm) {
+			margin: 20px 0 40px 0;
+		}
+
+		.submenu__item {
+			max-width: none;
+
+			.title {
+				margin: 0;
+				padding: 0;
+			}
+		}
+
+
+		.atlas-solution {
+
+			.title {
+				font-size: 24px;
+				opacity: 0.5;
+			}
+		}
+
+		.ricerca-avanzata {
+
+			.title {
+				font-size: 18px;
+				opacity: 0.5;
+				position: relative;
+				top: -3px;
+
+				&:after {
+					bottom: 0;
+				}
+			}
+
+			.icon {
+				position: relative;
+				top: -9px;
+				margin-left: 10px;
+				width: 15px;
+				height: 15px;
+				right: 7px;
+			}
+		}
+	}
+}

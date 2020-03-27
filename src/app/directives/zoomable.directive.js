@@ -79,10 +79,10 @@ export default class ZoomableDirective {
 		scope.$on('$destroy', () => {
 			triggers.forEach(x => x.removeEventListener('click', onClick));
 		});
-		console.log('ZoomableDirective', scope.$id);
+		// console.log('ZoomableDirective', scope.$id);
 		scope.onZoom = (item) => {
 			const rect = Rect.fromNode(content);
-			console.log('ZoomableDirective.onZoom', scope.zoomed);
+			// console.log('ZoomableDirective.onZoom', scope.zoomed);
 			TweenMax.set(node, { height: rect.height });
 			this.$timeout(() => {
 				scope.zoomed = !scope.zoomed;

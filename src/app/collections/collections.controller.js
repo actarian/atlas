@@ -40,14 +40,15 @@ class CollectionsCtrl {
 		console.log('CollectionsCtrl.deserializeFilters', locationFilters);
 
 		if (Object.keys(locationFilters).length > 0) {
-			window.onload = () => {
-				setTimeout(() => {
-					const filtersNode = document.querySelector('.section--filters');
-					if (filtersNode) {
-						this.scrollIntoView(filtersNode);
-					}
-				}, 150);
-			}
+			// window.onload = () => {
+			setTimeout(() => {
+				const filtersNode = document.querySelector('.section--filters');
+				console.log(filtersNode);
+				if (filtersNode) {
+					this.scrollIntoView(filtersNode);
+				}
+			}, 150);
+			// }
 		}
 
 		Object.keys(this.filters).forEach(x => {

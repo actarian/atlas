@@ -1,5 +1,8 @@
 import { finalize, first, map } from 'rxjs/operators';
 import GtmService from '../gtm/gtm.service';
+
+export const ITEMS_PER_PAGE = 10;
+
 const GTM_CAT = 'search';
 
 class SearchCtrl {
@@ -16,6 +19,7 @@ class SearchCtrl {
 		this.apiService = ApiService;
 		this.model = {};
 		this.busy = false;
+		this.visibilityBusy = false;
 		this.error = null;
 		this.items = [];
 		this.filters = window.filters || {};
@@ -70,9 +74,12 @@ class SearchCtrl {
 	applyFilters(serialize) {
 		if (serialize !== false) this.serializeFilters();
 		const { filteredItems } = this.getFilteredItems(this.items);
-		this.filteredSearch = [];
+		this.filteredItems = [];
+		this.visibleItems = [];
+		this.maxItems = ITEMS_PER_PAGE;
 		this.$timeout(() => {
-			this.filteredSearch = filteredItems;
+			this.filteredItems = filteredItems;
+			this.visibleItems = filteredItems.slice(0, this.maxItems);
 			this.updateFilterStates(this.items, filteredItems);
 			// delayer for image update
 		}, 50);
@@ -151,6 +158,23 @@ class SearchCtrl {
 				},
 				error => console.log('SearchCtrl.apiService.search.error', error)
 			);
+		}
+	}
+
+	onScroll(event) {
+		if (event.rect.bottom < event.windowRect.bottom) {
+			// console.log('more!');
+			if (!this.visibilityBusy && this.maxItems < this.filteredItems.length) {
+				this.$timeout(() => {
+					this.visibilityBusy = true;
+					this.$timeout(() => {
+						this.maxItems += ITEMS_PER_PAGE;
+						this.visibleItems = this.filteredItems.slice(0, this.maxItems);
+						this.visibilityBusy = false;
+						// console.log(this.visibleItems.length);
+					}, 1000);
+				}, 0);
+			}
 		}
 	}
 

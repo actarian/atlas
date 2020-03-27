@@ -143,41 +143,60 @@ export default class VideoDirective {
 				this.$timeout(() => {
 					scope.$root.gallery = null;
 				});
-			} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
-				this.$timeout(() => {
-					let index = 0;
-					const items = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]')).map((itemNode, i) => {
-						if (itemNode == node) {
-							index = i;
-						}
-						const item = {};
-						item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
-						if (item.type === 'media') {
-							const img = itemNode.querySelector('img');
-							item.src = img.getAttribute('src') || img.getAttribute('data-src');
-							item.title = img.getAttribute('alt');
-							const wishlist = itemNode.getAttribute('media');
-							if (wishlist) {
-								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+			} else {
+				let nodes = [];
+				if (node.parentNode.classList.contains('swiper-slide')) {
+					nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
+				} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
+					nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+				}
+				if (nodes.length) {
+					this.$timeout(() => {
+						let index = 0;
+						let items = [];
+						nodes.forEach((itemNode, i) => {
+							const item = {};
+							item.type = itemNode.hasAttribute('media') ? 'media' : 'video';
+							const title = itemNode.parentNode.querySelector('.title');
+							if (item.type === 'media') {
+								const img = itemNode.querySelector('img');
+								item.src = img.getAttribute('src') || img.getAttribute('data-src');
+								item.title = title ? title.innerHTML : img.getAttribute('alt');
+								const wishlist = itemNode.getAttribute('media');
+								if (wishlist) {
+									item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+								}
+							} else {
+								const video = itemNode.querySelector('video');
+								const sources = video.querySelectorAll('source');
+								item.poster = video.getAttribute('poster');
+								item.src = sources[sources.length - 1].getAttribute('src');
+								item.title = title ? title.innerHTML : video.getAttribute('alt');
+								const wishlist = itemNode.getAttribute('video');
+								if (wishlist) {
+									item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+								}
 							}
-						} else {
-							const video = itemNode.querySelector('video');
-							const sources = video.querySelectorAll('source');
-							item.poster = video.getAttribute('poster');
-							item.src = sources[sources.length - 1].getAttribute('src');
-							item.title = video.getAttribute('alt');
-							const wishlist = itemNode.getAttribute('video');
-							if (wishlist) {
-								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
+							const itemIndex = items.reduce((p, c, i) => {
+								return c.src === item.src ? i : p
+							}, -1);
+							if (itemIndex !== -1) {
+								if (itemNode == node) {
+									index = itemIndex;
+								}
+							} else {
+								if (itemNode == node) {
+									index = items.length;
+								}
+								items.push(item);
 							}
-						}
-						return item;
+						});
+						scope.$root.gallery = {
+							index,
+							items,
+						};
 					});
-					scope.$root.gallery = {
-						index,
-						items,
-					};
-				});
+				}
 			}
 			// event.preventDefault();
 			// event.stopPropagation();

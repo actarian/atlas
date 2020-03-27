@@ -14,7 +14,7 @@ export default class AppearDirective {
 		}
 
 		const section = this.getSection(node);
-		element.index = [].slice.call(section.querySelectorAll('[appear]')).indexOf(node);
+		element.index = Array.from(section.querySelectorAll('[appear]')).indexOf(node);
 		const subscription = this.domService.appear$(node).subscribe(event => { // -0.05
 			// console.log(event.rect.top);
 			const rect = event.rect;
