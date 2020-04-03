@@ -10,7 +10,7 @@ export default class VideoDirective {
 		this.wishlistService = WishlistService;
 		this.restrict = 'A';
 		this.transclude = true;
-		this.template = `<div class="media">
+		this.template = `<div class="media" ng-class="{ playing: playing }">
 	<ng-transclude></ng-transclude>
 </div>
 <div class="overlay" ng-click="onOverlay($event)"></div>
@@ -145,10 +145,13 @@ export default class VideoDirective {
 				});
 			} else {
 				let nodes = [];
-				if (node.parentNode.classList.contains('swiper-slide')) {
+				if (this.isChildOfClassName(event.target, 'swiper-slide')) {
 					nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
-				} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
-					nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+				} else if (node.classList.contains('picture--vertical') ||
+					node.classList.contains('picture--horizontal') ||
+					node.classList.contains('picture--square') ||
+					node.classList.contains('picture--gallery')) {
+					nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video], .picture--gallery[media], .picture--gallery[video]'));
 				}
 				if (nodes.length) {
 					this.$timeout(() => {
@@ -218,6 +221,17 @@ export default class VideoDirective {
 				video.removeEventListener('timeupdate', onTimeUpdate);
 			}
 		});
+	}
+
+	isChildOfClassName(child, className) {
+		let parentNode = child.parentNode;
+		while (parentNode) {
+			if (parentNode.classList && parentNode.classList.contains(className)) {
+				return true;
+			}
+			parentNode = parentNode.parentNode;
+		}
+		return false;
 	}
 
 	eval(string) {

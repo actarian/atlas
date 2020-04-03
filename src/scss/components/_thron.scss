@@ -16,3 +16,22 @@
 	*/
 	background-size: cover !important;
 }
+
+.th-clickable-overlay:hover .th-button-color:not(.th-hover-disabled):not(.th-button-disabled) {
+	fill: $primary !important;
+	color: $primary !important;
+}
+
+.th-button-color:not(.th-hover-disabled):not(.th-button-disabled):hover {
+	fill: $primary !important;
+	color: $primary !important;
+}
+
+.th-svg-gradient.th-bg-stop-color {
+	stop-color: $primary !important;
+}
+
+.th-components-bg-color {
+	stroke: $primary !important;
+	background-color: $primary !important;
+}

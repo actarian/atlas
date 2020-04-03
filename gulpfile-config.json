@@ -46,7 +46,7 @@
 				"minify": true
 			}, {
 				"input": [
-					"node_modules/swiper/dist/js/swiper.js",
+					"node_modules/swiper/js/swiper.js",
 					"node_modules/muuri/dist/muuri.js",
 					"node_modules/rxjs/bundles/rxjs.umd.js",
 					"node_modules/angular/angular.js",
@@ -62,7 +62,7 @@
 			}, {
 				"input": [
 					"node_modules/animate.css/animate.css",
-					"node_modules/swiper/dist/css/swiper.css"
+					"node_modules/swiper/css/swiper.css"
 				],
 				"output": "docs/css/vendors.css",
 				"minify": true

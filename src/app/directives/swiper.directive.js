@@ -54,11 +54,15 @@ export class SwiperDirective {
 			}
 		});
 		scope.$watch('$viewContentLoaded', () => {
-			this.onSwiper(scope, element, attributes);
+			setTimeout(() => {
+				this.onSwiper(scope, element, attributes);
+			}, 1);
 		});
+		/*
 		scope.$on('onResize', ($scope) => {
 			this.onResize(scope, element, attributes);
 		});
+		*/
 		this.linked(scope, element, attributes, controller);
 	}
 
@@ -172,7 +176,12 @@ export class SwiperGalleryHeroDirective extends SwiperDirective {
 
 	init(swiper, scope, element, attributes) {
 		setTimeout(() => {
-			swiper.update();
+			const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+			if (initialSlide) {
+				swiper.slideTo(initialSlide, 0);
+			} else {
+				swiper.update();
+			}
 		});
 	}
 
@@ -204,7 +213,6 @@ export class SwiperGalleryDirective extends SwiperDirective {
 
 	constructor() {
 		super();
-		let swiper_, element_, scope_;
 		this.options = {
 			slidesPerView: 'auto',
 			loopAdditionalSlides: 100,
@@ -246,7 +254,12 @@ export class SwiperGalleryDirective extends SwiperDirective {
 			}
 		});
 		setTimeout(() => {
-			swiper.update();
+			const initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+			if (initialSlide) {
+				swiper.slideTo(initialSlide, 0);
+			} else {
+				swiper.update();
+			}
 		});
 	}
 
@@ -292,6 +305,7 @@ export class SwiperGalleryDirective extends SwiperDirective {
 
 	onResize(scope, element, attributes) {
 		if (element.swiper) {
+			console.log('onResize');
 			Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(node => node.setAttribute('style', ''));
 			element.swiper.params.slidesPerView = scope.zoomed ? 1 : 'auto';
 			element.swiper.update();

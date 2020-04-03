@@ -13,7 +13,7 @@ export default class MediaDirective {
 		this.template = `<div class="media">
 	<ng-transclude></ng-transclude>
 </div>
-<div class="overlay" ng-click="onOverlay()"></div>
+<div class="overlay" ng-click="onOverlay($event)"></div>
 <div class="share-buttons">
 <div class="btn btn--pinterest" ng-click="onPin($event)" ng-if="onPin">
 	<svg class="icon icon--pinterest"><use xlink:href="#pinterest"></use></svg>
@@ -82,18 +82,25 @@ export default class MediaDirective {
 			);
 		};
 		scope.onOverlay = (event) => {
+			/*
 			const btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
 			if (btnGallery !== null) {
 				// console.log(btnGallery);
 				btnGallery.click();
 				return;
 			}
+			*/
 			let nodes = [];
-			if (node.parentNode.classList.contains('swiper-slide')) {
+			if (this.isChildOfClassName(event.target, 'swiper-slide')) {
 				nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
-			} else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
-				nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+			} else if (
+				node.classList.contains('picture--vertical') ||
+				node.classList.contains('picture--horizontal') ||
+				node.classList.contains('picture--square') ||
+				node.classList.contains('picture--gallery')) {
+				nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video], .picture--gallery[media], .picture--gallery[video]'));
 			}
+			console.log('MediaDirective.onOverlay', nodes, node);
 			if (nodes.length) {
 				this.$timeout(() => {
 					let index = 0;
@@ -121,7 +128,6 @@ export default class MediaDirective {
 								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
 							}
 						}
-						console.log(item.title);
 						const itemIndex = items.reduce((p, c, i) => {
 							return c.src === item.src ? i : p
 						}, -1);
@@ -146,6 +152,17 @@ export default class MediaDirective {
 			// event.stopPropagation();
 		};
 		scope.$on('$destroy', () => {});
+	}
+
+	isChildOfClassName(child, className) {
+		let parentNode = child.parentNode;
+		while (parentNode) {
+			if (parentNode.classList && parentNode.classList.contains(className)) {
+				return true;
+			}
+			parentNode = parentNode.parentNode;
+		}
+		return false;
 	}
 
 	eval(string) {

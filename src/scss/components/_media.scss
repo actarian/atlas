@@ -100,8 +100,10 @@
 	}
 
 	&:hover {
-		ng-transclude {
-			transform: scale(1.1, 1.1);
+		.media:not(.playing) {
+			ng-transclude {
+				transform: scale(1.1, 1.1);
+			}
 		}
 
 		.overlay {

@@ -1654,7 +1654,7 @@
 	    this.wishlistService = WishlistService;
 	    this.restrict = 'A';
 	    this.transclude = true;
-	    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay()\"></div>\n<div class=\"share-buttons\">\n<div class=\"btn btn--pinterest\" ng-click=\"onPin($event)\" ng-if=\"onPin\">\n\t<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div></div>";
+	    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay($event)\"></div>\n<div class=\"share-buttons\">\n<div class=\"btn btn--pinterest\" ng-click=\"onPin($event)\" ng-if=\"onPin\">\n\t<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div></div>";
 	    this.scope = {
 	      item: '=?media'
 	    };
@@ -1723,20 +1723,15 @@
 	    };
 
 	    scope.onOverlay = function (event) {
-	      var btnGallery = node.nextElementSibling && node.nextElementSibling.querySelector('.btn--gallery');
-
-	      if (btnGallery !== null) {
-	        btnGallery.click();
-	        return;
-	      }
-
 	      var nodes = [];
 
-	      if (node.parentNode.classList.contains('swiper-slide')) {
+	      if (_this.isChildOfClassName(event.target, 'swiper-slide')) {
 	        nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
-	      } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
-	        nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+	      } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square') || node.classList.contains('picture--gallery')) {
+	        nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video], .picture--gallery[media], .picture--gallery[video]'));
 	      }
+
+	      console.log('MediaDirective.onOverlay', nodes, node);
 
 	      if (nodes.length) {
 	        _this.$timeout(function () {
@@ -1771,7 +1766,6 @@
 	              }
 	            }
 
-	            console.log(item.title);
 	            var itemIndex = items.reduce(function (p, c, i) {
 	              return c.src === item.src ? i : p;
 	            }, -1);
@@ -1797,6 +1791,20 @@
 	    };
 
 	    scope.$on('$destroy', function () {});
+	  };
+
+	  _proto.isChildOfClassName = function isChildOfClassName(child, className) {
+	    var parentNode = child.parentNode;
+
+	    while (parentNode) {
+	      if (parentNode.classList && parentNode.classList.contains(className)) {
+	        return true;
+	      }
+
+	      parentNode = parentNode.parentNode;
+	    }
+
+	    return false;
 	  };
 
 	  _proto.eval = function _eval(string) {
@@ -2503,10 +2511,9 @@
 	      }
 	    });
 	    scope.$watch('$viewContentLoaded', function () {
-	      _this.onSwiper(scope, element, attributes);
-	    });
-	    scope.$on('onResize', function ($scope) {
-	      _this.onResize(scope, element, attributes);
+	      setTimeout(function () {
+	        _this.onSwiper(scope, element, attributes);
+	      }, 1);
 	    });
 	    this.linked(scope, element, attributes, controller);
 	  };
@@ -2626,7 +2633,13 @@
 
 	  _proto2.init = function init(swiper, scope, element, attributes) {
 	    setTimeout(function () {
-	      swiper.update();
+	      var initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+
+	      if (initialSlide) {
+	        swiper.slideTo(initialSlide, 0);
+	      } else {
+	        swiper.update();
+	      }
 	    });
 	  };
 
@@ -2707,7 +2720,13 @@
 	      }
 	    });
 	    setTimeout(function () {
-	      swiper.update();
+	      var initialSlide = attributes.initialSlide !== undefined ? +attributes.initialSlide : 0;
+
+	      if (initialSlide) {
+	        swiper.slideTo(initialSlide, 0);
+	      } else {
+	        swiper.update();
+	      }
 	    });
 	  };
 
@@ -2733,6 +2752,7 @@
 
 	  _proto3.onResize = function onResize(scope, element, attributes) {
 	    if (element.swiper) {
+	      console.log('onResize');
 	      Array.from(element[0].querySelectorAll('.swiper-slide')).forEach(function (node) {
 	        return node.setAttribute('style', '');
 	      });
@@ -3227,7 +3247,7 @@
 	    this.wishlistService = WishlistService;
 	    this.restrict = 'A';
 	    this.transclude = true;
-	    this.template = "<div class=\"media\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay($event)\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>\n<div class=\"btn btn--zoom\" ng-click=\"onClickZoom($event)\">\n\t<svg class=\"icon icon--zoom\"><use xlink:href=\"#zoom\"></use></svg>\n</div>";
+	    this.template = "<div class=\"media\" ng-class=\"{ playing: playing }\">\n\t<ng-transclude></ng-transclude>\n</div>\n<div class=\"overlay\" ng-click=\"onOverlay($event)\"></div>\n<div class=\"btn btn--play\" ng-class=\"{ playing: playing }\">\n\t<svg class=\"icon icon--play-progress-background\"><use xlink:href=\"#play-progress\"></use></svg>\n\t<svg class=\"icon icon--play-progress\" viewBox=\"0 0 196 196\">\n\t\t<path xmlns=\"http://www.w3.org/2000/svg\" stroke-width=\"2px\" stroke-dasharray=\"1\" stroke-dashoffset=\"1\" pathLength=\"1\" stroke-linecap=\"square\" d=\"M195.5,98c0,53.8-43.7,97.5-97.5,97.5S0.5,151.8,0.5,98S44.2,0.5,98,0.5S195.5,44.2,195.5,98z\"/>\n\t</svg>\n\t<svg class=\"icon icon--play\" ng-if=\"!playing\"><use xlink:href=\"#play\"></use></svg>\n\t<svg class=\"icon icon--play\" ng-if=\"playing\"><use xlink:href=\"#pause\"></use></svg>\n</div><div class=\"btn btn--pinterest\" ng-click=\"onPin()\" ng-if=\"onPin\">\n<svg class=\"icon icon--pinterest\"><use xlink:href=\"#pinterest\"></use></svg>\n</div>\n<div class=\"btn btn--wishlist\" ng-class=\"{ active: wishlistActive, activated: wishlistActivated, deactivated: wishlistDeactivated }\" ng-click=\"onClickWishlist($event)\">\n\t<svg class=\"icon icon--wishlist\" ng-if=\"!wishlistActive\"><use xlink:href=\"#wishlist\"></use></svg>\n\t<svg class=\"icon icon--wishlist\" ng-if=\"wishlistActive\"><use xlink:href=\"#wishlist-added\"></use></svg>\n</div>\n<div class=\"btn btn--zoom\" ng-click=\"onClickZoom($event)\">\n\t<svg class=\"icon icon--zoom\"><use xlink:href=\"#zoom\"></use></svg>\n</div>";
 	    this.scope = {
 	      item: '=?video'
 	    };
@@ -3347,10 +3367,10 @@
 	      } else {
 	        var nodes = [];
 
-	        if (node.parentNode.classList.contains('swiper-slide')) {
+	        if (_this.isChildOfClassName(event.target, 'swiper-slide')) {
 	          nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
-	        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square')) {
-	          nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video]'));
+	        } else if (node.classList.contains('picture--vertical') || node.classList.contains('picture--horizontal') || node.classList.contains('picture--square') || node.classList.contains('picture--gallery')) {
+	          nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video], .picture--gallery[media], .picture--gallery[video]'));
 	        }
 
 	        if (nodes.length) {
@@ -3429,6 +3449,20 @@
 	        video.removeEventListener('timeupdate', onTimeUpdate);
 	      }
 	    });
+	  };
+
+	  _proto.isChildOfClassName = function isChildOfClassName(child, className) {
+	    var parentNode = child.parentNode;
+
+	    while (parentNode) {
+	      if (parentNode.classList && parentNode.classList.contains(className)) {
+	        return true;
+	      }
+
+	      parentNode = parentNode.parentNode;
+	    }
+
+	    return false;
 	  };
 
 	  _proto.eval = function _eval(string) {
