@@ -4518,6 +4518,7 @@ img {
   background-size: cover !important; }
 
 .th-video .th-video-player .th-video-overlay img {
+  display: none;
   width: 60px !important;
   height: 60px !important; }
 
