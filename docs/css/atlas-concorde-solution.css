@@ -2799,39 +2799,39 @@ control-messages {
   -webkit-transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important;
   transition: all 700ms 0ms cubic-bezier(0.32, 0, 0.29, 0.99) !important; }
 
-[media]:hover .media:not(.playing) ng-transclude,
-[video]:hover .media:not(.playing) ng-transclude {
-  -webkit-transform: scale(1.1, 1.1);
-          transform: scale(1.1, 1.1); }
-
-[media]:hover .overlay,
-[video]:hover .overlay {
-  opacity: 1; }
-
-[media]:hover .btn--pinterest,
-[video]:hover .btn--pinterest {
-  opacity: 1; }
-  @media (max-width: 1023.98px) {
-    [media]:hover .btn--pinterest,
-    [video]:hover .btn--pinterest {
-      opacity: 0; } }
-
-[media]:hover .btn--wishlist,
-[video]:hover .btn--wishlist {
-  opacity: 1; }
-  @media (max-width: 1023.98px) {
-    [media]:hover .btn--wishlist,
-    [video]:hover .btn--wishlist {
-      opacity: 0; } }
-
-[media]:hover .btn--zoom,
-[video]:hover .btn--zoom {
-  opacity: 1; }
-
-[media]:hover .category,
-[video]:hover .category {
-  -webkit-transform: translateY(100%);
-          transform: translateY(100%); }
+[media]:hover,
+[video]:hover {
+  /*
+		.media:not(.playing) {
+			ng-transclude {
+				transform: scale(1.1, 1.1);
+			}
+		}
+		*/ }
+  [media]:hover .overlay,
+  [video]:hover .overlay {
+    opacity: 1; }
+  [media]:hover .btn--pinterest,
+  [video]:hover .btn--pinterest {
+    opacity: 1; }
+    @media (max-width: 1023.98px) {
+      [media]:hover .btn--pinterest,
+      [video]:hover .btn--pinterest {
+        opacity: 0; } }
+  [media]:hover .btn--wishlist,
+  [video]:hover .btn--wishlist {
+    opacity: 1; }
+    @media (max-width: 1023.98px) {
+      [media]:hover .btn--wishlist,
+      [video]:hover .btn--wishlist {
+        opacity: 0; } }
+  [media]:hover .btn--zoom,
+  [video]:hover .btn--zoom {
+    opacity: 1; }
+  [media]:hover .category,
+  [video]:hover .category {
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%); }
 
 .section--gallery [media] ng-transclude, .section--gallery
 [video] ng-transclude {
