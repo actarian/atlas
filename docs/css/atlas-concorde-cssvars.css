@@ -4517,6 +4517,10 @@ img {
 	*/
   background-size: cover !important; }
 
+.th-video .th-video-player .th-video-overlay img {
+  width: 60px !important;
+  height: 60px !important; }
+
 .th-clickable-overlay:hover .th-button-color:not(.th-hover-disabled):not(.th-button-disabled) {
   fill: var(--primary) !important;
   color: var(--primary) !important; }
