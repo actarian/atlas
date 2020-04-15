@@ -91,8 +91,9 @@ export default class MediaDirective {
 			}
 			*/
 			let nodes = [];
-			if (this.isChildOfClassName(event.target, 'swiper-slide')) {
-				nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
+			const swiperWrapper = this.getParentClassName(event.target, 'swiper-wrapper');
+			if (swiperWrapper) {
+				nodes = Array.from(swiperWrapper.querySelectorAll('[media], [video]'));
 			} else if (
 				node.classList.contains('picture--vertical') ||
 				node.classList.contains('picture--horizontal') ||
@@ -100,7 +101,6 @@ export default class MediaDirective {
 				node.classList.contains('picture--gallery')) {
 				nodes = Array.from(document.querySelectorAll('.picture--vertical[media], .picture--vertical[video], .picture--horizontal[media], .picture--horizontal[video], .picture--square[media], .picture--square[video], .picture--gallery[media], .picture--gallery[video]'));
 			}
-			console.log('MediaDirective.onOverlay', nodes, node);
 			if (nodes.length) {
 				this.$timeout(() => {
 					let index = 0;
@@ -117,6 +117,7 @@ export default class MediaDirective {
 							if (wishlist) {
 								item.wishlist = this.eval(wishlist); // JSON.parse(wishlist.indexOf('"') === -1 ? wishlist.split(/[^\d\W]+/g).join('"') : wishlist);
 							}
+							console.log(item.src);
 						} else {
 							const video = itemNode.querySelector('video');
 							const sources = video.querySelectorAll('source');
@@ -154,15 +155,14 @@ export default class MediaDirective {
 		scope.$on('$destroy', () => {});
 	}
 
-	isChildOfClassName(child, className) {
+	getParentClassName(child, className) {
 		let parentNode = child.parentNode;
 		while (parentNode) {
 			if (parentNode.classList && parentNode.classList.contains(className)) {
-				return true;
+				return parentNode;
 			}
 			parentNode = parentNode.parentNode;
 		}
-		return false;
 	}
 
 	eval(string) {

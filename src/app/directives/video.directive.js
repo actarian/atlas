@@ -145,8 +145,9 @@ export default class VideoDirective {
 				});
 			} else {
 				let nodes = [];
-				if (this.isChildOfClassName(event.target, 'swiper-slide')) {
-					nodes = Array.from(node.parentNode.parentNode.querySelectorAll('[media], [video]'));
+				const swiperWrapper = this.getParentClassName(event.target, 'swiper-container');
+				if (swiperWrapper) {
+					nodes = Array.from(swiperWrapper.querySelectorAll('[media], [video]'));
 				} else if (node.classList.contains('picture--vertical') ||
 					node.classList.contains('picture--horizontal') ||
 					node.classList.contains('picture--square') ||
@@ -223,15 +224,14 @@ export default class VideoDirective {
 		});
 	}
 
-	isChildOfClassName(child, className) {
+	getParentClassName(child, className) {
 		let parentNode = child.parentNode;
 		while (parentNode) {
 			if (parentNode.classList && parentNode.classList.contains(className)) {
-				return true;
+				return parentNode;
 			}
 			parentNode = parentNode.parentNode;
 		}
-		return false;
 	}
 
 	eval(string) {

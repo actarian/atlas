@@ -12,12 +12,14 @@ body {
 	margin: 0;
 }
 
-body {
+html {
 	overflow-x: hidden;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
-	scroll-behavior: smooth;
+	scroll-behavior: auto;
+}
 
+body {
 	&.opened {
 		height: 100vh !important;
 		overflow: hidden;

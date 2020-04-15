@@ -5,6 +5,7 @@ import ContactsCtrl from './contacts/contacts.controller';
 import AppearDirective from './directives/appear.directive';
 import AutocompleteDirective from './directives/autocomplete.directive';
 import CookiesDirective from './directives/cookies.directive';
+import GalleryTriggerDirective from './directives/gallery-trigger.directive';
 import GlslCanvasDirective from './directives/glsl-canvas.directive';
 import HasDropdownDirective from './directives/has-dropdown.directive';
 import HilightDirective from './directives/hilight.directive';
@@ -19,6 +20,7 @@ import OverOnDirective from './directives/over-on.directive';
 import ParallaxDirective from './directives/parallax.directive';
 import ScrollToDirective from './directives/scroll-to.directive';
 import ScrollDirective from './directives/scroll.directive';
+import SectionHilightDirective from './directives/section-hilight.directive';
 import StickyDirective from './directives/sticky.directive';
 import { SwiperFocusDirective, SwiperGalleryDirective, SwiperGalleryHeroDirective, SwiperHeroDirective, SwiperProjectsDirective, SwiperReferencesDirective, SwiperTileDirective, SwiperTimelineDirective } from './directives/swiper.directive';
 import ThronDirective from './directives/thron.directive';
@@ -85,6 +87,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('control', ControlDirective.factory)
 	.directive('controlMessages', ControlMessagesDirective.factory)
 	.directive('cookies', CookiesDirective.factory)
+	.directive('galleryTrigger', GalleryTriggerDirective.factory)
 	.directive('glslCanvas', GlslCanvasDirective.factory)
 	.directive('gtmCollection', GtmCollectionDirective.factory)
 	.directive('gtmDealerLocator', gtmDealerLocatorDirective.factory)
@@ -106,6 +109,7 @@ app.directive('appear', AppearDirective.factory)
 	.directive('overOn', OverOnDirective.factory)
 	.directive('scroll', ScrollDirective.factory)
 	.directive('scrollTo', ScrollToDirective.factory)
+	.directive('sectionHilight', SectionHilightDirective.factory)
 	.directive('selectWithAutocomplete', AutocompleteDirective.factory)
 	.directive('sticky', StickyDirective.factory)
 	.directive('swiperGallery', SwiperGalleryDirective.factory)
