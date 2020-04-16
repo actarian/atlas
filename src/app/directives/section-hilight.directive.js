@@ -1,5 +1,5 @@
 import { fromEvent } from "rxjs";
-import { auditTime, filter, shareReplay } from "rxjs/operators";
+import { filter, shareReplay } from "rxjs/operators";
 
 export default class SectionHilightDirective {
 
@@ -10,69 +10,90 @@ export default class SectionHilightDirective {
 	link(scope, element, attributes, controller) {
 		const node = element[0];
 		SectionHilightDirective.hilights.push(node);
-		const subscription = SectionHilightDirective.hilight$.subscribe(() => {
-			// console.log('scroll');
+		SectionHilightDirective.setNodes();
+		const wheel = SectionHilightDirective.wheel$.subscribe(() => {
+			// console.log('wheel');
 		});
 		scope.$on('$destroy', () => {
 			const index = SectionHilightDirective.hilights.indexOf(node);
 			if (index !== -1) {
 				SectionHilightDirective.hilights.splice(index, 1);
+				SectionHilightDirective.setNodes();
 			}
-			subscription.unsubscribe();
+			wheel.unsubscribe();
 		});
 	}
 
-	static hilight$_() {
-		return fromEvent(window, 'scroll', false).pipe(
-			auditTime(500),
-			filter(() => {
+	static setNodes() {
+		const nodes = SectionHilightDirective.hilights.slice();
+		if (nodes.length) {
+			if (nodes[0].previousElementSibling) {
+				nodes.unshift(nodes[0].previousElementSibling);
+			}
+			if (nodes[nodes.length - 1].nextElementSibling) {
+				nodes.push(nodes[nodes.length - 1].nextElementSibling);
+			}
+		}
+		SectionHilightDirective.nodes = nodes;
+	}
+
+	static wheel$_() {
+		let animating, scrolling, index_;
+		return fromEvent(window, 'mousewheel', { passive: false }).pipe(
+			filter((event) => {
 				const ww = window.innerWidth;
 				if (ww < 1024) {
 					return;
 				}
-				const wh = window.innerHeight;
-				const gt = 60;
-				const innerRect = { left: 0, top: gt, width: ww, height: wh - gt, right: ww, bottom: wh };
-				const o = SectionHilightDirective.hilights.reduce((p, c, i) => {
-					const rect = c.getBoundingClientRect();
-					// if (Math.abs(rect.top + rect.height / 2 - innerRect.top + innerRect.height / 2) < innerRect.height / 2) {
-					if (SectionHilightDirective.intersectRect(rect, innerRect) && rect.top < innerRect.height / 2 && rect.bottom > innerRect.height / 2) {
-						if (p !== null) {
-							// console.log('intersect', c, Math.abs(p.top - innerRect.top), Math.abs(rect.top - innerRect.top));
-							if (Math.abs(p.top - innerRect.top) > Math.abs(rect.top - innerRect.top)) {
-								return { node: c, top: rect.top };
-							}
+				if (animating || scrolling) {
+					event.preventDefault();
+					return;
+				}
+				scrolling = true;
+				const currentTop = SectionHilightDirective.currentTop();
+				const direction = event.deltaY / Math.abs(event.deltaY);
+				if (Number.isInteger(direction)) {
+					const wh = window.innerHeight;
+					const gt = 60;
+					const innerRect = { left: 0, top: gt, width: ww, height: wh - gt, right: ww, bottom: wh };
+					const nodes = SectionHilightDirective.nodes;
+					let index = nodes.reduce((p, c, i) => {
+						const rect = c.getBoundingClientRect();
+						if (p === -1 && SectionHilightDirective.intersectRect(rect, innerRect)) { //  && rect.top < innerRect.bottom - 40 && rect.bottom > 40
+							return i;
 						} else {
-							return { node: c, top: rect.top };
+							return p;
+						}
+					}, -1);
+					// let index = SectionHilightDirective.index;
+					if (index !== -1) {
+						if (index_ !== undefined) {
+							index = index_ + direction;
+						}
+						if (index >= 0 && index < nodes.length) {
+							animating = true;
+							event.preventDefault();
+							let node = nodes[index];
+							const rect = node.getBoundingClientRect();
+							TweenMax.to(window, 0.500, {
+								scrollTo: {
+									y: currentTop + rect.top - 60,
+									offset: 0,
+									autoKill: true
+								}
+							});
+							setTimeout(() => {
+								index_ = index;
+								animating = false;
+							}, 700);
 						}
 					}
-					// }
-					return p;
-				}, null);
-				if (o !== null && o.top !== undefined) {
-					SectionHilightDirective.scrollTo(o.top);
-					return true;
+					scrolling = false;
+					return index !== -1;
 				}
 			}),
 			shareReplay(1),
 		);
-	}
-
-	static scrollTo(top) {
-		if (this.to) {
-			clearTimeout(this.to);
-		}
-		this.to = setTimeout(() => {
-			const from = this.currentTop();
-			/*
-			console.log('scrollTo', top);
-			const html = document.querySelector('html');
-			console.log(from, to);
-			*/
-			TweenMax.to(window, 0.350, {
-				scrollTo: { y: from + top - 60, offset: 0, autoKill: true },
-			});
-		}, 100);
 	}
 
 	static currentTop() {
@@ -105,7 +126,8 @@ export default class SectionHilightDirective {
 }
 
 SectionHilightDirective.tween = { pow: 0 };
-SectionHilightDirective.hilight$ = SectionHilightDirective.hilight$_();
+SectionHilightDirective.wheel$ = SectionHilightDirective.wheel$_();
 SectionHilightDirective.hilights = [];
+SectionHilightDirective.nodes = [];
 
 SectionHilightDirective.factory.$inject = [];

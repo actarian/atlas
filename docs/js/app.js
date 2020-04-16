@@ -2467,83 +2467,106 @@
 	  _proto.link = function link(scope, element, attributes, controller) {
 	    var node = element[0];
 	    SectionHilightDirective.hilights.push(node);
-	    var subscription = SectionHilightDirective.hilight$.subscribe(function () {});
+	    SectionHilightDirective.setNodes();
+	    var wheel = SectionHilightDirective.wheel$.subscribe(function () {});
 	    scope.$on('$destroy', function () {
 	      var index = SectionHilightDirective.hilights.indexOf(node);
 
 	      if (index !== -1) {
 	        SectionHilightDirective.hilights.splice(index, 1);
+	        SectionHilightDirective.setNodes();
 	      }
 
-	      subscription.unsubscribe();
+	      wheel.unsubscribe();
 	    });
 	  };
 
-	  SectionHilightDirective.hilight$_ = function hilight$_() {
-	    return rxjs.fromEvent(window, 'scroll', false).pipe(operators.auditTime(500), operators.filter(function () {
+	  SectionHilightDirective.setNodes = function setNodes() {
+	    var nodes = SectionHilightDirective.hilights.slice();
+
+	    if (nodes.length) {
+	      if (nodes[0].previousElementSibling) {
+	        nodes.unshift(nodes[0].previousElementSibling);
+	      }
+
+	      if (nodes[nodes.length - 1].nextElementSibling) {
+	        nodes.push(nodes[nodes.length - 1].nextElementSibling);
+	      }
+	    }
+
+	    SectionHilightDirective.nodes = nodes;
+	  };
+
+	  SectionHilightDirective.wheel$_ = function wheel$_() {
+	    var animating, scrolling, index_;
+	    return rxjs.fromEvent(window, 'mousewheel', {
+	      passive: false
+	    }).pipe(operators.filter(function (event) {
 	      var ww = window.innerWidth;
 
 	      if (ww < 1024) {
 	        return;
 	      }
 
-	      var wh = window.innerHeight;
-	      var gt = 60;
-	      var innerRect = {
-	        left: 0,
-	        top: gt,
-	        width: ww,
-	        height: wh - gt,
-	        right: ww,
-	        bottom: wh
-	      };
-	      var o = SectionHilightDirective.hilights.reduce(function (p, c, i) {
-	        var rect = c.getBoundingClientRect();
+	      if (animating || scrolling) {
+	        event.preventDefault();
+	        return;
+	      }
 
-	        if (SectionHilightDirective.intersectRect(rect, innerRect) && rect.top < innerRect.height / 2 && rect.bottom > innerRect.height / 2) {
-	          if (p !== null) {
-	            if (Math.abs(p.top - innerRect.top) > Math.abs(rect.top - innerRect.top)) {
-	              return {
-	                node: c,
-	                top: rect.top
-	              };
-	            }
+	      scrolling = true;
+	      var currentTop = SectionHilightDirective.currentTop();
+	      var direction = event.deltaY / Math.abs(event.deltaY);
+
+	      if (Number.isInteger(direction)) {
+	        var wh = window.innerHeight;
+	        var gt = 60;
+	        var innerRect = {
+	          left: 0,
+	          top: gt,
+	          width: ww,
+	          height: wh - gt,
+	          right: ww,
+	          bottom: wh
+	        };
+	        var nodes = SectionHilightDirective.nodes;
+	        var index = nodes.reduce(function (p, c, i) {
+	          var rect = c.getBoundingClientRect();
+
+	          if (p === -1 && SectionHilightDirective.intersectRect(rect, innerRect)) {
+	            return i;
 	          } else {
-	            return {
-	              node: c,
-	              top: rect.top
-	            };
+	            return p;
+	          }
+	        }, -1);
+
+	        if (index !== -1) {
+	          if (index_ !== undefined) {
+	            index = index_ + direction;
+	          }
+
+	          if (index >= 0 && index < nodes.length) {
+	            animating = true;
+	            event.preventDefault();
+	            var node = nodes[index];
+	            var rect = node.getBoundingClientRect();
+	            TweenMax.to(window, 0.500, {
+	              scrollTo: {
+	                y: currentTop + rect.top - 60,
+	                offset: 0,
+	                autoKill: true
+	              }
+	            });
+	            setTimeout(function () {
+	              index_ = index;
+	              animating = false;
+	            }, 700);
 	          }
 	        }
 
-	        return p;
-	      }, null);
-
-	      if (o !== null && o.top !== undefined) {
-	        SectionHilightDirective.scrollTo(o.top);
-	        return true;
+	        scrolling = false;
+	        return index !== -1;
 	      }
 	    }), operators.shareReplay(1));
-	  };
-
-	  SectionHilightDirective.scrollTo = function scrollTo(top) {
-	    var _this = this;
-
-	    if (this.to) {
-	      clearTimeout(this.to);
-	    }
-
-	    this.to = setTimeout(function () {
-	      var from = _this.currentTop();
-
-	      TweenMax.to(window, 0.350, {
-	        scrollTo: {
-	          y: from + top - 60,
-	          offset: 0,
-	          autoKill: true
-	        }
-	      });
-	    }, 100);
 	  };
 
 	  SectionHilightDirective.currentTop = function currentTop() {
@@ -2575,8 +2598,9 @@
 	SectionHilightDirective.tween = {
 	  pow: 0
 	};
-	SectionHilightDirective.hilight$ = SectionHilightDirective.hilight$_();
+	SectionHilightDirective.wheel$ = SectionHilightDirective.wheel$_();
 	SectionHilightDirective.hilights = [];
+	SectionHilightDirective.nodes = [];
 	SectionHilightDirective.factory.$inject = [];
 
 	var StickyDirective = function () {
